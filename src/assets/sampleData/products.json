@@ -1,0 +1,60 @@
+{
+    "success": true,
+    "message": "List of all products.",
+	"data": [
+		{
+			"id": "qwerty",
+			"name": "Subcategory1 Item1",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
+			"description": "This is Subcategory1's first item."
+        },
+        {
+            "id": "qwerty2",
+			"name": "Subcategory1 Item2",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
+			"description": "This is Subcategory1's second item."
+        },
+        {
+            "id": "asdfgh",
+			"name": "Subcategory2 Item1",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
+			"description": "This is Subcategory2's first item."
+        },
+        {
+            "id": "asdfgh2",
+			"name": "Subcategory2 Item2",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
+			"description": "This is Subcategory2's second item."
+        },
+        {
+            "id": "zxcvb",
+			"name": "Subcategory3 Item1",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
+			"description": "This is Subcategory3's first item."
+        },
+        {
+            "id": "zxcvb2",
+			"name": "Subcategory3 Item2",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 400.00,
+			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
+			"description": "This is Subcategory3's second item."
+        }
+	]
+}

@@ -1,0 +1,118 @@
+<div>
+    <h2 class="text-center">Register</h2>
+    <p>Status: {{this.signUpForm.status}}</p>
+    <form [formGroup]="signUpForm" (submit)="onSubmit()">
+        <div class="mb-4">
+            <label for="registerFirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control form-control-lg rounded-0" id="registerFirstName" formControlName="signUpFirstName"/>
+            <div *ngIf="signUpFirstName?.invalid && (signUpFirstName?.dirty || signUpFirstName?.touched)"> 
+                <div *ngIf="signUpFirstName?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="registerMiddleName" class="form-label">Middle Name</label>
+            <input type="text" class="form-control form-control-lg rounded-0" id="registerMiddleName" formControlName="signUpMiddleName"/>
+            <div *ngIf="signUpMiddleName?.invalid && (signUpMiddleName?.dirty || signUpMiddleName?.touched)"> 
+                <div *ngIf="signUpMiddleName?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">   
+            <div class="col-8">
+                <label for="registerLastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control form-control-lg rounded-0" id="registerLastName" formControlName="signUpLastName"/>
+                <div *ngIf="signUpLastName?.invalid && (signUpLastName?.dirty || signUpLastName?.touched)"> 
+                    <div *ngIf="signUpLastName?.errors?.['required']">
+                        <span class="text-danger">This field is required.</span>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col">
+                <label for="registerSuffix" class="form-label">Suffix</label>
+                <input type="text" class="form-control form-control-lg rounded-0" id="registerSuffix" formControlName="signUpSuffix"/>
+                <div *ngIf="signUpSuffix?.invalid && (signUpSuffix?.dirty || signUpSuffix?.touched)"> 
+                    <div *ngIf="signUpSuffix?.errors?.['required']">
+                        <span class="text-danger">This field is required.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+
+        <div class="mb-4">
+            <label for="registerEmail" class="form-label">Email Address</label>
+            <input type="email" class="form-control form-control-lg rounded-0" id="registerEmail" formControlName="signUpEmail"/>
+            <div *ngIf="signUpEmail?.invalid && (signUpEmail?.dirty || signUpEmail?.touched)"> 
+                <div *ngIf="signUpEmail?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+    
+                <div *ngIf="signUpEmail?.errors?.['email']">
+                    <span class="text-danger">Please use a valid email address.</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <label for="signUpPassword" class="form-label">Password</label>
+            <app-input-with-toggle [parent]="signUpForm" componentName="signUpPassword" id="signUpPassword"></app-input-with-toggle>
+            <div *ngIf="signUpPassword?.invalid && (signUpPassword?.dirty || signUpPassword?.touched)" class="password-tips mt-2"> 
+                <div *ngIf="signUpPassword?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+
+                <div *ngIf="signUpPassword?.errors?.['minlength']">
+                    <span class="text-danger">Please use at least 7 characters.</span>
+                </div>
+
+                <div *ngIf="signUpPassword?.errors?.['passwordUppercase']">
+                    <span class="text-danger">Please use an uppercase character.</span>
+                </div>
+
+                <div *ngIf="signUpPassword?.errors?.['passwordLowercase']">
+                    <span class="text-danger">Please use a lowercase character.</span>
+                </div>
+
+                <div *ngIf="signUpPassword?.errors?.['passwordNumber']">
+                    <span class="text-danger">Please use a numeric character.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="signUpConfirmPassword" class="form-label">Confirm Password</label>
+            <app-input-with-toggle [parent]="signUpForm" [componentName]="'signUpConfirmPassword'" id="signUpConfirmPassword"></app-input-with-toggle>
+            <div *ngIf="signUpForm?.invalid && (signUpConfirmPassword?.dirty || signUpConfirmPassword?.touched)">
+                <div *ngIf="signUpForm?.errors?.['samePassword']">
+                    <span class="text-danger">Passwords do not match.</span>
+                </div>
+            </div>
+            
+        </div>
+        <hr class="mb-4">
+        <div class="mb-4">
+            <p>By proceeding to sign up, I acknowledge that I have read and consented to Lappee’s <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>, which sets out how Lappee collects, uses and discloses my personal data, and the rights that I have under applicable law.
+            </p>
+            
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input mr-2 check-outline" value="" id="checkAgreeTermsAndPolicies" formControlName="signUpAcceptTerms">
+                <label for="checkAgreeTermsAndPolicies" class="form-check-label">I agree with the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+            <div *ngIf="signUpAcceptTerms?.invalid && (signUpAcceptTerms?.dirty || signUpAcceptTerms?.touched)"> 
+                <div *ngIf="signUpAcceptTerms?.errors?.['requiredTrue']">
+                    <span class="text-danger">Please accept the Terms of Use and Privacy Policy.</span>
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4 w-75 w-md-100 mx-auto">
+        <div class="row mb-3 px-3">
+            <button type="submit" class="button-primary rounded-0 mb-3">REGISTER</button>
+        </div>
+    </form>
+</div>

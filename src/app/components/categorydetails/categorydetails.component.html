@@ -1,0 +1,20 @@
+
+<div class="container-fluid d-flex flex-row justify-content-center align-items-start" id="navbarCategoryDetails">
+    <img class="img-fluid d-none d-md-block" src="https://picsum.photos/240/300">
+    <div id="navDropdownLinks" class="d-flex flex-row">
+        <div>
+            <strong><p>NEW IN {{category.name.toUpperCase()}}</p></strong>
+            <!-- 
+            <ul class="linklist">
+                <li *ngFor="let product of products">{{product.name}}</li>
+            </ul>
+            -->
+            <div>
+                <ul class="list-unstyled">
+                    <li *ngFor="let item of filteredSubcategories | async"><a href="#" class="text-reset text-decoration-none"><p>{{item.name}} | {{item.id}} | {{item.main_category}}</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <img class="img-fluid d-none d-md-block" src="https://picsum.photos/240/300">
+</div>

@@ -1,0 +1,47 @@
+<div id="navbarContainer">
+    <div id="navbarInfoBg" class="mb-0 mb-md-3">
+        <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
+            <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i>Help</a></p>
+            <p class="fs-6 my-2"><a title="Login | Sign-up" [routerLink]="['/entry']" class="text-reset">Login | Sign-up</a></p>
+        </div>
+    </div>
+    
+    <div id="navbarSearchBg" class=" d-none d-md-flex">
+        <div class="container-md d-flex flex-row justify-content-start align-items-center" id="searchDiv">
+            <a title="Home" [routerLink]="['/']"><img src="./assets/logo.svg" class="img-fluid"></a>
+            <app-searchbar class="flex-grow-1"></app-searchbar>
+        </div>
+    </div>
+    
+    <nav id="navbarLinksBg" class="navbar navbar-expand-md">
+        <div class="container-md d-block d-md-flex flex-row justify-content-between">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid d-inline d-md-none mx-3"></a>
+            
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
+                <div class="offcanvas-header">
+                    <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid"></a>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <app-searchbar class="d-block d-md-none"></app-searchbar>
+                    <hr>
+                    <ul class="navbar-nav">
+                        <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">
+                            <a href="#" class="nav-link dropdown-toggle text-uppercase" data-bs-toggle="dropdown" #categoryItems>{{category.name}}</a>
+                            <div id="navDropdown" class="dropdown-menu w-100">
+                                <app-categorydetails [category]="category" [subcategory]="subcategories" id="categoryDetailsDiv"></app-categorydetails>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+</div>
+<div id="modalBackground" class="w-100 h-100" (click)="clearColorBG()" #modalBackground>
+</div>

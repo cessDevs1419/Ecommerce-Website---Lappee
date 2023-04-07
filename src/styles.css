@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: Mulish, sans-serif;
+}
+
+.gradientButton {
+    max-height: auto;
+    padding: 1rem;
+    border-radius: 5px;
+    border: hidden;
+    background: rgb(28,118,202);
+    background: linear-gradient(180deg, rgba(28,118,202,1) 0%, rgba(28,146,255,1) 100%);
+    color: #FFFFFF;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}
+
+.button-primary {
+    padding: 1rem;
+    border-radius: 5px;
+    border: hidden;
+    background: rgb(28,118,202);
+    color: #FFFFFF;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}
+
+.gradientButton:hover {
+    background: rgb(28,146,255);
+
+}
+
+.button-primary:hover {
+    background: #1C92FF;
+}
+
+
+.dropdown {
+    position: static;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.forgot-pass {
+    text-decoration: none;
+}
+
+.forgot-pass:hover {
+    text-decoration: underline;
+}
+
+.toggle-passtext {
+    border-color: #BABABA;
+}
+
+.toggle-passtext i {
+    color: #1C76CA;
+    transition: color .4s;
+}
+
+.toggle-passtext:hover i {
+    color: #FFFFFF;
+}
+
+.check-outline {
+    border-color: #BABABA;
+}
+
+input[type=text], input[type=password], input[type=email] {
+    border-color: #BABABA;
+}

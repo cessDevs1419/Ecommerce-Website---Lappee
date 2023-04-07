@@ -1,0 +1,6 @@
+<div class="input-group" [formGroup]="parent">
+    <input type="password" class="form-control form-control-lg rounded-0" [type]="show ? 'text' : 'password'" [formControlName]="componentName" required/>
+    <button type="button" class="btn btn-outline-secondary rounded-0 toggle-passtext" (click)="show = !show"><i class="bi bi-eye-fill"></i></button>
+</div>
+
+

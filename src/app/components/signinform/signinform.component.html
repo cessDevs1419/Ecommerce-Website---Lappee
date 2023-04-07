@@ -1,0 +1,31 @@
+<div>
+    <h2 class="text-center">Sign-In</h2>
+
+    
+    <p>Status: {{this.signInForm.status}} </p>
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+            <label for="signInEmail" class="form-label">Email Address</label>
+            <input type="email" class="form-control form-control-lg rounded-0" id="signInEmail" formControlName="signInEmail" required/>
+            <div *ngIf="signInEmail?.invalid && (signInEmail?.dirty || signInEmail?.touched)"> 
+                <div *ngIf="signInEmail?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="signInPassword" class="form-label">Password</label>
+            <app-input-with-toggle [parent]="signInForm" [componentName]="'signInPassword'"></app-input-with-toggle>
+            <div *ngIf="signInPassword?.invalid && (signInPassword?.dirty || signInPassword?.touched)"> 
+                <div *ngIf="signInPassword?.errors?.['required']">
+                    <span class="text-danger">This field is required.</span>
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4 w-75 w-md-100 mx-auto">
+        <div class="row mb-3 px-3">
+            <button type="submit" class="button-primary rounded-0 mb-3" [disabled]="!this.signInForm.valid">SIGN IN</button> 
+            <a href="#" class="text-reset text-center forgot-pass">Forgot your password?</a>
+        </div>
+    </form>
+</div>

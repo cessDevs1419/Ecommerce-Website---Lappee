@@ -1,0 +1,14 @@
+.password-tips {
+    background-color: #e3e3e3;
+    padding: 1rem;
+}
+
+.resolved {
+    color: #198754;
+    text-decoration: line-through;
+}
+
+.unresolved {
+    color: #DC3545;
+    text-decoration: none;
+}

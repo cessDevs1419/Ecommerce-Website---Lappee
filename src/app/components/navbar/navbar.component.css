@@ -1,0 +1,53 @@
+#searchDiv {
+    gap: 2rem;
+}
+
+
+#navbarInfoBg {
+    background-color: #F7F7F7;
+}
+
+#navbarInfo {
+    gap: 1rem;
+}
+
+#navbarContainer {
+    box-shadow: 0px 6px 12px 0px rgba(0,0,0,0.10);
+}
+
+.nav-item a:hover {
+    text-decoration: underline;
+}
+
+.activeLink {
+    color: #1084EF;
+}
+
+#categoryDetailsDiv > div {
+    box-shadow: 0px 6px 12px 0px rgba(0,0,0,0.10);
+}
+
+#modalBackground {
+    display: none;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+}
+
+.dropdown.show:before{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(100,100,100,0.5);
+    content: '';
+    z-index: 1;
+}
+
+/* disable modalBackground on mobile */
+@media screen and (max-width: 768px) {
+    #modalBackground {
+        display: none !important; 
+    }
+}
