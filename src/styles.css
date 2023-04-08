@@ -39,6 +39,10 @@ body {
     background: #1C92FF;
 }
 
+.button-primary:disabled {
+    background: #BABABA
+}
+
 
 .dropdown {
     position: static;
@@ -75,4 +79,11 @@ a:hover {
 
 input[type=text], input[type=password], input[type=email] {
     border-color: #BABABA;
+}
+
+@media screen and (min-width: 768px){
+    /* lock entry form toggling at 768px and UP*/
+    .entry-form {
+        display: block !important;
+    }
 }

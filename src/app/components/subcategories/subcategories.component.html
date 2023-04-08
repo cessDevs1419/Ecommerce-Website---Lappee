@@ -1,0 +1,27 @@
+<div class="container-md">
+    <div class="row mt-5 justify-content-between">
+        <div class="col-md d-flex justify-content-start">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/']" title="Home" class="fs-4 text-uppercase">Home</a></li>
+                    <li *ngFor="let match of subcategoryMatch | async" class="breadcrumb-item active fs-4 text-uppercase">{{match.name}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md d-flex justify-content-end">search</div>
+    </div>
+
+    <div class="row">
+        <div *ngFor="let product of productsFiltered | async" class="col-6 col-md-3">
+            <a href="#">
+                <div class="card">
+                    <img src="https://picsum.photos/250/350" class="card-img-top">
+                    <div class="card-body">
+                        <div class="card-title fs-5">{{product.name}}</div>
+                        <div class="card-text">{{product.price}}</div>
+                    </div>
+                </div> 
+            </a>
+        </div>
+    </div>
+</div>

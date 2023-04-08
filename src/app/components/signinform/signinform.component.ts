@@ -25,6 +25,12 @@ export class SigninformComponent {
 
 
   onSubmit(){
-    console.warn(this.signInForm.value);
+    if(this.signInForm.valid){
+      //submit
+      console.warn(this.signInForm.value);
+    }
+    else if(this.signInForm.invalid){
+      this.signInForm.markAllAsTouched();
+    }
   }
 }

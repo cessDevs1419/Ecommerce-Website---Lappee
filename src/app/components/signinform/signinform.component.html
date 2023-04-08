@@ -1,8 +1,5 @@
 <div>
     <h2 class="text-center">Sign-In</h2>
-
-    
-    <p>Status: {{this.signInForm.status}} </p>
     <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
         <div class="mb-4">
             <label for="signInEmail" class="form-label">Email Address</label>
@@ -24,7 +21,7 @@
         </div>
         <hr class="mb-4 w-75 w-md-100 mx-auto">
         <div class="row mb-3 px-3">
-            <button type="submit" class="button-primary rounded-0 mb-3" [disabled]="!this.signInForm.valid">SIGN IN</button> 
+            <button type="submit" class="button-primary rounded-0 mb-3">SIGN IN</button> 
             <a href="#" class="text-reset text-center forgot-pass">Forgot your password?</a>
         </div>
     </form>

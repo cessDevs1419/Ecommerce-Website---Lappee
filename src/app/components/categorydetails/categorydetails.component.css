@@ -1,3 +1,7 @@
 #navbarCategoryDetails {
     gap: 2rem;
 }
+
+.productlist-item:hover {
+    text-decoration: underline;
+}

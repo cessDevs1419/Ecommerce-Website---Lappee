@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./entry.component.css']
 })
 export class EntryComponent {
+  isSignIn: boolean = true;
 
+  signInToggle(): void {
+    this.isSignIn = true;
+  }
+
+  signUpToggle(): void {
+    this.isSignIn = false;
+  }
 }

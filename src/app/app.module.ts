@@ -16,6 +16,7 @@ import { SignupformComponent } from './components/signupform/signupform.componen
 import { SigninformComponent } from './components/signinform/signinform.component';
 import { PasswordValidatorDirective } from '../assets/directives/passwordValidator/password-validator.directive';
 import { InputWithToggleComponent } from './components/input-with-toggle/input-with-toggle.component';
+import { SubcategoriesComponent } from './components/subcategories/subcategories.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { InputWithToggleComponent } from './components/input-with-toggle/input-w
     SignupformComponent,
     SigninformComponent,
     PasswordValidatorDirective,
-    InputWithToggleComponent
+    InputWithToggleComponent,
+    SubcategoriesComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import { InputWithToggleComponent } from './components/input-with-toggle/input-w
     AppRoutingModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
-      {path: 'entry', component: EntryComponent}
+      {path: 'entry', component: EntryComponent},
+      {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent}
     ]),
     FormsModule,
     ReactiveFormsModule

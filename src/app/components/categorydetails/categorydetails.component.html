@@ -10,9 +10,10 @@
             </ul>
             -->
             <div>
-                <ul class="list-unstyled">
-                    <li *ngFor="let item of filteredSubcategories | async"><a href="#" class="text-reset text-decoration-none"><p>{{item.name}} | {{item.id}} | {{item.main_category}}</p></a></li>
+                <ul class="list-unstyled categoryDetails-productlist">
+                    <li *ngFor="let item of filteredSubcategories | async"><a class="text-reset text-decoration-none" title="View {{item.name}}" [routerLink]="['/subcategory', item.id, {'subcategoryId' : item.id}]"><p class="productlist-item">{{item.name}}</p></a></li>
                 </ul>
+                <a href="#" [routerLink]="category.name">More Items...</a>
             </div>
         </div>
     </div>

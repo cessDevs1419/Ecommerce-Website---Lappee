@@ -1,8 +1,12 @@
 <div class="container-md" id="entryDiv">
-    <div class="row my-5 flex-column flex-md-row">
-        <app-signinform class="col col-md-5 mx-0 mx-md-5 my-5 my-md-0"></app-signinform>
-        <div class="col border-bottom border-md-start"></div>
-        <app-signupform class="col col-md-5 mx-2 mx-md-5 my-5 my-md-0"></app-signupform>
+    <div class="row d-flex d-md-none text-center my-5 mx-2 entry-selector">
+        <div class="col py-3" [ngClass]="isSignIn ? 'active-shown' : 'inactive-hidden'" (click)="signInToggle()">Sign In</div>
+        <div class="col py-3" [ngClass]="isSignIn ? 'inactive-hidden' : 'active-shown'" (click)="signUpToggle()">Sign Up</div>
+    </div>
+    <div class="row my-5 flex-column flex-md-row" >
+        <app-signinform class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="!isSignIn"></app-signinform>
+        
+        <app-signupform class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="isSignIn"></app-signupform>
     </div>
     
 </div>

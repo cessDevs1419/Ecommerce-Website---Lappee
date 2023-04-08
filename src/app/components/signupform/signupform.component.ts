@@ -33,6 +33,12 @@ export class SignupformComponent {
   get signUpAcceptTerms() { return this.signUpForm.get('signUpAcceptTerms') }
 
   onSubmit(){
-    console.warn(this.signUpForm.value);
+    if(this.signUpForm.valid){
+      // submit
+      console.warn(this.signUpForm.value);
+    }
+    else if(this.signUpForm.invalid){
+      this.signUpForm.markAllAsTouched();
+    }
   }
 }
