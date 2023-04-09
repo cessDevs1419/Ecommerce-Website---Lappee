@@ -4,6 +4,10 @@ body {
     font-family: Mulish, sans-serif;
 }
 
+.text-muted {
+    color: #C1C1C1;
+}
+
 .gradientButton {
     max-height: auto;
     padding: 1rem;

@@ -46,3 +46,35 @@ export function filterProducts(subcategoryID: string, productObservable: Observa
     
   }));
 }
+
+/* Sorting Functions */
+
+export function productSortByName(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+  if (mode == "normal"){
+    return productObservable.pipe(map((prods: Product[]) => {
+      return prods.sort((a: any, b: any) => a.name.localeCompare(b.name));
+    }));
+  }
+  if (mode == "inverse"){
+    return productObservable.pipe(map((prods: Product[]) => {
+      return prods.sort((a: any, b: any) => b.name.localeCompare(a.name));
+    }));
+  }
+  
+  return productObservable;
+}
+
+export function productSortByPrice(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+  if (mode == "ascending"){
+    return productObservable.pipe(map((prods: Product[]) => {
+      return prods.sort((a: any, b: any) => a.price - b.price);
+    }));
+  }
+  if (mode == "descending"){
+    return productObservable.pipe(map((prods: Product[]) => {
+      return prods.sort((a: any, b: any) => b.price - a.price);
+    }));
+  }
+  
+  return productObservable;
+}

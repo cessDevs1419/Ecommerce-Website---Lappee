@@ -4,7 +4,7 @@ import { Subcategory, SubcategoryList } from 'src/assets/models/subcategories';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatProducts, filterProducts, formatSubcategories, filterSubcategories } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProducts, formatSubcategories, filterSubcategories, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
 import { Observable, map, filter } from 'rxjs';
 
 @Component({
@@ -18,8 +18,8 @@ export class SubcategoriesComponent {
   subcategories!: Observable<Subcategory[]>;
   subcategoryMatch?: Observable<Subcategory[]> | null;
   products!: Observable<Product[]>;
-  productsFiltered?: Observable<Product[]>;
-
+  productsFiltered!: Observable<Product[]>;
+  sortOption: string = "name-normal";
 
   constructor(private route: ActivatedRoute, private subcategoryService: SubcategoriesService, private productsService: ProductsService) {}
 
@@ -30,6 +30,40 @@ export class SubcategoriesComponent {
     this.subcategoryMatch = filterSubcategories((this.subcategoryId as string), this.subcategories);
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.productsFiltered = filterProducts((this.subcategoryId as string), this.products);
-    
+
+    this.productSort();
+  }
+
+  productSort() {
+    let option = this.sortOption;
+
+    switch(option){
+      case 'name-normal': {
+        this.productsFiltered = productSortByName(this.productsFiltered, "normal");
+        break;
+      }
+
+      case 'name-inverse': {
+        this.productsFiltered = productSortByName(this.productsFiltered, "inverse");
+        break;
+      }
+
+      case 'price-asc': {
+        this.productsFiltered = productSortByPrice(this.productsFiltered, "ascending");
+        break;
+      }
+
+      case 'price-desc': {
+        this.productsFiltered = productSortByPrice(this.productsFiltered, "descending");
+        break;
+      }
+
+      default: {
+        console.warn(option + ' not found');
+        break;
+      }
+    }
+
+    console.log(option);
   }
 }

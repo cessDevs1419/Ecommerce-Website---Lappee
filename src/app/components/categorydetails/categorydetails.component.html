@@ -11,7 +11,7 @@
             -->
             <div>
                 <ul class="list-unstyled categoryDetails-productlist">
-                    <li *ngFor="let item of filteredSubcategories | async"><a class="text-reset text-decoration-none" title="View {{item.name}}" [routerLink]="['/subcategory', item.id, {'subcategoryId' : item.id}]"><p class="productlist-item">{{item.name}}</p></a></li>
+                    <li *ngFor="let item of filteredSubcategories | async"><a class="text-reset text-decoration-none" title="View {{item.name}}" [routerLink]="['/subcategory', item.id]"><p class="productlist-item">{{item.name}}</p></a></li>
                 </ul>
                 <a href="#" [routerLink]="category.name">More Items...</a>
             </div>

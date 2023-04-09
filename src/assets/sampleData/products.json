@@ -55,6 +55,24 @@
 			"price": 400.00,
 			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
 			"description": "This is Subcategory3's second item."
+        },
+		{
+            "id": "zxcvb3",
+			"name": "AAAAAAAAAAAAAA I should be first",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 500.00,
+			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
+			"description": "This should be the first item."
+        },
+		{
+            "id": "zxcvb4",
+			"name": "ZZZZZZZZZZZZ I should be last",
+			"stock": 0,
+			"stock_limit": 0,
+			"price": 69.00,
+			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
+			"description": "This should be the last item."
         }
 	]
 }
