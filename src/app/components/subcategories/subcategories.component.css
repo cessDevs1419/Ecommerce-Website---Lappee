@@ -5,17 +5,26 @@
 
 .product-card img {
     border-radius: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    z-index: 0;
 }
 
 .product-card .product-price {
     color: #1C92FF;
 }
 
-.product-card .product-price-muted {
-    color: #C1C1C1;
-    text-decoration: line-through;
-}
-
 .product-card:hover {
     box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.5);
+}
+
+.card-image-overlay {
+    position: absolute;
+    z-index: 1;
+    background-color: #3C3C3C;
+    color: #FFFFFF;
+}
+
+.card-title {
+    line-clamp: 2;
 }

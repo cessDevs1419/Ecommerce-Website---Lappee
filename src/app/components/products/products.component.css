@@ -1,0 +1,46 @@
+.fave-button {
+    border-radius: 50%;
+    border: none;
+    padding: .5rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    color: #3C3C3C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .4s;
+}
+
+.faved {
+    background-color: #1C76CA;
+    color: #FFFFFF;
+}
+
+.rating-yellow {
+    color: #FFC107;
+}
+
+.discount {
+    background-color: #1C76CA;
+    color: #FFFFFF;
+}
+
+.product-border-bottom {
+    border-bottom: 1px solid #C1C1C1;
+}
+
+#productDescOptions .product-description-accordion {
+    background-color: #EFF0F5 !important;
+    color: #3C3C3C !important;
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%233c3c3c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); ;
+}
+
+.color-select {
+    padding: 2rem;
+    border-radius: 50%;
+    color: #FFFFFF;
+}
