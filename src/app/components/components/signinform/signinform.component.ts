@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SignIn } from 'src/assets/models/entry';
+import { Login } from 'src/assets/models/account';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class SigninformComponent {
   
-  model: SignIn = {
+  model: Login = {
     email: '',
     password: '',
     rememberMe: false,

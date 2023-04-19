@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, QueryList, ViewChildren, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { CategoriesService } from '../../services/categories/categories.service';
+import { CategoriesService } from '../../../services/categories/categories.service';
 import { Category, CategoryList } from 'src/assets/models/categories';
-import { SubcategoriesService } from '../../services/subcategories/subcategories.service';
+import { SubcategoriesService } from '../../../services/subcategories/subcategories.service';
 import { SubcategoryList, Subcategory } from 'src/assets/models/subcategories';
-import { ProductsService } from '../../services/products/products.service';
+import { ProductsService } from '../../../services/products/products.service';
 import { ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
 

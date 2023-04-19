@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import { Category } from 'src/assets/models/categories';
 import { Subcategory, SubcategoryList } from 'src/assets/models/subcategories';
-import { ProductsService } from '../../services/products/products.service';
+import { ProductsService } from '../../../services/products/products.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
 

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-entry',
-  templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css']
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css']
 })
-export class EntryComponent {
+export class AccountComponent {
   isSignIn: boolean = true;
 
   signInToggle(): void {

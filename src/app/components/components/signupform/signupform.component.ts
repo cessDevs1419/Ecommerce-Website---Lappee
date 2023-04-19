@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValidator } from 'src/assets/directives/passwordValidator/password-validator.directive';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-signupform',
@@ -9,7 +11,9 @@ import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValida
 })
 export class SignupformComponent {
 
-  constructor(private fb: FormBuilder) {}
+  response!: Observable<any>;
+
+  constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
 
   signUpForm = this.fb.group ({
     signUpFirstName: ['', Validators.required],
@@ -36,6 +40,18 @@ export class SignupformComponent {
     if(this.signUpForm.valid){
       // submit
       console.warn(this.signUpForm.value);
+
+      let formData: any = new FormData();
+      formData.append('first_name', this.signUpForm.get('signUpFirstName')?.value);
+      formData.append('middle_name', this.signUpForm.get('signUpMiddleName')?.value);
+      formData.append('last_name', this.signUpForm.get('signUpLastName')?.value);
+      formData.append('suffix', this.signUpForm.get('signUpSuffix')?.value);
+      formData.append('email', this.signUpForm.get('signUpEmail')?.value);
+      formData.append('password', this.signUpForm.get('signUpPassword')?.value);
+      formData.append('password_confirmation', this.signUpForm.get('signUpConfirmPassword')?.value);
+
+      this.response = this.accountsService.postRegisterUser(formData);
+
     }
     else if(this.signUpForm.invalid){
       this.signUpForm.markAllAsTouched();

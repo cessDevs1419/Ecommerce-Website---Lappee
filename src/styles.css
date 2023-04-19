@@ -47,6 +47,23 @@ body {
     background: #BABABA
 }
 
+.button-secondary-outline {
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #3C3C3C;
+    background: none;
+    color: #3C3C3C;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}
+
+.button-secondary-outline:hover {
+    background: #3C3C3C;
+    color: #FFFFFF;
+}
+
 
 .dropdown {
     position: static;
