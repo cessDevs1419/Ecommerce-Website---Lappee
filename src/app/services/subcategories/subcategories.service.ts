@@ -13,6 +13,7 @@ export class SubcategoriesService {
   }
 
   getSubcategories(): Observable<SubcategoryList> {
-    return this.http.get<SubcategoryList>('./assets/sampleData/subcategories.json');
+    //return this.http.get<SubcategoryList>('./assets/sampleData/subcategories.json');
+    return this.http.get<SubcategoryList>("https://127.0.0.1:8000/api/admin/category/sub/");
   }
 }

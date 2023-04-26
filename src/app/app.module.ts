@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GalleryModule } from 'ng-gallery';
 import { LightboxModule } from 'ng-gallery/lightbox';
 import { LayoutModule } from '@angular/cdk/layout'
+import { AuthInterceptor } from './services/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,10 @@ import { LayoutModule } from '@angular/cdk/layout'
     BrowserModule,
     LayoutModule,
     HttpClientModule,
-    HttpClientXsrfModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'X-XSRF-TOKEN'
+    }),
     AppRoutingModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
@@ -69,6 +73,11 @@ import { LayoutModule } from '@angular/cdk/layout'
     {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'PHP'
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

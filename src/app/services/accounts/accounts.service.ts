@@ -11,9 +11,8 @@ export class AccountsService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'multipart/form-data',
-      'X-XSRF-TOKEN': '2|OCPLyPMDt6u4dWlORN7YkZCJOGsBd6u8uhWcWVLt',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '/'
+      'Access-Control-Allow-Origin': '*'
       //try lang why not
     })
   };

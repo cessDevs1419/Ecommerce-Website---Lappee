@@ -60,23 +60,6 @@ export class NavbarComponent {
   // color toggling for nav links and modal background
   toggleColor(event: Event): void {
 
-    // clear classes
-    // this.categoryItems.forEach((item) => {
-    //   if(item.nativeElement.classList.contains('activeLink')){
-    //     item.nativeElement.classList.remove('activeLink');
-    //   }
-    //   if(this.modalBg.nativeElement.style.display === 'block'){
-    //     this.modalBg.nativeElement.style.display = 'none';
-    //   }
-    // });
-
-    // set new classes
-    // if(sender.innerText !== this.lastToggled && !sender.classList.contains('activeLink')){
-    //   sender.classList.add('activeLink');
-    //   this.modalBg.nativeElement.style.display = 'block';
-    //   console.log(event);
-    // }
-
     // new setter of class
     if(this.targetElement.innerText !== this.lastToggled && !this.targetElement.classList.contains('activeLink')){
       this.clearColorBG();
