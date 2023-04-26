@@ -3,7 +3,7 @@
 }
 
 #navSearchBar {
-    color: #3C3C3C;
-    background-color: #EFF0F5;
+    color: var(--body-text);
+    background-color: var(--light-gray);
     padding: 1rem;
 }

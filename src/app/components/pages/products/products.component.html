@@ -1,19 +1,19 @@
 <div class="container-md mt-5">
     <div class="row">
-        <div class="col">
-            gallery here
-        </div>
-        <div class="col">
+        
+        <gallery gallerize [items]="imgArray" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop"></gallery>
+        
+        <div *ngFor="let match of productMatch | async"  class="col-lg">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
-                    <h3>Hardcoded Korean Sleeves</h3>
-                    <p>ID: HARDCODED123123123123123</p>
+                    <h3>{{match.name}}</h3>
+                    <p>{{match.id}}</p>
                     <div class="d-flex flex-row justify-content-start rating-yellow">
                         <app-star-ratings [rating]="3.5"></app-star-ratings>
                         <p class="ms-1">(hardcoded 753 reviews)</p>
                     </div>
                     <div class="d-flex flex-row">
-                        <p class="h2 m-0">P499</p>
+                        <p class="h2 m-0">{{match.price | currency}}</p>
                         <p class="muted-text text-decoration-line-through align-self-start">P799</p>
                         <div class="px-3 ms-1 discount d-flex align-items-center">-30%</div>
                     </div>
@@ -30,22 +30,32 @@
                         </h3>
                         <div class="accordion-collapse collapse product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
                             <div class="accordion-body">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non posuere arcu. Cras consectetur egestas viverra. Proin consequat, ligula sit amet porta varius, magna magna eleifend arcu, rutrum fringilla mauris sapien ac nisi. 
+                                {{match.description}} 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <form [formGroup]="productToCart">
+                    <form [formGroup]="productToCart" (submit)="onSubmit()">
                         <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
+                        <div *ngIf="productColor?.invalid && (productColor?.dirty || productColor?.touched)">
+                            <div *ngIf="productColor?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
                         <div class="d-inline-flex mt-0 pt-0 justify-content-start">
                             <div *ngFor="let color of colors" class="select-container me-3">
-                                <input type="radio"class="color-select" value={{color.name}} (click)="changeColor(color.name)" formControlName="color" name="color" id={{color.name}} />
+                                <input type="radio" class="color-select" [value]="color.name" (click)="changeColor(color.name)" formControlName="color" name="color" id={{color.name}} />
                                 <label class="color-select-round" for={{color.name}} [style.background-color]="color.hex"></label>
                             </div>  
                         </div>
 
                         <p class="fs-4 fw-bold mb-0 mt-3">Sizes: {{sizeCurrent}}</p>
+                        <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
+                            <div *ngIf="productColor?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
                         <div class="d-inline-flex mt-0 pt-0 justify-content-start">
                             <div *ngFor="let size of sizes" class="select-container me-3">
                                 <input type="radio"class="size-select" value={{size}} (click)="changeSize(size)" formControlName="size" name="size" id={{size}} />
@@ -57,27 +67,112 @@
 
                         <div class="mt-3 row">
                             <div class="col">
-                                <button class="w-100 button-secondary-outline"><i class="bi bi-cart-fill me-2"></i> ADD TO CART</button>
+                                <button class="w-100 button-secondary-outline" (click)="addToCart()"><i class="bi bi-cart-fill me-2"></i> ADD TO CART</button>
                             </div>
                             <div class="col">
                                 <button class="w-100 button-primary" type="submit"><i class="bi bi-bag-fill me-2"></i> ORDER NOW</button>
                             </div>
                                 
                         </div>
-
                     </form>
                 </div>
             </div>
 
         </div>
     </div>
-    <div class="row">
-        reviews bar here (stars)
+    <div class="row reviews-overview mt-5 py-3 px-5">
+        <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
+            <div class="fs-1 fw-bold">4.0<span class="muted-text fs-2">/5.0</span></div>
+            <app-star-ratings [rating]="4" class="fs-3 rating-yellow"></app-star-ratings>
+            <div class="fs-6">534 hardcoded ratings</div>
+        </div>
+        <div class="col-lg d-flex flex-column align-items-center justify-content-center rating-details">
+            <div class="d-flex flex-row align-items-center">
+                <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
+                <app-progress-bar [amount]="342" [total]="543" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">342</div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                <app-star-ratings [rating]="4" class="rating-yellow"></app-star-ratings>
+                <app-progress-bar [amount]="123" [total]="543" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">123</div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                <app-star-ratings [rating]="3" class="rating-yellow"></app-star-ratings>
+                <app-progress-bar [amount]="23" [total]="543" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">23</div>
+            </div>
+        </div>
+        <div class="col-lg d-flex flex-column align-items-start justify-content-center rating-details">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <app-star-ratings [rating]="2" class="rating-yellow"></app-star-ratings>
+                <app-progress-bar [amount]="11" [total]="543" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">11</div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                <app-star-ratings [rating]="1" class="rating-yellow"></app-star-ratings>
+                <app-progress-bar [amount]="0" [total]="543" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">0</div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        reviews here (comments)
+    <div class="row mt-5">
+        <p class="fs-2 p-0">Product Reviews</p>
+        <div class="review-comment p-3 border-top">
+            <div class="row d-flex flex-row space-between">
+                <div class="col d-flex flex-column">
+                    <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
+                    <div>Hard Coded Kim Jong Un</div>
+                </div>
+                <div class="col text-end">
+                    Hardcoded April 20 2023
+                </div>
+            </div>
+            <div class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores illo officiis odit doloribus assumenda mollitia quibusdam esse aspernatur laboriosam sed. Adipisci autem placeat totam delectus doloribus a, nulla tenetur aut.</div>
+            <div class="mt-3" gallerize="1">
+                <img *ngFor="let image of imgArray" class="review-image" [src]="image.data?.src" [attr.imageSrc]="image.data?.src">
+            </div>
+        </div>
+
+        <div class="review-comment p-3 border-top">
+            <div class="row d-flex flex-row space-between">
+                <div class="col d-flex flex-column">
+                    <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
+                    <div>Hard Coded Kim Jong Un</div>
+                </div>
+                <div class="col text-end">
+                    Hardcoded April 20 2023
+                </div>
+            </div>
+            <div class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores illo officiis odit doloribus assumenda mollitia quibusdam esse aspernatur laboriosam sed. Adipisci autem placeat totam delectus doloribus a, nulla tenetur aut.</div>
+            <div class="mt-3" gallerize="2">
+                <img *ngFor="let image of imgArray" class="review-image" [src]="image.data?.src" [attr.imageSrc]="image.data?.src">
+            </div>
+        </div>
+
+        <div class="p-3 border-top">
+            <form [formGroup]="postComment">
+                <textarea type="text" class="w-100 form-control" rows="4" formControlName="message" placeholder="Leave a feedback and review."></textarea>
+                <div *ngIf="commentMessage?.invalid && (commentMessage?.dirty || commentMessage?.touched)">
+                    <div *ngIf="commentMessage?.errors?.['required']">
+                        <span class="text-danger">This field is required.</span>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-between mt-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" value="true" id="checkboxShowUser" formControlName="showUser"/>
+                        <label for="checkboxShowUser" class="form-check-label">Show your username on review</label> 
+                    </div>
+
+                    <div>
+                        <button type="submit" class="button-primary" (click)="submitComment()">Submit</button>
+                    </div>
+                </div>
+            </form>   
+        </div>
     </div>
-    <div class="row">
-        you may also like
+    <div class="row mt-3">
+       <div class="border-bottom fs-2 p-3">You May Also Like</div>
     </div>
 </div>

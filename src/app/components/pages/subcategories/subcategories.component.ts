@@ -4,7 +4,7 @@ import { Subcategory, SubcategoryList } from 'src/assets/models/subcategories';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatProducts, filterProducts, formatSubcategories, filterSubcategories, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsBySubcategory, formatSubcategories, filterSubcategories, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
 import { Observable, map, filter } from 'rxjs';
 
 @Component({
@@ -29,7 +29,7 @@ export class SubcategoriesComponent {
     this.subcategories = this.subcategoryService.getSubcategories().pipe(map((response: any) => formatSubcategories(response)));
     this.subcategoryMatch = filterSubcategories((this.subcategoryId as string), this.subcategories);
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
-    this.productsFiltered = filterProducts((this.subcategoryId as string), this.products);
+    this.productsFiltered = filterProductsBySubcategory((this.subcategoryId as string), this.products);
 
     this.productSort();
   }

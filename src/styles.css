@@ -1,4 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800&display=swap');
+@import '~@angular/cdk/overlay-prebuilt.css';
+
+:root {
+    --primary: #1C92FF;
+    --primary-dark: #1C76CA;
+    --body-text: #3C3C3C;
+    --muted-gray: #C1C1C1;
+    --light-gray: #EFF0F5;
+}
 
 body {
     font-family: Mulish, sans-serif;
@@ -13,8 +22,8 @@ body {
     padding: 1rem;
     border-radius: 5px;
     border: hidden;
-    background: rgb(28,118,202);
-    background: linear-gradient(180deg, rgba(28,118,202,1) 0%, rgba(28,146,255,1) 100%);
+    background: var(--primary);
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: #FFFFFF;
     display: inline-flex;
     justify-content: center;
@@ -26,7 +35,7 @@ body {
     padding: 1rem;
     border-radius: 5px;
     border: hidden;
-    background: rgb(28,118,202);
+    background: var(--primary);
     color: #FFFFFF;
     display: inline-flex;
     justify-content: center;
@@ -34,25 +43,20 @@ body {
     transition: all .4s;
 }
 
-.gradientButton:hover {
-    background: rgb(28,146,255);
-
-}
-
 .button-primary:hover {
-    background: #1C92FF;
+    background: var(--primary-dark);
 }
 
 .button-primary:disabled {
-    background: #BABABA
+    background: var(--muted-gray)
 }
 
 .button-secondary-outline {
     padding: 1rem;
     border-radius: 5px;
-    border: 1px solid #3C3C3C;
+    border: 1px solid var(--body-text);
     background: none;
-    color: #3C3C3C;
+    color: var(--body-text);
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -60,7 +64,7 @@ body {
 }
 
 .button-secondary-outline:hover {
-    background: #3C3C3C;
+    background: var(--body-text);
     color: #FFFFFF;
 }
 
@@ -82,11 +86,11 @@ a:hover {
 }
 
 .toggle-passtext {
-    border-color: #BABABA;
+    border-color: var(--muted-gray);
 }
 
 .toggle-passtext i {
-    color: #1C76CA;
+    color: var(--primary);
     transition: color .4s;
 }
 
@@ -95,11 +99,11 @@ a:hover {
 }
 
 .check-outline {
-    border-color: #BABABA;
+    border-color: var(--muted-gray);
 }
 
 input[type=text], input[type=password], input[type=email] {
-    border-color: #BABABA;
+    border-color: var(--muted-gray);
 }
 
 @media screen and (min-width: 768px){

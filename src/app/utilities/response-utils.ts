@@ -40,10 +40,15 @@ export function filterSubcategories(subcategoryID: string,input: Observable<Subc
 }
 
 // returns all products with specified subcategory ID
-export function filterProducts(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+export function filterProductsBySubcategory(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
   return productObservable.pipe(map((prods: Product[]) => {
     return prods.filter((product: Product) => product.sub_category_id === subcategoryID);
-    
+  }));
+}
+
+export function filterProductsById(productID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+  return productObservable.pipe(map((prods: Product[]) => {
+    return prods.filter((product: Product) => product.id === productID);
   }));
 }
 

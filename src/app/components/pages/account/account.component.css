@@ -11,8 +11,8 @@
 }
 
 .active-shown {
-    border-bottom: 2px solid #1C76CA;
-    color: #1C76CA;
+    border-bottom: 2px solid var(--primary);
+    color: var(--primary);
 }
 
 .inactive-hidden {

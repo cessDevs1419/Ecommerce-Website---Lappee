@@ -20,7 +20,7 @@
 }
 
 .activeLink {
-    color: #1084EF;
+    color: var(--primary);
 }
 
 #categoryDetailsDiv > div {

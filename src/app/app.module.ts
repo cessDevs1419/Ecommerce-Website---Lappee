@@ -19,6 +19,12 @@ import { InputWithToggleComponent } from './components/components/input-with-tog
 import { SubcategoriesComponent } from './components/pages/subcategories/subcategories.component';
 import { ProductsComponent } from './components/pages/products/products.component';
 import { StarRatingsComponent } from './components/components/star-ratings/star-ratings.component';
+import { ProgressBarComponent } from './components/components/progress-bar/progress-bar.component';
+import { ProductGridComponent } from './components/components/product-grid/product-grid.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GalleryModule } from 'ng-gallery';
+import { LightboxModule } from 'ng-gallery/lightbox';
+import { LayoutModule } from '@angular/cdk/layout'
 
 @NgModule({
   declarations: [
@@ -35,10 +41,13 @@ import { StarRatingsComponent } from './components/components/star-ratings/star-
     InputWithToggleComponent,
     SubcategoriesComponent,
     ProductsComponent,
-    StarRatingsComponent
+    StarRatingsComponent,
+    ProgressBarComponent,
+    ProductGridComponent
   ],
   imports: [
     BrowserModule,
+    LayoutModule,
     HttpClientModule,
     HttpClientXsrfModule,
     AppRoutingModule,
@@ -49,7 +58,12 @@ import { StarRatingsComponent } from './components/components/star-ratings/star-
       {path: 'products/:productId', component: ProductsComponent}
     ]),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    GalleryModule.withConfig({
+
+    }),
+    LightboxModule
   ],
   providers: [
     {
