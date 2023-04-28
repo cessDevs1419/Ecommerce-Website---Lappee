@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Register } from 'src/assets/models/account';
+import { Register, Login } from 'src/assets/models/account';
+import { POSTRegister, POSTLogin } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,6 @@ export class AccountsService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'multipart/form-data',
       'Accept': 'application/json',
       'Access-Control-Allow-Origin': '*'
       //try lang why not
@@ -20,9 +20,12 @@ export class AccountsService {
   constructor(private http: HttpClient) { }
 
   postRegisterUser(data: FormData): Observable<any> {
-    return this.http.post<Register>('https://127.0.0.1:8000/api/auth/register', data, this.httpOptions);
+    return this.http.post<Register>(POSTRegister, data, this.httpOptions);
   } 
 
+  postLoginUser(data: FormData): Observable<any> {
+    return this.http.post<Login>(POSTLogin, data, this.httpOptions);
+  }
 
   handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

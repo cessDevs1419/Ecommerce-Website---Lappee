@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SubcategoryList } from 'src/assets/models/subcategories';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { GETSubategories } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,6 @@ export class SubcategoriesService {
 
   getSubcategories(): Observable<SubcategoryList> {
     //return this.http.get<SubcategoryList>('./assets/sampleData/subcategories.json');
-    return this.http.get<SubcategoryList>("https://127.0.0.1:8000/api/admin/category/sub/");
+    return this.http.get<SubcategoryList>(GETSubategories);
   }
 }

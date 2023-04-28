@@ -1,6 +1,6 @@
 <div>
     <h2 class="text-center">Sign-In</h2>
-    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signInForm" (submit)="onSubmit()">
         <div class="mb-4">
             <label for="signInEmail" class="form-label">Email Address</label>
             <input type="email" class="form-control form-control-lg rounded-0" id="signInEmail" formControlName="signInEmail" required/>

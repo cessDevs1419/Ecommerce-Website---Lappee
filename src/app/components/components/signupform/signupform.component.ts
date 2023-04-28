@@ -50,8 +50,12 @@ export class SignupformComponent {
       formData.append('password', this.signUpForm.get('signUpPassword')?.value);
       formData.append('password_confirmation', this.signUpForm.get('signUpConfirmPassword')?.value);
 
+      for(const value of formData.entries()){
+        console.log(`${value[0]}, ${value[1]}`);
+      }
+      
       this.response = this.accountsService.postRegisterUser(formData);
-
+    
     }
     else if(this.signUpForm.invalid){
       this.signUpForm.markAllAsTouched();
