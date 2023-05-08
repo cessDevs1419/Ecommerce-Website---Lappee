@@ -13,8 +13,12 @@ body {
     font-family: Mulish, sans-serif;
 }
 
+.color-primary {
+    color: var(--primary);
+}
+
 .muted-text {
-    color: #C1C1C1;
+    color: var(--muted-gray);
 }
 
 .gradientButton {

@@ -13,3 +13,9 @@ export interface Product {
     sub_category_id: string,
     description: string
 }
+
+export interface CartItem {
+    product: Product,
+    variant: string,
+    quantity: number
+}

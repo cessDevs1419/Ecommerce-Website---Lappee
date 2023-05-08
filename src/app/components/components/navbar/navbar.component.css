@@ -45,9 +45,23 @@
     z-index: 1;
 }
 
+.cartBadge {
+    font-size: .75rem;
+    transform: translate(-50%, 0);
+    background-color: var(--primary);
+}
+
+.dropdown-menu {
+    width: 48rem;
+}
+
 /* disable modalBackground on mobile */
 @media screen and (max-width: 768px) {
     #modalBackground {
         display: none !important; 
+    }
+
+    #navbarInfoBg {
+        display: none !important;
     }
 }

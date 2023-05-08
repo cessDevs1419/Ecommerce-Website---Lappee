@@ -14,7 +14,7 @@ export class SubcategoriesService {
   }
 
   getSubcategories(): Observable<SubcategoryList> {
-    //return this.http.get<SubcategoryList>('./assets/sampleData/subcategories.json');
-    return this.http.get<SubcategoryList>(GETSubategories);
+    return this.http.get<SubcategoryList>('./assets/sampleData/subcategories.json');
+    //return this.http.get<SubcategoryList>(GETSubategories);
   }
 }

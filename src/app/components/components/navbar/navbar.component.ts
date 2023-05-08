@@ -4,8 +4,9 @@ import { Category, CategoryList } from 'src/assets/models/categories';
 import { SubcategoriesService } from '../../../services/subcategories/subcategories.service';
 import { SubcategoryList, Subcategory } from 'src/assets/models/subcategories';
 import { ProductsService } from '../../../services/products/products.service';
-import { ProductList } from 'src/assets/models/products';
+import { CartItem, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class NavbarComponent {
   @ViewChildren('categoryItems') categoryItems!: QueryList<ElementRef>;
   @ViewChild('modalBackground') modalBg!: ElementRef;
   lastToggled!: string;
-
+  cartContents!: CartItem[];
   targetElement!: HTMLElement;
   //products!: any;
   
@@ -28,7 +29,8 @@ export class NavbarComponent {
   constructor(private CategoriesService: CategoriesService, 
               private SubcategoriesService: SubcategoriesService,
               private ProductsService: ProductsService,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private cart: CartService) {
     this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
@@ -55,6 +57,7 @@ export class NavbarComponent {
     this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => this.formatCategories(response)));
     this.subcategories = this.SubcategoriesService.getSubcategories().pipe(map((response: any) => this.formatSubcategories(response)));
     console.log(this.subcategories);
+    this.cartContents = this.cart.getItems();
   }
 
   // color toggling for nav links and modal background

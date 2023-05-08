@@ -10,6 +10,25 @@
         <div class="container-md d-flex flex-row justify-content-start align-items-center" id="searchDiv">
             <a title="Home" [routerLink]="['/']"><img src="./assets/logo.svg" class="img-fluid"></a>
             <app-searchbar class="flex-grow-1"></app-searchbar>
+            <a class="btn text-reset text-decoration-none" data-bs-toggle="dropdown">
+                <i class="bi bi-cart fs-1 position-relative">
+                    <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>
+                </i>
+            </a>
+            <ul class="dropdown-menu">
+                <div *ngIf="cartContents.length == 0" class="d-flex flex-column justify-content-center align-items-center mt-2">
+                    <p><i class="bi bi-emoji-frown-fill fs-3"></i></p>
+                    <p>Your cart is empty.</p>
+                </div>
+                <div *ngIf="cartContents.length > 0">
+                    <li *ngFor="let item of cartContents" class="dropdown-item d-flex flex-row justify-content-between">
+                        <p>{{item.product.name}}</p>
+                        <p>{{item.product.price | currency}}</p>
+                    </li>
+                </div>
+                <li class="dropdown-divider"></li>
+                <li class="p-3"><a [routerLink]="['cart']" class="text-reset text-decoration-none"><i class="bi bi-cart"></i> Your Cart</a></li>
+            </ul>
         </div>
     </div>
     
@@ -29,14 +48,22 @@
                 <div class="offcanvas-body">
                     <app-searchbar class="d-block d-md-none"></app-searchbar>
                     <hr>
+                    <div id="" class="mb-0 mb-md-3 d-block d-md-none">
+                        <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
+                            <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i>Help</a></p>
+                            <p class="fs-6 my-2"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+                        </div>
+                    </div>
+                    <hr>
                     <ul class="navbar-nav">
                         <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">
                             <a href="#" class="nav-link dropdown-toggle text-uppercase" data-bs-toggle="dropdown" #categoryItems>{{category.name}}</a>
                             <div id="navDropdown" class="dropdown-menu w-100">
                                 <app-categorydetails [category]="category" [subcategory]="subcategories" id="categoryDetailsDiv"></app-categorydetails>
-                            </div>
+                            </div>  
                         </li>
                     </ul>
+                   
                 </div>
             </div>
             

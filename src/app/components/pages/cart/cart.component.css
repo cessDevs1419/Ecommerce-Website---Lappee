@@ -1,0 +1,7 @@
+.active {
+    color: var(--body-text);
+}
+
+.table-group {
+    background-color: var(--light-gray);
+}

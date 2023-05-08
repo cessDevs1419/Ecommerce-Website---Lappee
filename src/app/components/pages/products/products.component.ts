@@ -8,6 +8,7 @@ import { Observable, map } from 'rxjs';
 import { formatProducts, filterProductsById } from 'src/app/utilities/response-utils';
 import { GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 @Component({
   selector: 'app-products',
@@ -21,12 +22,14 @@ export class ProductsComponent {
   productMatch!: Observable<Product[]>;
   imgArray!: GalleryItem[];
   position!: ThumbnailsPosition;
+  currentProduct!: Product[];
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
               private subcategoriesSerivce: SubcategoriesService,
               private route: ActivatedRoute,
-              private bpObserver: BreakpointObserver) {}
+              private bpObserver: BreakpointObserver,
+              private cart: CartService) {}
 
   // color sample object
   colorCurrent = {
@@ -64,6 +67,10 @@ export class ProductsComponent {
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.productMatch = filterProductsById(this.productId, this.products);
+
+    this.productMatch.subscribe(product => {
+      this.currentProduct = product;
+    })
     console.log(this.productId);
 
     this.imgArray = [
@@ -102,7 +109,16 @@ export class ProductsComponent {
   }
 
   addToCart(): void {
-    console.warn('added to cart');
+    if(this.productToCart.valid){
+      console.log(this.productToCart.value);
+      this.cart.addToCart(this.currentProduct[0], "s", 1);
+      console.warn('added to cart');
+    }
+
+    else if(this.productToCart.invalid){
+      console.log(this.productToCart.value);
+      this.productToCart.markAllAsTouched();
+    }
   }
 
   onSubmit(): void {
