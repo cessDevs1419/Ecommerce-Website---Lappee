@@ -7,7 +7,7 @@ import { ProductsService } from '../../../services/products/products.service';
 import { CartItem, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
 import { CartService } from 'src/app/services/cart/cart.service';
-
+import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +16,9 @@ import { CartService } from 'src/app/services/cart/cart.service';
 })
 
 export class NavbarComponent {
+
+  @Input() searchString: any;
+  
   categories!: Observable<Category[]>;
   subcategories!: Observable<Subcategory[]>;
   @ViewChildren('categoryItems') categoryItems!: QueryList<ElementRef>;

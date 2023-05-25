@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
 
 @Component({
   selector: 'app-searchbar',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./searchbar.component.css']
 })
 export class SearchbarComponent {
-
+  @Input() searchString : any;
+  
+    
 }

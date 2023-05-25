@@ -6,6 +6,7 @@ import { Product, ProductList } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { formatProducts, filterProductsBySubcategory, formatSubcategories, filterSubcategories, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
 import { Observable, map, filter, Subscription } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-subcategories',
@@ -71,4 +72,7 @@ export class SubcategoriesComponent {
 
     console.log(option);
   }
+  
+  
+  
 }

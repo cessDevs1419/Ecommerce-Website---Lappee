@@ -1,0 +1,12 @@
+<div class="container-md border border-primary border-2 m-auto h-75 p-2" >
+    <app-table
+        [tableTools]="true"
+        [searchBar]="true"
+        
+        [tableHeader]="['ID','ITEM NAME','STOCKS', 'STOCKS LIMIT', 'PRICE', 'SUB CATEGORY','DESCRIPTION']"
+        [tableRows]="['id','name', 'stock','stock_limit','price', 'sub_category', 'description']"
+        [tableData]="products"
+        
+    ></app-table>
+</div>
+

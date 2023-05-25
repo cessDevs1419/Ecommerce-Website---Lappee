@@ -1,0 +1,110 @@
+<div class="d-flex ">
+
+    <header  class="dashboard-header w-100 mx-0 mb-5 z-1 position-relative bg-white" >
+        <div class="dashboard-container container-fluid w-100 start-0 position-fixed bg-white d-flex justify-content-between align-items-center p-2 flex-wrap">
+            <div  class="title-container d-flex align-items-center p-2">
+                
+                <button (click)="toggleClass()" class="text-center fs-1 d-flex justify-content-center  border-0 bg-white  ">
+                    <div class="d-flex align-items-center m-auto">
+                        <img class="button-icon" src="./assets/favicon.png" alt="">
+                        <a [class.active-button-title]="isClassToggled" class="button-title fs-3 p-0 text-decoration-none text-dark">LAPPEE</a>
+                    </div>
+                </button>
+                
+                <a [class.active-header]="isClassToggled"  class="title fs-3 text-decoration-none text-dark">
+                    ADMIN DASHBOARD
+                </a>
+            </div>
+            <div class="toolkit px-5 d-flex justify-content-between ">
+                <div class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                    <i class="bi bi-person-fill text-primary fs-4"></i>
+                </div>
+                <div class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                    <i class="bi bi-bell-fill text-primary fs-4"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div [class.active-button]="isClassToggled" class="sidebar z-0 d-flex flex-column flex-shrink-0 bg-white  start-0 position-fixed h-100">
+        
+
+        
+        <ul class="nav flex-column mb-auto mt-5">
+            
+            <li [routerLink]="['/overview']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
+                    Overview
+                </a>
+            </li>
+            
+            <li [routerLink]="['/category-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
+                <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Category Setup
+                </a>
+            </li>
+            
+            <li [routerLink]="['/product-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Products
+                </a>
+            </li>
+        
+            <li [routerLink]="['/sales-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Sales
+                </a>
+            </li>
+            
+            <li [routerLink]="['/discounts-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-tags text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Discounts
+                </a>
+            </li>
+            
+            <li [routerLink]="['/accounts-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-people-fill text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Accounts
+                </a>
+            </li>
+            
+            <li [routerLink]="['/parcel-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-person-lines-fill text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Assign Parcels
+                </a>
+            </li>
+            
+            <li [routerLink]="['/orders-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Track Orders
+                </a>
+            </li>
+            
+            <li [routerLink]="['/coriers-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-truck text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Couriers
+                </a>
+            </li>
+            
+            <li [routerLink]="['/stocks-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Stock Reports
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    
+    
+</div>

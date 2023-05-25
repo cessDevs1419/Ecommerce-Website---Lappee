@@ -1,4 +1,5 @@
 <div id="navbarContainer">
+
     <div id="navbarInfoBg" class="mb-0 mb-md-3">
         <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
             <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i>Help</a></p>
@@ -9,7 +10,9 @@
     <div id="navbarSearchBg" class=" d-none d-md-flex">
         <div class="container-md d-flex flex-row justify-content-start align-items-center" id="searchDiv">
             <a title="Home" [routerLink]="['/']"><img src="./assets/logo.svg" class="img-fluid"></a>
-            <app-searchbar class="flex-grow-1"></app-searchbar>
+            
+            <app-searchbar class="flex-grow-1" searchString="searchString"></app-searchbar>
+            
             <a class="btn text-reset text-decoration-none" data-bs-toggle="dropdown">
                 <i class="bi bi-cart fs-1 position-relative">
                     <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>

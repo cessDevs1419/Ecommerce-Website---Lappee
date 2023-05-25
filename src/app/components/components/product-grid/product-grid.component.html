@@ -1,4 +1,4 @@
-<div *ngFor="let product of products | async" class="col-6 col-lg-4 col-xl-3 mb-3">
+<div *ngFor="let product of products | async | searchFilter: searchString" class="col-6 col-lg-4 col-xl-3 mb-3">
     <a [routerLink]="['/products', product.id]" class="text-reset text-decoration-none">
         <div class="card product-card h-100">
             <div>

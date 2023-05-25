@@ -1,0 +1,127 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Mulish:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+/*Header Style*/
+
+.dashboard-header{
+    
+    min-height: 72px;                                                                                                                  
+}
+.dashboard-container{
+    min-height: inherit;
+}
+
+.mobile-button{
+    display: none;
+}
+
+.button-icon{
+    min-width: 40px;
+}
+
+.title{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    margin-left: 100px;
+}
+
+.icon-container{
+    width: 36px;
+    height: 36px;
+    box-shadow: -1px 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+
+/*Sidebar style*/
+.sidebar{
+    max-width: 260px;
+    width: 100%;
+    transition: .1s ease-in;
+    padding-top: 5rem;
+}
+.active-link{
+    background: linear-gradient(90deg, #2898FF -5.79%, #2898FF -5.77%, #0064C0 138.89%);
+}
+
+li, a{
+    cursor: pointer;
+}
+
+button{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+img{
+    max-width: 40px;
+    width: 100%;
+    height: 40px;
+}
+
+/*Active Button Styling*/
+.active-button{
+    max-width: 80px;
+    width: 100%;
+    text-align: center;
+    transition: .1s ease-in;
+    color: white;
+}
+
+.active-button button{
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0;
+    margin-top: 0.5rem;
+}
+
+.active-button button a{
+    display: none;
+}
+
+.active-button ul li a{
+    display: none;
+}
+
+.active-button i{
+    padding: .5rem 0;
+    text-align: center;
+    margin: 0 .5rem;
+}
+
+.active-button ul{
+    margin: 2rem 0;
+}
+
+.active-header{
+    margin-left: 50px;
+    transition: .1s ease-in;
+}
+
+.active-button-title{
+    display: none;
+} 
+
+
+
+@media screen and (max-width: 984px) {
+
+
+    .button-title{
+        display: none;
+    }
+    
+    .title{
+        margin-left: 20px;
+    }
+    
+    .sidebar{
+        transform: translateX(-100%);
+    }
+    .active-button{
+        max-width: 260px;
+        transform: translateX(0%);
+    }
+    .active-button ul li a{
+        display: flex;
+    }
+}

@@ -27,6 +27,14 @@ import { LightboxModule } from 'ng-gallery/lightbox';
 import { LayoutModule } from '@angular/cdk/layout'
 import { AuthInterceptor } from './services/auth/auth.interceptor';
 import { CartComponent } from './components/pages/cart/cart.component';
+import { SearchFilterPipe } from './components/pipes/search-filter.pipe';
+import { TableComponent } from './components/components/table/table.component';
+import { ModalComponent } from './components/components/modal/modal.component';
+import { SidebarComponent } from './components/components/sidebar/sidebar.component';
+import { AdminProductsComponent } from './components/pages/admin/admin-products/admin-products.component';
+import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
+import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
+import { PaginationComponent } from './components/components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +54,15 @@ import { CartComponent } from './components/pages/cart/cart.component';
     StarRatingsComponent,
     ProgressBarComponent,
     ProductGridComponent,
-    CartComponent
+    CartComponent,
+    SearchFilterPipe,
+    TableComponent,
+    ModalComponent,
+    SidebarComponent,
+    AdminOverviewComponent,
+    AdminProductsComponent,
+    AdminRoutingComponent,
+    PaginationComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +78,11 @@ import { CartComponent } from './components/pages/cart/cart.component';
       {path: 'account', component: AccountComponent},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
-      {path: 'cart', component: CartComponent}
+      {path: 'cart', component: CartComponent},
+      
+      //admin
+      { path: 'overview', component: AdminOverviewComponent },
+      { path: 'product-management', component: AdminProductsComponent},
     ]),
     FormsModule,
     ReactiveFormsModule,

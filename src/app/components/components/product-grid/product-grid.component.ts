@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product, ProductList } from 'src/assets/models/products';
 import { Router } from '@angular/router';
+import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
 
 @Component({
   selector: 'app-product-grid',
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./product-grid.component.css']
 })
 export class ProductGridComponent {
-
+  
+  @Input() searchString : any;
   @Input() products!: Observable<Product[]>;
-
+  
 }
