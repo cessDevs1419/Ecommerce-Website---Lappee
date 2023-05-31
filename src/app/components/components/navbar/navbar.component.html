@@ -1,8 +1,9 @@
 <div id="navbarContainer">
     <div id="navbarInfoBg" class="mb-0 mb-md-3">
         <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
-            <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i>Help</a></p>
-            <p class="fs-6 my-2"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+            <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i> Help</a></p>
+            <p class="fs-6 my-2" *ngIf="!this.accountService.isLoggedIn"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+            <p class="fs-6 my-2" *ngIf="this.accountService.isLoggedIn"><a title="User Profile" [routerLink]="['/profile']" class="text-reset">{{this.accountService.name}}</a></p>
         </div>
     </div>
     

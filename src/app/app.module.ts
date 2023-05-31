@@ -27,6 +27,8 @@ import { LightboxModule } from 'ng-gallery/lightbox';
 import { LayoutModule } from '@angular/cdk/layout'
 import { AuthInterceptor } from './services/auth/auth.interceptor';
 import { CartComponent } from './components/pages/cart/cart.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
+import { CartItemComponent } from './components/components/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { CartComponent } from './components/pages/cart/cart.component';
     StarRatingsComponent,
     ProgressBarComponent,
     ProductGridComponent,
-    CartComponent
+    CartComponent,
+    ProfileComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,8 @@ import { CartComponent } from './components/pages/cart/cart.component';
       {path: 'account', component: AccountComponent},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
-      {path: 'cart', component: CartComponent}
+      {path: 'cart', component: CartComponent},
+      {path: 'profile', component: ProfileComponent}
     ]),
     FormsModule,
     ReactiveFormsModule,

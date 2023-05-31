@@ -1,0 +1,90 @@
+{
+    "success": true,
+    "message": "List of all main categories",
+    "data": [
+        {
+            "id": "REV1",
+            "productId": "PROD1",
+            "name": "ThereWasACertainMan",
+            "rating": 5,
+            "date": "June 4, 2023",
+            "comment": "good item",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        },
+        {
+            "id": "REV2",
+            "productId": "PROD2",
+            "name": "FromRussiaLongAgo",
+            "rating": 4,
+            "date": "June 4, 2023",
+            "comment": "fast delivery",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        },
+        {
+            "id": "REV3",
+            "productId": "PROD3",
+            "name": "HeWasBigAndStrong",
+            "rating": 4,
+            "date": "June 4, 2023",
+            "comment": "ang gamit na ito ay napakaganda at napaka-pangtao nito",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        },
+        {
+            "id": "REV4",
+            "productId": "PROD4",
+            "name": "AndHisEyesAFlamingGold",
+            "rating": 5,
+            "date": "June 4, 2023",
+            "comment": "fast delivery",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        },
+        {
+            "id": "REV5",
+            "productId": "PROD5",
+            "name": "MostPeopleLookedAtHim",
+            "rating": 4,
+            "date": "June 4, 2023",
+            "comment": "random words because the system wants 250 characters",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        },
+        {
+            "id": "REV6",
+            "productId": "PROD6",
+            "name": "WithTerrorAndWithFear",
+            "rating": 3,
+            "date": "June 4, 2023",
+            "comment": "package was slightly dented but it was otherwise ok",
+            "attachments": [
+                "https://picsum.photos/800/",
+                "https://picsum.photos/900",
+                "https://picsum.photos/1000"
+            ],
+            "isUserHidden": false
+        }
+    ]
+}

@@ -5,3 +5,20 @@
 .table-group {
     background-color: var(--light-gray);
 }
+
+.cart-item-img {
+    max-height: 5rem;
+    width: auto;
+}
+
+.item-row {
+    padding: 1rem 0;
+}
+
+tbody app-cart-item {
+    display: contents;
+}
+
+.item-row:hover {
+    background: #DDDEE3;
+}

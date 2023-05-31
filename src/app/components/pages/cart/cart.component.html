@@ -12,45 +12,37 @@
             <div class="carousel-item active">
                 <div class="row">
                     <div class="col-8">
-                        <div class="table-group p-3">
+                        <!-- table tag-->
+                        <div class="p-3 pb-1 table-group">
                             <p class="fs-3 fw-bold">Item Summary ( {{cartContents.length}} )</p>
-                            <div class="row fw-bold">
-                                <div class="col">Check</div>
-                                <div class="col">Preview</div>
-                                <div class="col">Name</div>
-                                <div class="col">Price</div>
-                                <div class="col">Quantity</div>
-                                <div class="col">Total</div>
-                            </div>    
-                        </div>
-                        <div class="table-group p-3 mt-3">
-                            <div *ngIf="cartContents.length == 0">
-                                You don't have items in your cart.
-                            </div>
-                            <div *ngIf="cartContents.length > 0">
-                                <div *ngFor="let item of cartContents" class="row mb-3">
-                                    <div class="col">
-                                        Check
-                                    </div>
-                                    <div class="col">
-                                        <img class="img-fluid" src="https://picsum.photos/720/1080">
-                                    </div>
-                                    <div class="col">
-                                        {{item.product.name}}
-                                    </div>
-                                    <div class="col">
-                                        {{item.product.price | currency}}
-                                    </div>
-                                    <div class="col">
-                                        {{item.quantity}}
-                                    </div>
-                                    <div class="col">
-                                        {{item.product.price * item.quantity | currency}}
-                                    </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="m-0 p-0">
+                                        <th scope="col">Select</th>
+                                        <th scope="col">Preview</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="cartContents.length == 0" class="table-group-divider">
+                                    <td colspan="6"><div class="p-3 text-center">You do not have items in your cart.</div></td>
+                                </tbody>
+
+                                <tbody *ngIf="cartContents.length != 0" class="table-group-divider">
+                                    <tr *ngFor="let item of cartContents; let i = index" class="item-row">
+                                        <app-cart-item class="cart-item-row" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)"></app-cart-item>
+
+                                    </tr>
                                     
-                                </div>
-                            </div> 
-    
+                                    <tr>
+                                        <td *ngFor="let item of orderList">
+                                            <p>{{item.product.id + item.variant}}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="col-4">
@@ -109,8 +101,8 @@
                             <div class="d-flex flex-row justify-content-between">
                                 <p class="fw-bold">SUBTOTAL</p>
                                 <div class="text-end">
-                                    <p class="fs-3 fw-bold m-0">100.00</p>
-                                    <p class="color-primary">Saved 100.00</p>
+                                    <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
+                                    <p class="color-primary">Saved 100.00 dont mind me</p>
                                 </div>
                             </div>
                             <hr class="muted-tex">

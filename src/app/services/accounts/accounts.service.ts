@@ -9,6 +9,10 @@ import { POSTRegister, POSTLogin } from '../endpoints';
 })
 export class AccountsService {
 
+  isLoggedIn: boolean = false; 
+  name: string = "Wendell";
+
+
   httpOptions = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
