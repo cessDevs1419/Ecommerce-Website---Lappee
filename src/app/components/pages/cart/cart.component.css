@@ -22,3 +22,15 @@ tbody app-cart-item {
 .item-row:hover {
     background: #DDDEE3;
 }
+
+.image-icon {
+    font-size: 5rem;
+}
+
+.screenshot-card {
+    border: 1px solid var(--muted-gray);
+}
+
+input[type=file] {
+    display: none;
+}

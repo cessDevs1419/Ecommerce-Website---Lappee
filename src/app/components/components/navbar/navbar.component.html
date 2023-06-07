@@ -7,7 +7,7 @@
         </div>
     </div>
     
-    <div id="navbarSearchBg" class=" d-none d-md-flex">
+    <div id="navbarSearchBg" class="d-none d-md-flex">
         <div class="container-md d-flex flex-row justify-content-start align-items-center" id="searchDiv">
             <a title="Home" [routerLink]="['/']"><img src="./assets/logo.svg" class="img-fluid"></a>
             <app-searchbar class="flex-grow-1"></app-searchbar>
@@ -34,13 +34,33 @@
     </div>
     
     <nav id="navbarLinksBg" class="navbar navbar-expand-md">
-        <div class="container-md d-block d-md-flex flex-row justify-content-between">
+        <div class="container-md d-flex flex-row justify-content-between">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid d-inline d-md-none mx-3"></a>
             
+            <a class="btn text-reset text-decoration-none d-md-none align-self-end" data-bs-toggle="dropdown">
+                <i class="bi bi-cart fs-1 position-relative">
+                    <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>
+                </i>
+            </a>
+            <ul class="dropdown-menu w-100">
+                <div *ngIf="cartContents.length == 0" class="d-flex flex-column justify-content-center align-items-center mt-2">
+                    <p><i class="bi bi-emoji-frown-fill fs-3"></i></p>
+                    <p>Your cart is empty.</p>
+                </div>
+                <div *ngIf="cartContents.length > 0">
+                    <li *ngFor="let item of cartContents" class="dropdown-item d-flex flex-row justify-content-between">
+                        <p>{{item.product.name}}</p>
+                        <p>{{item.product.price | currency}}</p>
+                    </li>
+                </div>
+                <li class="dropdown-divider"></li>
+                <li class="p-3"><a [routerLink]="['cart']" class="text-reset text-decoration-none"><i class="bi bi-cart"></i> Your Cart</a></li>
+            </ul>
+
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
                 <div class="offcanvas-header">
                     <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid"></a>
@@ -64,7 +84,6 @@
                             </div>  
                         </li>
                     </ul>
-                   
                 </div>
             </div>
             

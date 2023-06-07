@@ -118,8 +118,9 @@ export class ProductsComponent {
 
   addToCart(): void {
     if(this.productToCart.valid){
+      let variant = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
       console.log(this.productToCart.value);
-      this.cart.addToCart(this.currentProduct[0], "s", 1);
+      this.cart.addToCart(this.currentProduct[0], variant, 1);
       console.warn('added to cart');
     }
 
