@@ -1,0 +1,14 @@
+
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+        <div class="form-check text-center">
+            <input class="form-check-input" type="checkbox" value="true" (change)="emit()">
+        </div>
+    </td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'"><img class="cart-item-img" src="https://picsum.photos/720/1080"></td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+        {{this.cartItem.product.name}}
+        <p>{{this.cartItem.variant}}</p>
+    </td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.product.price}}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.quantity}}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ this.cartItem.product.price * this.cartItem.quantity | currency }}</td>

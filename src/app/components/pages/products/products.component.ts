@@ -9,6 +9,9 @@ import { formatProducts, filterProductsById } from 'src/app/utilities/response-u
 import { GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { ReviewsService } from 'src/app/services/reviews/reviews.service';
+import { Review } from 'src/assets/models/reviews';
 
 @Component({
   selector: 'app-products',
@@ -23,13 +26,16 @@ export class ProductsComponent {
   imgArray!: GalleryItem[];
   position!: ThumbnailsPosition;
   currentProduct!: Product[];
+  reviews!: Observable<Review[]>;
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
               private subcategoriesSerivce: SubcategoriesService,
               private route: ActivatedRoute,
               private bpObserver: BreakpointObserver,
-              private cart: CartService) {}
+              private cart: CartService,
+              public accountService: AccountsService,
+              private reviewService: ReviewsService) {}
 
   // color sample object
   colorCurrent = {
@@ -90,6 +96,8 @@ export class ProductsComponent {
         this.position = ThumbnailsPosition.Bottom;
       }
     });
+
+    this.reviews = this.reviewService.getReviews();
   }
 
   fave() {
@@ -110,8 +118,9 @@ export class ProductsComponent {
 
   addToCart(): void {
     if(this.productToCart.valid){
+      let variant = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
       console.log(this.productToCart.value);
-      this.cart.addToCart(this.currentProduct[0], "s", 1);
+      this.cart.addToCart(this.currentProduct[0], variant, 1);
       console.warn('added to cart');
     }
 

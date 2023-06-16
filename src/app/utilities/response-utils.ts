@@ -1,8 +1,10 @@
 import { Subcategory, SubcategoryList } from "src/assets/models/subcategories";
 import { Category, CategoryList } from "src/assets/models/categories";
 import { Product, ProductList } from "src/assets/models/products";
+import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 
+// Formatting
 // returns a Subcategory array from a SubcategoryList
 export function formatSubcategories(response: SubcategoryList) : Subcategory[] {
     return response.data.map((data: Subcategory) => ({
@@ -18,7 +20,7 @@ export function formatCategories(response: CategoryList) : Category[] {
       id: data.id,
       name: data.name
     }));
-  }
+}
 
 // returns a Product array from a CategoryList
 export function formatProducts(response: ProductList): Product[] {
@@ -30,6 +32,19 @@ export function formatProducts(response: ProductList): Product[] {
     sub_category_id: data.sub_category_id,
     price: data.price,
     description: data.description
+  }));
+}
+
+export function formatReviews(response: any): Review[] {
+  return response.data.map((data:Review) => ({
+    id: data.id,
+    productId: data.productId,
+    name: data.name,
+    rating: data.rating,
+    date: data.date,
+    comment: data.comment,
+    attachments: data.attachments,
+    isUsernameHidden: data.isUsernameHidden
   }));
 }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, QueryList, ViewChildren, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { CategoriesService } from '../../../services/categories/categories.service';
+import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { Category, CategoryList } from 'src/assets/models/categories';
 import { SubcategoriesService } from '../../../services/subcategories/subcategories.service';
 import { SubcategoryList, Subcategory } from 'src/assets/models/subcategories';
@@ -7,7 +7,8 @@ import { ProductsService } from '../../../services/products/products.service';
 import { CartItem, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -33,7 +34,8 @@ export class NavbarComponent {
               private SubcategoriesService: SubcategoriesService,
               private ProductsService: ProductsService,
               private renderer: Renderer2,
-              private cart: CartService) {
+              private cart: CartService,
+              public accountService: AccountsService) {
     this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
@@ -60,7 +62,7 @@ export class NavbarComponent {
     this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => this.formatCategories(response)));
     this.subcategories = this.SubcategoriesService.getSubcategories().pipe(map((response: any) => this.formatSubcategories(response)));
     console.log(this.subcategories);
-    this.cartContents = this.cart.getItems();
+    this.cartContents = this.cart.getItems(); 
   }
 
   // color toggling for nav links and modal background

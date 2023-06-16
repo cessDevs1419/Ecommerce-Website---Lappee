@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CategoryList } from '../../../assets/models/categories';
+import { CategoryList } from 'src/assets/models/categories';
 import { Observable } from 'rxjs';
 
 @Injectable({

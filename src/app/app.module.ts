@@ -35,6 +35,8 @@ import { AdminProductsComponent } from './components/pages/admin/admin-products/
 import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
 import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
 import { PaginationComponent } from './components/components/pagination/pagination.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
+import { CartItemComponent } from './components/components/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { PaginationComponent } from './components/components/pagination/paginati
     AdminProductsComponent,
     AdminRoutingComponent,
     PaginationComponent,
+    ProfileComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +87,7 @@ import { PaginationComponent } from './components/components/pagination/paginati
       //admin
       { path: 'overview', component: AdminOverviewComponent },
       { path: 'product-management', component: AdminProductsComponent},
+      {path: 'profile', component: ProfileComponent}
     ]),
     FormsModule,
     ReactiveFormsModule,

@@ -40,6 +40,8 @@ export class SigninformComponent {
       formData.append('rememberMe', false);
 
       this.response = this.accountService.postLoginUser(formData);
+
+      this.accountService.isLoggedIn = true;
     }
     else if(this.signInForm.invalid){
       this.signInForm.markAllAsTouched();
