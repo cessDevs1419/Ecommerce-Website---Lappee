@@ -103,16 +103,16 @@ import { AdminStocksManagementComponent } from './components/pages/admin/admin-s
       {path: 'cart', component: CartComponent},
       
       //admin
-      {path: 'overview', component: AdminOverviewComponent},
-      {path: 'category-management', component: AdminCategoriesComponent},
-      {path: 'product-management', component: AdminProductsComponent},
-      {path: 'sales-management', component: AdminSalesComponent},
-      {path: 'discounts-management', component: AdminDiscountsComponent},
-      {path: 'accounts-management', component: AdminAccountsComponent},
-      {path: 'parcel-management', component: AdminParcelManagementComponent},
-      {path: 'order-management', component: AdminOrderManagementComponent},
-      {path: 'courier-management', component: AdminCourierManagementComponent},
-      {path: 'stocks-management', component: AdminStocksManagementComponent},
+      {path: 'overview', component: AdminOverviewComponent, outlet: 'dashboard'},
+      {path: 'category-management', component: AdminCategoriesComponent, outlet: 'dashboard'},
+      {path: 'product-management', component: AdminProductsComponent, outlet: 'dashboard'},
+      {path: 'sales-management', component: AdminSalesComponent, outlet: 'dashboard'},
+      {path: 'discounts-management', component: AdminDiscountsComponent, outlet: 'dashboard'},
+      {path: 'accounts-management', component: AdminAccountsComponent, outlet: 'dashboard'},
+      {path: 'parcel-management', component: AdminParcelManagementComponent, outlet: 'dashboard'},
+      {path: 'order-management', component: AdminOrderManagementComponent, outlet: 'dashboard'},
+      {path: 'courier-management', component: AdminCourierManagementComponent, outlet: 'dashboard'},
+      {path: 'stocks-management', component: AdminStocksManagementComponent, outlet: 'dashboard'},
       {path: 'profile', component: ProfileComponent}
     ]),
 

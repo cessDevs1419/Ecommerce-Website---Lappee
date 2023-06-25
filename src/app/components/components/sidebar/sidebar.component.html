@@ -32,70 +32,70 @@
         
         <ul class="nav flex-column mb-auto mt-5">
             
-            <li [routerLink]="['/overview']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
                     Overview
                 </a>
             </li>
             
-            <li [routerLink]="['/category-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['category-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
                 <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Category Setup
                 </a>
             </li>
             
-            <li [routerLink]="['/product-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['product-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Products
                 </a>
             </li>
         
-            <li [routerLink]="['/sales-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['sales-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Sales
                 </a>
             </li>
             
-            <li [routerLink]="['/discounts-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['discounts-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-tags text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Discounts
                 </a>
             </li>
             
-            <li [routerLink]="['/accounts-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['accounts-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-people-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Accounts
                 </a>
             </li>
             
-            <li [routerLink]="['/parcel-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['parcel-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-person-lines-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Assign Parcels
                 </a>
             </li>
             
-            <li [routerLink]="['/order-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['order-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Track Orders
                 </a>
             </li>
             
-            <li [routerLink]="['/courier-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['courier-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-truck text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Couriers
                 </a>
             </li>
             
-            <li [routerLink]="['/stocks-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="[{ outlets: { dashboard: ['stocks-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Stock Reports

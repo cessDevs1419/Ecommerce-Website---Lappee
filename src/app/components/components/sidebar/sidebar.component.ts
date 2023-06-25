@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,5 +12,11 @@ export class SidebarComponent {
 
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
+  }
+  
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.router.navigate([{ outlets: { dashboard: ['overview'] } }]);
   }
 }
