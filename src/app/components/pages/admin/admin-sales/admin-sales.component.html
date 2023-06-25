@@ -1,1 +1,23 @@
-<p>admin-sales works!</p>
+
+
+<div class="container-md border border-primary border-2 m-auto h-auto p-2" >
+    
+    <div class="row p-3">
+        <div class="col-xl-4">
+        </div> 
+        <div class="col-lg-8">
+        </div>
+    </div>
+    <app-table
+        tableTitle="TOTAL SALES"
+        subTitle="PER PRODUCT"
+        
+        [tableTools]="true"
+        [searchBar]="true"
+
+        [tableHeader]="['ITEM ID','ITEM NAME','STOCKS', 'PRICE', 'SOLD']"
+        
+    ></app-table>
+</div>
+
+

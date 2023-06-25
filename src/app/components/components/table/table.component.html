@@ -15,7 +15,7 @@
                 class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
                 *ngIf="tableTools"
             >
-                <div class="searchbar-container w-100 {{searchBarclass}}" *ngIf="searchBar">
+                <div class="searchbar-container w-auto {{searchBarclass}}" *ngIf="searchBar">
                     <div  class="input-group mx-1 " >
                         <input 
                         
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 
-                <div class="button-container mt-sm-0 p-0 mt-2 w-100 d-flex justify-content-start justify-content-lg-end">
+                <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
                     <button
                     *ngIf="addBtn"
                     type="button" 

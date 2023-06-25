@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AdminCategoriesComponent {
 
-  size = "w-75"
+  size = "w-100"
 }

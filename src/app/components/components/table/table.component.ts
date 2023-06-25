@@ -22,7 +22,7 @@ export class TableComponent {
 	//enable table header tools
 	@Input() tableTools!: boolean;
 	@Input() searchBar!: boolean;
-	
+	@Input() Btntools!: boolean;
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addbtnName!: string;

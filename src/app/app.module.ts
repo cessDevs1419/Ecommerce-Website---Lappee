@@ -42,6 +42,10 @@ import { AdminProductsComponent } from './components/pages/admin/admin-products/
 import { AdminSalesComponent } from './components/pages/admin/admin-sales/admin-sales.component';
 import { AdminDiscountsComponent } from './components/pages/admin/admin-discounts/admin-discounts.component';
 import { AdminAccountsComponent } from './components/pages/admin/admin-accounts/admin-accounts.component';
+import { AdminParcelManagementComponent } from './components/pages/admin/admin-parcel-management/admin-parcel-management.component';
+import { AdminOrderManagementComponent } from './components/pages/admin/admin-order-management/admin-order-management.component';
+import { AdminCourierManagementComponent } from './components/pages/admin/admin-courier-management/admin-courier-management.component';
+import { AdminStocksManagementComponent } from './components/pages/admin/admin-stocks-management/admin-stocks-management.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +81,10 @@ import { AdminAccountsComponent } from './components/pages/admin/admin-accounts/
     AdminSalesComponent,
     AdminDiscountsComponent,
     AdminAccountsComponent,
+    AdminParcelManagementComponent,
+    AdminOrderManagementComponent,
+    AdminCourierManagementComponent,
+    AdminStocksManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,6 +106,13 @@ import { AdminAccountsComponent } from './components/pages/admin/admin-accounts/
       {path: 'overview', component: AdminOverviewComponent},
       {path: 'category-management', component: AdminCategoriesComponent},
       {path: 'product-management', component: AdminProductsComponent},
+      {path: 'sales-management', component: AdminSalesComponent},
+      {path: 'discounts-management', component: AdminDiscountsComponent},
+      {path: 'accounts-management', component: AdminAccountsComponent},
+      {path: 'parcel-management', component: AdminParcelManagementComponent},
+      {path: 'order-management', component: AdminOrderManagementComponent},
+      {path: 'courier-management', component: AdminCourierManagementComponent},
+      {path: 'stocks-management', component: AdminStocksManagementComponent},
       {path: 'profile', component: ProfileComponent}
     ]),
 
