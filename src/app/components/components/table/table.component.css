@@ -32,10 +32,10 @@
     background: #0064C0;
 }
 
-table{
-    min-width: 1000px;
-}
 
+.btn{
+    max-width: 350px;
+}
 button{
     background: #0064C0;
 }
@@ -47,3 +47,9 @@ table th:first-child{
 table th:last-child{
     border-radius:0 8px 8px 0;
 }
+
+/*
+table{
+    min-width: 1000px;
+}
+*/

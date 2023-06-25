@@ -4,7 +4,7 @@ import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
 
 interface TableItem {
-  property: string;
+    property: string;
 }
 @Component({
     selector: 'app-table',
@@ -41,45 +41,56 @@ export class TableComponent {
 	@Input() tableRows!: any[];
 	@Input() tableData!: Observable<any>;
 	
-
+	@Input() InputpageSize!: any[];
+	
+	//addClass to evey table element
+	@Input() searchBarclass: string;
+	@Input() addBtnclass: string;
+	@Input() restockBtnclass: string;
+	@Input() editBtnclass: string;
+	@Input() deleteBtnclass: string;
+	@Input() viewBtnclass: string;
+	@Input() banBtnclass: string;
+	
+	
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
-	pageSize: number = 10;
+	pageSize: number = this.pageSizeOptions[0];
 	totalItems: number;
 	totalPages: number;
 	displayedItems$: Observable<any[]>;
-  
+
 	searchFilter: string = '';
-  
+
 	ngOnInit() {
-	  this.calculatePagination();
+	    this.calculatePagination();
 	}
-  
+
 	applySearchFilter(): void {
-	  this.currentPage = 1;
-	  this.calculatePagination();
+	    this.currentPage = 1;
+	    this.calculatePagination();
 	}
-  
+
 	calculatePagination(): void {
-	  this.displayedItems$ = this.tableData.pipe(
-		map((data: any[]) => {
-		  let filteredData = data;
-		  if (this.searchFilter) {
-			const searchTerm = this.searchFilter.toLowerCase();
-			filteredData = data.filter(item =>
-			  item.property.toLowerCase().includes(searchTerm)
+	    this.displayedItems$ = this.tableData.pipe(
+			map((data: any[]) => {
+		    let filteredData = data;
+		    if (this.searchFilter) {
+				const searchTerm = this.searchFilter.toLowerCase();
+				filteredData = data.filter(item =>
+			    item.property.toLowerCase().includes(searchTerm)
 			);
-		  }
-		  this.totalItems = filteredData.length;
-		  this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-		  const startIndex = (this.currentPage - 1) * this.pageSize;
-		  const endIndex = startIndex + this.pageSize;
-		  return filteredData.slice(startIndex, endIndex);
+		}
+		    this.totalItems = filteredData.length;
+		    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+		    const startIndex = (this.currentPage - 1) * this.pageSize;
+		    const endIndex = startIndex + this.pageSize;
+		    return filteredData.slice(startIndex, endIndex);
 		}),
 		startWith([]) // Start with an empty array to clear the table when search input is removed
-	  );
+		);
 	}
-  
+
 	goToPreviousPage(): void {
 	  if (this.currentPage > 1) {
 		this.currentPage--;

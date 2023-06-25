@@ -1,0 +1,33 @@
+.inset-shadow{
+    background: #FFF;
+    box-shadow: -4px 4px 20px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.heading-color{
+    color: #1C92FF;
+}
+
+.sub-text-color{
+    color: #C1C1C1;
+}
+
+.heading-title-fs-92{
+    font-size: 92px;
+}
+
+
+.heading-title-fs-64{
+    font-size: 4rem;
+}
+
+.container-height{
+    min-height: 312px;
+    height: auto;
+}
+
+.icon-container{
+    height: 85px;
+    width: 85px;
+    background: linear-gradient(180deg, #64B5FF 0%, #0E76D6 100%);
+    color: #FFF;
+}

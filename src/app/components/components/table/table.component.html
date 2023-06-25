@@ -1,45 +1,58 @@
 
 <div class="table-container bg-white rounded-4 p-4">
 
-    <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2">
-        
-        <div class="table-title">
-            <h1 class="header-title">{{tableTitle}}</h1>
-            <h3 class="header-sub-title">{{subTitle}}</h3>
-        </div>
-        <div 
-            class="table-tools w-50 d-flex justify-content-between align-items-center"
-            *ngIf="tableTools"
-        >
-            <div class="input-group mx-2">
-                <input 
-                    class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
-                    name="searchString" 
-                    type="search" 
-                    placeholder="Search Items Here"
-                    [(ngModel)]="searchString"
-                >
-                    
-                <span class="input-group-text searchbar-btn bg-white rounded-4 rounded-start-0 border-primary" id="basic-addon2">
-                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1C92FF" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
-                </span>
+    <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 ">
+        <div class="row w-100 mx-0 ">
+            <div class="col-lg-6 px-0">
+                <div class="table-title text-start">
+                    <h1 class="header-title">{{tableTitle}}</h1>
+                    <h3 class="header-sub-title">{{subTitle}}</h3>
+                </div>
             </div>
+            <div class="col-lg-6 px-0">
             
-            <button
-                *ngIf="addBtn"
-                type="button" 
-                class="btn btn-primary text-white mx-2 w-25"
-                data-bs-toggle="modal" data-bs-target="#addProduct"
-                >{{addbtnName}}</button>
-            
-            <button 
-                *ngIf="restockBtn"
-                type="button" 
-                class="btn btn-primary text-white w-25"
-                data-bs-toggle="modal" data-bs-target="#reStock"
-                >RESTOCK</button>
+                <div 
+                class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
+                *ngIf="tableTools"
+            >
+                <div class="searchbar-container w-100 {{searchBarclass}}" *ngIf="searchBar">
+                    <div  class="input-group mx-1 " >
+                        <input 
+                        
+                            class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
+                            name="searchString" 
+                            type="search" 
+                            placeholder="Search Items Here"
+                            [(ngModel)]="searchString"
+                            
+                        >
+                            
+                        <span class="input-group-text searchbar-btn bg-white rounded-4 rounded-start-0 border-primary" id="basic-addon2">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1C92FF" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="button-container mt-sm-0 p-0 mt-2 w-100 d-flex justify-content-start justify-content-lg-end">
+                    <button
+                    *ngIf="addBtn"
+                    type="button" 
+                    class="btn btn-primary text-white mx-1 {{addBtnclass}}"
+                    data-bs-toggle="modal" data-bs-target="#addproduct"
+                    >{{addbtnName}}</button>
+                
+                    <button 
+                        *ngIf="restockBtn"
+                        type="button" 
+                        class="btn btn-primary text-white mx-1 {{restockBtnclass}}"
+                        data-bs-toggle="modal" data-bs-target="#restock"
+                        >RESTOCK</button>
+                </div>
+                
+            </div>
+            </div>
         </div>
     </div>
     
@@ -66,14 +79,14 @@
                     
                     <!--Enable this table Actions-->
                     <td *ngIf="tableAction"
-                        class="dataTools text-center d-flex justify-content-between align-items-center"
+                        class="dataTools text-center d-flex justify-content-between align-items-center pt-3"
                     >       
                     
                         <!--EDIT BTN-->
                         <button 
                             *ngIf="editBtn"
                             type="button" 
-                            class="btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
+                            class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
                             data-bs-toggle="modal" data-bs-target="#edit"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -86,8 +99,8 @@
                         <button 
                             *ngIf="deleteBtn"
                             type="button" 
-                            class="btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#edit"
+                            class="{{deleteBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#delete"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
@@ -99,8 +112,8 @@
                         <button 
                             *ngIf="viewBtn"
                             type="button" 
-                            class="btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#edit"
+                            class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#view"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
@@ -112,8 +125,8 @@
                         <button 
                             *ngIf="banBtn"
                             type="button" 
-                            class="btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#edit"
+                            class="{{banBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#ban"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
@@ -130,21 +143,27 @@
     </table>
     
 
-    <nav aria-label="Page navigation example" class="d-flex justify-content-end align-items-center">
-    <label for="pageSize" class="mx-2">Items per page:</label>
-    <select id="pageSize" (change)="changePageSize($event)">
-        <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
-    </select>
+    <nav class="align-items-center row">
     
-        <ul class="pagination d-flex align-items-center mt-3 mx-2">
-            <li class="page-item">
-                <button  class="page-link bg-white" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
-            </li>
-            <li class="page-item"><a class="page-link">Page {{ currentPage }} of {{ totalPages }}</a></li>
-            <li class="page-item">
-                <button class="page-link bg-white" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
-            </li>
-        </ul>
+        <div class="col-lg-6 d-flex">
+            <label for="pageSize" class="mx-2">Items per page:</label>
+            <select id="pageSize" (change)="changePageSize($event)">
+                <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+            </select>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-start justify-content-lg-end">
+            <ul class="pagination d-flex align-items-center mt-3 mx-2">
+                <li class="page-item">
+                    <button  class="page-link bg-white" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+                </li>
+                <li class="page-item"><a class="page-link">Page {{ currentPage }} of {{ totalPages }}</a></li>
+                <li class="page-item">
+                    <button class="page-link bg-white" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
+                </li>
+            </ul>
+        </div>
+    
+
     </nav>
     
 

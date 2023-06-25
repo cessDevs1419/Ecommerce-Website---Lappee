@@ -1,8 +1,29 @@
-<div class="container-md border border-primary border-2 m-auto h-75 p-2" >
+<div class="container-md border border-primary border-2 m-auto h-auto p-2" >
+    
+    <div class="row p-3">
+        <div class="col-md-4 border p-2">
+        </div> 
+        <div class="col-md-4 border p-2">
+        </div>
+    </div>
     <app-table
+        tableTitle="PRODUCT LIST"
+        subTitle="MANAGEMENT"
+        
         [tableTools]="true"
         [searchBar]="true"
+        [addBtn]="true"
+        addbtnName="ADD ITEM"
+        [addBtnclass]="margin"
+        [addBtnclass]="size"
+        [restockBtnclass]="size"
+        [searchBarclass]="margin"
         
+        [restockBtn]="true"
+        [tableAction]="true"
+        [editBtn]="true"
+        [deleteBtn]="true"
+
         [tableHeader]="['ID','ITEM NAME','STOCKS', 'STOCKS LIMIT', 'PRICE', 'SUB CATEGORY','DESCRIPTION']"
         [tableRows]="['id','name', 'stock','stock_limit','price', 'sub_category', 'description']"
         [tableData]="products"
@@ -10,3 +31,12 @@
     ></app-table>
 </div>
 
+
+<app-modal
+    modalID="addproduct"
+></app-modal>
+
+<app-modal
+    modalID="restock"
+    
+></app-modal>

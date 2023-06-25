@@ -1,6 +1,6 @@
 <div class="d-flex ">
 
-    <header  class="dashboard-header w-100 mx-0 mb-5 z-1 position-relative bg-white" >
+    <header  class="dashboard-header w-100 mx-0 mb-5 z-3 position-relative bg-white" >
         <div class="dashboard-container container-fluid w-100 start-0 position-fixed bg-white d-flex justify-content-between align-items-center p-2 flex-wrap">
             <div  class="title-container d-flex align-items-center p-2">
                 
@@ -11,11 +11,11 @@
                     </div>
                 </button>
                 
-                <a [class.active-header]="isClassToggled"  class="title fs-3 text-decoration-none text-dark">
+                <a [class.active-header]="isClassToggled"  class="title fs-3 fw-bold text-decoration-none text-dark">
                     ADMIN DASHBOARD
                 </a>
             </div>
-            <div class="toolkit px-5 d-flex justify-content-between ">
+            <div class="toolkit px-5 d-none d-md-flex justify-content-between ">
                 <div class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
                     <i class="bi bi-person-fill text-primary fs-4"></i>
                 </div>
@@ -26,7 +26,7 @@
         </div>
     </header>
 
-    <div [class.active-button]="isClassToggled" class="sidebar z-0 d-flex flex-column flex-shrink-0 bg-white  start-0 position-fixed h-100">
+    <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 bg-white  start-0 position-fixed h-100">
         
 
         
@@ -99,6 +99,20 @@
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Stock Reports
+                </a>
+            </li>
+            
+            <li [routerLink]="['/stocks-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-person-fill text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    User Profile
+                </a>
+            </li>
+            
+            <li [routerLink]="['/stocks-management']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-bell-fill text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Notifications
                 </a>
             </li>
             

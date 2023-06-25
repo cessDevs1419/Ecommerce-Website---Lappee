@@ -21,8 +21,6 @@
 
 .title{
     font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    margin-left: 100px;
 }
 
 .icon-container{
@@ -59,6 +57,43 @@ img{
 }
 
 /*Active Button Styling*/
+
+.title{
+    margin-left: 100px; 
+}
+
+.sidebar{
+    transform: translateX(0%);
+}
+.active-button{
+    max-width: 260px;
+    transform: translateX(-100%);
+}
+.active-button ul li a{
+    display: flex;
+}
+
+.active-header{
+    margin-left: 20px;
+    transition: .1s ease-in;
+}
+@media screen and (max-width: 984px) {
+
+    .title{
+        margin-left: 0px; 
+    }
+    .active-header{
+        margin-left: 0px;
+    }
+
+    .button-title{
+        display: none;
+    }
+    
+}
+
+/*Another Idea*/
+/*
 .active-button{
     max-width: 80px;
     width: 100%;
@@ -100,28 +135,4 @@ img{
 .active-button-title{
     display: none;
 } 
-
-
-
-@media screen and (max-width: 984px) {
-
-
-    .button-title{
-        display: none;
-    }
-    
-    .title{
-        margin-left: 20px;
-    }
-    
-    .sidebar{
-        transform: translateX(-100%);
-    }
-    .active-button{
-        max-width: 260px;
-        transform: translateX(0%);
-    }
-    .active-button ul li a{
-        display: flex;
-    }
-}
+*/

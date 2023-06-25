@@ -33,4 +33,9 @@ export class AdminProductsComponent {
       description: data.description
 		}))
 	}   
+	
+	
+	/*classes*/
+	margin = "mx-sm-2"
+	size = "w-100"
 }

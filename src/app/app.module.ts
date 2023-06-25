@@ -31,12 +31,17 @@ import { SearchFilterPipe } from './components/pipes/search-filter.pipe';
 import { TableComponent } from './components/components/table/table.component';
 import { ModalComponent } from './components/components/modal/modal.component';
 import { SidebarComponent } from './components/components/sidebar/sidebar.component';
-import { AdminProductsComponent } from './components/pages/admin/admin-products/admin-products.component';
-import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
-import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
 import { PaginationComponent } from './components/components/pagination/pagination.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartItemComponent } from './components/components/cart-item/cart-item.component';
+
+import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
+import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
+import { AdminCategoriesComponent } from './components/pages/admin/admin-categories/admin-categories.component';
+import { AdminProductsComponent } from './components/pages/admin/admin-products/admin-products.component';
+import { AdminSalesComponent } from './components/pages/admin/admin-sales/admin-sales.component';
+import { AdminDiscountsComponent } from './components/pages/admin/admin-discounts/admin-discounts.component';
+import { AdminAccountsComponent } from './components/pages/admin/admin-accounts/admin-accounts.component';
 
 @NgModule({
   declarations: [
@@ -61,12 +66,17 @@ import { CartItemComponent } from './components/components/cart-item/cart-item.c
     TableComponent,
     ModalComponent,
     SidebarComponent,
-    AdminOverviewComponent,
-    AdminProductsComponent,
-    AdminRoutingComponent,
     PaginationComponent,
     ProfileComponent,
-    CartItemComponent
+    CartItemComponent,
+    
+    AdminRoutingComponent,
+    AdminOverviewComponent,
+    AdminCategoriesComponent,
+    AdminProductsComponent,
+    AdminSalesComponent,
+    AdminDiscountsComponent,
+    AdminAccountsComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,10 +95,12 @@ import { CartItemComponent } from './components/components/cart-item/cart-item.c
       {path: 'cart', component: CartComponent},
       
       //admin
-      { path: 'overview', component: AdminOverviewComponent },
-      { path: 'product-management', component: AdminProductsComponent},
+      {path: 'overview', component: AdminOverviewComponent},
+      {path: 'category-management', component: AdminCategoriesComponent},
+      {path: 'product-management', component: AdminProductsComponent},
       {path: 'profile', component: ProfileComponent}
     ]),
+
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
