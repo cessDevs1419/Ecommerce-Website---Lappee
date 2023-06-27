@@ -1,7 +1,11 @@
 
 <div class="page-container container-fluid bg-light" >
     
-    <app-sidebar></app-sidebar>
+    <app-sidebar
+        headerName="ADMIN DASHBOARD"
+        [admin]="true"
+    ></app-sidebar>
+    
     <router-outlet name="dashboard"></router-outlet>
 
 </div>

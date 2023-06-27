@@ -12,7 +12,7 @@
                 </button>
                 
                 <a [class.active-header]="isClassToggled"  class="title fs-3 fw-bold text-decoration-none text-dark">
-                    ADMIN DASHBOARD
+                    {{headerName}}
                 </a>
             </div>
             <div class="toolkit px-5 d-none d-md-flex justify-content-between ">
@@ -30,7 +30,7 @@
         
 
         
-        <ul class="nav flex-column mb-auto mt-5">
+        <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
             
             <li [routerLink]="[{ outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
@@ -113,6 +113,24 @@
                 <i routerLinkActive="text-white" class="bi bi-bell-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Notifications
+                </a>
+            </li>
+            
+        </ul>
+        
+        <ul class="nav flex-column mb-auto mt-5" *ngIf="courier">
+            
+            <li [routerLink]="[{ outlets: { courier: ['pending-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-clock-history text-dark"></i>
+                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
+                    Pending Delivery
+                </a>
+            </li>
+            
+            <li [routerLink]="[{ outlets: {courier: ['delivery-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+                <i routerLinkActive="text-white" class="bi bi-truck text-dark"></i>
+                <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
+                    Delivered
                 </a>
             </li>
             

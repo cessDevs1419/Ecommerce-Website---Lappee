@@ -14,9 +14,21 @@ export class SidebarComponent {
     this.isClassToggled = !this.isClassToggled;
   }
   
+  @Input() headerName: string;
+  @Input() admin!: boolean;
+  @Input() courier!: boolean;
+  
   constructor(private router: Router) {}
 
+  
   ngOnInit(): void {
-    this.router.navigate([{ outlets: { dashboard: ['overview'] } }]);
+  
+    if (this.admin) {
+      this.router.navigate([{ outlets: { dashboard: ['overview'] } }]);
+    } else if (this.courier) {
+      this.router.navigate([{ outlets: { courier: ['pending-management'] } }]);
+    }  
+    
   }
+  
 }

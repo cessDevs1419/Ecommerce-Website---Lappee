@@ -46,6 +46,9 @@ import { AdminParcelManagementComponent } from './components/pages/admin/admin-p
 import { AdminOrderManagementComponent } from './components/pages/admin/admin-order-management/admin-order-management.component';
 import { AdminCourierManagementComponent } from './components/pages/admin/admin-courier-management/admin-courier-management.component';
 import { AdminStocksManagementComponent } from './components/pages/admin/admin-stocks-management/admin-stocks-management.component';
+import { CourierRoutingComponent } from './components/pages/courier/courier-routing/courier-routing.component';
+import { CourierPendingsComponent } from './components/pages/courier/courier-pendings/courier-pendings.component';
+import { CourierDeliveredComponent } from './components/pages/courier/courier-delivered/courier-delivered.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +88,9 @@ import { AdminStocksManagementComponent } from './components/pages/admin/admin-s
     AdminOrderManagementComponent,
     AdminCourierManagementComponent,
     AdminStocksManagementComponent,
+    CourierRoutingComponent,
+    CourierPendingsComponent,
+    CourierDeliveredComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,7 +119,11 @@ import { AdminStocksManagementComponent } from './components/pages/admin/admin-s
       {path: 'order-management', component: AdminOrderManagementComponent, outlet: 'dashboard'},
       {path: 'courier-management', component: AdminCourierManagementComponent, outlet: 'dashboard'},
       {path: 'stocks-management', component: AdminStocksManagementComponent, outlet: 'dashboard'},
-      {path: 'profile', component: ProfileComponent}
+      {path: 'profile', component: ProfileComponent},
+      
+       //admin
+      {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
+      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
     ]),
 
     FormsModule,
