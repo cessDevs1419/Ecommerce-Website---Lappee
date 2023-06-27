@@ -24,7 +24,7 @@ import { ProductGridComponent } from './components/components/product-grid/produ
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GalleryModule } from 'ng-gallery';
 import { LightboxModule } from 'ng-gallery/lightbox';
-import { LayoutModule } from '@angular/cdk/layout'
+import { LayoutModule } from '@angular/cdk/layout';
 import { AuthInterceptor } from './services/auth/auth.interceptor';
 import { CartComponent } from './components/pages/cart/cart.component';
 import { SearchFilterPipe } from './components/pipes/search-filter.pipe';
@@ -34,7 +34,6 @@ import { SidebarComponent } from './components/components/sidebar/sidebar.compon
 import { PaginationComponent } from './components/components/pagination/pagination.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { CartItemComponent } from './components/components/cart-item/cart-item.component';
-
 import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
 import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
 import { AdminCategoriesComponent } from './components/pages/admin/admin-categories/admin-categories.component';
@@ -49,6 +48,8 @@ import { AdminStocksManagementComponent } from './components/pages/admin/admin-s
 import { CourierRoutingComponent } from './components/pages/courier/courier-routing/courier-routing.component';
 import { CourierPendingsComponent } from './components/pages/courier/courier-pendings/courier-pendings.component';
 import { CourierDeliveredComponent } from './components/pages/courier/courier-delivered/courier-delivered.component';
+import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
+import { OrdersComponent } from './components/pages/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,6 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
     PaginationComponent,
     ProfileComponent,
     CartItemComponent,
-    
     AdminRoutingComponent,
     AdminOverviewComponent,
     AdminCategoriesComponent,
@@ -91,6 +91,8 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
     CourierRoutingComponent,
     CourierPendingsComponent,
     CourierDeliveredComponent,
+    OrdersComponent,
+    ProfileBannerComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +109,7 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},
-      
+
       //admin
       {path: 'overview', component: AdminOverviewComponent, outlet: 'dashboard'},
       {path: 'category-management', component: AdminCategoriesComponent, outlet: 'dashboard'},
@@ -124,6 +126,7 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
        //admin
       {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
       {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
+      {path: 'profile/orders', component: OrdersComponent}
     ]),
 
     FormsModule,

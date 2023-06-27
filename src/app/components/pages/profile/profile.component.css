@@ -1,0 +1,5 @@
+.edit-email-input-group-text {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+}
+
