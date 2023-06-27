@@ -1,0 +1,45 @@
+<div class="container-md mt-5">
+    <app-profile-banner></app-profile-banner>
+    
+    <div class="row mt-3">
+        <form class="m-0 p-0">
+            <div class="input-group">
+                <span class="input-group-text bg-gradient-primary rounded-0"><i class="bi bi-search fs-3 color-white"></i></span>
+                <input type="text" class="form-control form-control-lg rounded-0" id="search-orders" placeholder="Search by Seller Name, Order ID or Product Name..." />
+            </div>
+        </form>
+    </div>
+
+    <div class="row bg-light-gray mt-3 px-3 py-3">
+        <!-- order title -->
+        <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
+            <p class="fs-3 fw-bold color-primary m-0">Order ID Number</p>
+            <p class="m-0 text-muted">11-11-11</p>
+        </div>
+        <!-- one row per item -->
+        <div class="row mt-3">
+            <div class="col d-flex flex-row">
+                <div>
+                    <img src="https://picsum.photos/200" class="img-fluid order-item-img">
+                </div>
+                <div class="d-flex flex-column ms-3">
+                    <p class="color-primary fs-4 m-0">Item Name</p>
+                    <p class="text-muted m-0">Item Variant</p>
+                    <p class="m-0">Item Quantity</p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end align-items-center pe-0">
+                <p class="m-0 color-primary fs-4 fw-bold">Item Price</p>
+            </div>
+        </div>
+
+        <!-- order total -->
+        <div class="d-flex flex-column mt-3 border-top justify-content-center align-items-end">
+            <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">₱69</span></p>
+            <button class="button-primary mt-3 rounded-0">Buy Again</button>
+        </div>
+        
+    </div>
+
+
+</div>

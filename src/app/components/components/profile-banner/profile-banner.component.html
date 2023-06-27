@@ -1,0 +1,28 @@
+<div class="row p-4 bg-light-gray d-flex">
+    <div class="col d-flex align-items-center">
+        <div class="d-flex flex-row">
+            <div>
+                <img src="https://picsum.photos/200" class="user-image">
+            </div>
+            <div class="d-flex flex-column align-items-start justify-content-center ms-4">
+                <a [href]="['profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">John.Smith17</p></a>
+                <p class="text-muted m-0">jsmith@gmail.com</p>
+            </div>
+        </div>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <div class="d-flex flex-row position-relative">
+            <a [href]="['profile/orders']"><span class="link-span"></span></a>
+            <div class="d-flex flex-column p-5 border-start align-items-center">
+                <p class="m-0 color-primary fs-2 fw-bold">39</p>
+                <p class="m-0 text-muted">ORDERS</p>
+                <p class="m-0 text-muted">COMPLETED</p>
+            </div>
+            <div class="d-flex flex-column p-5 border-start align-items-center">
+                <p class="m-0 color-primary fs-2 fw-bold">31</p>
+                <p class="m-0 text-muted">ORDERS</p>
+                <p class="m-0 text-muted">REVIEWED</p>
+            </div>
+        </div>
+    </div>
+</div>

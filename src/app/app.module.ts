@@ -109,6 +109,8 @@ import { OrdersComponent } from './components/pages/orders/orders.component';
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},
+      {path: 'profile', component: ProfileComponent},
+      {path: 'profile/orders', component: OrdersComponent},
 
       //admin
       {path: 'overview', component: AdminOverviewComponent, outlet: 'dashboard'},
@@ -121,12 +123,9 @@ import { OrdersComponent } from './components/pages/orders/orders.component';
       {path: 'order-management', component: AdminOrderManagementComponent, outlet: 'dashboard'},
       {path: 'courier-management', component: AdminCourierManagementComponent, outlet: 'dashboard'},
       {path: 'stocks-management', component: AdminStocksManagementComponent, outlet: 'dashboard'},
-      {path: 'profile', component: ProfileComponent},
-      
-       //admin
+       //courier
       {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
-      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
-      {path: 'profile/orders', component: OrdersComponent}
+      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'}
     ]),
 
     FormsModule,
