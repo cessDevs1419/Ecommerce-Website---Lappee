@@ -7,17 +7,17 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angu
 import { CategorydetailsComponent } from './components/components/categorydetails/categorydetails.component';
 import { NavbarComponent } from './components/components/navbar/navbar.component';
 import { SearchbarComponent } from './components/components/searchbar/searchbar.component';
-import { HomeComponent } from './components/pages/home/home.component';
+import { HomeComponent } from './components/pages/main/home/home.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/components/footer/footer.component';
-import { AccountComponent } from './components/pages/account/account.component';
+import { AccountComponent } from './components/pages/main/account/account.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupformComponent } from './components/components/signupform/signupform.component';
 import { SigninformComponent } from './components/components/signinform/signinform.component';
 import { PasswordValidatorDirective } from '../assets/directives/passwordValidator/password-validator.directive';
 import { InputWithToggleComponent } from './components/components/input-with-toggle/input-with-toggle.component';
-import { SubcategoriesComponent } from './components/pages/subcategories/subcategories.component';
-import { ProductsComponent } from './components/pages/products/products.component';
+import { SubcategoriesComponent } from './components/pages/main/subcategories/subcategories.component';
+import { ProductsComponent } from './components/pages/main/products/products.component';
 import { StarRatingsComponent } from './components/components/star-ratings/star-ratings.component';
 import { ProgressBarComponent } from './components/components/progress-bar/progress-bar.component';
 import { ProductGridComponent } from './components/components/product-grid/product-grid.component';
@@ -26,13 +26,13 @@ import { GalleryModule } from 'ng-gallery';
 import { LightboxModule } from 'ng-gallery/lightbox';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AuthInterceptor } from './services/auth/auth.interceptor';
-import { CartComponent } from './components/pages/cart/cart.component';
+import { CartComponent } from './components/pages/main/cart/cart.component';
 import { SearchFilterPipe } from './components/pipes/search-filter.pipe';
 import { TableComponent } from './components/components/table/table.component';
 import { ModalComponent } from './components/components/modal/modal.component';
 import { SidebarComponent } from './components/components/sidebar/sidebar.component';
 import { PaginationComponent } from './components/components/pagination/pagination.component';
-import { ProfileComponent } from './components/pages/profile/profile.component';
+import { ProfileComponent } from './components/pages/main/profile/profile.component';
 import { CartItemComponent } from './components/components/cart-item/cart-item.component';
 import { AdminRoutingComponent } from './components/pages/admin/admin-routing/admin-routing.component';
 import { AdminOverviewComponent } from './components/pages/admin/admin-overview/admin-overview.component';
@@ -49,7 +49,8 @@ import { CourierRoutingComponent } from './components/pages/courier/courier-rout
 import { CourierPendingsComponent } from './components/pages/courier/courier-pendings/courier-pendings.component';
 import { CourierDeliveredComponent } from './components/pages/courier/courier-delivered/courier-delivered.component';
 import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
-import { OrdersComponent } from './components/pages/orders/orders.component';
+import { OrdersComponent } from './components/pages/main/orders/orders.component';
+import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { OrdersComponent } from './components/pages/orders/orders.component';
     CourierPendingsComponent,
     CourierDeliveredComponent,
     OrdersComponent,
-    ProfileBannerComponent
+    ProfileBannerComponent,
+    MainRoutingComponent
   ],
   imports: [
     BrowserModule,
@@ -104,15 +106,17 @@ import { OrdersComponent } from './components/pages/orders/orders.component';
     }),
     AppRoutingModule,
     RouterModule.forRoot([
-      {path: '', component: HomeComponent},
+      
+      {path: 'home', component: HomeComponent},
       {path: 'account', component: AccountComponent},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
-      {path: 'products/:productId', component: ProductsComponent},
+      {path: 'products/:productId', component: ProductsComponent, outlet: 'main'},
       {path: 'cart', component: CartComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'profile/orders', component: OrdersComponent},
 
       //admin
+      {path: 'dashboard', component: AdminRoutingComponent },
       {path: 'overview', component: AdminOverviewComponent, outlet: 'dashboard'},
       {path: 'category-management', component: AdminCategoriesComponent, outlet: 'dashboard'},
       {path: 'product-management', component: AdminProductsComponent, outlet: 'dashboard'},
@@ -123,9 +127,13 @@ import { OrdersComponent } from './components/pages/orders/orders.component';
       {path: 'order-management', component: AdminOrderManagementComponent, outlet: 'dashboard'},
       {path: 'courier-management', component: AdminCourierManagementComponent, outlet: 'dashboard'},
       {path: 'stocks-management', component: AdminStocksManagementComponent, outlet: 'dashboard'},
-       //courier
+
+      //courier
+      {path: 'courier', component: CourierRoutingComponent },
       {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
-      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'}
+      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
+
+      {path: '', redirectTo: 'home', pathMatch:'full'}
     ]),
 
     FormsModule,

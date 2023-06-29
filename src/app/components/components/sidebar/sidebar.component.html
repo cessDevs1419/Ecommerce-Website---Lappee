@@ -32,14 +32,14 @@
         
         <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
             
-            <li [routerLink]="[{ outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="['', { outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
                     Overview
                 </a>
             </li>
             
-            <li [routerLink]="[{ outlets: { dashboard: ['category-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="['', { outlets: { dashboard: ['category-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
                 <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Category Setup
