@@ -83,15 +83,53 @@
         [tableRows]="['id','name', 'stock','stock_limit','price', 'sub_category', 'description']"
         [tableData]="products"
         
+        (rowDataSelected)="onRowDataSelected($event)"
+
     ></app-table>
 </div>
 
 
 <app-modal
     modalID="addproduct"
+    modalTitle="ADD PRODUCT"
+    modalSubTitle="PRODUCT CONTROL"
+    [modalProduct]="true"
+    [modalAddProduct]="true"
+></app-modal>
+
+<app-modal
+    modalID="edit"
+    modalTitle="EDIT PRODUCT"
+    modalSubTitle="PRODUCT CONTROL"
+    [modalProduct]="true"
+    [modalEditProduct]="true"
+    
+    [selectedRowData]="selectedRowData"
+></app-modal>
+
+<app-modal
+    modalID="delete"
+    modalTitle="DELETE PRODUCT"
+    modalSubTitle="PRODUCT CONTROL"
+    [modalProduct]="true"
+    [modalDeleteProduct]="true"
+    
+    [selectedRowData]="selectedRowData"
 ></app-modal>
 
 <app-modal
     modalID="restock"
+    modalTitle="RESTOCK PRODUCT"
+    modalSubTitle="PRODUCT CONTROL"
+    [modalProduct]="true"
+    [modalRestockProduct]="true"
     
 ></app-modal>
+<!--  
+    this takes out data 
+    (rowDataSelected)="onRowDataSelected($event)"
+    
+    this set in the data 
+    [selectedRowData]="selectedRowData"
+-->
+    

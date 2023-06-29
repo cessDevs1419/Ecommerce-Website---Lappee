@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
 })
 export class AdminCategoriesComponent {
 
+
+  /*Needed for table to send data to modal*/
+	selectedRowData: any;
+
+  onRowDataSelected(rowData: any) {
+      this.selectedRowData = rowData;
+  }
+  
   size = "w-100"
+  
+  
 }

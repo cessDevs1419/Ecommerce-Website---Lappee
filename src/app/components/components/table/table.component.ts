@@ -1,7 +1,8 @@
-import { Component,Input } from '@angular/core';
+import { Component,EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
+import { ModalComponent } from '../modal/modal.component';
 
 interface TableItem {
     property: string;
@@ -23,9 +24,12 @@ export class TableComponent {
 	@Input() tableTools!: boolean;
 	@Input() searchBar!: boolean;
 	@Input() Btntools!: boolean;
+	
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addbtnName!: string;
+	@Input() addSubBtn!: boolean;
+	@Input() addSubtnName!: string;
 	
 	//enable Table Action Column && Other Buttons
 	@Input() tableAction!: boolean;
@@ -46,6 +50,7 @@ export class TableComponent {
 	//addClass to evey table element
 	@Input() searchBarclass: string;
 	@Input() addBtnclass: string;
+	@Input() addSubBtnclass: string;
 	@Input() restockBtnclass: string;
 	@Input() editBtnclass: string;
 	@Input() deleteBtnclass: string;
@@ -110,5 +115,11 @@ export class TableComponent {
 	  this.pageSize = +pageSizeValue;
 	  this.currentPage = 1;
 	  this.calculatePagination();
+	}
+	
+	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
+
+	sendRowData(row: any) {
+	  this.rowDataSelected.emit(row);
 	}
 }

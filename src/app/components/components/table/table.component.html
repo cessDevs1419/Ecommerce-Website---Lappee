@@ -9,12 +9,11 @@
                     <h3 class="header-sub-title">{{subTitle}}</h3>
                 </div>
             </div>
-            <div class="col-lg-6 px-0">
-            
+            <div class="col-lg-6 px-0">          
                 <div 
-                class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
-                *ngIf="tableTools"
-            >
+                    class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
+                    *ngIf="tableTools"
+                >
                 <div class="searchbar-container w-auto {{searchBarclass}}" *ngIf="searchBar">
                     <div  class="input-group mx-1 " >
                         <input 
@@ -42,7 +41,14 @@
                     class="btn btn-primary text-white mx-1 {{addBtnclass}}"
                     data-bs-toggle="modal" data-bs-target="#addproduct"
                     >{{addbtnName}}</button>
-                
+                    
+                    <button
+                    *ngIf="addSubBtn"
+                    type="button" 
+                    class="btn btn-primary text-white mx-1 {{addSubBtnclass}}"
+                    data-bs-toggle="modal" data-bs-target="#addsubproduct"
+                    >{{addSubtnName}}</button>
+                    
                     <button 
                         *ngIf="restockBtn"
                         type="button" 
@@ -51,7 +57,7 @@
                         >RESTOCK</button>
                 </div>
                 
-            </div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,7 +65,7 @@
     <table class="table ">
         <thead>
             <tr>
-                <th class="th text-center text-white p-3" *ngFor="let item of tableHeader">{{item}}</th>
+                <th class="th text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
                 
                 <!--Enable this tableHeader Action-->
                 <th *ngIf="tableAction"
@@ -75,7 +81,7 @@
 
                 
                 <tr  *ngFor="let item of displayedItems ">
-                    <td class="text-center pt-3" *ngFor="let row of tableRows " >{{ item[row] }}</td>
+                    <td class="text-center pt-3 text-nowrap " *ngFor="let row of tableRows " >{{ item[row] }}</td>
                     
                     <!--Enable this table Actions-->
                     <td *ngIf="tableAction"
@@ -84,6 +90,8 @@
                     
                         <!--EDIT BTN-->
                         <button 
+                    
+                            (click)="sendRowData(item)"
                             *ngIf="editBtn"
                             type="button" 
                             class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
@@ -97,6 +105,7 @@
                         
                         <!--DELETE BTN-->
                         <button 
+                            (click)="sendRowData(item)"
                             *ngIf="deleteBtn"
                             type="button" 
                             class="{{deleteBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
@@ -110,6 +119,7 @@
                         
                         <!--VIEW BTN-->
                         <button 
+                            (click)="sendRowData(item)"
                             *ngIf="viewBtn"
                             type="button" 
                             class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"
@@ -123,6 +133,7 @@
                         
                         <!--BAN BTN di pa makahanap gavel-->
                         <button 
+                            (click)="sendRowData(item)"
                             *ngIf="banBtn"
                             type="button" 
                             class="{{banBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 p-2 d-flex align-items-center"

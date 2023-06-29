@@ -1,17 +1,263 @@
-<div class="modal fade" id={{modalID}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id={{modalID}} tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <div class="modal-header d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title">
+                    <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">{{modalSubTitle}}</div>
+                </div>
+                
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            
             </div>
-            <div class="modal-body">
-                {{modaLContent}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form (ngSubmit)="submitForm()">
+                <!--CATEGORY FORM-->
+                <div *ngIf="modalCategory" class="modal-body">
+                    <!--ADD CATEGORY FORM-->
+                    <div *ngIf="modalAddCategory" class="modal-body text-center pt-0 pb-0">
+
+                    </div>
+                    <!--ADD SUBCATEGORY FORM-->
+                    <div *ngIf="modalAddSubCategory" class="modal-body text-center pt-0 pb-0">
+                    
+                    </div>
+                    <!--EDIT CATEGORY FORM-->
+                    <div *ngIf="modalDeleteCategory" class="modal-body text-center pt-0 pb-0">
+                        
+                    </div>
+                    <!--DELETE CATEGORY FORM-->
+                    <div *ngIf="modalDeleteCategory" class="modal-body text-center pt-0 pb-0">
+                        <hr class="divider mt-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
+                        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+                    </div>
+                    
+                </div>
+                
+                <!--PRODUCT FORM-->
+                <div *ngIf="modalProduct" class="modal-body  p-0">
+                    <!--ADD PRODUCT FORM-->
+                    <div *ngIf="modalAddProduct" class="modal-body pt-0 pb-0">
+                        <div class="row">    
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductName" class="form-label">Product Name</label>
+                                <input type="text"  class="form-control" id="addproductName" name="addproductName" [(ngModel)]="productData.product_name" required>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductQty" class="form-label">Quantity</label>
+                                <input type="number"  class="form-control" id="addproductQty" name="addproductQty" [(ngModel)]="productData.product_quantity" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductPrice" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="addproductPrice" name="addproductPrice" [(ngModel)]="productData.product_price" required>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductCurrency" class="form-label">Price Currency</label>
+                                <select class="form-select"  id="addproductPriceCurrency" name="addproductPriceCurrency" [(ngModel)]="productData.product_currency" required>
+                                    <option selected>Select Currency</option>
+                                    <option value="php">PHP</option>
+                                    <option value="usd">USD</option>
+                                    <option value="yen">YEN</option>
+                                </select>
+                            </div>
+                        </div>   
+
+                        <div class="col-sm-6 mb-3">    
+                            <label for="addproductPriceCategory" class="form-label">Category</label>
+                            <select class="form-select" id="addproductPriceCategory"name="addproductPriceCategory" [(ngModel)]="productData.product_category" required>
+                                <option selected>Select Sub Category</option>
+                                <option value="wet">Wet</option>
+                                <option value="wetnawet">Wetnawet</option>
+                                <option value="wetthis">Wetthis</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="addproductDescription" class="form-label">Product Description</label>
+                            <textarea class="form-control" id="addproductDescription" name="addproductPriceDescription" rows="3" [(ngModel)]="productData.product_description" required></textarea>
+                        </div>
+                        
+                        <div>
+                            <button type="button" (click)="selectFile()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                                <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                                <i class="bi bi-upload text-dark"></i>
+                                <input class="d-none" type="file" id="images" name="images" (change)="handleFileInput($event)" multiple>
+                            </button>
+                            <ul class="list-unstyled" *ngIf="productData.product_images.length > 0">
+                                <li *ngFor="let file of productData.product_images; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                    <p class="m-0 fw-bold text-dark-emphasis text-break me-2"> {{ file.name }}</p>
+                                    <button type="button" class="btn p-0" (click)="removeImage(i)">
+                                        <i class="bi bi-x-lg text-dark"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div> 
+                        
+                    </div>
+                    
+                    <!--EDIT PRODUCT FORM--> 
+                    <div *ngIf="modalEditProduct" class="modal-body pt-0 pb-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="editproductName" class="form-label">Product Name</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="editproductName"  
+                                    [value]="selectedRowData?.name"
+                                    [(ngModel)]="productData.product_name" 
+                                    required
+                                >
+                            </div>
+                            
+                            <div class="col-sm-6  mb-3">
+                                <label for="editproductQty" class="form-label">Quantity</label>
+                                <input 
+                                    type="text"  
+                                    class="form-control" 
+                                    id="editproductQty" 
+                                    [value]="selectedRowData?.stock"
+                                    [(ngModel)]="productData.product_quantity" 
+                                    required
+                                >
+                            </div>
+                        </div>      
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="editproductPrice" class="form-label">Price</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="editproductPrice"  
+                                    [value]="selectedRowData?.price"
+                                    [(ngModel)]="productData.product_price" 
+                                    required
+                                >
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="editproductCurrency" class="form-label">Price Currency</label>
+                                <select 
+                                    class="form-select"  
+                                    id="editproductCurrency" 
+                                    name="editproductCurrency" 
+                                    [value]="selectedRowData?.currency"
+                                    [(ngModel)]="productData.product_currency" 
+                                    required
+                                >
+                                    <option selected>Select Currency</option>
+                                    <option value="php">PHP</option>
+                                    <option value="usd">USD</option>
+                                    <option value="yen">YEN</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-6 mb-3">
+                            <label for="editproductCategory" class="form-label">Category</label>
+                            <select 
+                                class="form-select"  
+                                id="editproductCurrency" 
+                                name="editproductCurrency" 
+                                [value]="selectedRowData?.category"
+                                [(ngModel)]="productData.product_category" 
+                                required
+                            >
+                                <option selected>Select Sub Category</option>
+                                <option value="wet">Wet</option>
+                                <option value="wetnawet">Wetnawet</option>
+                                <option value="wetthis">Wetthis</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="addproductPriceDescription" class="form-label">Product Description</label>
+                            <textarea 
+                                class="form-control" 
+                                id="editproductDescription" 
+                                name="editproductDescription" 
+                                rows="3" 
+                                [value]="selectedRowData?.description"
+                                [(ngModel)]="productData.product_description" 
+                                required>
+                            </textarea>
+                        </div>
+                        
+                        <div>
+                            <button type="button" (click)="selectFile()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                                <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                                <i class="bi bi-upload text-dark"></i>
+                                <input class="d-none" type="file" id="images" name="images" (change)="handleFileInput($event)" multiple>
+                            </button>
+                            <ul class="list-unstyled" *ngIf="productData.product_images.length > 0">
+                                <li *ngFor="let file of productData.product_images; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                    <p class="m-0 fw-bold text-dark-emphasis text-break me-2"> {{ file.name }}</p>
+                                    <button type="button" class="btn p-0" (click)="removeImage(i)">
+                                        <i class="bi bi-x-lg text-dark"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>    
+                    
+                    <!--DELETE PRODUCT FORM-->
+                    <div *ngIf="modalDeleteProduct" class="modal-body text-center pt-0 pb-0">
+                        <hr class="divider mt-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <p class="fs-5 fw-bold mb-1">Are you sure to delete this Product?</p>
+                        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+                    </div>
+                    
+                    <!--RESTOCK PRODUCT FORM-->
+                    <div *ngIf="modalRestockProduct" class="modal-body pt-0 pb-0">
+                        <hr class="divider mt-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductName" class="form-label">Product Name</label>
+                                <input type="text" class="form-control" id="addproductName" >
+                            </div>
+                            <div class="col-sm-6  mb-3">
+                                <label for="addproductQty" class="form-label">Quantity</label>
+                                <input type="text"  class="form-control" id="addproductQty" >
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+                
+                <!--DISCOUNT FORM-->
+                <div *ngIf="modalCategory" class="modal-body">
+                    <!--ADD DISCOUNT FORM-->
+                    <div *ngIf="modalAddDiscount" class="modal-body text-center pt-0 pb-0">
+    
+                    </div>
+
+                    <!--EDIT DISCOUNT FORM-->
+                    <div *ngIf="modalEditDiscount" class="modal-body text-center pt-0 pb-0">
+                        
+                    </div>
+                    
+                    <!--DELETE DISCOUNT FORM-->
+                    <div *ngIf="modalDeleteDiscount" class="modal-body text-center pt-0 pb-0">
+                        <hr class="divider mt-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
+                        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+                    </div>
+                    
+                </div>
+                
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+

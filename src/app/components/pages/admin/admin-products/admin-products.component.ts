@@ -34,8 +34,16 @@ export class AdminProductsComponent {
 		}))
 	}   
 	
-	
+	/*Needed for table to send data to modal*/
+	selectedRowData: any;
+
+    onRowDataSelected(rowData: any) {
+        this.selectedRowData = rowData;
+    }
+    
 	/*classes*/
 	margin = "mx-sm-2"
 	size = "w-100"
+	
+
 }

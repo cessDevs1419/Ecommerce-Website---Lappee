@@ -12,6 +12,7 @@
                 addbtnName="ADD CATEGORY"
                 [addBtnclass]="size"
                 [tableHeader]="['CATEGORY ID','CATEGORYNAME','ACTIONS']"
+                (rowDataSelected)="onRowDataSelected($event)"
             ></app-table>
         </div>
         <div class="col-xl-6 p-2">
@@ -21,9 +22,9 @@
                 [searchBar]="false"
                 [tableTools]="true"
                 [Btntools]="true"
-                [addBtn]="true"
-                [addBtnclass]="size"
-                addbtnName="ADD SUB CATEGORY"
+                [addSubBtn]="true"
+                [addSubBtnclass]="size"
+                addSubtnName="ADD SUB CATEGORY"
                 
                 [tableHeader]="['CATEGORY ID','CATEGORYNAME','MAIN CATEGORY']"
             ></app-table>
@@ -35,3 +36,40 @@
 <!---to manage bootstrap 
 class declare string variable that has the value of your 
 desired classname :) -->	
+
+
+<app-modal
+    modalID="addproduct"
+    modalTitle="ADD CATEGORY"
+    modalSubTitle="CATEGORY MANAGEMENT"
+    [modalCategory]="true"
+    [modalAddCategory]="true"
+></app-modal>
+
+<app-modal
+    modalID="addsubproduct"
+    modalTitle="ADD SUB-CATEGORY"
+    modalSubTitle="CATEGORY MANAGEMENT"
+    [modalCategory]="true"
+    [modalAddSubCategory]="true"
+></app-modal>
+
+<app-modal
+    modalID="edit"
+    modalTitle="EDIT CATEGORY"
+    modalSubTitle="CATEGORY MANAGEMENT"
+    [modalCategory]="true"
+    [modalEditCategory]="true"
+    
+    [selectedRowData]="selectedRowData"
+></app-modal>
+
+<app-modal
+    modalID="delete"
+    modalTitle="DELETE CATEGORY"
+    modalSubTitle="CATEGORY MANAGEMENT"
+    [modalCategory]="true"
+    [modalDeleteCategory]="true"
+    
+    [selectedRowData]="selectedRowData"
+></app-modal>
