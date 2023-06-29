@@ -77,23 +77,25 @@ export class TableComponent {
 	}
 
 	calculatePagination(): void {
-	    this.displayedItems$ = this.tableData.pipe(
-			map((data: any[]) => {
-		    let filteredData = data;
-		    if (this.searchFilter) {
-				const searchTerm = this.searchFilter.toLowerCase();
-				filteredData = data.filter(item =>
-			    item.property.toLowerCase().includes(searchTerm)
-			);
-		}
-		    this.totalItems = filteredData.length;
-		    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-		    const startIndex = (this.currentPage - 1) * this.pageSize;
-		    const endIndex = startIndex + this.pageSize;
-		    return filteredData.slice(startIndex, endIndex);
-		}),
-		startWith([]) // Start with an empty array to clear the table when search input is removed
+		if (this.tableData) {
+		    this.displayedItems$ = this.tableData.pipe(
+				map((data: any[]) => {
+			        let filteredData = data;
+					    if (this.searchFilter) {
+							const searchTerm = this.searchFilter.toLowerCase();
+							filteredData = data.filter(item =>
+						    item.property.toLowerCase().includes(searchTerm)
+						);
+						}
+				this.totalItems = filteredData.length;
+				this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+				const startIndex = (this.currentPage - 1) * this.pageSize;
+				const endIndex = startIndex + this.pageSize;
+				return filteredData.slice(startIndex, endIndex);
+			}),
+			startWith([]) // Start with an empty array to clear the table when the search input is removed
 		);
+		}
 	}
 
 	goToPreviousPage(): void {

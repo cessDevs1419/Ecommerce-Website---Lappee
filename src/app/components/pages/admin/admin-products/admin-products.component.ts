@@ -42,7 +42,7 @@ export class AdminProductsComponent {
     }
     
 	/*classes*/
-	margin = "mx-sm-2"
+	margin = "mx-lg-2"
 	size = "w-100"
 	
 

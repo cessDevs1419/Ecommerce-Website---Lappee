@@ -1,11 +1,17 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+interface Subcategory {
+    sub_category: string
+}
+
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.css']
 })
+
+
 export class ModalComponent {
 	//modal use
     @Input() modalID: string;
@@ -58,7 +64,19 @@ export class ModalComponent {
     @Input() selectedRowData: any;
     
     //CATEGORY DATA
+    categoryData = {
+        main_category: '',
+    }
     
+    subcategoryData = {
+        main_category: '',
+        sub_categories: [] as Subcategory[]
+    };
+    
+    addInput() {
+        const newId = (this.subcategoryData.sub_categories.length + 1).toString();
+        this.subcategoryData.sub_categories.push({ sub_category: '' });
+    }
     
     //PRODUCT DATA
     productData = {
@@ -87,7 +105,11 @@ export class ModalComponent {
         this.productData.product_images.splice(index, 1);
     }
     
+
     submitForm() {
         console.log(this.productData);
+        console.log(this.categoryData);
+        console.log(this.subcategoryData);
+
     }
 }
