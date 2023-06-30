@@ -10,7 +10,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             
             </div>
-            <form (ngSubmit)="submitForm()">
+            <form #LappeeForm="ngForm" (ngSubmit)="submitForm()">
                 <!--CATEGORY FORM-->
                 <div *ngIf="modalCategory" class="modal-body">
                 
@@ -26,20 +26,19 @@
                     <div *ngIf="modalAddSubCategory" class="modal-body text-center pt-0 pb-0">
                         
                         <button type="button" (click)="addInput()">+</button>
-                        <div class="m-auto col-sm-8 mb-3">
+                        <div class="m-auto col-sm-8 mb-3" >
                             <label for="selectCategory" class="form-label">Select Main Category</label>
                             <select 
                                 class="form-select"  
                                 id="selectCategory" 
                                 name="selectCategory" 
                                 [value]="selectedRowData?.category"
-                                [(ngModel)]="subcategoryData.main_category" 
+                                [(ngModel)]="subcategoryData.main_category"
+                                *ngIf="categories | async as categoriesData"
                                 required
                             >
-                                <option selected>Select Sub Category</option>
-                                <option value="wet">Wet</option>
-                                <option value="wetnawet">Wetnawet</option>
-                                <option value="wetthis">Wetthis</option>
+                                <option *ngFor="let category of categoriesData" [value]="category.id">{{category.name}}</option>
+
                             </select>
                         </div>
                         
@@ -52,8 +51,19 @@
                     </div>
                     
                     <!--EDIT CATEGORY FORM-->
-                    <div *ngIf="modalDeleteCategory" class="modal-body text-center pt-0 pb-0">
-                        
+                    <div *ngIf="modalEditCategory" class="modal-body text-center pt-0 pb-0">
+                        <input type="hidden" [value]="selectedRowData?.id">
+                        <div class="m-auto col-sm-8">
+                            <label for="addcategoryName" class="form-label">Category Name</label>
+                            <input 
+                                type="text"  
+                                class="form-control" 
+                                id="addcategoryName" 
+                                name="addcategoryName" 
+                                [value]="selectedRowData?.name"
+                                [(ngModel)]="categoryData.main_category" 
+                                required>
+                        </div>
                     </div>
                     
                     <!--DELETE CATEGORY FORM-->
@@ -68,8 +78,10 @@
                 
                 <!--PRODUCT FORM-->
                 <div *ngIf="modalProduct" class="modal-body  p-0">
+                
                     <!--ADD PRODUCT FORM-->
                     <div *ngIf="modalAddProduct" class="modal-body pt-0 pb-0">
+                        
                         <div class="row">    
                             <div class="col-sm-6 mb-3">
                                 <label for="addproductName" class="form-label">Product Name</label>
@@ -99,11 +111,15 @@
 
                         <div class="col-sm-6 mb-3">    
                             <label for="addproductPriceCategory" class="form-label">Category</label>
-                            <select class="form-select" id="addproductPriceCategory"name="addproductPriceCategory" [(ngModel)]="productData.product_category" required>
-                                <option selected>Select Sub Category</option>
-                                <option value="wet">Wet</option>
-                                <option value="wetnawet">Wetnawet</option>
-                                <option value="wetthis">Wetthis</option>
+                            <select 
+                                class="form-select" 
+                                id="addproductPriceCategory"
+                                name="addproductPriceCategory" 
+                                [(ngModel)]="productData.product_category"
+                                *ngIf="categories | async as categoriesData"
+                                required
+                            >
+                                <option *ngFor="let category of categoriesData" [value]="category.id">{{category.name}}</option>
                             </select>
                         </div>
                         
@@ -133,6 +149,7 @@
                     <!--EDIT PRODUCT FORM--> 
                     <div *ngIf="modalEditProduct" class="modal-body pt-0 pb-0">
                         <input type="hidden" [value]="selectedRowData?.id">
+                        
                         <div class="row">
                             <div class="col-sm-6 mb-3">
                                 <label for="editproductName" class="form-label">Product Name</label>
@@ -259,6 +276,7 @@
                             </div>
                         </div>  
                     </div>
+                    
                 </div>
                 
                 <!--DISCOUNT FORM-->

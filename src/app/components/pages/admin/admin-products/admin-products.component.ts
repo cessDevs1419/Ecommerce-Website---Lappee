@@ -6,13 +6,13 @@ import { Product, ProductList } from 'src/assets/models/products';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-products',
-  templateUrl: './admin-products.component.html',
-  styleUrls: ['./admin-products.component.css']
+    selector: 'app-admin-products',
+    templateUrl: './admin-products.component.html',
+    styleUrls: ['./admin-products.component.css']
 })
 export class AdminProductsComponent {
-  
-  products!: Observable<Product[]>;
+
+    products!: Observable<Product[]>;
 
 	constructor(
 		private service: ProductsService,
@@ -24,13 +24,13 @@ export class AdminProductsComponent {
 	
 	private formatProducts(Response: ProductList) : Product[]{
 		return Response.data.map((data: Product) => ({
-      id: data.id,
-      name: data.name,
-      stock: data.stock,
-      stock_limit: data.stock_limit,
-      price: data.price,
-      sub_category_id: data.sub_category_id,
-      description: data.description
+	        id: data.id,
+	        name: data.name,
+	        stock: data.stock,
+	        stock_limit: data.stock_limit,
+	        price: data.price,
+	        sub_category_id: data.sub_category_id,
+	        description: data.description
 		}))
 	}   
 	

@@ -11,7 +11,15 @@
                 [addBtn]="true"
                 addbtnName="ADD CATEGORY"
                 [addBtnclass]="size"
-                [tableHeader]="['CATEGORY ID','CATEGORYNAME','ACTIONS']"
+                
+                [tableAction]="true"
+                [editBtn]="true"
+                [deleteBtn]="true"
+                
+                [tableHeader]="['CATEGORY ID','CATEGORY NAME']"
+                [tableRows]="['id','name']"
+                [tableData]="categories"
+                
                 (rowDataSelected)="onRowDataSelected($event)"
             ></app-table>
         </div>
@@ -26,7 +34,9 @@
                 [addSubBtnclass]="size"
                 addSubtnName="ADD SUB CATEGORY"
                 
-                [tableHeader]="['CATEGORY ID','CATEGORYNAME','MAIN CATEGORY']"
+                [tableHeader]="['CATEGORY ID','CATEGORY NAME','MAIN CATEGORY']"
+                [tableRows]="['id','name', 'main_category']"
+                [tableData]="sub_categories"
             ></app-table>
         </div>
     </div>

@@ -1,7 +1,13 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, Input, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { Observable } from 'rxjs';
+import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { CategoryList, Category } from 'src/assets/models/categories';
+import { map } from 'rxjs';
 
 interface Subcategory {
+    main_category: string,
     sub_category: string
 }
 
@@ -62,8 +68,30 @@ export class ModalComponent {
     @Input() modalViewCourier!: boolean; 
     
     @Input() selectedRowData: any;
+    @ViewChild('LappeeForm') LappeeForm!: NgForm;
     
-    //CATEGORY DATA
+    //SET DATA
+
+    
+    categories!: Observable<Category[]>;
+
+    constructor(private service: CategoriesService) {}
+
+    ngOnInit(): void {
+        this.categories = this.service.getCategories().pipe(
+            map((response: CategoryList) => this.formatCategories(response))
+        );
+    }
+
+    private formatCategories(response: CategoryList): Category[] {
+        return response.data.map((data: Category) => ({
+            id: data.id,
+            name: data.name
+        }));
+    } 
+	
+    
+    //GET CATEGORY DATA
     categoryData = {
         main_category: '',
     }
@@ -73,16 +101,21 @@ export class ModalComponent {
         sub_categories: [] as Subcategory[]
     };
     
+    
     addInput() {
         const newId = (this.subcategoryData.sub_categories.length + 1).toString();
-        this.subcategoryData.sub_categories.push({ sub_category: '' });
+        const newSubCategory: Subcategory = {
+            main_category: this.subcategoryData.main_category,
+            sub_category: ''
+        };
+        this.subcategoryData.sub_categories.push(newSubCategory);
     }
     
-    //PRODUCT DATA
+    //GET PRODUCT DATA
     productData = {
         product_name: '',
-        product_quantity: 0,
-        product_price: 0,
+        product_quantity: null,
+        product_price: null,
         product_currency: '',
         product_category: '',
         product_description: '',
@@ -110,6 +143,6 @@ export class ModalComponent {
         console.log(this.productData);
         console.log(this.categoryData);
         console.log(this.subcategoryData);
-
+        //this.LappeeForm.reset();
     }
 }
