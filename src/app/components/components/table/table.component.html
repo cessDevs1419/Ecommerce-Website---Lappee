@@ -1,12 +1,12 @@
 
-<div class="table-container bg-white rounded-4 p-4">
+<div class="table-container overflow-x-auto bg-white rounded-4 p-4">
 
     <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 ">
         <div class="row w-100 mx-0 ">
             <div class="col-lg-6 px-0">
                 <div class="table-title text-start">
-                    <h1 class="header-title">{{tableTitle}}</h1>
-                    <h3 class="header-sub-title">{{subTitle}}</h3>
+                    <h1 class="header-title fw-bold fs-4 mb-0">{{tableTitle}}</h1>
+                    <h3 class="header-sub-title fw-bold fs-6 mt-0">{{subTitle}}</h3>
                 </div>
             </div>
             <div class="col-lg-6 px-0">          
@@ -38,21 +38,21 @@
                         <button
                         *ngIf="addBtn"
                         type="button" 
-                        class="btn btn-primary text-nowrap text-white mx-1 {{addBtnclass}}"
+                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addBtnclass}}"
                         data-bs-toggle="modal" data-bs-target="#addproduct"
                         >{{addbtnName}}</button>
                         
                         <button
                         *ngIf="addSubBtn"
                         type="button" 
-                        class="btn btn-primary text-nowrap text-white mx-1 {{addSubBtnclass}}"
+                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addSubBtnclass}}"
                         data-bs-toggle="modal" data-bs-target="#addsubproduct"
                         >{{addSubtnName}}</button>
                         
                         <button 
                             *ngIf="restockBtn"
                             type="button" 
-                            class="btn btn-primary text-nowrap text-white mx-1 {{restockBtnclass}}"
+                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{restockBtnclass}}"
                             data-bs-toggle="modal" data-bs-target="#restock"
                             >RESTOCK</button>
                     </div>
@@ -62,14 +62,14 @@
         </div>
     </div>
     
-    <table class="table ">
+    <table class="table table-striped">
         <thead>
-            <tr>
-                <th class="th text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
+            <tr >
+                <th class=" bg-theme-blue th fw-bold fs-6 text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
                 
                 <!--Enable this tableHeader Action-->
                 <th *ngIf="tableAction"
-                    class="th text-center dataTools text-white p-3"
+                    class="th bg-theme-blue fw-bold fs-6 text-center dataTools text-white p-3"
                 >       
                 ACTIONS
                 </th>
@@ -116,9 +116,7 @@
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
                             </svg>
                         </button>
-                        
-                        <!--VIEW BTN-->
-                        <button 
+                        <button
                             (click)="sendRowData(item)"
                             *ngIf="viewBtn"
                             type="button" 
