@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-account',
@@ -7,6 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AccountComponent {
   isSignIn: boolean = true;
+
+  constructor(private cookieService: CookieService){
+    
+  }
 
   signInToggle(): void {
     this.isSignIn = true;

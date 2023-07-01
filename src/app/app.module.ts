@@ -51,6 +51,7 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
 import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
 import { OrdersComponent } from './components/pages/main/orders/orders.component';
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
+import { authGuard } from './services/auth/auth-guard.guard';
 
 @NgModule({
   declarations: [
@@ -112,8 +113,8 @@ import { MainRoutingComponent } from './components/pages/main/main-routing/main-
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},
-      {path: 'profile', component: ProfileComponent},
-      {path: 'profile/orders', component: OrdersComponent},
+      {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+      {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
 
       //admin
       {path: 'dashboard', component: AdminRoutingComponent },
