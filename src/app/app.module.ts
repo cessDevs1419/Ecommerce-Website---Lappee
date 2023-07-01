@@ -110,7 +110,7 @@ import { MainRoutingComponent } from './components/pages/main/main-routing/main-
       {path: 'home', component: HomeComponent},
       {path: 'account', component: AccountComponent},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
-      {path: 'products/:productId', component: ProductsComponent, outlet: 'main'},
+      {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'profile/orders', component: OrdersComponent},
