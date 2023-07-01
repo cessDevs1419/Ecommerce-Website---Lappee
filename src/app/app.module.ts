@@ -51,6 +51,9 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
 import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
 import { OrdersComponent } from './components/pages/main/orders/orders.component';
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
+import { ChartsModule } from 'ng2-charts';
+import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
+import { LineGraphComponent } from './components/components/line-graph/line-graph.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +97,9 @@ import { MainRoutingComponent } from './components/pages/main/main-routing/main-
     CourierDeliveredComponent,
     OrdersComponent,
     ProfileBannerComponent,
-    MainRoutingComponent
+    MainRoutingComponent,
+    DonutChartComponent,
+    LineGraphComponent
   ],
   imports: [
     BrowserModule,
@@ -142,7 +147,8 @@ import { MainRoutingComponent } from './components/pages/main/main-routing/main-
     GalleryModule.withConfig({
 
     }),
-    LightboxModule
+    LightboxModule,
+    ChartsModule
   ],
   providers: [
     {

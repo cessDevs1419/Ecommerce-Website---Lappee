@@ -23,6 +23,9 @@ export class ModalComponent {
     @Input() modalID: string;
     @Input() modalTitle!: string;
     @Input() modalSubTitle!: string;
+    
+    @Input() modalAdminDashboard!: boolean;
+    @Input() modalCourierDashboard!: boolean;
 
     //Category Forms
     @Input() modalCategory!: boolean;
@@ -50,6 +53,7 @@ export class ModalComponent {
 
     //Parcel Forms
     @Input() modalParcel!: boolean;
+    @Input() modalAddParcel!: boolean; 
     @Input() modalEditParcel!: boolean;  
  
     //Order Forms
@@ -66,6 +70,8 @@ export class ModalComponent {
     @Input() modalNotifyCourier!: boolean;  
     @Input() modalCheckCourier!: boolean;  
     @Input() modalViewCourier!: boolean; 
+    
+    
     
     @Input() selectedRowData: any;
     @ViewChild('LappeeForm') LappeeForm!: NgForm;
