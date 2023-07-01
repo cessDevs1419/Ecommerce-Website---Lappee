@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChartType, ChartOptions, ChartData } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+
 
 @Component({
   selector: 'app-line-graph',
