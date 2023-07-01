@@ -63,6 +63,9 @@ export class NavbarComponent {
     this.subcategories = this.SubcategoriesService.getSubcategories().pipe(map((response: any) => this.formatSubcategories(response)));
     console.log(this.subcategories);
     this.cartContents = this.cart.getItems(); 
+
+    this.accountService.checkLogin();
+    console.log("State: " + this.accountService.getIsLoggedIn());
   }
 
   // color toggling for nav links and modal background

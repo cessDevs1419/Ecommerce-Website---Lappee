@@ -134,7 +134,7 @@
             </div>
         </div>
 
-        <div class="p-3 border-top" *ngIf="this.accountService.isLoggedIn">
+        <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
             <form [formGroup]="postComment">
                 <textarea type="text" class="w-100 form-control" rows="4" formControlName="message" placeholder="Leave a feedback and review."></textarea>
                 <div *ngIf="commentMessage?.invalid && (commentMessage?.dirty || commentMessage?.touched)">

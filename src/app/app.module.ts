@@ -53,6 +53,7 @@ import { OrdersComponent } from './components/pages/main/orders/orders.component
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
 import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from './components/components/line-graph/line-graph.component';
+import { authGuard } from './services/auth/auth-guard.guard';
 
 @NgModule({
   declarations: [
@@ -116,8 +117,8 @@ import { LineGraphComponent } from './components/components/line-graph/line-grap
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},
-      {path: 'profile', component: ProfileComponent},
-      {path: 'profile/orders', component: OrdersComponent},
+      {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+      {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
 
       //admin
       {path: 'dashboard', component: AdminRoutingComponent },

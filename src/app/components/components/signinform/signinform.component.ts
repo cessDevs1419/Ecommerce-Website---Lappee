@@ -41,7 +41,12 @@ export class SigninformComponent {
 
       this.response = this.accountService.postLoginUser(formData);
 
-      this.accountService.isLoggedIn = true;
+      // mock login
+      if(this.signInEmail?.value != undefined){
+        let email: String = this.signInEmail?.value?.toString();
+        this.accountService.mockLogin(email);
+      }
+      
     }
     else if(this.signInForm.invalid){
       this.signInForm.markAllAsTouched();
