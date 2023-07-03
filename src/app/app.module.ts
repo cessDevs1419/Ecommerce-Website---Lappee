@@ -51,6 +51,8 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
 import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
 import { OrdersComponent } from './components/pages/main/orders/orders.component';
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
+import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
+import { LineGraphComponent } from './components/components/line-graph/line-graph.component';
 import { authGuard } from './services/auth/auth-guard.guard';
 import { ToastComponent } from './components/components/toast/toast.component';
 
@@ -97,7 +99,9 @@ import { ToastComponent } from './components/components/toast/toast.component';
     OrdersComponent,
     ProfileBannerComponent,
     MainRoutingComponent,
-    ToastComponent
+    ToastComponent,
+    DonutChartComponent,
+    LineGraphComponent
   ],
   imports: [
     BrowserModule,

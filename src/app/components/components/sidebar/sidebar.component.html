@@ -15,12 +15,16 @@
                     {{headerName}}
                 </a>
             </div>
+            
             <div class="toolkit px-5 d-none d-md-flex justify-content-between ">
                 <div class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
                     <i class="bi bi-person-fill text-primary fs-4"></i>
                 </div>
-                <div class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                <div class="icon-container position-relative rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
                     <i class="bi bi-bell-fill text-primary fs-4"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">Notification</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -35,7 +39,7 @@
             <li [routerLink]="['', { outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
-                    Overviewzxc
+                    Overview
                 </a>
             </li>
             

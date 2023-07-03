@@ -1,42 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Mulish:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
-
 
 .table-container{
-    overflow-x: auto;
     font-family: 'Mulish', sans-serif;
 }
 
-
-.header-title{
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 20px;   
-}
-
 .header-sub-title{
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 18px;
-    
     color: #C1C1C1;
 }
 
-.th{
-    
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px; 
-
-    background: #0064C0;
-}
-
-
-.btn{
-    max-width: 350px;
-}
-button{
+.bg-theme-blue{
     background: #0064C0;
 }
 
@@ -48,8 +19,3 @@ table th:last-child{
     border-radius:0 8px 8px 0;
 }
 
-/*
-table{
-    min-width: 1000px;
-}
-*/

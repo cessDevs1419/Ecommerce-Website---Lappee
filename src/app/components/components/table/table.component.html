@@ -1,12 +1,12 @@
 
-<div class="table-container bg-white rounded-4 p-4">
+<div class="table-container overflow-x-auto bg-white rounded-4 p-4">
 
     <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 ">
         <div class="row w-100 mx-0 ">
             <div class="col-lg-6 px-0">
                 <div class="table-title text-start">
-                    <h1 class="header-title">{{tableTitle}}</h1>
-                    <h3 class="header-sub-title">{{subTitle}}</h3>
+                    <h1 class="header-title fw-bold fs-4 mb-0">{{tableTitle}}</h1>
+                    <h3 class="header-sub-title fw-bold fs-6 mt-0">{{subTitle}}</h3>
                 </div>
             </div>
             <div class="col-lg-6 px-0">          
@@ -14,62 +14,62 @@
                     class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
                     *ngIf="tableTools"
                 >
-                <div class="searchbar-container w-auto {{searchBarclass}}" *ngIf="searchBar">
-                    <div  class="input-group mx-1 " >
-                        <input 
-                        
-                            class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
-                            name="searchString" 
-                            type="search" 
-                            placeholder="Search Items Here"
-                            [(ngModel)]="searchString"
+                    <div class="searchbar-container w-auto px-0 {{searchBarclass}}" *ngIf="searchBar">
+                        <div  class="input-group mx-1 " >
+                            <input 
                             
-                        >
-                            
-                        <span class="input-group-text searchbar-btn bg-white rounded-4 rounded-start-0 border-primary" id="basic-addon2">
-                            <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1C92FF" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                        </span>
+                                class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
+                                name="searchString" 
+                                type="search" 
+                                placeholder="Search Items Here"
+                                [(ngModel)]="searchString"
+                                
+                            >
+                                
+                            <span class="input-group-text searchbar-btn bg-white rounded-4 rounded-start-0 border-primary" id="basic-addon2">
+                                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1C92FF" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
-                    <button
-                    *ngIf="addBtn"
-                    type="button" 
-                    class="btn btn-primary text-white mx-1 {{addBtnclass}}"
-                    data-bs-toggle="modal" data-bs-target="#addproduct"
-                    >{{addbtnName}}</button>
                     
-                    <button
-                    *ngIf="addSubBtn"
-                    type="button" 
-                    class="btn btn-primary text-white mx-1 {{addSubBtnclass}}"
-                    data-bs-toggle="modal" data-bs-target="#addsubproduct"
-                    >{{addSubtnName}}</button>
-                    
-                    <button 
-                        *ngIf="restockBtn"
+                    <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
+                        <button
+                        *ngIf="addBtn"
                         type="button" 
-                        class="btn btn-primary text-white mx-1 {{restockBtnclass}}"
-                        data-bs-toggle="modal" data-bs-target="#restock"
-                        >RESTOCK</button>
-                </div>
+                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addBtnclass}}"
+                        data-bs-toggle="modal" data-bs-target="#addproduct"
+                        >{{addbtnName}}</button>
+                        
+                        <button
+                        *ngIf="addSubBtn"
+                        type="button" 
+                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addSubBtnclass}}"
+                        data-bs-toggle="modal" data-bs-target="#addsubproduct"
+                        >{{addSubtnName}}</button>
+                        
+                        <button 
+                            *ngIf="restockBtn"
+                            type="button" 
+                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{restockBtnclass}}"
+                            data-bs-toggle="modal" data-bs-target="#restock"
+                            >RESTOCK</button>
+                    </div>
                 
                 </div>
             </div>
         </div>
     </div>
     
-    <table class="table ">
+    <table class="table table-striped">
         <thead>
-            <tr>
-                <th class="th text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
+            <tr >
+                <th class=" bg-theme-blue th fw-bold fs-6 text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
                 
                 <!--Enable this tableHeader Action-->
                 <th *ngIf="tableAction"
-                    class="th text-center dataTools text-white p-3"
+                    class="th bg-theme-blue fw-bold fs-6 text-center dataTools text-white p-3"
                 >       
                 ACTIONS
                 </th>
@@ -116,9 +116,7 @@
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
                             </svg>
                         </button>
-                        
-                        <!--VIEW BTN-->
-                        <button 
+                        <button
                             (click)="sendRowData(item)"
                             *ngIf="viewBtn"
                             type="button" 
@@ -157,7 +155,7 @@
     <nav class="align-items-center row">
     
         <div class="col-lg-6 d-flex">
-            <label for="pageSize" class="mx-2">Items per page:</label>
+            <label for="pageSize" class="mx-2 text-nowrap">Items per page:</label>
             <select id="pageSize" (change)="changePageSize($event)">
                 <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
             </select>
@@ -167,7 +165,7 @@
                 <li class="page-item">
                     <button  class="page-link bg-white" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
                 </li>
-                <li class="page-item"><a class="page-link">Page {{ currentPage }} of {{ totalPages }}</a></li>
+                <li class="page-item"><a class="page-link text-nowrap">Page {{ currentPage }} of {{ totalPages }}</a></li>
                 <li class="page-item">
                     <button class="page-link bg-white" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
                 </li>
