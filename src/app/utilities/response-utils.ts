@@ -3,6 +3,7 @@ import { Category, CategoryList } from "src/assets/models/categories";
 import { Product, ProductList } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
+import { CsrfToken } from "src/assets/models/csrf";
 
 // Formatting
 // returns a Subcategory array from a SubcategoryList
@@ -35,6 +36,7 @@ export function formatProducts(response: ProductList): Product[] {
   }));
 }
 
+// returns Review array from ReviewList
 export function formatReviews(response: any): Review[] {
   return response.data.map((data:Review) => ({
     id: data.id,
@@ -48,6 +50,15 @@ export function formatReviews(response: any): Review[] {
   }));
 }
 
+export function formatCsrfToken(response: any): string {
+  let response_array = response.data.map((data: CsrfToken) => ({
+    csrf_token: data.csrf_token
+  }));
+
+  return response_array[0];
+}
+
+// Filtering
 export function filterSubcategories(subcategoryID: string,input: Observable<Subcategory[]>): Observable<Subcategory[]> {
   return input.pipe(map((subs: Subcategory[]) => {
     return subs.filter((subcat: Subcategory) => subcat.id === subcategoryID);

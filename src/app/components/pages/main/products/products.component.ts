@@ -97,7 +97,7 @@ export class ProductsComponent {
       }
     });
 
-    this.reviews = this.reviewService.getReviews();
+    this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
   }
 
   fave() {

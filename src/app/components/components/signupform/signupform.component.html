@@ -1,4 +1,5 @@
 <div>
+    
     <h2 class="text-center">Register</h2>
     <form [formGroup]="signUpForm" (submit)="onSubmit()">
         <div class="mb-4">
@@ -71,15 +72,19 @@
                 </div>
 
                 <div *ngIf="signUpPassword?.errors?.['passwordUppercase']">
-                    <span class="text-danger">Please use an uppercase character.</span>
+                    <span class="text-danger">Please use an uppercase character (A-Z).</span>
                 </div>
 
                 <div *ngIf="signUpPassword?.errors?.['passwordLowercase']">
-                    <span class="text-danger">Please use a lowercase character.</span>
+                    <span class="text-danger">Please use a lowercase character (a-z).</span>
                 </div>
 
                 <div *ngIf="signUpPassword?.errors?.['passwordNumber']">
-                    <span class="text-danger">Please use a numeric character.</span>
+                    <span class="text-danger">Please use a numeric character (0-9).</span>
+                </div>
+
+                <div *ngIf="signUpPassword?.errors?.['passwordSymbol']">
+                    <span class="text-danger">Please use a symbol (!,@,#, etc.).</span>
                 </div>
             </div>
         </div>

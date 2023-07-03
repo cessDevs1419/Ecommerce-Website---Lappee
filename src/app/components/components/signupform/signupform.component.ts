@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValidator } from 'src/assets/directives/passwordValidator/password-validator.directive';
+import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValidator, symbolValidator } from 'src/assets/directives/passwordValidator/password-validator.directive';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signupform',
@@ -11,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class SignupformComponent {
 
+  @Output() registerSuccess: EventEmitter<any> = new EventEmitter(); 
   response!: Observable<any>;
 
   constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
@@ -21,7 +23,7 @@ export class SignupformComponent {
     signUpLastName: ['', Validators.required],
     signUpSuffix: [''],
     signUpEmail: ['', [Validators.required, Validators.email]],
-    signUpPassword: ['', [Validators.required, Validators.minLength(7), uppercaseValidator(), numberValidator(), lowercaseValidator()]],
+    signUpPassword: ['', [Validators.required, Validators.minLength(7), uppercaseValidator(), numberValidator(), lowercaseValidator(), symbolValidator()]],
     signUpConfirmPassword: ['', [Validators.required]],
     signUpAcceptTerms: ['', Validators.requiredTrue]
   }, { validators: samePassValidator() });
@@ -37,6 +39,8 @@ export class SignupformComponent {
   get signUpAcceptTerms() { return this.signUpForm.get('signUpAcceptTerms') }
 
   onSubmit(){
+  
+
     if(this.signUpForm.valid){
       // submit
       console.warn(this.signUpForm.value);
@@ -54,7 +58,15 @@ export class SignupformComponent {
         console.log(`${value[0]}, ${value[1]}`);
       }
       
-      this.response = this.accountsService.postRegisterUser(formData);
+     this.accountsService.postRegisterUser(formData).subscribe({
+        next: (response: any) => { 
+          console.log(response);
+          this.registerSuccess.emit();
+        },
+        error: (error: HttpErrorResponse) => {
+           return throwError(() => error)
+        }
+      });
     
     }
     else if(this.signUpForm.invalid){

@@ -28,6 +28,15 @@ export function lowercaseValidator(): ValidatorFn {
   }
 }
 
+export function symbolValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    let pass = /[!@#$%^&*(),.\-_=+?\[\]{}\\|;:'"<>\/`~]/.test(control.value);
+    if(!control.value)  { pass= true };
+    return pass ? null: {passwordSymbol: {value: control.value}}
+
+  }
+}
+
 export function samePassValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const password = control.get('signUpPassword');

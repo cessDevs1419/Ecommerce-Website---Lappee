@@ -42,10 +42,11 @@ export class SigninformComponent {
       this.response = this.accountService.postLoginUser(formData);
 
       // mock login
-      if(this.signInEmail?.value != undefined){
+      
+      /* if(this.signInEmail?.value != undefined){
         let email: String = this.signInEmail?.value?.toString();
         this.accountService.mockLogin(email);
-      }
+      } */
       
     }
     else if(this.signInForm.invalid){

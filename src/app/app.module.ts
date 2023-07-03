@@ -52,6 +52,7 @@ import { ProfileBannerComponent } from './components/components/profile-banner/p
 import { OrdersComponent } from './components/pages/main/orders/orders.component';
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
 import { authGuard } from './services/auth/auth-guard.guard';
+import { ToastComponent } from './components/components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { authGuard } from './services/auth/auth-guard.guard';
     CourierDeliveredComponent,
     OrdersComponent,
     ProfileBannerComponent,
-    MainRoutingComponent
+    MainRoutingComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

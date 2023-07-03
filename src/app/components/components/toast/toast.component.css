@@ -1,0 +1,19 @@
+.toast-container-custom {
+    position: absolute;
+    z-index: 2500;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0, 0.15);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toast-stripe {
+    min-width: 5px;
+    display: block;
+    border-radius: 10px;
+}
+
+.toast-dismiss-btn {
+    background: none;
+    border: none;
+    display: block;
+}

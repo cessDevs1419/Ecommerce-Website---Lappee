@@ -1,8 +1,11 @@
 // API URL
 const api = "http://127.0.0.1:8000/"
 
+//CSRF Endpoint
+export const GETCsrfToken: string = api + "api/auth/csrf-token";
+
 // Subcategory Endpoints
-export const GETSubategories: string = api + "api/client/products/category/sub";
+export const GETSubcategories: string = api + "api/client/products/category/sub";
 export const POSTSubcategories: string = api + "api/admin/category/sub/store";
 export const PATCHSubcategories: string = api + "api/admin/category/sub/edit";
 export const DELETESubcategories: string = api + "api/admin/category/sub/delete";
@@ -22,3 +25,6 @@ export const DELETEProducts: string = api + "api/admin/products/delete";
 //Account Endpoints
 export const POSTLogin: string = api + "api/auth/login";
 export const POSTRegister: string = api + "api/auth/register";
+
+//Reviews Endpoints
+export const GETReviews: string = api + "api/client/products/reviews/?id=";

@@ -25,6 +25,10 @@ body {
     color: #FFFFFF;
 }
 
+.bg-white {
+    background-color: #FFFFFF;
+}
+
 .muted-text {
     color: var(--muted-gray);
 }
