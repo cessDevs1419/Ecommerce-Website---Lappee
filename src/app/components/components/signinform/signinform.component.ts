@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Login } from 'src/assets/models/account';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signinform',
@@ -17,36 +19,50 @@ export class SigninformComponent {
     rememberMe: false,
   }
 
+  @Output() loginSuccess: EventEmitter<any> = new EventEmitter();
+  @Output() invalidCredentials: EventEmitter<any> = new EventEmitter();
   response!: Observable<any>;
 
   signInForm = new FormGroup ({
     signInEmail: new FormControl('', Validators.required),
-    signInPassword: new FormControl('', Validators.required)
+    signInPassword: new FormControl('', Validators.required),
+    signInRememberMe: new FormControl('')
   });
 
   get signInEmail() { return this.signInForm.get('signInEmail') }
   get signInPassword() { return this.signInForm.get('signInPassword') }
+  get signInRememberMe() { return this.signInForm.get('signInRememberMe') }
 
-  constructor(private accountService: AccountsService) {}
+  constructor(private accountService: AccountsService, private router: Router) {}
 
   onSubmit(){
     if(this.signInForm.valid){
       //submit
-      console.warn(this.signInForm.value);
 
       let formData: any = new FormData();
       formData.append('email', this.signInForm.get('signInEmail')?.value);
       formData.append('password', this.signInForm.get('signInPassword')?.value);
-      formData.append('rememberMe', false);
+      formData.append('rememberMe', this.signInForm.get('signInRememberMe')?.value ? 1 : 0);
 
-      this.response = this.accountService.postLoginUser(formData);
+      console.log(formData);
 
-      // mock login
-      
-      /* if(this.signInEmail?.value != undefined){
-        let email: String = this.signInEmail?.value?.toString();
-        this.accountService.mockLogin(email);
-      } */
+      this.accountService.postLoginUser(formData).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.signInForm.reset();
+          this.loginSuccess.emit();
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          },1000);
+        },
+        error: (error: HttpErrorResponse) => {
+          if(error.status === 401) {
+            console.log("Error 401");
+            this.invalidCredentials.emit();
+          }
+          return throwError(() => error);
+        }
+      });
       
     }
     else if(this.signInForm.invalid){

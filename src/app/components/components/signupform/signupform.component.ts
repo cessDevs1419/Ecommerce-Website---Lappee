@@ -61,6 +61,7 @@ export class SignupformComponent {
      this.accountsService.postRegisterUser(formData).subscribe({
         next: (response: any) => { 
           console.log(response);
+          this.signUpForm.reset();
           this.registerSuccess.emit();
         },
         error: (error: HttpErrorResponse) => {

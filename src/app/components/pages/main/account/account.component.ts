@@ -8,8 +8,9 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent {
-  toastContent!: string;
-  toastHeader!: string;
+  toastContent: string = "";
+  toastHeader: string = "";
+  toastTheme: string = "default"; 
 
   isSignIn: boolean = true;
 
@@ -30,6 +31,22 @@ export class AccountComponent {
   registerSuccessToast(): void {
     this.toastHeader = "Registration successful!";
     this.toastContent = "You may now login using your account.";
+    this.toast.switchTheme('default');
     this.toast.show();
+  }
+
+  loginSuccessToast(): void {
+    this.toastHeader = "Login successful!";
+    this.toastContent = "You are now logged in.";
+    this.toast.switchTheme('default');
+    this.toast.show();
+  }
+
+  invalidCredentialsToast(): void {
+    this.toastHeader = "Login unsuccessful.";
+    this.toastContent = "Your credentials may be incorrect.";
+    this.toast.switchTheme('negative');
+    this.toast.show();
+    console.log(this.toastTheme);
   }
 }

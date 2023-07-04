@@ -26,7 +26,11 @@ export class ToastComponent {
   isVisible: boolean = true;
 
   ngOnInit(): void {
-    switch(this.toastTheme){
+
+  }
+
+  switchTheme(input: string): void {
+    switch(input){
       case 'default': {
         this.theme = "bi-check-circle-fill color-primary";
         this.accent = "bg-primary";
@@ -55,8 +59,10 @@ export class ToastComponent {
       }
     }
   }
-
   show(): void {
+    console.log("Before switch: " + this.theme);
+    //this.switchTheme();
+    console.log("After switch: " + this.theme);
     this.opacity = 100;
     setTimeout(() => {
       this.hide();

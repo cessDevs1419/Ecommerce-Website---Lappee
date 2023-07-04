@@ -1,21 +1,23 @@
 <div class="toast-container-custom p-2 bg-white top-0 start-50 translate-middle-x" [style.opacity]="this.opacity">
-    <div class="d-flex flex-row">
-        <div [ngClass]="this.accent" class="toast-stripe me-3 ">
-            
-        </div>
-        <div class="toast-icon me-3 d-flex align-items-center">
-            <i [ngClass]="this.theme" class="bi fs-2"></i>
-        </div>
-        <div class="toast-content d-flex flex-column me-3">
-            <div class="toast-header">
-                <strong>{{this.toastTitle}}</strong>
+    <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row">
+            <div [ngClass]="this.accent" class="toast-stripe me-3 ">
+                
             </div>
-            <div class="toast-body">
-                {{this.toastContent}}
+            <div class="toast-icon me-3 d-flex align-items-center">
+                <i [ngClass]="this.theme" class="bi fs-2"></i>
+            </div>
+            <div class="toast-content d-flex flex-column me-3">
+                <div class="toast-header">
+                    <strong>{{this.toastTitle}}</strong>
+                </div>
+                <div class="toast-body">
+                    {{this.toastContent}}
+                </div>
             </div>
         </div>
         <div class="toast-dismiss d-flex align-items-center">
-            <button class="toast-dismiss-btn"><i class="bi bi-x"></i></button>
+            <button (click)="hide()" class="toast-dismiss-btn"><i class="bi bi-x"></i></button>
         </div>
     </div>
 </div>

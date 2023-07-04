@@ -17,3 +17,13 @@
     border: none;
     display: block;
 }
+
+@media screen and (max-width: 576px) {
+    .toast-container-custom {
+        width: 100%;
+    }
+
+    .toast-dismiss-btn {
+        justify-self: end;
+    }
+}
