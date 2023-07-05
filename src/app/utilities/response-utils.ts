@@ -4,6 +4,7 @@ import { Product, ProductList } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
+import { User } from "src/assets/models/user";
 
 // Formatting
 // returns a Subcategory array from a SubcategoryList
@@ -56,6 +57,19 @@ export function formatCsrfToken(response: any): string {
   }));
 
   return response_array[0];
+}
+
+export function formatUser(response: any): User[] {
+  return response.data.map((data: User) => ({
+      user_id: data.user_id,
+      email: data.email,
+      fname: data.fname,
+      mname: data.mname,
+      lname: data.lname,
+      suffix: data.suffix,
+      created_at: data.created_at
+    })
+  )
 }
 
 // Filtering

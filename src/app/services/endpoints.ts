@@ -2,7 +2,7 @@
 const api = "http://127.0.0.1:8000/"
 
 //CSRF Endpoint
-export const GETCsrfToken: string = api + "api/auth/csrf-token";
+export const GETCsrfToken: string = api + "sanctum/csrf-cookie";
 
 // Subcategory Endpoints
 export const GETSubcategories: string = api + "api/client/products/category/sub";
@@ -25,6 +25,8 @@ export const DELETEProducts: string = api + "api/admin/products/delete";
 //Account Endpoints
 export const POSTLogin: string = api + "api/auth/login";
 export const POSTRegister: string = api + "api/auth/register";
+export const POSTLogout: string = api + "api/auth/logout";
+export const GETUser: string = api + "api/auth/user";
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";

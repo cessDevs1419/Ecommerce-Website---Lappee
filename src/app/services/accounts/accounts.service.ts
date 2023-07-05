@@ -1,9 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Register, Login } from 'src/assets/models/account';
-import { POSTRegister, POSTLogin } from '../endpoints';
+import { POSTRegister, POSTLogin, GETUser } from '../endpoints';
 import { CookieService } from 'ngx-cookie-service';
+import { User, UserList } from 'src/assets/models/user';
+import { formatUser } from 'src/app/utilities/response-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -11,29 +13,55 @@ import { CookieService } from 'ngx-cookie-service';
 export class AccountsService {
 
   private isLoggedIn: boolean = false; 
-  name: string = "Wendell";
+  
+  user: User = {
+    user_id: '',
+    email: '',
+    fname: '',
+    mname: '',
+    lname: '',
+    suffix: '',
+    created_at: ''
+  }
 
 
   httpOptions = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Referer': 'localhost:4200'
       //try lang why not
     })
   };
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-  ngOnInit(): void {
-    console.log("test");
-  }
-
   getIsLoggedIn(): boolean {
     return this.isLoggedIn;
   }
 
-  setIsLoggedIn(value: boolean): void {
-    this.isLoggedIn = value;
+  checkLoggedIn(): boolean {
+   this.http.get(GETUser, this.httpOptions).subscribe({
+    next: (response: any) => {
+      console.log(response);
+      this.isLoggedIn = true;
+      return true;
+    },
+    error: (error: HttpErrorResponse) => {
+      this.isLoggedIn = false;
+      return false;
+    }
+   });
+   return false;
+  }
+
+  getUser(): Observable<any> {
+    return this.http.get<UserList>(GETUser, this.httpOptions);
+  }
+
+  initUser() {
+    let user = this.getUser().pipe(map((response: any) => formatUser(response)))
   }
 
   postRegisterUser(data: FormData): Observable<any> {
@@ -44,21 +72,7 @@ export class AccountsService {
     return this.http.post<Login>(POSTLogin, data, this.httpOptions);
   }
 
-  handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
-
-  mockLogin(email: String): void {
+  /* mockLogin(email: String): void {
     if(this.cookieService.check("login")){
       let cookieName = this.cookieService.get("login");
       if(cookieName[1] != email){
@@ -82,5 +96,5 @@ export class AccountsService {
     if(this.cookieService.check("login")){
       this.isLoggedIn = true;
     }
-  }
+  } */
 }

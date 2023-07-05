@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { CsrfResponse } from 'src/assets/models/csrf';
@@ -15,21 +15,32 @@ export class CsrfService {
 
   constructor(private http: HttpClient) { }
 
-  getToken(): Observable<CsrfResponse> {
-    return this.http.get<CsrfResponse>(GETCsrfToken);
+  private getToken(): Observable<CsrfResponse> {
+    return this.http.get<CsrfResponse>(GETCsrfToken, { withCredentials:true });
   }
 
   resolveToken(): void {
-    if(!this.authToken){
+
+    this.getToken().subscribe({
+      next: (response: any) => {
+        console.log(response);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    })
+
+    /* if(!this.authToken){
       this.responseObservable = this.getToken().pipe(map((response: any) => formatCsrfToken(response)));
       this.responseObservable.subscribe((token: string) => {
         this.authToken = token;
       });
-    }
+    } */
   }
 
   getCsrfToken(): string {
     this.resolveToken();
+    console.log(this.authToken);
     return this.authToken;
   }
 

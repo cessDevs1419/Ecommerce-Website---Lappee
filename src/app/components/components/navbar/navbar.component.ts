@@ -8,6 +8,8 @@ import { CartItem, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { CsrfService } from 'src/app/services/csrf/csrf.service';
 
 
 @Component({
@@ -35,8 +37,10 @@ export class NavbarComponent {
               private ProductsService: ProductsService,
               private renderer: Renderer2,
               private cart: CartService,
-              public accountService: AccountsService) {
-    this.renderer.listen('window','click', (event) => {
+              public accountService: AccountsService,
+              private router: Router,
+              private csrfService: CsrfService) {
+      this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
       // set dropdownShown -> true if any dropdown is clicked
@@ -54,17 +58,32 @@ export class NavbarComponent {
         this.clearColorBG();
       }
       });
+
+      /* this.router.events.subscribe((event: any) => {
+        if(event instanceof NavigationEnd) {
+          this.accountService.checkLoggedIn();
+        }
+      }) */
     }
 
 
   ngOnInit(): void {
+    // get csrf token
+    this.csrfService.getCsrfToken();
+
     // load JSONs
     this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => this.formatCategories(response)));
     this.subcategories = this.SubcategoriesService.getSubcategories().pipe(map((response: any) => this.formatSubcategories(response)));
     console.log(this.subcategories);
     this.cartContents = this.cart.getItems(); 
 
-    this.accountService.checkLogin();
+    this.accountService.getUser().subscribe({
+      next: (response: any) => {
+        console.log(response);
+      }
+    })
+
+    this.accountService.checkLoggedIn();
     console.log("State: " + this.accountService.getIsLoggedIn());
   }
 

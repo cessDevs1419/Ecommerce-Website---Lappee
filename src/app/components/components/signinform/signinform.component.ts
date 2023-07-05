@@ -51,6 +51,7 @@ export class SigninformComponent {
           console.log(response);
           this.signInForm.reset();
           this.loginSuccess.emit();
+          this.accountService.checkLoggedIn();
           setTimeout(() => {
             this.router.navigate(['/home']);
           },1000);
