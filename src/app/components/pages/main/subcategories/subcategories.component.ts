@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subcategory } from 'src/assets/models/subcategories';
+import { Subcategory } from 'src/assets/models/categories';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { formatProducts, filterProductsBySubcategory, formatSubcategories, filterSubcategories, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
 import { Observable, map, filter, Subscription } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
+import { CategoriesService } from 'src/app/services/categories/categories.service';
 
 @Component({
   selector: 'app-subcategories',
@@ -23,7 +24,7 @@ export class SubcategoriesComponent {
   productsFiltered!: Observable<Product[]>;
   sortOption: string = "name-normal";
 
-  constructor(private route: ActivatedRoute, private subcategoryService: SubcategoriesService, private productsService: ProductsService) {}
+  constructor(private route: ActivatedRoute, private categoriesService: CategoriesService, private productsService: ProductsService) {}
 
   ngOnInit() {
     this.subcategorySubscription = this.route.params.subscribe(params => {
@@ -33,7 +34,8 @@ export class SubcategoriesComponent {
   }
 
   filterProducts(): void{
-    this.subcategories = this.subcategoryService.getSubcategories().pipe(map((response: any) => formatSubcategories(response)));
+    this.subcategories = this.categoriesService.getCategories().pipe(map((response: any) => formatSubcategories(response)));
+    
     this.subcategoryMatch = filterSubcategories((this.subcategoryId as string), this.subcategories);
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.productsFiltered = filterProductsBySubcategory((this.subcategoryId as string), this.products);

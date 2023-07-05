@@ -1,18 +1,44 @@
 {
     "success": true,
-    "message": "List of all main categories",
+    "message": "List of all sub categories grouped by their main category",
     "data": [
         {
+            "id": "MNCATGddiM79VsZtMq6Bx",
+            "name": "category1",
+            "sub_categories": []
+        },
+        {
             "id": "MNCAT4xL5KsA3zzZ66mp6",
-            "name": "wet"
+            "name": "Category2",
+            "sub_categories": [
+                {
+                    "id": "SBCAThpoU64gGYyJKXSHX",
+                    "main_category_id": "MNCAT4xL5KsA3zzZ66mp6",
+                    "name": "di na wet"
+                }
+            ]
         },
         {
             "id": "MNCATZFrpQias1YSzsbq4",
-            "name": "wet na wet"
+            "name": "Category3",
+            "sub_categories": [
+                {
+                    "id": "SBCATloQQk4lPrAFdczV6",
+                    "main_category_id": "MNCATZFrpQias1YSzsbq4",
+                    "name": "wet pa din"
+                }
+            ]
         },
         {
             "id": "MNCATzU6A66T0PeBzZQ1y",
-            "name": "Wet The Bed 3"
+            "name": "Category4",
+            "sub_categories": [
+                {
+                    "id": "SBCAT7JVn4ycYnlCwgCn1",
+                    "main_category_id": "MNCATzU6A66T0PeBzZQ1y",
+                    "name": "Lizards oh my"
+                }
+            ]
         }
     ]
 }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { CategoryList, Category } from 'src/assets/models/categories';
 import { map } from 'rxjs';
+import { formatCategories } from 'src/app/utilities/response-utils';
 
 interface Subcategory {
     main_category: string,
@@ -85,16 +86,18 @@ export class ModalComponent {
 
     ngOnInit(): void {
         this.categories = this.service.getCategories().pipe(
-            map((response: CategoryList) => this.formatCategories(response))
+            map((response: CategoryList) => formatCategories(response))
         );
     }
 
-    private formatCategories(response: CategoryList): Category[] {
+    // di na need to pero di ko muna dinelete para sayo cess, just in case na merong di gumana sa side mo hahahaha
+    /* private formatCategories(response: CategoryList): Category[] {
         return response.data.map((data: Category) => ({
             id: data.id,
-            name: data.name
+            name: data.name,
+            sub_categories: data.sub_categories
         }));
-    } 
+    } */ 
 	
     
     //GET CATEGORY DATA

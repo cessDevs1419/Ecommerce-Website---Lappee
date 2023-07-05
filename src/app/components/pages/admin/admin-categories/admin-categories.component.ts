@@ -6,10 +6,11 @@ import { Observable } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 
-import { Subcategory, SubcategoryList } from 'src/assets/models/subcategories';
-import { Category, CategoryList } from 'src/assets/models/categories';
+import { Category, CategoryList, Subcategory } from 'src/assets/models/categories';
 
 import { map } from 'rxjs';
+
+import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
 
 @Component({
   selector: 'app-admin-categories',
@@ -29,23 +30,26 @@ export class AdminCategoriesComponent {
 	) {}
 	
 	ngOnInit(): void{
-		this.categories = this.category_service.getCategories().pipe(map((Response: any) => this.formatCategories(Response)));
-    this.sub_categories = this.subcategory_service.getSubcategories().pipe(map((Response: any) => this.formatSubcategories(Response)));
+		this.categories = this.category_service.getCategories().pipe(map((Response: any) => formatCategories(Response)));
+    	this.sub_categories = this.category_service.getCategories().pipe(map((Response: any) => formatSubcategories(Response)));
 	}
-	
-	private formatCategories(Response: CategoryList) : Category[]{
+
+	// di na need to pero di ko muna dinelete para sayo cess, just in case na merong di gumana sa side mo hahahaha
+	/* private formatCategories(Response: CategoryList) : Category[]{
 		return Response.data.map((data: Category) => ({
 	        id: data.id,
 	        name: data.name,
+			sub_categories: data.sub_categories
 		}))
 	}
-	private formatSubcategories(Response: SubcategoryList) : Subcategory[]{
-		return Response.data.map((data: Subcategory) => ({
-	        id: data.id,
-	        main_category: data.main_category,
-	        name: data.name,
+	private formatSubcategories(Response: CategoryList) : Subcategory[]{
+		let subcategoriesList = Response.data.flatMap((category: Category) => category.sub_categories);
+		return subcategoriesList.map((subcategory: Subcategory) => ({
+		  id: subcategory.id,
+		  main_category_id: subcategory.main_category_id,
+		  name: subcategory.name
 		}))
-	}
+	} */
 
 	
   /*Needed for table to send data to modal*/

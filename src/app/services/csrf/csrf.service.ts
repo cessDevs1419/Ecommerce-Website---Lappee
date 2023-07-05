@@ -23,7 +23,7 @@ export class CsrfService {
 
     this.getToken().subscribe({
       next: (response: any) => {
-        console.log(response);
+        
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);
@@ -40,7 +40,6 @@ export class CsrfService {
 
   getCsrfToken(): string {
     this.resolveToken();
-    console.log(this.authToken);
     return this.authToken;
   }
 

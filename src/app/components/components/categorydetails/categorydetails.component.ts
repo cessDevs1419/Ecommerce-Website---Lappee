@@ -1,6 +1,5 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
-import { Category } from 'src/assets/models/categories';
-import { Subcategory, SubcategoryList } from 'src/assets/models/subcategories';
+import { Category, Subcategory } from 'src/assets/models/categories';
 import { ProductsService } from '../../../services/products/products.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
@@ -28,7 +27,7 @@ export class CategorydetailsComponent {
   ngOnInit(): void {
     this.subcategory.pipe(map((subs: Subcategory[]) => {
       subs.forEach((subcat: Subcategory) => {
-        console.log(subcat.id, " | ", subcat.main_category, " | ", subcat.name);
+        console.log(subcat.id, " | ", subcat.main_category_id, " | ", subcat.name);
       })
     }));
 
@@ -45,7 +44,7 @@ export class CategorydetailsComponent {
 
   private filterSubcategories(input: Observable<Subcategory[]>): Observable<Subcategory[]> {
     return input.pipe(map((subs: Subcategory[]) => {
-      return subs.filter((subcat: Subcategory) => subcat.main_category === this.category.name);
+      return subs.filter((subcat: Subcategory) => subcat.main_category_id === this.category.id);
       
     }));
   }

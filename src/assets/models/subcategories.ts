@@ -1,11 +1,10 @@
 export interface SubcategoryList {
     success: string,
     message: string,
-    data: Subcategory[]
+    data: MainCategory[]
 }
 
-export interface Subcategory {
+export interface MainCategory {
     id: string,
-    main_category: string,
-    name: string
-}
+    name: string,
+}   

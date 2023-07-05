@@ -1,5 +1,4 @@
-import { Subcategory, SubcategoryList } from "src/assets/models/subcategories";
-import { Category, CategoryList } from "src/assets/models/categories";
+import { Category, CategoryList, Subcategory } from "src/assets/models/categories";
 import { Product, ProductList } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
@@ -7,20 +6,25 @@ import { CsrfToken } from "src/assets/models/csrf";
 import { User } from "src/assets/models/user";
 
 // Formatting
+
+
 // returns a Subcategory array from a SubcategoryList
-export function formatSubcategories(response: SubcategoryList) : Subcategory[] {
-    return response.data.map((data: Subcategory) => ({
-      id: data.id,
-      main_category: data.main_category,
-      name: data.name
-    }));
+export function formatSubcategories(response: CategoryList) : Subcategory[] {
+    let subcategoriesList = response.data.flatMap((category: Category) => category.sub_categories);
+    return subcategoriesList.map((subcategory: Subcategory) => ({
+      id: subcategory.id,
+      main_category_id: subcategory.main_category_id,
+      name: subcategory.name
+    }))
+    
 }
 
 // returns a Category array from a CategoryList
 export function formatCategories(response: CategoryList) : Category[] {
     return response.data.map((data: Category) => ({
       id: data.id,
-      name: data.name
+      name: data.name,
+      sub_categories: data.sub_categories
     }));
 }
 

@@ -5,7 +5,7 @@ const api = "http://127.0.0.1:8000/"
 export const GETCsrfToken: string = api + "sanctum/csrf-cookie";
 
 // Subcategory Endpoints
-export const GETSubcategories: string = api + "api/client/products/category/sub";
+export const GETSubcategories: string = api + "api/client/category/";
 export const POSTSubcategories: string = api + "api/admin/category/sub/store";
 export const PATCHSubcategories: string = api + "api/admin/category/sub/edit";
 export const DELETESubcategories: string = api + "api/admin/category/sub/delete";
@@ -16,11 +16,14 @@ export const POSTCategories: string = api + "/api/admin/category/main/store";
 export const PATCHCategories: string = api + "api/admin/category/main/edit";
 export const DELETECategories: string = api + "api/admin/category/main/delete";
 
-//Product Endpoints
-export const GETProducts: string = api + "api/admin/products";
-export const POSTProducts: string = api + "api/admin/products/store";
-export const PATCHProducts: string = api + "api/admin/products/edit";
-export const DELETEProducts: string = api + "api/admin/products/delete";
+// Product Client Endpoints
+export const GETProducts: string = api + "api/client/products";
+
+//Product Admin Endpoints
+export const GETProductsAdmin: string = api + "api/admin/products";
+export const POSTProductsAdmin: string = api + "api/admin/products/store";
+export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
+export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Account Endpoints
 export const POSTLogin: string = api + "api/auth/login";

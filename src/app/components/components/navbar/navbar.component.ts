@@ -2,7 +2,7 @@ import { Component, OnInit, Input, QueryList, ViewChildren, ViewChild, ElementRe
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { Category, CategoryList } from 'src/assets/models/categories';
 import { SubcategoriesService } from '../../../services/subcategories/subcategories.service';
-import { SubcategoryList, Subcategory } from 'src/assets/models/subcategories';
+import { Subcategory } from 'src/assets/models/categories';
 import { ProductsService } from '../../../services/products/products.service';
 import { CartItem, ProductList } from 'src/assets/models/products';
 import { Observable, map } from 'rxjs';
@@ -10,6 +10,7 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { CsrfService } from 'src/app/services/csrf/csrf.service';
+import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
 
 
 @Component({
@@ -72,9 +73,8 @@ export class NavbarComponent {
     this.csrfService.getCsrfToken();
 
     // load JSONs
-    this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => this.formatCategories(response)));
-    this.subcategories = this.SubcategoriesService.getSubcategories().pipe(map((response: any) => this.formatSubcategories(response)));
-    console.log(this.subcategories);
+    this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => formatCategories(response)));
+    this.subcategories = this.CategoriesService.getCategories().pipe(map((response: any) => formatSubcategories(response)));
     this.cartContents = this.cart.getItems(); 
 
     this.accountService.getUser().subscribe({
@@ -84,7 +84,7 @@ export class NavbarComponent {
     })
 
     this.accountService.checkLoggedIn();
-    console.log("State: " + this.accountService.getIsLoggedIn());
+    console.log("Logged In: " + this.accountService.getIsLoggedIn());
   }
 
   // color toggling for nav links and modal background
@@ -106,7 +106,7 @@ export class NavbarComponent {
       this.lastToggled = this.targetElement.innerText;
     }
 
-    console.log("lastToggled:" + this.lastToggled)
+    //console.log("lastToggled:" + this.lastToggled)
   }
 
   // reset colors and modal bg
@@ -120,18 +120,4 @@ export class NavbarComponent {
     this.lastToggled = "";
   }
 
-  private formatSubcategories(response: SubcategoryList) : Subcategory[] {
-    return response.data.map((data: Subcategory) => ({
-      id: data.id,
-      main_category: data.main_category,
-      name: data.name
-    }));
-  }
-
-  private formatCategories(response: CategoryList) : Category[] {
-    return response.data.map((data: Category) => ({
-      id: data.id,
-      name: data.name
-    }));
-  }
 }

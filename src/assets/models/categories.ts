@@ -7,4 +7,11 @@ export interface CategoryList {
 export interface Category {
     id: string,
     name: string
+    sub_categories: Subcategory[]
+}
+
+export interface Subcategory {
+    id: string,
+    main_category_id: string,
+    name: string
 }
