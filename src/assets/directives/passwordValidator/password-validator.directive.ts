@@ -41,7 +41,7 @@ export function samePassValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const password = control.get('signUpPassword');
     const confirm = control.get('signUpConfirmPassword');
-    console.log(password?.value + " | " + confirm?.value);
+    //console.log(password?.value + " | " + confirm?.value);
     return password && confirm && password.value == confirm.value ? null : { samePassword: {value: control.value} } ;
   }
 }

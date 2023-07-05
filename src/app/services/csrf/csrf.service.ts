@@ -12,8 +12,6 @@ import { CookieService } from 'ngx-cookie-service';
 export class CsrfService {
 
   private csrfToken: string;
-  private ask: number = 0;
-  private status: number = 0;
   responseObservable: Observable<string>;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
@@ -22,30 +20,22 @@ export class CsrfService {
     return this.http.get<CsrfResponse>(GETCsrfToken, { withCredentials:true });
   }
 
-  resolveToken(): void {
-    
-      this.getToken().subscribe({
-        next: (response: any) => {
-          this.csrfToken = this.cookieService.get('XSRF-TOKEN');
-          
-        },
-        error: (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      });
+  // probably best kung magclear muna ng cookies bago irun to
 
-    /* {
-      this.responseObservable = this.getToken().pipe(map((response: any) => formatCsrfToken(response)));
-      this.responseObservable.subscribe((token: string) => {
-        this.authToken = token;
-      });
-    } */
+  init(): void {
+    // hindi nagrerequest pag wala yung .subscribe, 
+    this.getToken().subscribe({
+      next: (response: any) => {},
+      complete: () => {}
+    });
+
+    // get cookie set by the api
+    this.csrfToken = this.cookieService.get('XSRF-TOKEN');
   }
 
+  // return private token
   getCsrfToken(): string {
-    if(!this.csrfToken){
-      this.resolveToken();
-    }
+    //console.log(this.csrfToken);
     return this.csrfToken;
   }
 
