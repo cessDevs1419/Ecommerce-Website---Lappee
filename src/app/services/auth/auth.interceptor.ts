@@ -11,14 +11,12 @@ export class AuthInterceptor implements HttpInterceptor {
         //remove when csrf is ready
         return next.handle(req);
 
-        /* const token = this.csrf.getToken();
+        /* const token = this.csrf.getCsrfToken();
         console.log(token);
         if(token){
             const clone = req.clone({
-                headers: req.headers.set("X-XSRF-TOKEN", "")
+                headers: req.headers.set("X-XSRF-TOKEN", token)
             })
-
-            console.log(token);
             return next.handle(clone);
         }
         else {

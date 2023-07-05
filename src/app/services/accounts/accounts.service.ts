@@ -29,8 +29,7 @@ export class AccountsService {
     headers: new HttpHeaders({
       'Accept': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'Referer': 'localhost:4200'
+      'Access-Control-Allow-Credentials': 'true'
       //try lang why not
     })
   };

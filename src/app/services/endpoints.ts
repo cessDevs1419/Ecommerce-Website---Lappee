@@ -1,5 +1,5 @@
 // API URL
-const api = "http://127.0.0.1:8000/"
+const api = "http://localhost:8000/"
 
 //CSRF Endpoint
 export const GETCsrfToken: string = api + "sanctum/csrf-cookie";

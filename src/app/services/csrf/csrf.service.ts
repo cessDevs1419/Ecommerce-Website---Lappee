@@ -4,33 +4,37 @@ import { Observable, map } from 'rxjs';
 import { CsrfResponse } from 'src/assets/models/csrf';
 import { GETCsrfToken } from '../endpoints';
 import { formatCsrfToken } from 'src/app/utilities/response-utils';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CsrfService {
 
-  private authToken: string;
+  private csrfToken: string;
+  private ask: number = 0;
+  private status: number = 0;
   responseObservable: Observable<string>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   private getToken(): Observable<CsrfResponse> {
     return this.http.get<CsrfResponse>(GETCsrfToken, { withCredentials:true });
   }
 
   resolveToken(): void {
+    
+      this.getToken().subscribe({
+        next: (response: any) => {
+          this.csrfToken = this.cookieService.get('XSRF-TOKEN');
+          
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      });
 
-    this.getToken().subscribe({
-      next: (response: any) => {
-        
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-      }
-    })
-
-    /* if(!this.authToken){
+    /* {
       this.responseObservable = this.getToken().pipe(map((response: any) => formatCsrfToken(response)));
       this.responseObservable.subscribe((token: string) => {
         this.authToken = token;
@@ -39,8 +43,10 @@ export class CsrfService {
   }
 
   getCsrfToken(): string {
-    this.resolveToken();
-    return this.authToken;
+    if(!this.csrfToken){
+      this.resolveToken();
+    }
+    return this.csrfToken;
   }
 
 }
