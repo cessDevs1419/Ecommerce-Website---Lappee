@@ -37,6 +37,15 @@ body {
     background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
+.btn-muted{
+    border: 1px solid #BABABA;
+    color: #BABABA;
+}
+
+.bg-light-primary{
+    background: #1C92FF;
+}
+
 .gradientButton {
     max-height: auto;
     padding: 1rem;

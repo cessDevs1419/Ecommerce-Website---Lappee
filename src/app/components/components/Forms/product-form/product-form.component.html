@@ -1,0 +1,265 @@
+            
+        <!--ADD PRODUCT FORM-->
+        <form *ngIf="formAddProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductSubmit()">
+                <div class="modal-body pt-0 pb-0">
+                    
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductName" class="form-label">Product Name</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="addproductName" 
+                                name="addproductName" 
+                                formControlName="product_name"
+                                required
+                            >
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductQty" class="form-label">Quantity</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="addproductQty" 
+                                name="addproductQty" 
+                                formControlName="product_quantity"
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductPrice" class="form-label">Price</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="addproductPrice" 
+                                name="addproductPrice" 
+                                formControlName="product_price"
+                                required
+                            >
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductCurrency" class="form-label">Price Currency</label>
+                            <select 
+                                class="form-select"  
+                                id="addproductPriceCurrency" 
+                                name="addproductPriceCurrency"
+                                formControlName="product_currency"
+                                required
+                            >
+                                <option selected>Select Currency</option>
+                                <option value="php">PHP</option>
+                                <option value="usd">USD</option>
+                                <option value="yen">YEN</option>
+                            </select>
+                        </div>
+                    </div>   
+
+                    <div class="col-sm-6 mb-3">    
+                        <label for="addproductPriceCategory" class="form-label">Category</label>
+                        <select 
+                            class="form-select" 
+                            id="addproductPriceCategory"
+                            name="addproductPriceCategory" 
+                            formControlName="product_category"
+                            *ngIf="categories | async as categoriesData"
+                            required
+                        >
+                            <option *ngFor="let category of categoriesData" [value]="category.id">{{category.name}}</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="addproductDescription" class="form-label">Product Description</label>
+                        <textarea 
+                            class="form-control" 
+                            id="addproductDescription" 
+                            name="addproductPriceDescription" 
+                            rows="3" 
+                            formControlName="product_description"
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div>
+                        <button type="button" (click)="selectFile()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                          <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                          <i class="bi bi-upload text-dark"></i>
+                          <input class="d-none" type="file" id="images" name="images" (change)="handleFileInput($event)" multiple>
+                        </button>
+                        <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
+                          <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                            <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
+                            <button type="button" class="btn p-0" (click)="removeImage(i)">
+                              <i class="bi bi-x-lg text-dark"></i>
+                            </button>
+                          </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+                <div class="modal-footer border-0 ">
+                    <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+                </div>
+        </form>
+        
+        <!--EDIT PRODUCT FORM-->
+        <form *ngIf="formEditProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductSubmit()">
+            <div  class="modal-body pt-0 pb-0">
+                <input type="hidden" [value]="selectedRowData?.id">
+                
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label for="editproductName" class="form-label">Product Name</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="editproductName"  
+                            name="editproductName"
+                            [value]="selectedRowData?.name"
+                            
+                            required
+                        >
+                    </div>
+                    
+                    <div class="col-sm-6  mb-3">
+                        <label for="editproductQty" class="form-label">Quantity</label>
+                        <input 
+                            type="text"  
+                            class="form-control" 
+                            id="editproductQty" 
+                            name="editproductQty"
+                            [value]="selectedRowData?.stock"
+                         
+                            required
+                        >
+                    </div>
+                </div>      
+                
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label for="editproductPrice" class="form-label">Price</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="editproductPrice" 
+                            name="editproductPrice"
+                            [value]="selectedRowData?.price"
+                            
+                            required
+                        >
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label for="editproductCurrency" class="form-label">Price Currency</label>
+                        <select 
+                            class="form-select"  
+                            id="editproductCurrency" 
+                            name="editproductCurrency" 
+                            [value]="selectedRowData?.currency"
+                           
+                            required
+                        >
+                            <option selected>Select Currency</option>
+                            <option value="php">PHP</option>
+                            <option value="usd">USD</option>
+                            <option value="yen">YEN</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6 mb-3">
+                    <label for="editproductCategory" class="form-label">Category</label>
+                    <select 
+                        class="form-select"  
+                        id="editproductCurrency" 
+                        name="editproductCurrency" 
+                        [value]="selectedRowData?.category"
+                         
+                        required
+                    >
+                        <option selected>Select Sub Category</option>
+                        <option value="wet">Wet</option>
+                        <option value="wetnawet">Wetnawet</option>
+                        <option value="wetthis">Wetthis</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="addproductPriceDescription" class="form-label">Product Description</label>
+                    <textarea 
+                        class="form-control" 
+                        id="editproductDescription" 
+                        name="editproductDescription" 
+                        rows="3" 
+                        [value]="selectedRowData?.description"
+                         
+                        required>
+                    </textarea>
+                </div>
+                
+                <div>
+                    <button type="button" (click)="selectFile()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                      <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                      <i class="bi bi-upload text-dark"></i>
+                      <input class="d-none" type="file" id="images" name="images" (change)="handleFileInput($event)" multiple>
+                    </button>
+                    <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
+                      <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                        <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
+                        <button type="button" class="btn p-0" (click)="removeImage(i)">
+                          <i class="bi bi-x-lg text-dark"></i>
+                        </button>
+                      </li>
+                    </ul>
+                </div>
+            </div>    
+            
+            <div class="modal-footer border-0 ">
+                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+            </div>
+        </form>
+        
+        <!--DELETE PRODUCT FORM-->
+        <form *ngIf="formDeleteProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductSubmit()">
+            <!--DELETE PRODUCT FORM-->
+            <div class="modal-body text-center pt-0 pb-0">
+                <input type="hidden" [value]="selectedRowData?.id">
+                <p class="fs-5 fw-bold mb-1">Are you sure to delete this Product?</p>
+                <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+            </div>
+            
+            <div class="modal-footer border-0 ">
+                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+            </div>
+        </form>
+
+        <!--RESTOCK PRODUCT FORM-->
+        <form *ngIf="formRestockProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductSubmit()">
+            
+            <div class="modal-body pt-0 pb-0">
+                <input type="hidden" [value]="selectedRowData?.id">
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label for="addproductName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="addproductName" >
+                    </div>
+                    <div class="col-sm-6  mb-3">
+                        <label for="addproductQty" class="form-label">Quantity</label>
+                        <input type="text"  class="form-control" id="addproductQty" >
+                    </div>
+                </div>  
+            </div>
+            
+            <div class="modal-footer border-0 ">
+                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+            </div>
+        </form>
+
+

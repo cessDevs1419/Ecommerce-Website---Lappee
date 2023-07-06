@@ -55,6 +55,8 @@ import { DonutChartComponent } from './components/components/donut-chart/donut-c
 import { LineGraphComponent } from './components/components/line-graph/line-graph.component';
 import { authGuard } from './services/auth/auth-guard.guard';
 import { ToastComponent } from './components/components/toast/toast.component';
+import { ProductFormComponent } from './components/components/Forms/product-form/product-form.component';
+import { CategoryFormComponent } from './components/components/Forms/category-form/category-form.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,9 @@ import { ToastComponent } from './components/components/toast/toast.component';
     MainRoutingComponent,
     ToastComponent,
     DonutChartComponent,
-    LineGraphComponent
+    LineGraphComponent,
+    ProductFormComponent,
+    CategoryFormComponent
   ],
   imports: [
     BrowserModule,

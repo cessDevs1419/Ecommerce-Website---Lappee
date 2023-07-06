@@ -30,34 +30,29 @@
                 [searchBar]="false"
                 [tableTools]="true"
                 [Btntools]="true"
-                [addSubBtn]="true"
-                [addSubBtnclass]="size"
-                addSubtnName="ADD SUB CATEGORY"
+
                 
                 [tableHeader]="['CATEGORY ID','CATEGORY NAME','MAIN CATEGORY']"
-                [tableRows]="['id','name', 'main_category']"
+                [tableRows]="['id','name', 'main_category_id']"
                 [tableData]="sub_categories"
             ></app-table>
         </div>
     </div>
 </div>
 
-
-<!---to manage bootstrap 
-class declare string variable that has the value of your 
-desired classname :) -->	
-
-
 <app-modal
     modalID="addproduct"
     modalTitle="ADD CATEGORY"
     modalSubTitle="CATEGORY MANAGEMENT"
-    [modalAdminDashboard]="true"
-    [modalCategory]="true"
-    [modalAddCategory]="true"
-></app-modal>
 
+    [modalAddCategory]="true"
+    
+></app-modal>
+<!--
 <app-modal
+                [addSubBtn]="true"
+                [addSubBtnclass]="size"
+                addSubtnName="ADD SUB CATEGORY"
     modalID="addsubproduct"
     modalTitle="ADD SUB-CATEGORY"
     modalSubTitle="CATEGORY MANAGEMENT"
@@ -65,13 +60,14 @@ desired classname :) -->
     [modalCategory]="true"
     [modalAddSubCategory]="true"
 ></app-modal>
+-->
+
 
 <app-modal
     modalID="edit"
     modalTitle="EDIT CATEGORY"
     modalSubTitle="CATEGORY MANAGEMENT"
-    [modalAdminDashboard]="true"
-    [modalCategory]="true"
+
     [modalEditCategory]="true"
     
     [selectedRowData]="selectedRowData"
@@ -81,8 +77,7 @@ desired classname :) -->
     modalID="delete"
     modalTitle="DELETE CATEGORY"
     modalSubTitle="CATEGORY MANAGEMENT"
-    [modalAdminDashboard]="true"
-    [modalCategory]="true"
+
     [modalDeleteCategory]="true"
     
     [selectedRowData]="selectedRowData"

@@ -28,7 +28,7 @@ export function formatCategories(response: CategoryList) : Category[] {
     }));
 }
 
-// returns a Product array from a CategoryList
+// returns a Product array from a ProductList
 export function formatProducts(response: ProductList): Product[] {
   return response.data.map((data: Product) => ({
     id: data.id,

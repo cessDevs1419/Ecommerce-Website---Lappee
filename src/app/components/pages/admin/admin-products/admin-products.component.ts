@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { Product, ProductList } from 'src/assets/models/products';
+import { formatProducts } from 'src/app/utilities/response-utils';
 import { map } from 'rxjs';
 
 @Component({
@@ -19,21 +20,10 @@ export class AdminProductsComponent {
 	) {}
 	
 	ngOnInit(): void{
-		this.products = this.service.getProducts().pipe(map((Response: any) => this.formatProducts(Response)));
+		this.products = this.service.getProducts().pipe(map((Response: any) => formatProducts(Response)));
 	}
 	
-	private formatProducts(Response: ProductList) : Product[]{
-		return Response.data.map((data: Product) => ({
-	        id: data.id,
-	        name: data.name,
-	        stock: data.stock,
-	        stock_limit: data.stock_limit,
-	        price: data.price,
-	        sub_category_id: data.sub_category_id,
-	        description: data.description
-		}))
-	}   
-	
+
 	/*Needed for table to send data to modal*/
 	selectedRowData: any;
 

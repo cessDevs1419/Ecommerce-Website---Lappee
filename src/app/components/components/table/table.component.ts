@@ -104,14 +104,14 @@ export class TableComponent {
 		this.calculatePagination();
 	  }
 	}
-  
+
 	goToNextPage(): void {
-	  if (this.currentPage < this.totalPages) {
+	    if (this.currentPage < this.totalPages) {
 		this.currentPage++;
 		this.calculatePagination();
-	  }
+		}
 	}
-  
+	
 	changePageSize(event: Event): void {
 	  const pageSizeValue = (event.target as HTMLSelectElement).value;
 	  this.pageSize = +pageSizeValue;
@@ -122,6 +122,8 @@ export class TableComponent {
 	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
 
 	sendRowData(row: any) {
-	  this.rowDataSelected.emit(row);
+	    this.rowDataSelected.emit(row);
 	}
+	
+	
 }

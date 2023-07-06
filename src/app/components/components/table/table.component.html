@@ -78,7 +78,6 @@
         <tbody class="position-relative">
 
             <ng-container *ngIf="(displayedItems$ | async | searchFilter: searchString) as displayedItems">
-
                 
                 <tr  *ngFor="let item of displayedItems ">
                     <td class="text-center pt-3 text-nowrap " *ngFor="let row of tableRows " >{{ item[row] }}</td>
@@ -150,7 +149,6 @@
             </ng-container>
         </tbody>
     </table>
-    
 
     <nav class="align-items-center row">
     

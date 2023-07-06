@@ -86,6 +86,8 @@
         (rowDataSelected)="onRowDataSelected($event)"
 
     ></app-table>
+    
+    
 </div>
 
 
@@ -93,18 +95,18 @@
     modalID="addproduct"
     modalTitle="ADD PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
-    [modalAdminDashboard]="true"
-    [modalProduct]="true"
+
     [modalAddProduct]="true"
+
 ></app-modal>
 
 <app-modal
     modalID="edit"
     modalTitle="EDIT PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
-    [modalAdminDashboard]="true"
-    [modalProduct]="true"
+
     [modalEditProduct]="true"
+
     
     [selectedRowData]="selectedRowData"
 ></app-modal>
@@ -113,9 +115,9 @@
     modalID="delete"
     modalTitle="DELETE PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
-    [modalAdminDashboard]="true"
-    [modalProduct]="true"
+
     [modalDeleteProduct]="true"
+
     
     [selectedRowData]="selectedRowData"
 ></app-modal>
@@ -124,9 +126,9 @@
     modalID="restock"
     modalTitle="RESTOCK PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
-    [modalAdminDashboard]="true"
-    [modalProduct]="true"
+
     [modalRestockProduct]="true"
+
     
 ></app-modal>
 <!--  
