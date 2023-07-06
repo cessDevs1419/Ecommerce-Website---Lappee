@@ -10,10 +10,15 @@ import { GETCategories, GETSubcategories } from '../endpoints';
 })
 export class CategoriesService {
 
+  private categoryCache!: Observable<CategoryList>;
+
   constructor(private http: HttpClient) { }
 
   public getCategories(): Observable<CategoryList> {
-    //return this.http.get<CategoryList>(GETSubcategories);
-    return this.http.get<CategoryList>('../../assets/sampleData/categories.json');
+    if(!this.categoryCache){
+      //this.categoryCache = this.http.get<CategoryList>(GETSubcategories);
+      this.categoryCache = this.http.get<CategoryList>('../../assets/sampleData/categories.json');
+    }
+    return this.categoryCache;
   }
 }

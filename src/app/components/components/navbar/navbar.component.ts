@@ -69,22 +69,20 @@ export class NavbarComponent {
 
 
   ngOnInit(): void {
-    // get csrf token
-    this.csrfService.getCsrfToken();
-
+   
+    // initialize csrf token 
+    this.csrfService.init();
+    
     // load JSONs
-    this.categories = this.CategoriesService.getCategories().pipe(map((response: any) => formatCategories(response)));
-    this.subcategories = this.CategoriesService.getCategories().pipe(map((response: any) => formatSubcategories(response)));
+    let categoryList = this.CategoriesService.getCategories();
+    this.categories = categoryList.pipe(map((response: any) => formatCategories(response)));
+    this.subcategories = categoryList.pipe(map((response: any) => formatSubcategories(response)));
     this.cartContents = this.cart.getItems(); 
-
-    this.accountService.getUser().subscribe({
-      next: (response: any) => {
-        console.log(response);
-      }
-    })
 
     this.accountService.checkLoggedIn();
     console.log("Logged In: " + this.accountService.getIsLoggedIn());
+
+     
   }
 
   // color toggling for nav links and modal background

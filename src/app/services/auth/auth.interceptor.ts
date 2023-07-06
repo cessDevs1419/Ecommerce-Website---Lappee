@@ -2,25 +2,37 @@ import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { CsrfService } from "../csrf/csrf.service";
+import { AccountsService } from "../accounts/accounts.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private csrf: CsrfService) {}
+    constructor(private csrf: CsrfService, private account: AccountsService) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         
         //remove when csrf is ready
-        return next.handle(req);
+        //return next.handle(req);
 
-        /* const token = this.csrf.getCsrfToken();
-        console.log(token);
-        if(token){
+        // get saved token from service
+        let token = this.csrf.getCsrfToken();
+        let reqWithCredentials = req.clone({
+            withCredentials: true
+        });
+
+        if(this.account.getIsLoggedIn()){
+        }
+
+        // sabi sa docs ng angular sa mga request na nagmomodify lang daw inaattach yung xsrf
+        if(req.method == 'POST'){
             const clone = req.clone({
-                headers: req.headers.set("X-XSRF-TOKEN", token)
+                headers: req.headers.set("X-XSRF-TOKEN", token),
+                withCredentials: true
             })
+
             return next.handle(clone);
         }
-        else {
-            return next.handle(req);
-        } */
+
+        // ignore non-post requests
+        return next.handle(reqWithCredentials);
+        
     }
 }

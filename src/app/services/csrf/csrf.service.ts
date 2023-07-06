@@ -12,8 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class CsrfService {
 
   private csrfToken: string;
-  private ask: number = 0;
-  private status: number = 0;
+  private request: number = 0;
   responseObservable: Observable<string>;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
@@ -22,31 +21,20 @@ export class CsrfService {
     return this.http.get<CsrfResponse>(GETCsrfToken, { withCredentials:true });
   }
 
-  resolveToken(): void {
-    
-      this.getToken().subscribe({
-        next: (response: any) => {
-          this.csrfToken = this.cookieService.get('XSRF-TOKEN');
-          
-        },
-        error: (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      });
+  init(): void {
+    this.getToken().subscribe({
+      next: (response: any) => {},
+      complete: () => {}
+    });
 
-    /* {
-      this.responseObservable = this.getToken().pipe(map((response: any) => formatCsrfToken(response)));
-      this.responseObservable.subscribe((token: string) => {
-        this.authToken = token;
-      });
-    } */
+    this.csrfToken = this.cookieService.get('XSRF-TOKEN');
   }
 
+  // return private token
   getCsrfToken(): string {
-    if(!this.csrfToken){
-      this.resolveToken();
-    }
-    return this.csrfToken;
+    this.request++;
+    console.log("Request #" + this.request + ": " + this.cookieService.get('XSRF-TOKEN'));
+    return this.cookieService.get('XSRF-TOKEN');
   }
 
 }
