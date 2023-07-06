@@ -52,9 +52,9 @@ export class SigninformComponent {
           this.signInForm.reset();
           this.loginSuccess.emit();
           this.accountService.checkLoggedIn();
-          setTimeout(() => {
+          /* setTimeout(() => {
             this.router.navigate(['/home']);
-          },1000);
+          },1000); */
         },
         error: (error: HttpErrorResponse) => {
           if(error.status === 401) {

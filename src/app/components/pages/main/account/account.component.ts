@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
   selector: 'app-account',
@@ -16,7 +17,7 @@ export class AccountComponent {
 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
-  constructor(private cookieService: CookieService){
+  constructor(private cookieService: CookieService, public accountService: AccountsService){
     
   }
 

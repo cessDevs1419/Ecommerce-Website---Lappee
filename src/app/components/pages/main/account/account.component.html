@@ -1,4 +1,7 @@
 <div class="container-md" id="entryDiv">
+    <div *ngFor="let details of this.accountService.loggedUser | async">
+        <p>{{details.user_id}}</p>
+    </div>
     <div class="position-relative mt-5 w-100">
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>

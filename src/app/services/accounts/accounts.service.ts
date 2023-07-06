@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Register, Login } from 'src/assets/models/account';
@@ -13,7 +13,8 @@ import { formatUser } from 'src/app/utilities/response-utils';
 export class AccountsService {
 
   private isLoggedIn: boolean = false; 
-  
+  loggedUser!: Observable<User[]>;
+
   user: User = {
     user_id: '',
     email: '',
@@ -21,7 +22,9 @@ export class AccountsService {
     mname: '',
     lname: '',
     suffix: '',
-    created_at: ''
+    created_at: '',
+    last_login: '',
+    user_type: 0,
   }
 
 
@@ -41,26 +44,38 @@ export class AccountsService {
   }
 
   checkLoggedIn(): boolean {
-   this.http.get(GETUser, this.httpOptions).subscribe({
-    next: (response: any) => {
-      console.log(response);
-      this.isLoggedIn = true;
-      return true;
-    },
-    error: (error: HttpErrorResponse) => {
-      this.isLoggedIn = false;
-      return false;
-    }
-   });
+    let request = this.getUser();
+    
+    request.subscribe({
+      next: (response: any) => {
+        console.log(response.data);
+        this.user = {
+          user_id: response.data.user_id,
+          email: response.data.email,
+          fname: response.data.fname,
+          mname: response.data.mname,
+          lname: response.data.lname,
+          suffix: response.data.suffix,
+          created_at: response.data.created_at,
+          last_login: response.data.last_login,
+          user_type: response.data.user_type,
+        }
+
+        console.log(this.user);
+        this.isLoggedIn = true;
+
+        return true;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoggedIn = false;
+        return false;
+      }
+    });
    return false;
   }
 
   getUser(): Observable<any> {
     return this.http.get<UserList>(GETUser, this.httpOptions);
-  }
-
-  initUser() {
-    let user = this.getUser().pipe(map((response: any) => formatUser(response)))
   }
 
   postRegisterUser(data: FormData): Observable<any> {

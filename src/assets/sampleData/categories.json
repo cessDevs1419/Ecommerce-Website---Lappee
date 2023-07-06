@@ -5,7 +5,18 @@
         {
             "id": "MNCATGddiM79VsZtMq6Bx",
             "name": "category1",
-            "sub_categories": []
+            "sub_categories": [
+                {
+                    "id": "SBCATalksjdalskdjkj2",
+                    "main_category_id": "MNCATGddiM79VsZtMq6Bx",
+                    "name": "are u wet"
+                },
+                {
+                    "id": "SBCATasdalksjdlkja",
+                    "main_category_id": "MNCATGddiM79VsZtMq6Bx",
+                    "name": "am i wet enough"
+                }
+            ]
         },
         {
             "id": "MNCAT4xL5KsA3zzZ66mp6",

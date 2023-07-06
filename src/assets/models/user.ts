@@ -11,5 +11,7 @@ export interface User {
     mname: string,
     lname: string,
     suffix: string,
-    created_at: string
+    created_at: string,
+    last_login: string,
+    user_type: number
 }

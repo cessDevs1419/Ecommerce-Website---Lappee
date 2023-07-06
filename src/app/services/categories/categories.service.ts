@@ -16,6 +16,7 @@ export class CategoriesService {
   public getCategories(): Observable<CategoryList> {
     if(!this.categoryCache){
       this.categoryCache = this.http.get<CategoryList>(GETSubcategories);
+      //this.categoryCache = this.http.get<CategoryList>('../../assets/sampleData/categories.json');
     }
     return this.categoryCache;
   }

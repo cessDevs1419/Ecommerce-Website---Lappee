@@ -71,9 +71,10 @@ export function formatUser(response: any): User[] {
       mname: data.mname,
       lname: data.lname,
       suffix: data.suffix,
-      created_at: data.created_at
-    })
-  )
+      created_at: data.created_at,
+      last_login: data.last_login,
+      user_type: data.user_type
+    }));
 }
 
 // Filtering
