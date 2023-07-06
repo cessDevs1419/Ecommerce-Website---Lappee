@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class CsrfService {
 
   private csrfToken: string;
+  private request: number = 0;
   responseObservable: Observable<string>;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
@@ -20,23 +21,20 @@ export class CsrfService {
     return this.http.get<CsrfResponse>(GETCsrfToken, { withCredentials:true });
   }
 
-  // probably best kung magclear muna ng cookies bago irun to
-
   init(): void {
-    // hindi nagrerequest pag wala yung .subscribe, 
     this.getToken().subscribe({
       next: (response: any) => {},
       complete: () => {}
     });
 
-    // get cookie set by the api
     this.csrfToken = this.cookieService.get('XSRF-TOKEN');
   }
 
   // return private token
   getCsrfToken(): string {
-    //console.log(this.csrfToken);
-    return this.csrfToken;
+    this.request++;
+    console.log("Request #" + this.request + ": " + this.cookieService.get('XSRF-TOKEN'));
+    return this.cookieService.get('XSRF-TOKEN');
   }
 
 }

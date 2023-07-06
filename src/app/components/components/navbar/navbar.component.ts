@@ -69,9 +69,10 @@ export class NavbarComponent {
 
 
   ngOnInit(): void {
+   
     // initialize csrf token 
     this.csrfService.init();
-
+    
     // load JSONs
     let categoryList = this.CategoriesService.getCategories();
     this.categories = categoryList.pipe(map((response: any) => formatCategories(response)));
@@ -80,6 +81,8 @@ export class NavbarComponent {
 
     this.accountService.checkLoggedIn();
     console.log("Logged In: " + this.accountService.getIsLoggedIn());
+
+     
   }
 
   // color toggling for nav links and modal background
