@@ -55,6 +55,12 @@
     width: 48rem;
 }
 
+.navbar-profile-pic {
+    width: 1.5rem;
+    height: auto;
+    border-radius: 50%;
+}
+
 /* disable modalBackground on mobile */
 @media screen and (max-width: 768px) {
     #modalBackground {

@@ -5,8 +5,8 @@
                 <img src="https://picsum.photos/200" class="user-image">
             </div>
             <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4">
-                <a [href]="['profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">John.Smith17</p></a>
-                <p class="text-muted m-0 text-center text-lg-start">jsmith@gmail.com</p>
+                <a [href]="['profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">{{ this.fullName }}</p></a>
+                <p class="text-muted m-0 text-center text-lg-start">{{ this.user.email }}</p>
             </div>
         </div>
     </div>
