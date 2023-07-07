@@ -8,9 +8,6 @@ import { AccountsService } from "../accounts/accounts.service";
 export class AuthInterceptor implements HttpInterceptor {
     constructor(private csrf: CsrfService, private account: AccountsService) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        
-        //remove when csrf is ready
-        //return next.handle(req);
 
         // get saved token from service
         let token = this.csrf.getCsrfToken();

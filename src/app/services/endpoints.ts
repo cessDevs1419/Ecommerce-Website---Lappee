@@ -5,13 +5,14 @@ const api = "http://localhost:8000/"
 export const GETCsrfToken: string = api + "sanctum/csrf-cookie";
 
 // Subcategory Endpoints
-export const GETSubcategories: string = api + "api/client/category/";
+export const GETSubcategories: string = api + "api/admin/category/sub/";
 export const POSTSubcategories: string = api + "api/admin/category/sub/store";
 export const PATCHSubcategories: string = api + "api/admin/category/sub/edit";
 export const DELETESubcategories: string = api + "api/admin/category/sub/delete";
 
 //Category Endpoints
-export const GETCategories: string = api + "api/admin/category/main";
+export const GETCategories: string = api + "api/client/category/";
+export const GETAdminCategories: string = api + "api/admin/category/main";
 export const POSTCategories: string = api + "/api/admin/category/main/store";
 export const PATCHCategories: string = api + "api/admin/category/main/edit";
 export const DELETECategories: string = api + "api/admin/category/main/delete";

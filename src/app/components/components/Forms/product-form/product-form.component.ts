@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 
-import { Category, Subcategory } from 'src/assets/models/categories';
+import { AdminCategory, Subcategory } from 'src/assets/models/categories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
-import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatSubcategories } from 'src/app/utilities/response-utils';
 
 
 @Component({
@@ -24,12 +24,12 @@ export class ProductFormComponent {
 	addCategoryForm: FormGroup;
 	
 	//Display Categories to Select
-	categories!: Observable<Category[]>;
+	categories!: Observable<AdminCategory[]>;
     //sub_categories!: Observable<Subcategory[]>;
 
 	
 	ngOnInit(): void{
-		this.categories = this.category_service.getCategories().pipe(map((Response: any) => formatCategories(Response)));
+		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
     	//this.sub_categories = this.category_service.getCategories().pipe(map((Response: any) => formatSubcategories(Response)));
 	}
 

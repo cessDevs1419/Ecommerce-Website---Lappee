@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 
 import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { CategoryList, Subcategory } from 'src/assets/models/categories';
-import { formatSubcategories } from 'src/app/utilities/response-utils';
+import { formatSubcategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 
 @Component({
     selector: 'app-category-form',
@@ -26,13 +27,14 @@ export class CategoryFormComponent {
     sub_categories!: Observable<Subcategory[]>;
 
     ngOnInit(): void {
-        this.sub_categories = this.category_service.getCategories().pipe(
-            map((Response: any) => formatSubcategories(Response))
+        this.sub_categories = this.subcategory_service.getAdminSubcategories().pipe(
+            map((Response: any) => formatAdminSubcategories(Response))
         );
     }
     
     constructor(
         private category_service: CategoriesService,
+        private subcategory_service: SubcategoriesService,
         private formBuilder: FormBuilder
     ) 
     {

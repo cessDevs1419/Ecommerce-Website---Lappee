@@ -1,9 +1,10 @@
-import { Category, CategoryList, Subcategory } from "src/assets/models/categories";
+import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
 import { Product, ProductList } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { User } from "src/assets/models/user";
+import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 
 // Formatting
 
@@ -16,7 +17,23 @@ export function formatSubcategories(response: CategoryList) : Subcategory[] {
       main_category_id: subcategory.main_category_id,
       name: subcategory.name
     }))
-    
+}
+
+// returns an AdminSubcategory array from an Admin-side Subcategory List
+export function formatAdminSubcategories(response: SubcategoryList): Subcategory[] {
+  return response.data.map((data: Subcategory) => ({
+    id: data.id,
+    main_category_id: data.main_category_id,
+    name: data.name
+  }))
+}
+
+// returns an AdminCategory array from an Admin-side Subcategory List
+export function formatAdminCategories(response: AdminCategoryList): AdminCategory[] {
+  return response.data.map((data: AdminCategory) => ({
+    id: data.id,
+    name: data.name
+  }))
 }
 
 // returns a Category array from a CategoryList

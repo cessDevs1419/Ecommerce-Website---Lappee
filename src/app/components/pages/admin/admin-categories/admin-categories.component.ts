@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 
-import { Category, CategoryList, Subcategory } from 'src/assets/models/categories';
+import { Category, CategoryList, Subcategory, AdminCategory } from 'src/assets/models/categories';
 
 import { map } from 'rxjs';
 
-import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 
 @Component({
   selector: 'app-admin-categories',
@@ -21,16 +21,17 @@ export class AdminCategoriesComponent {
 
 
     /*SET DATA*/
-    categories!: Observable<Category[]>;
+    categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<Subcategory[]>;
   
 	constructor(
 		private category_service: CategoriesService,
+        private subcategory_service: SubcategoriesService
 	) {}
 	
 	ngOnInit(): void{
-		this.categories = this.category_service.getCategories().pipe(map((Response: any) => formatCategories(Response)));
-    	this.sub_categories = this.category_service.getCategories().pipe(map((Response: any) => formatSubcategories(Response)));
+		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
+    	this.sub_categories = this.subcategory_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
 	}
 
 	
