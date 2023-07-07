@@ -91,16 +91,16 @@
 </div>
 
 
-<app-modal
+<app-admin-parent-form
     modalID="addproduct"
     modalTitle="ADD PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
 
     [modalAddProduct]="true"
 
-></app-modal>
+></app-admin-parent-form>
 
-<app-modal
+<app-admin-parent-form
     modalID="edit"
     modalTitle="EDIT PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
@@ -109,9 +109,9 @@
 
     
     [selectedRowData]="selectedRowData"
-></app-modal>
+></app-admin-parent-form>
 
-<app-modal
+<app-admin-parent-form
     modalID="delete"
     modalTitle="DELETE PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
@@ -120,9 +120,9 @@
 
     
     [selectedRowData]="selectedRowData"
-></app-modal>
+></app-admin-parent-form>
 
-<app-modal
+<app-admin-parent-form
     modalID="restock"
     modalTitle="RESTOCK PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
@@ -130,12 +130,6 @@
     [modalRestockProduct]="true"
 
     
-></app-modal>
-<!--  
-    this takes out data 
-    (rowDataSelected)="onRowDataSelected($event)"
-    
-    this set in the data 
-    [selectedRowData]="selectedRowData"
--->
+></app-admin-parent-form>
+
     

@@ -1,56 +1,22 @@
-
 {
     "success": true,
-    "message": "List of all sub categories grouped by their main category",
+    "message": "List of all main categories",
     "data": [
         {
             "id": "MNCATGddiM79VsZtMq6Bx",
-            "name": "category1",
-            "sub_categories": [
-                {
-                    "id": "SBCATalksjdalskdjkj2",
-                    "main_category_id": "MNCATGddiM79VsZtMq6Bx",
-                    "name": "are u wet"
-                },
-                {
-                    "id": "SBCATasdalksjdlkja",
-                    "main_category_id": "MNCATGddiM79VsZtMq6Bx",
-                    "name": "am i wet enough"
-                }
-            ]
+            "name": "category1"
         },
         {
             "id": "MNCAT4xL5KsA3zzZ66mp6",
-            "name": "Category2",
-            "sub_categories": [
-                {
-                    "id": "SBCAThpoU64gGYyJKXSHX",
-                    "main_category_id": "MNCAT4xL5KsA3zzZ66mp6",
-                    "name": "di na wet"
-                }
-            ]
+            "name": "category2"
         },
         {
             "id": "MNCATZFrpQias1YSzsbq4",
-            "name": "Category3",
-            "sub_categories": [
-                {
-                    "id": "SBCATloQQk4lPrAFdczV6",
-                    "main_category_id": "MNCATZFrpQias1YSzsbq4",
-                    "name": "wet pa din"
-                }
-            ]
+            "name": "category3"
         },
         {
             "id": "MNCATzU6A66T0PeBzZQ1y",
-            "name": "Category4",
-            "sub_categories": [
-                {
-                    "id": "SBCAT7JVn4ycYnlCwgCn1",
-                    "main_category_id": "MNCATzU6A66T0PeBzZQ1y",
-                    "name": "Lizards oh my"
-                }
-            ]
+            "name": "category4"
         }
     ]
 }

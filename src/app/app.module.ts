@@ -57,6 +57,7 @@ import { authGuard } from './services/auth/auth-guard.guard';
 import { ToastComponent } from './components/components/toast/toast.component';
 import { ProductFormComponent } from './components/components/Forms/product-form/product-form.component';
 import { CategoryFormComponent } from './components/components/Forms/category-form/category-form.component';
+import { AdminParentFormComponent } from './components/components/Forms/admin-parent-form/admin-parent-form.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { CategoryFormComponent } from './components/components/Forms/category-fo
     DonutChartComponent,
     LineGraphComponent,
     ProductFormComponent,
-    CategoryFormComponent
+    CategoryFormComponent,
+    AdminParentFormComponent
   ],
   imports: [
     BrowserModule,

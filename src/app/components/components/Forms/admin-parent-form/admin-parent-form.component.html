@@ -1,0 +1,66 @@
+<div class="modal fade" id={{modalID}}  tabindex="-1" data-backdrop="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title">
+                    <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">{{modalSubTitle}}</div>
+                </div>
+                
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            </div>
+            <hr class="divider m-0 mb-3">
+            
+            <!--categories-->
+            <app-category-form 
+                *ngIf="modalAddCategory"
+                [formAddCategory]="true"
+            ></app-category-form>
+            
+            <app-category-form 
+                *ngIf="modalAddSubCategory"
+                [formAddSubCategory]="true"
+            ></app-category-form>
+        
+            <app-category-form 
+                *ngIf="modalEditCategory"
+                [formEditCategory]="true"
+                [selectedRowData]="selectedRowData"
+            ></app-category-form>
+    
+            <app-category-form 
+                *ngIf="modalDeleteCategory"
+                [formDeleteCategory]="true"
+                [selectedRowData]="selectedRowData"
+            ></app-category-form>
+            
+            
+            <!--products-->
+            <app-product-form
+                *ngIf="modalAddProduct"
+                [formAddProduct]="true"
+            >
+            </app-product-form>
+            
+            <app-product-form
+                *ngIf="modalEditProduct"
+                [formEditProduct]="true"
+                [selectedRowData]="selectedRowData"
+            >
+            </app-product-form>
+            
+            <app-product-form
+                *ngIf="modalDeleteProduct"
+                [formDeleteProduct]="true"
+                [selectedRowData]="selectedRowData"
+            >
+            </app-product-form>
+            
+        </div>
+    </div>
+</div>
+
+
+
+

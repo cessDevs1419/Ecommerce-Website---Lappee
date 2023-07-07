@@ -30,7 +30,10 @@
                 [searchBar]="false"
                 [tableTools]="true"
                 [Btntools]="true"
-
+                
+                [addSubBtn]="true"
+                [addSubBtnclass]="size"
+                addSubtnName="ADD SUB CATEGORY"
                 
                 [tableHeader]="['CATEGORY ID','CATEGORY NAME','MAIN CATEGORY']"
                 [tableRows]="['id','name', 'main_category_id']"
@@ -38,47 +41,45 @@
             ></app-table>
         </div>
     </div>
+    
+    <app-admin-parent-form
+        modalID="addproduct"
+        modalTitle="ADD CATEGORY"
+        modalSubTitle="CATEGORY MANAGEMENT"
+    
+        [modalAddCategory]="true"
+        
+    ></app-admin-parent-form>
+    <!---->
+    <app-admin-parent-form
+    
+        modalID="addsubproduct"
+        modalTitle="ADD SUB-CATEGORY"
+        modalSubTitle="CATEGORY MANAGEMENT"
+        
+        [modalAddSubCategory]="true"
+    ></app-admin-parent-form>
+    
+    
+    
+    <app-admin-parent-form
+        modalID="edit"
+        modalTitle="EDIT CATEGORY"
+        modalSubTitle="CATEGORY MANAGEMENT"
+    
+        [modalEditCategory]="true"
+        
+        [selectedRowData]="selectedRowData"
+    ></app-admin-parent-form>
+    
+    <app-admin-parent-form
+        modalID="delete"
+        modalTitle="DELETE CATEGORY"
+        modalSubTitle="CATEGORY MANAGEMENT"
+    
+        [modalDeleteCategory]="true"
+        
+        [selectedRowData]="selectedRowData"
+    ></app-admin-parent-form>
 </div>
 
-<app-modal
-    modalID="addproduct"
-    modalTitle="ADD CATEGORY"
-    modalSubTitle="CATEGORY MANAGEMENT"
-
-    [modalAddCategory]="true"
-    
-></app-modal>
-<!--
-<app-modal
-                [addSubBtn]="true"
-                [addSubBtnclass]="size"
-                addSubtnName="ADD SUB CATEGORY"
-    modalID="addsubproduct"
-    modalTitle="ADD SUB-CATEGORY"
-    modalSubTitle="CATEGORY MANAGEMENT"
-    [modalAdminDashboard]="true"
-    [modalCategory]="true"
-    [modalAddSubCategory]="true"
-></app-modal>
--->
-
-
-<app-modal
-    modalID="edit"
-    modalTitle="EDIT CATEGORY"
-    modalSubTitle="CATEGORY MANAGEMENT"
-
-    [modalEditCategory]="true"
-    
-    [selectedRowData]="selectedRowData"
-></app-modal>
-
-<app-modal
-    modalID="delete"
-    modalTitle="DELETE CATEGORY"
-    modalSubTitle="CATEGORY MANAGEMENT"
-
-    [modalDeleteCategory]="true"
-    
-    [selectedRowData]="selectedRowData"
-></app-modal>

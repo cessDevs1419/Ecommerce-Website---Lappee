@@ -4,17 +4,22 @@
     "data": [
         {
             "id": "SBCAThpoU64gGYyJKXSHX",
-            "main_category": "wet na wet",
+            "main_category_id": "category1",
             "name": "di na wet"
         },
         {
             "id": "SBCATloQQk4lPrAFdczV6",
-            "main_category": "Wet The Bed 3",
+            "main_category_id": "category2",
             "name": "lards1"
         },
         {
             "id": "SBCAT7JVn4ycYnlCwgCn1",
-            "main_category": "Wet The Bed 3",
+            "main_category_id": "category3",
+            "name": "lards12"
+        },
+        {
+            "id": "SBCAT7JVn4ycYnlCwgCn1",
+            "main_category_id": "category4",
             "name": "lards12"
         }
     ]
