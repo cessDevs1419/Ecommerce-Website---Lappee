@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
-import { Product, ProductList } from "src/assets/models/products";
+import { Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -54,7 +54,23 @@ export function formatProducts(response: ProductList): Product[] {
     stock_limit: data.stock_limit,
     sub_category_id: data.sub_category_id,
     price: data.price,
-    description: data.description
+    description: data.description,
+    product_variants: data.product_variants
+  }));
+}
+
+// returns Variant array from a ProductList
+export function formatProductVariants(response: ProductList): Variant[] {
+  let variantList = response.data.flatMap((product: Product) => product.product_variants);
+  return variantList.map((variant: Variant) => ({
+    variant_id: variant.variant_id,
+    product_id: variant.product_id,
+    color: variant.color,
+    color_title: variant.color_title,
+    size: variant.size,
+    stock: variant.stock,
+    stock_limit: variant.stock_limit,
+    price: variant.price
   }));
 }
 

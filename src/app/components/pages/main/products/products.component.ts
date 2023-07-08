@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { Product } from 'src/assets/models/products';
+import { Product, ColorVariant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -25,8 +25,11 @@ export class ProductsComponent {
   productMatch!: Observable<Product[]>;
   imgArray!: GalleryItem[];
   position!: ThumbnailsPosition;
-  currentProduct!: Product[];
+  currentProduct!: Product;
   reviews!: Observable<Review[]>;
+  colorVariants: ColorVariant[] = [];
+  selectedPrice!: number;
+  isNoVariant: boolean;
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
@@ -37,7 +40,6 @@ export class ProductsComponent {
               public accountService: AccountsService,
               private reviewService: ReviewsService) {}
 
-  // color sample object
   colorCurrent = {
     name: '',
     hex: ''
@@ -55,13 +57,7 @@ export class ProductsComponent {
     showUser: ['']
   });
 
-  colors = [
-    { name: 'black', hex: '#000000'},
-    { name: 'primary', hex:'#1C92FF'},
-    { name: 'gray', hex: '#3C3C3C'}
-  ];
-
-  sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
+  selectedColorSizes: string[] = [];
 
   get productColor() { return this.productToCart.get('color') }
   get productSize() { return this.productToCart.get('size') }
@@ -73,11 +69,25 @@ export class ProductsComponent {
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.productMatch = filterProductsById(this.productId, this.products);
-
-    this.productMatch.subscribe(product => {
-      this.currentProduct = product;
-    })
-    console.log(this.productId);
+    
+    // get local array copy of product observable
+    this.productMatch.subscribe((product: Product[]) => {
+      if(product.length > 0){
+        this.currentProduct = product[0];
+        this.selectedPrice = this.currentProduct.price;
+        console.log('item found');
+        if(this.currentProduct.product_variants.length > 0){
+          this.isNoVariant = false
+        }
+        else if (this.currentProduct.product_variants.length <= 0) {
+          this.isNoVariant = true;
+        }
+        this.initVariants();
+      }
+      else {
+        console.log('no items found');
+      }
+    });
 
     this.imgArray = [
       new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
@@ -97,7 +107,29 @@ export class ProductsComponent {
       }
     });
 
-    this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
+    //this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
+  }
+
+  initVariants(): void {
+    for(let variantColor of this.currentProduct.product_variants){
+      let existingColor = this.colorVariants.find((cv) => cv.color === variantColor.color);
+      if(!existingColor){
+        let variantSizes: string[] = [];
+        for(let variantSize of this.currentProduct.product_variants){
+          if(variantSize.color === variantColor.color){
+            variantSizes.push(variantSize.size)
+          }
+        }
+
+        let colVariant: ColorVariant = {
+          color: variantColor.color,
+          name: variantColor.color_title,
+          sizes: variantSizes
+        }
+        this.colorVariants.push(colVariant)
+      }
+    }
+    console.log(this.colorVariants);
   }
 
   fave() {
@@ -107,11 +139,17 @@ export class ProductsComponent {
   changeColor(color: string): void {
     this.colorCurrent.name = color;
     this.productColor?.setValue(color);
+    this.selectedColorSizes = [];
+    let selectedIndex = this.colorVariants.findIndex((cv) => cv.name == this.colorCurrent.name);
+    this.selectedColorSizes = this.colorVariants[selectedIndex].sizes;
     console.log(this.productColor?.value);
   }
 
   changeSize(size: string): void {
     this.sizeCurrent = size;
+    let selectedVariant = this.currentProduct.product_variants.find((cv) => cv.color_title === this.colorCurrent.name && cv.size === this.sizeCurrent);
+    console.log(selectedVariant ? 'variant found' : 'variant not found');
+    this.selectedPrice = Number(selectedVariant?.price);
     this.productSize?.setValue(size);
     console.log(this.productSize?.value);
   }
@@ -120,7 +158,7 @@ export class ProductsComponent {
     if(this.productToCart.valid){
       let variant = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
       console.log(this.productToCart.value);
-      this.cart.addToCart(this.currentProduct[0], variant, 1);
+      this.cart.addToCart(this.currentProduct, variant, 1);
       console.warn('added to cart');
     }
 

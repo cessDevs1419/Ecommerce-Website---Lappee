@@ -9,7 +9,19 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
-			"description": "This is Subcategory1's first item."
+			"description": "This is Subcategory1's first item.",
+			"product_variants": [
+				{
+					"variant_id": "variant1-prod1",
+					"product_id": "qwerty",
+					"color": "3888FF",
+					"color_title": "blue",
+					"size": "md",
+					"stock": 1,
+					"stock_limit": 1,
+					"price": "420.00"
+				}
+			]
         },
         {
             "id": "qwerty2",
@@ -18,7 +30,8 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
-			"description": "This is Subcategory1's second item."
+			"description": "This is Subcategory1's second item.",
+			"product_variants": []
         },
         {
             "id": "asdfgh",
@@ -27,7 +40,8 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
-			"description": "This is Subcategory2's first item."
+			"description": "This is Subcategory2's first item.",
+			"product_variants": []
         },
         {
             "id": "asdfgh2",
@@ -36,7 +50,8 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
-			"description": "This is Subcategory2's second item."
+			"description": "This is Subcategory2's second item.",
+			"product_variants": []
         },
         {
             "id": "zxcvb",
@@ -45,7 +60,8 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This is Subcategory3's first item."
+			"description": "This is Subcategory3's first item.",
+			"product_variants": []
         },
         {
             "id": "zxcvb2",
@@ -54,7 +70,8 @@
 			"stock_limit": 0,
 			"price": 400.00,
 			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This is Subcategory3's second item."
+			"description": "This is Subcategory3's second item.",
+			"product_variants": []
         },
 		{
             "id": "zxcvb3",
@@ -63,7 +80,8 @@
 			"stock_limit": 0,
 			"price": 500.00,
 			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This should be the first item."
+			"description": "This should be the first item.",
+			"product_variants": []
         },
 		{
             "id": "zxcvb4",
@@ -72,7 +90,8 @@
 			"stock_limit": 0,
 			"price": 69.00,
 			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This should be the last item."
+			"description": "This should be the last item.",
+			"product_variants": []
         }
 	]
 }
