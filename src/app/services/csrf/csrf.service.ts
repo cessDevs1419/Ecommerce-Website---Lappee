@@ -33,7 +33,7 @@ export class CsrfService {
   // return private token
   getCsrfToken(): string {
     this.request++;
-    console.log("Request #" + this.request + ": " + this.cookieService.get('XSRF-TOKEN'));
+    //console.log("Request #" + this.request + ": " + this.cookieService.get('XSRF-TOKEN'));
     return this.cookieService.get('XSRF-TOKEN');
   }
 
