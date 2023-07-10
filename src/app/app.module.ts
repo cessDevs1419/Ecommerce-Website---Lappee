@@ -58,6 +58,9 @@ import { ToastComponent } from './components/components/toast/toast.component';
 import { ProductFormComponent } from './components/components/Forms/product-form/product-form.component';
 import { CategoryFormComponent } from './components/components/Forms/category-form/category-form.component';
 import { AdminParentFormComponent } from './components/components/Forms/admin-parent-form/admin-parent-form.component';
+import { DiscountFormComponent } from './components/components/Forms/discount-form/discount-form.component';
+import { AccountsFormComponent } from './components/components/Forms/accounts-form/accounts-form.component';
+import { AssignParcelsFormComponent } from './components/components/Forms/assign-parcels-form/assign-parcels-form.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +110,10 @@ import { AdminParentFormComponent } from './components/components/Forms/admin-pa
     LineGraphComponent,
     ProductFormComponent,
     CategoryFormComponent,
-    AdminParentFormComponent
+    AdminParentFormComponent,
+    DiscountFormComponent,
+    AccountsFormComponent,
+    AssignParcelsFormComponent
   ],
   imports: [
     BrowserModule,

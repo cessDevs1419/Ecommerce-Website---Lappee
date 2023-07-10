@@ -1,0 +1,71 @@
+    <!--ADD DISCOUNT FORM-->
+    <form *ngIf="formAddDiscount" [formGroup]="addDiscountForm"  (ngSubmit)="onDiscountAddSubmit()">
+        <div  class="modal-body pt-0 pb-0">
+            <div class="mb-3">
+                <label for="addDiscountName" class="form-label">Discount Code</label>
+                <input type="text"  class="form-control" id="addDiscountName" name="addDiscountName"  required>
+            </div>
+            <div class="row">    
+                <div class="col-sm-6 mb-3">
+                    <label for="addDiscountType" class="form-label">Discount Type</label>
+                    <select 
+                        class="form-select"  
+                        id="addDiscountType" 
+                        name="addDiscountType"  
+                        required
+                    >
+                        <option value="php">Percentage</option>
+                        <option value="usd">Fixed</option>
+                    </select>
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <label for="addDiscountValue" class="form-label">Discount Value</label>
+                    <input 
+                        type="number"  
+                        class="form-control" 
+                        id="addDiscountValue" 
+                        name="addDiscountValue"  
+                        required
+                    >
+                </div>
+            </div>
+            <div class="row">   
+                <label for="addDiscountDate" class="form-label">Discount Type</label>
+                <div class="col-sm-6 mb-3">
+                    <input 
+                        type="date"  
+                        class="form-control" 
+                        id="addDiscountDateFrom" 
+                        name="addDiscountDate"  
+                        required
+                    >
+                </div>
+                <div class="col-sm-6 mb-3">
+                    <input 
+                        type="date"  
+                        class="form-control" 
+                        id="addDiscountDateTo" 
+                        name="addDiscountDate"  
+                        required
+                    >
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer border-0 ">
+            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+            <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+        </div>
+    </form>
+
+
+    <!--EDIT DISCOUNT FORM-->
+    <div *ngIf="formEditDiscount" class="modal-body text-center pt-0 pb-0">
+        
+    </div>
+    
+    <!--DELETE DISCOUNT FORM-->
+    <div *ngIf="formDeleteDiscount" class="modal-body text-center pt-0 pb-0">
+        <input type="hidden" [value]="selectedRowData?.id">
+        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Discount?</p>
+        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+    </div>

@@ -58,16 +58,16 @@ export class SignupformComponent {
         console.log(`${value[0]}, ${value[1]}`);
       }
       
-     this.accountsService.postRegisterUser(formData).subscribe({
+    this.accountsService.postRegisterUser(formData).subscribe({
         next: (response: any) => { 
           console.log(response);
           this.signUpForm.reset();
           this.registerSuccess.emit();
         },
         error: (error: HttpErrorResponse) => {
-           return throwError(() => error)
+          return throwError(() => error)
         }
-      });
+    });
     
     }
     else if(this.signUpForm.invalid){

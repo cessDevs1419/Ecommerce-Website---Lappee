@@ -1,0 +1,11 @@
+    <!--BAN ACCOUNT FORM-->
+    <form *ngIf="formBanAccount" [formGroup]="banAccountForm"  (ngSubmit)="onAccountBanSubmit()">
+        <div  class="modal-body text-center pt-0 pb-0">
+            <div class="modal-body text-center pt-0 pb-0">
+                <input type="hidden" [value]="selectedRowData?.id">
+                <p class="fs-5 fw-bold mb-1">Are you sure to ban this user?</p>
+                <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+            </div>
+        </div>
+    </form>
+    

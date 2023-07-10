@@ -20,7 +20,7 @@ export class AdminProductsComponent {
 	) {}
 	
 	ngOnInit(): void{
-		this.products = this.service.getProducts().pipe(map((Response: any) => formatProducts(Response)));
+		this.products = this.service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
 	}
 	
 

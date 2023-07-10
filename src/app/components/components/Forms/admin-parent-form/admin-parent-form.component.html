@@ -1,4 +1,9 @@
 <div class="modal fade" id={{modalID}}  tabindex="-1" data-backdrop="true">
+    
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
+    
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
@@ -16,23 +21,29 @@
             <app-category-form 
                 *ngIf="modalAddCategory"
                 [formAddCategory]="true"
+                (CategorySuccess)="postSuccessToast($event)"
+                (CategoryError)="ErrorToast($event)"
             ></app-category-form>
             
             <app-category-form 
                 *ngIf="modalAddSubCategory"
                 [formAddSubCategory]="true"
+                (CategorySuccess)="postSuccessToast($event)"
+                (CategoryError)="ErrorToast($event)"
             ></app-category-form>
         
             <app-category-form 
                 *ngIf="modalEditCategory"
                 [formEditCategory]="true"
                 [selectedRowData]="selectedRowData"
+                (CategorySuccess)="patchSuccessToast($event)"
             ></app-category-form>
     
             <app-category-form 
                 *ngIf="modalDeleteCategory"
                 [formDeleteCategory]="true"
                 [selectedRowData]="selectedRowData"
+                (CategorySuccess)="deleteSuccessToast($event)"
             ></app-category-form>
             
             
@@ -40,13 +51,26 @@
             <app-product-form
                 *ngIf="modalAddProduct"
                 [formAddProduct]="true"
+                (ProductSuccess)="postSuccessToast($event)"
+                (ProductError)="ErrorToast($event)"
             >
             </app-product-form>
             
             <app-product-form
+                *ngIf="modalRestockProduct"
+                [formRestockProduct]="true"
+                [selectedRowData]="selectedRowData"
+                (ProductSuccess)="patchSuccessToast($event)"
+                (ProductError)="ErrorToast($event)"
+            >
+            </app-product-form>
+        
+            <app-product-form
                 *ngIf="modalEditProduct"
                 [formEditProduct]="true"
                 [selectedRowData]="selectedRowData"
+                (ProductSuccess)="patchSuccessToast($event)"
+                (ProductError)="ErrorToast($event)"
             >
             </app-product-form>
             
@@ -54,12 +78,31 @@
                 *ngIf="modalDeleteProduct"
                 [formDeleteProduct]="true"
                 [selectedRowData]="selectedRowData"
+                (ProductSuccess)="deleteSuccessToast($event)"
             >
             </app-product-form>
             
+            <!--discount-->
+            <app-discount-form
+                *ngIf="modalAddDiscount"
+                [formAddDiscount]="true"
+                (ProductSuccess)="postSuccessToast($event)"
+            ></app-discount-form>
+
+
+            <!--account-->
+            <app-accounts-form
+                *ngIf="modalBanAccounts"
+                [formBanAccount]="true"
+                (BanSuccess)="postSuccessToast($event)"
+            ></app-accounts-form>
         </div>
     </div>
+
 </div>
+
+
+
 
 
 

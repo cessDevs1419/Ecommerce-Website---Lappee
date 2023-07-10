@@ -1,5 +1,5 @@
-import { Component, Input} from '@angular/core';
-
+import { Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 @Component({
     selector: 'app-admin-parent-form',
@@ -7,7 +7,11 @@ import { Component, Input} from '@angular/core';
     styleUrls: ['./admin-parent-form.component.css']
 })
 export class AdminParentFormComponent {
-	//modal use
+	
+	@ViewChild(ToastComponent) toast: ToastComponent
+	@Output() success: EventEmitter<any> = new EventEmitter();
+	@Output() invalid: EventEmitter<any> = new EventEmitter();
+	
 	@Input() modalID: string;
 	@Input() modalTitle!: string;
 	@Input() modalSubTitle!: string;
@@ -23,16 +27,11 @@ export class AdminParentFormComponent {
 	@Input() modalDeleteProduct!: boolean;
 	@Input() modalRestockProduct!: boolean;
 	
-	
-	
-	//Discount Forms
-	@Input() modalDiscount!: boolean;
 	@Input() modalAddDiscount!: boolean;
 	@Input() modalEditDiscount!: boolean;  
 	@Input() modalDeleteDiscount!: boolean;   
 	
 	//Account Forms
-	@Input() modalAccounts!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	
 	//Parcel Forms
@@ -57,6 +56,40 @@ export class AdminParentFormComponent {
 	
 	//GetSelectedRowData
 	@Input() selectedRowData: any;
+	
+    toastContent: string = "";
+    toastHeader: string = "";
+    toastTheme: string = "default"; 
+    //Toast Functions
+    
+    postSuccessToast(value: string): void {
+        this.toastHeader = value;
+        this.toastContent = "Successfully Added";
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+	patchSuccessToast(value: string): void {
+        this.toastHeader = value;
+        this.toastContent = "Successfully Updated";
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+	deleteSuccessToast(value: string): void {
+        this.toastHeader = value;
+        this.toastContent = "Successfully Deleted";
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+    ErrorToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('negative');
+        this.toast.show();
+        console.log(this.toastTheme);
+    }
 }
 
 
