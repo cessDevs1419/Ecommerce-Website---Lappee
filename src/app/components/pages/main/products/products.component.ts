@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
@@ -29,7 +29,8 @@ export class ProductsComponent {
   reviews!: Observable<Review[]>;
   colorVariants: ColorVariant[] = [];
   selectedPrice!: number;
-  isNoVariant: boolean;
+  isNoVariant: boolean = true;
+  selectedVariantId: string;
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
@@ -38,7 +39,8 @@ export class ProductsComponent {
               private bpObserver: BreakpointObserver,
               private cart: CartService,
               public accountService: AccountsService,
-              private reviewService: ReviewsService) {}
+              private reviewService: ReviewsService,
+              private cdr: ChangeDetectorRef) {}
 
   colorCurrent = {
     name: '',
@@ -76,17 +78,21 @@ export class ProductsComponent {
         this.currentProduct = product[0];
         this.selectedPrice = this.currentProduct.price;
         console.log('item found');
-        if(this.currentProduct.product_variants.length > 0){
-          this.isNoVariant = false
-        }
-        else if (this.currentProduct.product_variants.length <= 0) {
-          this.isNoVariant = true;
-        }
+        
         this.initVariants();
       }
       else {
         console.log('no items found');
       }
+
+      if(this.currentProduct.product_variants.length > 0){
+        this.isNoVariant = false
+      }
+      else {
+        this.isNoVariant = true;
+      }
+
+      this.cdr.detectChanges();
     });
 
     this.imgArray = [
@@ -110,6 +116,11 @@ export class ProductsComponent {
     //this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
   }
 
+  ngAfterContentInit(): void {
+    
+  }
+
+
   initVariants(): void {
     for(let variantColor of this.currentProduct.product_variants){
       let existingColor = this.colorVariants.find((cv) => cv.color === variantColor.color);
@@ -132,6 +143,15 @@ export class ProductsComponent {
     console.log(this.colorVariants);
   }
 
+  recheckVariant(): void {
+    if(this.currentProduct.product_variants.length > 0){
+      this.isNoVariant = false
+    }
+    else {
+      this.isNoVariant = true;
+    }
+  }
+
   fave() {
     this.isFaved = !this.isFaved;
   }
@@ -151,14 +171,23 @@ export class ProductsComponent {
     console.log(selectedVariant ? 'variant found' : 'variant not found');
     this.selectedPrice = Number(selectedVariant?.price);
     this.productSize?.setValue(size);
+    this.selectedVariantId = selectedVariant?.variant_id ? selectedVariant.variant_id : "";
     console.log(this.productSize?.value);
   }
 
   addToCart(): void {
     if(this.productToCart.valid){
-      let variant = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
+      let variantId = "";
+      for(let variant of this.currentProduct.product_variants){
+        if(variant.color == this.colorCurrent.hex && variant.size == this.sizeCurrent){
+          variantId = variant.variant_id;
+        }
+      }
+
+
+      let details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
       console.log(this.productToCart.value);
-      this.cart.addToCart(this.currentProduct, variant, 1);
+      this.cart.addToCart(this.currentProduct, this.selectedVariantId, 1);
       console.warn('added to cart');
     }
 
