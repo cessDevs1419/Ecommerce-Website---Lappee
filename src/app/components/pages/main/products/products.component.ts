@@ -29,7 +29,7 @@ export class ProductsComponent {
   reviews!: Observable<Review[]>;
   colorVariants: ColorVariant[] = [];
   selectedPrice!: number;
-  isNoVariant: boolean = true;
+  hasVariant: boolean = true;
   selectedVariantId: string;
 
   constructor(private fb: FormBuilder, 
@@ -86,10 +86,10 @@ export class ProductsComponent {
       }
 
       if(this.currentProduct.product_variants.length > 0){
-        this.isNoVariant = false
+        this.hasVariant = false
       }
       else {
-        this.isNoVariant = true;
+        this.hasVariant = true;
       }
 
       this.cdr.detectChanges();
@@ -116,11 +116,6 @@ export class ProductsComponent {
     //this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
   }
 
-  ngAfterContentInit(): void {
-    
-  }
-
-
   initVariants(): void {
     for(let variantColor of this.currentProduct.product_variants){
       let existingColor = this.colorVariants.find((cv) => cv.color === variantColor.color);
@@ -145,10 +140,10 @@ export class ProductsComponent {
 
   recheckVariant(): void {
     if(this.currentProduct.product_variants.length > 0){
-      this.isNoVariant = false
+      this.hasVariant = false
     }
     else {
-      this.isNoVariant = true;
+      this.hasVariant = true;
     }
   }
 
@@ -176,24 +171,36 @@ export class ProductsComponent {
   }
 
   addToCart(): void {
-    if(this.productToCart.valid){
-      let variantId = "";
-      for(let variant of this.currentProduct.product_variants){
-        if(variant.color == this.colorCurrent.hex && variant.size == this.sizeCurrent){
-          variantId = variant.variant_id;
+    let variantId = "";
+    let details = "";
+    if(!this.hasVariant){
+      //add to cart with form checks for variant validation
+      if(this.productToCart.valid){
+        // get variant id of selected color and size
+        for(let variant of this.currentProduct.product_variants){
+          if(variant.color == this.colorCurrent.hex && variant.size == this.sizeCurrent){
+            variantId = variant.variant_id;
+          }
         }
+        
+        details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
+        console.log(this.productToCart.value);
+        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1);
+        console.warn('added to cart');
       }
-
-
-      let details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
-      console.log(this.productToCart.value);
-      this.cart.addToCart(this.currentProduct, this.selectedVariantId, 1);
-      console.warn('added to cart');
+  
+      else {
+        console.log(this.productToCart.value)
+        console.log("invalid order");
+        this.productToCart.markAllAsTouched();
+      }
     }
 
-    else if(this.productToCart.invalid){
-      console.log(this.productToCart.value);
-      this.productToCart.markAllAsTouched();
+    // add to cart without variant
+    else {
+        console.log(this.productToCart.value);
+        this.cart.addToCart(this.currentProduct, "", "", 1);
+        console.warn('added to cart');
     }
   }
 

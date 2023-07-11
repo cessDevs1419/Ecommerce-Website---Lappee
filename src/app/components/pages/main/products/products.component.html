@@ -18,7 +18,7 @@
                         <div class="px-3 ms-1 discount d-flex align-items-center">-30%</div>
                     </div>
                 </div>
-                <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.isNoVariant = !this.isNoVariant" ><i class="bi bi-heart"></i></button>
+                <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button>
             </div>
             <div class="mt-3" id="productDescOptions">
                 <div class="accordion accordion-flush " id="accordionProductDesc">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="mt-3" >
                     <form [formGroup]="productToCart" (submit)="onSubmit()">
-                        <div *ngIf="!this.isNoVariant">
+                        <div *ngIf="!this.hasVariant">
                             <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
                             <div *ngIf="productColor?.invalid && (productColor?.dirty || productColor?.touched)">
                                 <div *ngIf="productColor?.errors?.['required']">
@@ -68,7 +68,7 @@
                         </div>
 
                         <div class="product-border-bottom mt-3">
-                            <i>Choose a color to see its available sizes.</i>
+                            <i *ngIf="!this.hasVariant">Choose a color to see its available sizes.</i>
                         </div>
 
                         <div class="mt-3 row">

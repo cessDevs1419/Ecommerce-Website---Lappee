@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/assets/models/products';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,8 @@ export class CartComponent {
   imgpath: string = ""; 
   imgname: string = "";
 
-  constructor(private cart: CartService) {}
+  constructor(private cart: CartService,
+              private accountService: AccountsService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
@@ -28,7 +30,7 @@ export class CartComponent {
 
   addToOrder(index: number): void {
     this.orderList.push(this.cartContents[index]);
-    this.subtotal += this.cartContents[index].product.price;
+    this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
   }
 
   removeFromOrder(sender: CartItem): void {
@@ -41,7 +43,7 @@ export class CartComponent {
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
-        this.subtotal -= this.orderList[i].product.price;
+        this.subtotal -= this.orderList[i].product.price * this.orderList[i].quantity;
         console.log('Match found at index ' + i);
       }
     }

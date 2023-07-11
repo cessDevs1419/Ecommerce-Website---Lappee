@@ -7,7 +7,9 @@
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'"><img class="cart-item-img" src="https://picsum.photos/720/1080"></td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
         {{this.cartItem.product.name}}
-        <p>{{this.cartItem.variant}}</p>
+        <p *ngIf="this.cartItem.variant">
+            {{this.cartItem.variant_details}}
+        </p>
     </td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.product.price}}</td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.quantity}}</td>

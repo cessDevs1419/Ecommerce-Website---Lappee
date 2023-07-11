@@ -29,6 +29,7 @@ export interface Variant {
 export interface CartItem {
     product: Product,
     variant: string,
+    variant_details: string,
     quantity: number
 }
 
