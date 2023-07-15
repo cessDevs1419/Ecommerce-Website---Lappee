@@ -3,13 +3,13 @@
     <div id="navbarInfoBg" class="mb-0 mb-md-3">
         <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
             <p class="fs-6 my-2"><a href="#" (click)="this.accountService.checkLoggedIn()" class="text-reset"><i class="bi bi-question-circle"></i> Help</a></p>
-            <p class="fs-6 my-2" *ngIf="this.accountService.getIsLoggedIn()"><a href="#" class="text-reset"><i class="bi bi-bell"></i> Notifications</a></p>
+            <p class="fs-6 my-2" *ngIf="this.accountService.getLoggedUser() | async"><a href="#" class="text-reset" (click)="this.gotoaccount()"><i class="bi bi-bell"></i> Notifications</a></p>
             <p class="fs-6 my-2" *ngIf="!this.accountService.getIsLoggedIn()"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
             <p class="fs-6 my-2" *ngIf="this.accountService.getIsLoggedIn()">
-                <a title="User Profile" [routerLink]="['/profile']" class="text-reset">
-                    <div class="d-flex flex-row">
+                <a title="User Profile" [routerLink]="['/profile']" class="text-reset" >
+                    <div class="d-flex flex-row" *ngIf="this.accountService.getLoggedUser() | async; let user">
                         <img class="navbar-profile-pic me-2" src="https://picsum.photos/500">
-                        {{this.accountService.user.fname}}
+                        {{ user.fname }}
                     </div>
                 </a>
             </p>

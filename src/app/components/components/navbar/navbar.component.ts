@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, QueryList, ViewChildren, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnChanges,Input, QueryList, ViewChildren, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { Category, CategoryList } from 'src/assets/models/categories';
 import { SubcategoriesService } from '../../../services/subcategories/subcategories.service';
@@ -11,6 +11,7 @@ import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { CsrfService } from 'src/app/services/csrf/csrf.service';
 import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
+import { User } from 'src/assets/models/user';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class NavbarComponent {
   lastToggled!: string;
   cartContents!: CartItem[];
   targetElement!: HTMLElement;
-  //products!: any;
+  loginState$: Observable<boolean>;
+  currentUser: Observable<User> = this.accountService.getLoggedUser();
   
   // 3/23/2023 - use Renderer2 to handle clicks
   constructor(private CategoriesService: CategoriesService, 
@@ -59,12 +61,6 @@ export class NavbarComponent {
         this.clearColorBG();
       }
       });
-
-      /* this.router.events.subscribe((event: any) => {
-        if(event instanceof NavigationEnd) {
-          this.accountService.checkLoggedIn();
-        }
-      }) */
     }
 
 
@@ -78,11 +74,12 @@ export class NavbarComponent {
     this.categories = categoryList.pipe(map((response: any) => formatCategories(response)));
     this.subcategories = categoryList.pipe(map((response: any) => formatSubcategories(response)));
     this.cartContents = this.cart.getItems(); 
+    this.accountService.checkLoggedIn().subscribe((status: boolean) => {console.log("Logged In: " + status)});
+  }
 
+  ngOnChanges(): void {
     this.accountService.checkLoggedIn();
-    console.log("Logged In: " + this.accountService.getIsLoggedIn());
-
-     
+    console.log('ngOnchanges');
   }
 
   // color toggling for nav links and modal background
@@ -116,6 +113,10 @@ export class NavbarComponent {
       }
     })
     this.lastToggled = "";
+  }
+
+  gotoaccount(): void {
+    this.router.navigate(['/account']);
   }
 
 }

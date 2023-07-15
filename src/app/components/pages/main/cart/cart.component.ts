@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { User } from 'src/assets/models/user';
 
 @Component({
   selector: 'app-cart',
@@ -17,11 +18,14 @@ export class CartComponent {
   imgpath: string = ""; 
   imgname: string = "";
 
+  user: User;
+
   constructor(private cart: CartService,
-              private accountService: AccountsService) {}
+              public accountService: AccountsService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
+    //this.user = this.accountService.getCurrentUser();
   }
 
   matchProduct(sender: any, operation: string): void {

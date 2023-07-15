@@ -127,7 +127,7 @@ import { AssignParcelsFormComponent } from './components/components/Forms/assign
     RouterModule.forRoot([
       
       {path: 'home', component: HomeComponent},
-      {path: 'account', component: AccountComponent},
+      {path: 'account', component: AccountComponent, canActivate: [authGuard]},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent},

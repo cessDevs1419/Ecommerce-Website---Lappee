@@ -51,10 +51,10 @@ export class SigninformComponent {
           console.log(response);
           this.signInForm.reset();
           this.loginSuccess.emit();
-          this.accountService.checkLoggedIn();
-          /* setTimeout(() => {
+          this.accountService.checkLoggedIn().subscribe();
+          setTimeout(() => {
             this.router.navigate(['/home']);
-          },1000); */
+          },1000);
         },
         error: (error: HttpErrorResponse) => {
           if(error.status === 401) {
