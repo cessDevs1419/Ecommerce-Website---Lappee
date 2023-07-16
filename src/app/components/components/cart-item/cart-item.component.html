@@ -11,6 +11,6 @@
             {{this.cartItem.variant_details}}
         </p>
     </td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.product.price}}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.price}}</td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.quantity}}</td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ this.cartItem.product.price * this.cartItem.quantity | currency }}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td>

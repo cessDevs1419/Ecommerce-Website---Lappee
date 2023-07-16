@@ -10,13 +10,14 @@ export class CartService {
 
   constructor() { }
 
-  addToCart(product: Product, variant: string, variant_details: string, quantity: number): void {
+  addToCart(product: Product, variant: string, variant_details: string, quantity: number, price: string): void {
     let duplicate = -1;
     let cartItem: CartItem = {
       product: product,
       variant: variant,
       variant_details: variant_details,
-      quantity: quantity
+      quantity: quantity,
+      price: price
     }
     // check for duplicates if items is not null
     if(this.items.length != 0){

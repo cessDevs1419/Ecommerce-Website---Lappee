@@ -185,7 +185,7 @@ export class ProductsComponent {
         
         details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1);
+        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString());
         console.warn('added to cart');
       }
   
@@ -199,7 +199,7 @@ export class ProductsComponent {
     // add to cart without variant
     else {
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, "", "", 1);
+        this.cart.addToCart(this.currentProduct, "", "", 1, this.currentProduct.price.toString());
         console.warn('added to cart');
     }
   }

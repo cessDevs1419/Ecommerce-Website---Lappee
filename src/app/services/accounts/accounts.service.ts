@@ -104,24 +104,6 @@ export class AccountsService {
         user_type: response.data.user_type
     });
   }
-    /* return this.getUser().pipe(
-      map((response: any) => {
-        this.user = {
-          user_id: response.data.user_id,
-          email: response.data.email,
-          fname: response.data.fname,
-          mname: response.data.mname,
-          lname: response.data.lname,
-          suffix: response.data.suffix,
-          created_at: response.data.created_at,
-          last_login: response.data.last_login,
-          user_type: response.data.user_type,
-        }
-        this.isLoggedIn = true;
-        return true;
-      })
-    )
-  }*/
 
   logoutUser(): Observable<any> {
     return this.postLogout().pipe(

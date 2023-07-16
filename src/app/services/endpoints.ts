@@ -27,10 +27,10 @@ export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Account Endpoints
-export const POSTLogin: string = api + "api/auth/login";
-export const POSTRegister: string = api + "api/auth/register";
-export const POSTLogout: string = api + "api/auth/logout";
-export const GETUser: string = api + "api/auth/user";
+export const POSTLogin: string = api + "auth/login";
+export const POSTRegister: string = api + "auth/register";
+export const POSTLogout: string = api + "auth/logout";
+export const GETUser: string = api + "auth/user";
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";

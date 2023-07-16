@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CartItem } from 'src/assets/models/products';
 
 @Component({
@@ -16,6 +16,11 @@ export class CartItemComponent {
   
   isIncluded: boolean = false;
   selectedColor: string = "#DDDEE3";
+  priceConvert: number;
+
+  ngOnInit(): void {
+    this.priceConvert = parseFloat(this.cartItem.price);
+  }
 
   emit(): void {
     this.isIncluded = !this.isIncluded;

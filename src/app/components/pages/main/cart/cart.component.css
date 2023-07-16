@@ -31,6 +31,19 @@ tbody app-cart-item {
     border: 1px solid var(--muted-gray);
 }
 
+label {
+    cursor: pointer;
+}
+
+label:has( ~ input){
+    background-color: red;
+}
+
 input[type=file] {
     display: none;
+}
+
+.img-fluid-sm {
+    height: 5rem;
+    width: auto;
 }

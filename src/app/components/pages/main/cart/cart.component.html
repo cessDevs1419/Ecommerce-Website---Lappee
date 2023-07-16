@@ -7,153 +7,275 @@
         </ol>
     </nav>
     
-    <div class="carousel slide" id="shoppingCartCarousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="row">
-                    <div class="col-md-8">
-                        <!-- table tag-->
-                        <div class="p-3 pb-1 table-group">
-                            <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{cartContents.length}} )</p>
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr class="m-0 p-0">
-                                        <th scope="col">Select</th>
-                                        <th scope="col">Preview</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="cartContents.length == 0" class="table-group-divider">
-                                    <td colspan="6"><div class="p-3 text-center">You do not have items in your cart.</div></td>
-                                </tbody>
+    <form [formGroup]="orderForm" (submit)="order()">
+        <div class="carousel slide" id="shoppingCartCarousel" #carousel>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- table tag-->
+                            <div class="p-3 pb-1 table-group">
+                                <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{cartContents.length}} )</p>
+                                <div *ngIf="!isItemSelected" class="bg-danger-subtle text-danger p-3 my-2">
+                                    <p class="m-0">You need to select one or more items from your cart.</p>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="m-0 p-0">
+                                            <th scope="col">Select</th>
+                                            <th scope="col">Preview</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="cartContents.length == 0" class="table-group-divider">
+                                        <td colspan="6"><div class="p-3 text-center">You do not have items in your cart.</div></td>
+                                    </tbody>
 
-                                <tbody *ngIf="cartContents.length != 0" class="table-group-divider">
-                                    <tr *ngFor="let item of cartContents; let i = index" class="item-row">
-                                        <app-cart-item class="cart-item-row" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)"></app-cart-item>
+                                    <tbody *ngIf="cartContents.length != 0" class="table-group-divider">
+                                        <tr *ngFor="let item of cartContents; let i = index" class="item-row">
+                                            <app-cart-item class="cart-item-row" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)"></app-cart-item>
 
-                                    </tr>
-                                    
-                                    <!--
-                                    <tr>
-                                        <td *ngFor="let item of orderList">
-                                            <p>{{item.product.id + item.variant}}</p>
-                                        </td>
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mt-3 mt-md-0">
-                        <div class="table-group p-3">
-                            <div class="d-flex flex-row justify-content-between align-items-center">
-                                <h3 class="m-0"><i class="bi bi-geo-alt-fill color-primary"></i> Delivery Address</h3>
-                                <a href="#" class="fs-3"><i class="bi bi-pencil-fill color-primary"></i></a>
-                            </div>
-                            <hr class="muted-text">
-                            <div class="p-2">
-                                <div class="fw-bold">{{this.accountService.fullName}}</div>
-                                <div>HRDCD-PHONE-NUMBER</div>
-                                <div>{{this.accountService.fullAddress}}</div>
+                                        </tr>
+                                        
+                                        <!--
+                                        <tr>
+                                            <td *ngFor="let item of orderList">
+                                                <p>{{item.product.id + item.variant}}</p>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="table-group p-3 mt-3">
-                            <div class="d-flex flex-row align-items-center">
-                                <h3 class="m-0"><i class="bi bi-cash color-primary"></i> Payment Options</h3>
-                            </div>
-                            <hr class="muted-text">
-                            <div class="p-2">
-                                <div>
-                                    <div class="d-flex form-check ps-0">
-                                        <label for="cod" class="w-100">
-                                            <div class="d-flex flex-row align-items-center">
-                                                <i class="bi bi-box-seam-fill me-3 fs-3 color-primary"></i>
-                                                <div>
-                                                    <p class="m-0 fw-bold">Cash On Delivery</p>
-                                                    <p class="m-0">Pay when you receive the parcel.</p>
-                                                </div>
-                                            </div>
-                                        </label>
-                                        <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cod" class="form-check-input">
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <div class="table-group p-3">
+                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                    <h3 class="m-0"><i class="bi bi-geo-alt-fill color-primary"></i> Delivery Address</h3>
+                                    <!-- <a href="#" class="fs-3"><i class="bi bi-pencil-fill color-primary"></i></a> -->
+                                </div>
+                                <hr class="muted-text">
+                                <div class="p-2" *ngIf="this.accountService.getIsLoggedIn()">
+                                    <div *ngIf="this.accountService.getLoggedUser() | async; let user">
+                                        <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
+                                        <div>HRDCD-PHONE-NUMBER</div>
+                                        <div>HRDCD{{this.accountService.fullAddress}}</div>
                                     </div>
-                                    <hr class="my-3">
-                                    <div class="d-flex form-check ps-0">
-                                        <label for="gcash" class="w-100">
-                                            <div class="d-flex flex-row align-items-center">
-                                                <i class="bi bi-wallet-fill me-3 fs-3 color-primary"></i>
-                                                <div>
-                                                    <p class="m-0 fw-bold">GCash</p>
-                                                    <p class="m-0">Pay with your GCash E-Wallet.</p>
+                                </div>
+                                <div class="p-2" *ngIf="!this.accountService.getIsLoggedIn()">
+                                    <p>Log In to setup and select your delivery address.</p>
+                                </div>
+                            </div>
+                            <div class="table-group p-3 mt-3">
+                                <div class="d-flex flex-row align-items-center">
+                                    <h3 class="m-0"><i class="bi bi-cash color-primary"></i> Payment Options</h3>
+                                </div>
+                                <hr class="muted-text">
+                                <div *ngIf="orderPaymentMethod?.invalid && (orderPaymentMethod?.touched || orderPaymentMethod?.dirty)">
+                                    <div *ngIf="orderPaymentMethod?.errors?.['required']" class="bg-danger-subtle text-danger p-3 my-2">
+                                        <p class="m-0">Please select a payment method.</p>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div>
+                                        <div class="d-flex form-check ps-0">
+                                            <label for="cod" class="w-100 form-check-label">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <i class="bi bi-box-seam-fill me-3 fs-3 color-primary"></i>
+                                                    <div>
+                                                        <p class="m-0 fw-bold">Cash On Delivery</p>
+                                                        <p class="m-0">Pay when you receive the parcel.</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </label>
-                                        <input type="radio" name="paymentMethod" value="gcash" id="gcash" class="form-check-input">
+                                            </label>
+                                            <input type="radio" [value]="'cashOnDelivery'" id="cod" class="form-check-input" formControlName="orderPaymentMethod">
+                                        </div>
+                                        <hr class="my-3">
+                                        <div class="d-flex form-check ps-0">
+                                            <label for="gcash" class="w-100 form-check-label">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <i class="bi bi-wallet-fill me-3 fs-3 color-primary"></i>
+                                                    <div>
+                                                        <p class="m-0 fw-bold">GCash</p>
+                                                        <p class="m-0">Pay with your GCash E-Wallet.</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <input type="radio" [value]="'gcash'" id="gcash" class="form-check-input" formControlName="orderPaymentMethod">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="table-group mt-3 p-3">
-                            <div class="d-flex flex-row align-items-center">
-                                <h3 class="m-0"><i class="bi bi-file-post color-primary"></i> Order Summary</h3>
-                            </div>
-                            <hr class="muted-text">
-                            <div class="d-flex flex-row justify-content-between">
-                                <p class="fw-bold">SUBTOTAL</p>
-                                <div class="text-end">
-                                    <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
-                                    <p class="color-primary">Saved 100.00 dont mind me</p>
+                            <div class="table-group mt-3 p-3">
+                                <div class="d-flex flex-row align-items-center">
+                                    <h3 class="m-0"><i class="bi bi-file-post color-primary"></i> Order Summary</h3>
                                 </div>
+                                <div class="d-flex flex-column">
+                                    <div class="row d-flex flex-row justify-content-between mt-3" *ngFor="let item of orderList">
+                                        <div class="col-8 text-start">
+                                            <p class="fw-bold m-0">{{item.product.name}}</p>
+                                            <p class="m-0">{{item.variant_details}}</p>
+                                            <p class="m-0">x{{item.quantity}}</p>
+                                        </div>
+                                        <div class="col-4 d-flex align-items-center justify-content-end">
+                                            <p class="fw-bold fs-5 m-0">{{ parseFloat(item.price) * item.quantity | currency }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="muted-text">
+                                <div class="d-flex flex-row justify-content-between">
+                                    <p class="fw-bold">SUBTOTAL</p>
+                                    <div class="text-end">
+                                        <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
+                                        <p class="color-primary">Saved 100.00 dont mind me</p>
+                                    </div>
+                                </div>
+                                <hr class="muted-text">
+                                <button type="button" (click)="validatePage1()" class="button-primary w-100" >Checkout</button>
                             </div>
-                            <hr class="muted-text">
-                            <button type="button" class="button-primary w-100" data-bs-target="#shoppingCartCarousel" data-bs-slide="next">Checkout</button>
-                        </div>
-                    </div>
-
-                </div>
-                
-            </div>
-
-            <div class="carousel-item">
-                <div class="row bg-light-gray p-3">
-                    <div class="col-md-7">
-                        <img src="https://picsum.photos/1080" class="img-fluid">
-                    </div>
-                    <div class="col-md-5 d-flex flex-column justify-content-between mt-3 mt-md-0">
-                        <div class="d-flex align-items-center justify-content-center flex-column p-5 text-center screenshot-card" *ngIf="!imgpath">
-                            <p class="image-icon"><i class="bi bi-images"></i></p>
-                            <p class="fs-2 fw-bold">Upload proof of payment</p>
-                            <p>Submit screenshot of G-Cash payment / receipt</p>
                         </div>
 
-                        <div *ngIf="imgpath">
-                            <img [src]="imgpath" class="img-fluid">
-                            <p>{{this.imgname}} </p>
-                        </div>
-
-                        <label for="proof-upload" class="button-primary w-100 mt-3 mt-md-0">Upload Image</label>
-                        <input type="file" id="proof-upload" (change)="imageUpload($event)" />
                     </div>
-                </div>
-                <div class="d-flex justify-content-end mt-5">
-                    <button type="button" class="button-primary me-3" data-bs-target="#shoppingCartCarousel" data-bs-slide="prev">Previous</button>
-                    <button type="button" class="button-primary" data-bs-target="#shoppingCartCarousel" data-bs-slide="next">Proceed</button>
-                </div>
                     
-            </div>
-
-            <div class="carousel-item">
-                <div class="d-flex justify-content-between align-items-center flex-column p-5">
-                    <img src="../../../../assets/images/checkout-checkmark.png" class="img-fluid w-50">
-                    <p class="fs-1 mt-2">Thank you for purchasing!</p>
-                    <p class="m-0">Don't forget to leave a review.</p>
-                    <a class="mt-3" [routerLink]="['/']">Home</a>
                 </div>
 
-                <!--
-                <button type="button" class="button-primary" data-bs-target="#shoppingCartCarousel" data-bs-slide="prev">Complete</button> -->
+                <div class="carousel-item">
+                    <div class="row bg-light-gray p-5">
+                        <div *ngIf="orderPaymentProof?.invalid && (orderPaymentProof?.touched || orderPaymentProof?.dirty)">
+                            <div *ngIf="orderPaymentProof?.errors?.['required']" class="bg-danger-subtle text-danger p-3 my-2">
+                                <p class="m-0">Please upload a valid screenshot of your GCash transaction receipt.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <img src="../../../../../assets/images/qr-code.png" class="img-fluid">
+                        </div>
+                        <div class="col-md-5 d-flex flex-column justify-content-between mt-3 mt-md-0">
+                            <div class="d-flex align-items-center justify-content-center flex-column p-5 text-center screenshot-card" *ngIf="!imgpath">
+                                <p class="image-icon"><i class="bi bi-images"></i></p>
+                                <p class="fs-2 fw-bold">Upload proof of payment</p>
+                                <p>Submit screenshot of G-Cash payment / receipt</p>
+                            </div>
+
+                            <div *ngIf="imgpath">
+                                <img [src]="imgpath" class="img-fluid">
+                                <p>{{this.imgname}} </p>
+                            </div>
+
+                            <label for="proof-upload" class="button-primary w-100 mt-3 mt-md-0">Upload Image</label>
+                            <input type="file" id="proof-upload" (change)="imageUpload($event)" formControlName="orderPaymentProof" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-5">
+                        <button type="button" class="button-primary me-3" data-bs-target="#shoppingCartCarousel" data-bs-slide="prev">Previous</button>
+                        <button type="button" class="button-primary" (click)="validatePage2()">Proceed</button>
+                    </div>
+                        
+                </div>
+
+                <div class="carousel-item">
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <p class="fs-2 fw-bold m-0 table-group p-3">Order Summary ( {{cartContents.length}} item/s )</p>
+                            <div class="col-md-8">
+                                <div class="p-3 pb-1 table-group mt-3">
+                                    <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{cartContents.length}} )</p>
+                                </div>
+                                <div class="mt-3 p-3 table-group">
+                                    <div class="d-flex flex-column">
+                                        <div class="row d-flex flex-row justify-content-between mt-3" *ngFor="let item of orderList">
+                                            <div class="col-8 text-start d-flex flex-row align-items-center">
+                                                <div>
+                                                    <img src="https://picsum.photos/500" class="img-fluid-sm">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <p class="fw-bold fs-5 m-0">{{item.product.name}}</p>
+                                                    <p class="m-0">{{item.variant_details}}</p>
+                                                    <p class="m-0">x{{item.quantity}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 d-flex align-items-center justify-content-end">
+                                                <p class="fw-bold fs-5 m-0">{{ parseFloat(item.price) * item.quantity | currency }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mt-3 mt-md-0">
+                                <div class="table-group p-3 mt-3">
+                                    <div class="d-flex flex-row justify-content-between align-items-center">
+                                        <h3 class="m-0"><i class="bi bi-geo-alt-fill color-primary"></i> Delivery Address</h3>
+                                        <!-- <a href="#" class="fs-3"><i class="bi bi-pencil-fill color-primary"></i></a> -->
+                                    </div>
+                                    <hr class="muted-text">
+                                    <div class="p-2" *ngIf="this.accountService.getIsLoggedIn()">
+                                        <div *ngIf="this.accountService.getLoggedUser() | async; let user">
+                                            <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
+                                            <div>HRDCD-PHONE-NUMBER</div>
+                                            <div>HRDCD{{this.accountService.fullAddress}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-group p-3 mt-3">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <h3 class="m-0"><i class="bi bi-cash color-primary"></i> Payment Options</h3>
+                                    </div>
+                                    <hr class="muted-text">
+                                    
+                                    <div class="p-2 w-100">
+                                        <div class="d-flex flex-row align-items-center" *ngIf="this.orderPaymentMethod?.value == 'cashOnDelivery'">
+                                            <i class="bi bi-box-seam-fill me-3 fs-3 color-primary"></i>
+                                            <div>
+                                                <p class="m-0 fw-bold">Cash On Delivery</p>
+                                                <p class="m-0">Pay when you receive the parcel.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center justify-content-start" *ngIf="this.orderPaymentMethod?.value == 'gcash'">
+                                            <i class="bi bi-wallet-fill me-3 fs-3 color-primary"></i>
+                                            <div>
+                                                <p class="m-0 fw-bold">GCash</p>
+                                                <p class="m-0">Pay with your GCash E-Wallet.</p>
+                                                <img [src]="imgpath" class="img-fluid-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-group mt-3 p-3">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <h3 class="m-0"><i class="bi bi-check-square color-primary"></i> Confirm Order</h3>
+                                    </div>
+                                    <hr class="muted-text">
+                                    <p class="m-0">Ensure that all details in this page are correct before placing the order. You may make changes on the previous pages.</p>
+                                    <div class="d-flex flex-row justify-content-between mt-3">
+                                        <p class="fw-bold">SUBTOTAL</p>
+                                        <div class="text-end">
+                                            <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
+                                        </div>
+                                    </div>
+                                    <hr class="muted-text">
+                                    <button type="button" (click)="order()" class="button-primary w-100" >Place Order</button>
+                                </div>
+                            </div>
+    
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-between align-items-center flex-column p-5">
+                        <img src="../../../../assets/images/checkout-checkmark.png" class="img-fluid w-50">
+                        <p class="fs-1 mt-2">Thank you for purchasing!</p>
+                        <p class="m-0">Don't forget to leave a review.</p>
+                        <a class="mt-3" [routerLink]="['/']">Home</a>
+                    </div>
+
+                    <!--
+                    <button type="button" class="button-primary" data-bs-target="#shoppingCartCarousel" data-bs-slide="prev">Complete</button> -->
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
