@@ -64,7 +64,10 @@
                                         <div>HRDCD{{this.accountService.fullAddress}}</div>
                                     </div>
                                 </div>
-                                <div class="p-2" *ngIf="!this.accountService.getIsLoggedIn()">
+                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="!this.isAddressSelected">
+                                    <p class="m-0">Please log in to set your delivery address</p>
+                                </div>
+                                <div class="p-3" *ngIf="!this.accountService.getIsLoggedIn()">
                                     <p>Log In to setup and select your delivery address.</p>
                                 </div>
                             </div>
@@ -175,7 +178,7 @@
                 </div>
 
                 <div class="carousel-item">
-                    <div class="carousel-item active">
+                    
                         <div class="row">
                             <p class="fs-2 fw-bold m-0 table-group p-3">Order Summary ( {{cartContents.length}} item/s )</p>
                             <div class="col-md-8">
@@ -256,12 +259,10 @@
                                     </div>
                                     <hr class="muted-text">
                                     <button type="button" (click)="order()" class="button-primary w-100" >Place Order</button>
+                                    <button type="button" (click)="prevPage()" class="button-secondary-outline w-100 mt-3" >Previous Page</button>
                                 </div>
                             </div>
-    
                         </div>
-                        
-                    </div>
                 </div>
 
                 <div class="carousel-item">

@@ -20,6 +20,7 @@ export class CartComponent {
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
+  isAddressSelected: boolean = true;
   
   cartContents!: CartItem[];
   orderList: CartItem[] = [];
@@ -32,7 +33,6 @@ export class CartComponent {
 
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
-    orderAddress: new FormControl('', Validators.required),
     orderPaymentMethod: new FormControl('', Validators.required),
     orderPaymentProof: new FormControl('', Validators.required)
   })
@@ -132,10 +132,22 @@ export class CartComponent {
     reader.readAsDataURL(img);
   }
 
+  prevPage(): void {
+    const instance = new bootstrap.Carousel(this.carousel.nativeElement);
+    if(this.orderPaymentMethod?.value == "gcash"){
+      instance.prev();
+    }
+    else {
+      instance.to(0);
+    }
+  }
+
   validatePage1(): void {
     console.log(this.orderPaymentMethod?.value);
-    if(this.orderPaymentMethod?.valid && this.orderList.length > 0){
+    if(this.orderPaymentMethod?.valid && this.orderList.length > 0 && this.accountService.getIsLoggedIn()){
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
+      this.isItemSelected = true;
+      this.isAddressSelected = true;
       if(this.orderPaymentMethod.value == "gcash"){
         instance.next();
       }
@@ -152,6 +164,10 @@ export class CartComponent {
       if(this.orderList.length == 0){
         this.isItemSelected = false;
       }
+
+      if(!this.accountService.getIsLoggedIn()){
+        this.isAddressSelected = false;
+      }
     }
   }
 
@@ -166,7 +182,22 @@ export class CartComponent {
   }
 
   order(): void {
+    //final checks
+    if(this.orderForm?.valid && this.orderList.length > 0 && this.isAddressSelected){
 
+      //post the request here
+      
+
+      const instance = new bootstrap.Carousel(this.carousel.nativeElement);
+      instance.next();
+    }
+    else {
+      console.log("Order Form Valid: " + this.orderForm?.valid);
+      console.log("Order List: " + this.orderList.length);
+      console.log("Address Selected: " + this.isAddressSelected);
+      console.log("Total check: " + (this.orderForm?.valid && this.orderList.length > 0 && this.isAddressSelected))
+
+    }
   }
 }
 
