@@ -32,8 +32,8 @@ export class CategoriesService {
   }
 
   public getAdminCategories(): Observable<AdminCategoryList> {
-    //return this.http.get<CategoryList>(GETAdminCategories);
-    return this.http.get<AdminCategoryList>('../../assets/sampleData/categories.json');
+    return this.http.get<AdminCategoryList>(GETAdminCategories);
+    //return this.http.get<AdminCategoryList>('../../assets/sampleData/categories.json');
   }
   
   postCategory(data: FormData): Observable<any> {
@@ -41,10 +41,25 @@ export class CategoriesService {
   } 
   
   patchCategory(data: FormData): Observable<any> {
-    return this.http.post<AdminCategory>(PATCHCategories, data, this.httpOptions);
+    return this.http.patch<AdminCategory>(PATCHCategories, data, this.httpOptions);
   } 
   
-  deleteCategory(data: FormData): Observable<any> {
-    return this.http.post<AdminCategory>(DELETECategories, data, this.httpOptions);
-  } 
+  deleteCategory(categoryId: number): Observable<any> {
+    return this.http.delete(DELETECategories, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+          id: categoryId
+        }
+    })
+  }
+  
+
+  
+
+
 }

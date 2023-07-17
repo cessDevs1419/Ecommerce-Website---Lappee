@@ -9,6 +9,7 @@ import { SubcategoriesService } from 'src/app/services/subcategories/subcategori
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
+import { GETCategories } from 'src/app/services/endpoints';
 
 @Component({
     selector: 'app-category-form',
@@ -19,7 +20,7 @@ export class CategoryFormComponent {
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
 	@Output() CategoryError: EventEmitter<any> = new EventEmitter();
-
+    @Output() RefreshTable: EventEmitter<any> = new EventEmitter();
 
 
     @Input() formAddCategory!: boolean;
@@ -27,7 +28,8 @@ export class CategoryFormComponent {
     @Input() formEditCategory!: boolean;
     @Input() formDeleteCategory!: boolean;
     @Input() selectedRowData: any;
-
+    @Input() refreshTable: any;
+    
     addCategoryForm: FormGroup;
     addSubCategoryForm: FormGroup;
     editCategoryForm: FormGroup;
@@ -61,7 +63,7 @@ export class CategoryFormComponent {
         });
         
         this.editCategoryForm = new FormGroup({
-            // main_category_id: new FormControl('', Validators.required),
+            //main_category_id: new FormControl('', Validators.required),
             main_category: new FormControl('', Validators.required)
         });
         
@@ -91,34 +93,27 @@ export class CategoryFormComponent {
     onCategoryAddSubmit(): void {
 
         if(this.addCategoryForm.valid){
-            const newCategoryId = 'CAT' + (+ 1).toString();
-            const newCategory = {
-                    id: newCategoryId,
-                    name: this.addCategoryForm.value.main_category,
-            };
-    
+
             
-            this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
-            this.addCategoryForm.reset();
-            // let formData: any = new FormData();
-            // formData.append('id',  newCategoryId);
-            // formData.append('name', this.addCategoryForm.get('main_category')?.value);
+            let formData: any = new FormData();
+            formData.append('name', this.addCategoryForm.get('main_category')?.value);
 
     
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
+            for(const value of formData.entries()){
+                console.log(`${value[0]}, ${value[1]}`);
+            }
             
-            // this.category_service.postCategory(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
-            //         this.addCategoryForm.reset();
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
+            this.category_service.postCategory(formData).subscribe({
+                next: (response: any) => { 
+                    console.log(response);
+                    this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
+                    this.addCategoryForm.reset();
+                    this.RefreshTable.emit();
+                },
+                error: (error: HttpErrorResponse) => {
+                    return throwError(() => error)
+                }
+            });
         
         
         }else{
@@ -196,30 +191,31 @@ export class CategoryFormComponent {
     onCategoryEditSubmit(): void {
         
         if(this.editCategoryForm.valid){
-            const editCategory = {
-                name: this.editCategoryForm.value.main_category,
-            };
-            console.log(editCategory);
-            this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
+            // const editCategory = {
+            //     id: this.editCategoryForm.value.main_category_id,
+            //     name: this.editCategoryForm.value.main_category,
+            // };
+            // console.log(editCategory);
+            // this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
             
-            // let formData: any = new FormData();
-            // formData.append('id',  this.selectedRowData.id);
-            // formData.append('name', this.editCategoryForm.get('main_category')?.value);        
+            let formData: any = new FormData();
+            formData.append('id',  this.selectedRowData.id);
+            formData.append('name', this.editCategoryForm.get('main_category')?.value);        
     
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
+            for(const value of formData.entries()){
+                console.log(`${value[0]}, ${value[1]}`);
+            }
                 
-            // this.category_service.patchCategory(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.editCategoryForm.reset();
-            //         this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
+            this.category_service.patchCategory(formData).subscribe({
+                next: (response: any) => { 
+                    console.log(response);
+                    this.editCategoryForm.reset();
+                    this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
+                },
+                error: (error: HttpErrorResponse) => {
+                    return throwError(() => error)
+                }
+            });
             
         }
             
@@ -244,29 +240,22 @@ export class CategoryFormComponent {
     
     onCategoryDeleteSubmit(): void {
         
-        const deleteCategory = {
-            id: this.deleteCategoryForm.value.main_category_id || this.selectedRowData?.id,
-        };
-        console.log(deleteCategory);
-        this.CategorySuccess.emit("Category  "+this.selectedRowData?.name);
+        // const deleteCategory = {
+        //     id: this.deleteCategoryForm.value.main_category_id || this.selectedRowData?.id,
+        // };
+        // console.log(deleteCategory);
+        // this.CategorySuccess.emit("Category  "+this.selectedRowData?.name);
             
-            // let formData: any = new FormData();
-            // formData.append('id',  this.selectedRowData.id);
-
-    
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
+            this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
+                next: (response: any) => { 
+                    console.log(response);
+                    this.deleteCategoryForm.reset();
+                    this.CategorySuccess.emit("Category  "+this.deleteCategoryForm.value.main_category);
+                },
+                error: (error: HttpErrorResponse) => {
+                    return throwError(() => error)
+                }
+            });
             
-            // this.category_service.deleteCategory(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.deleteCategoryForm.reset();
-            //         this.CategorySuccess.emit("Category  "+this.deleteCategoryForm.value.main_category);
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
     }
 }

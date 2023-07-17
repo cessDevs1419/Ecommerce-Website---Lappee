@@ -1,5 +1,5 @@
 import { Component,EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Observable} from 'rxjs';
+import { Observable, of} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
 import { ModalComponent } from '../modal/modal.component';
@@ -71,6 +71,7 @@ export class TableComponent {
 	    this.calculatePagination();
 	}
 
+	
 	applySearchFilter(): void {
 	    this.currentPage = 1;
 	    this.calculatePagination();

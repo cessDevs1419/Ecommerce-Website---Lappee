@@ -11,6 +11,7 @@ export class AdminParentFormComponent {
 	@ViewChild(ToastComponent) toast: ToastComponent
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
+	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
 	
 	@Input() modalID: string;
 	@Input() modalTitle!: string;
@@ -56,12 +57,17 @@ export class AdminParentFormComponent {
 	
 	//GetSelectedRowData
 	@Input() selectedRowData: any;
+
 	
     toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default"; 
     //Toast Functions
     
+    triggerRefreshTable(): void {
+		this.RefreshTable.emit();
+	}
+	
     postSuccessToast(value: string): void {
         this.toastHeader = value;
         this.toastContent = "Successfully Added";

@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
-                <div class="modal-title">
+                <div class="modal-title text-start">
                     <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
                     <div class="modal-sub-title text-dark-emphasis fs-6">{{modalSubTitle}}</div>
                 </div>
@@ -23,6 +23,7 @@
                 [formAddCategory]="true"
                 (CategorySuccess)="postSuccessToast($event)"
                 (CategoryError)="ErrorToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
             
             <app-category-form 

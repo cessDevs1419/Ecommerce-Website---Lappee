@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         // sabi sa docs ng angular sa mga request na nagmomodify lang daw inaattach yung xsrf
-        if(req.method == 'POST'){
+        if(req.method == 'POST' || req.method == 'PATCH' || req.method == 'DELETE'){
             const clone = req.clone({
                 headers: req.headers.set("X-XSRF-TOKEN", token),
                 withCredentials: true
