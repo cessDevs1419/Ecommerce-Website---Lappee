@@ -86,7 +86,7 @@ export class CartComponent {
 
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
-      this.subtotal = parseFloat(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
+      this.subtotal += parseFloat(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
     }
     else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;

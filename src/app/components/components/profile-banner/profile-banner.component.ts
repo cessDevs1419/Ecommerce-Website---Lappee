@@ -12,8 +12,9 @@ import { User } from 'src/assets/models/user';
 })
 export class ProfileBannerComponent {
 
-  user: User = this.accountService.user;
-  fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
+  //user: User = this.accountService.user;
+  //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
+  user: Observable<User> = this.accountService.getLoggedUser();
   constructor(private accountService: AccountsService, private userService: UsersService) {}
 
   /*
