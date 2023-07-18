@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
@@ -12,6 +12,7 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { Review } from 'src/assets/models/reviews';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 @Component({
   selector: 'app-products',
@@ -31,6 +32,12 @@ export class ProductsComponent {
   selectedPrice!: number;
   hasVariant: boolean = true;
   selectedVariantId: string;
+  
+  toastContent: string = "";
+  toastHeader: string = "";
+  toastTheme: string = "default"; 
+
+  @ViewChild(ToastComponent) toast: ToastComponent;
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
@@ -187,6 +194,11 @@ export class ProductsComponent {
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString());
         console.warn('added to cart');
+
+        this.toastHeader = "Successful!";
+        this.toastContent = "The item has been added to your cart.";
+        this.toast.switchTheme('default');
+        this.toast.show();
       }
   
       else {

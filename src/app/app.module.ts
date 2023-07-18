@@ -61,6 +61,7 @@ import { AdminParentFormComponent } from './components/components/Forms/admin-pa
 import { DiscountFormComponent } from './components/components/Forms/discount-form/discount-form.component';
 import { AccountsFormComponent } from './components/components/Forms/accounts-form/accounts-form.component';
 import { AssignParcelsFormComponent } from './components/components/Forms/assign-parcels-form/assign-parcels-form.component';
+import { ContactusComponent } from './components/pages/main/contactus/contactus.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { AssignParcelsFormComponent } from './components/components/Forms/assign
     AdminParentFormComponent,
     DiscountFormComponent,
     AccountsFormComponent,
-    AssignParcelsFormComponent
+    AssignParcelsFormComponent,
+    ContactusComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +135,7 @@ import { AssignParcelsFormComponent } from './components/components/Forms/assign
       {path: 'cart', component: CartComponent},
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
+      {path: 'contactus', component: ContactusComponent},
 
       //admin
       {path: 'dashboard', component: AdminRoutingComponent },

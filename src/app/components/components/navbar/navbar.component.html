@@ -52,11 +52,12 @@
 
             <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid d-inline d-md-none mx-3"></a>
             
-            <a class="btn text-reset text-decoration-none d-md-none align-self-end" data-bs-toggle="dropdown">
+            <a class="btn text-reset text-decoration-none d-md-none align-self-end" [routerLink]="['cart']">
                 <i class="bi bi-cart fs-1 position-relative">
                     <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>
                 </i>
             </a>
+            <!--
             <ul class="dropdown-menu w-100">
                 <div *ngIf="cartContents.length == 0" class="d-flex flex-column justify-content-center align-items-center mt-2">
                     <p><i class="bi bi-emoji-frown-fill fs-3"></i></p>
@@ -70,7 +71,7 @@
                 </div>
                 <li class="dropdown-divider"></li>
                 <li class="p-3"><a [routerLink]="['cart']" class="text-reset text-decoration-none"><i class="bi bi-cart"></i> Your Cart</a></li>
-            </ul>
+            </ul> -->
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
                 <div class="offcanvas-header">

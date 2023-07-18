@@ -132,8 +132,8 @@ a:hover {
     border-color: var(--muted-gray);
 }
 
-input[type=text], input[type=password], input[type=email] {
-    border-color: var(--muted-gray);
+input[type=text], input[type=password], input[type=email], textarea {
+    border-color: var(--muted-gray) !important;
 }
 
 .animated-transition {
