@@ -4,7 +4,7 @@
             <p class="fw-bold fs-2 m-0 text-center">Email Us</p>
             <p class="m-0 text-center">We are just one click away!</p>
 
-            <form class="mt-3" [formGroupName]="'contactusForm'">
+            <form class="mt-3" [formGroup]="contactusForm">
                 <div class="w-100">
                     <label for="contactusName" class="form-label">Name</label>
                     <input id="contactusName" class="form-control form-control-lg rounded-0 w-100" type="text" formControlName="contactusName"/>
