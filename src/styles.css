@@ -30,6 +30,9 @@ body {
     background-color: #FFFFFF;
 }
 
+.bg-banned{
+    background-color: #FB5757;
+}
 .muted-text {
     color: var(--muted-gray);
 }

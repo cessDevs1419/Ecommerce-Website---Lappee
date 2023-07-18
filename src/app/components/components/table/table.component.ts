@@ -1,4 +1,4 @@
-import { Component,EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component,EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
@@ -10,7 +10,8 @@ interface TableItem {
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
-    styleUrls: ['./table.component.css']
+    styleUrls: ['./table.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent {
 
@@ -38,7 +39,7 @@ export class TableComponent {
 	@Input() deleteBtn!: boolean;
 	@Input() viewBtn!: boolean;
 	@Input() banBtn!: boolean;
-	
+	@Input() bannedStatus: { [userId: number]: boolean } = {};
 	
 	//table Data
 	@Input() tableHeader!: any[];

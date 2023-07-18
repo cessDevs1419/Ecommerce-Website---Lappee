@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { Observable, map, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -14,26 +14,33 @@ import { GETCategories } from 'src/app/services/endpoints';
 @Component({
     selector: 'app-category-form',
     templateUrl: './category-form.component.html',
-    styleUrls: ['./category-form.component.css']
+    styleUrls: ['./category-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryFormComponent {
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
 	@Output() CategoryError: EventEmitter<any> = new EventEmitter();
-    @Output() RefreshTable: EventEmitter<any> = new EventEmitter();
+    @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
 
 
     @Input() formAddCategory!: boolean;
-    @Input() formAddSubCategory!: boolean;
     @Input() formEditCategory!: boolean;
     @Input() formDeleteCategory!: boolean;
+    
+    @Input() formAddSubCategory!: boolean;
+    @Input() formEditSubCategory!: boolean;
+    @Input() formDeleteSubCategory!: boolean;
     @Input() selectedRowData: any;
     @Input() refreshTable: any;
     
     addCategoryForm: FormGroup;
-    addSubCategoryForm: FormGroup;
     editCategoryForm: FormGroup;
     deleteCategoryForm: FormGroup;
+    
+    addSubCategoryForm: FormGroup;
+    editSubCategoryForm: FormGroup;
+    deleteSubCategoryForm: FormGroup;
 
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
@@ -43,7 +50,6 @@ export class CategoryFormComponent {
     ngOnInit(): void {
         this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         this.sub_categories = this.subcategory_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
-        
     }
     
     constructor(
@@ -57,17 +63,26 @@ export class CategoryFormComponent {
             main_category: new FormControl('', Validators.required)
         });
         
-        this.addSubCategoryForm = this.formBuilder.group({
-            main_category: ['', Validators.required],
-            subCategories: this.formBuilder.array([])
-        });
-        
         this.editCategoryForm = new FormGroup({
             //main_category_id: new FormControl('', Validators.required),
             main_category: new FormControl('', Validators.required)
         });
         
         this.deleteCategoryForm = new FormGroup({
+            main_category_id: new FormControl('', Validators.required)
+        });
+        
+        this.addSubCategoryForm = this.formBuilder.group({
+            main_category: ['', Validators.required],
+            subCategories: this.formBuilder.array([])
+        });
+        
+        this.editSubCategoryForm = this.formBuilder.group({
+            main_category: ['', Validators.required],
+            subCategories: this.formBuilder.array([])
+        });
+        
+        this.deleteSubCategoryForm = this.formBuilder.group({
             main_category_id: new FormControl('', Validators.required)
         });
     }
@@ -105,10 +120,11 @@ export class CategoryFormComponent {
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
-                    console.log(response);
+                    this.RefreshTable.emit();
                     this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
                     this.addCategoryForm.reset();
-                    this.RefreshTable.emit();
+
+                    
                 },
                 error: (error: HttpErrorResponse) => {
                     return throwError(() => error)
@@ -134,70 +150,11 @@ export class CategoryFormComponent {
         }
 
     }
-    
-    onSubCategoryAddSubmit(): void {
-        if (this.addSubCategoryForm.invalid) {
-            return;
-        }
-        const newSubCategoryId = 'SUBCAT' + (this.subCategories.length + 1).toString();
-        const newSubCategory = {
-            id: newSubCategoryId,
-            name: '',
-            main_category_id: this.addSubCategoryForm.value.main_category,
-        };
-    
-        this.subCategories.controls.forEach((control: any, index: number) => {
-            const subCategoryName = control.value;
-            newSubCategory.name = subCategoryName;
-        });
-    
-        console.log(newSubCategory);
-        
-        /*
-            if(this.addCategoryForm.valid){
-                // submit
-                console.warn(this.addCategoryForm.value);
-        
-                let formData: any = new FormData();
-                formData.append('id',  newCategoryId);
-                formData.append('name', this.addCategoryForm.get('main_category')?.value);
-    
-        
-                for(const value of formData.entries()){
-                    console.log(`${value[0]}, ${value[1]}`);
-                }
-                
-            this.category_service.postCategory(formData).subscribe({
-                next: (response: any) => { 
-                    console.log(response);
-                    this.addCategoryForm.reset();
-                    this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
-                },
-                error: (error: HttpErrorResponse) => {
-                    return throwError(() => error)
-                }
-            });
-            
-            }
-            
-            else if(this.addCategoryForm.invalid){
-                this.addCategoryForm.markAllAsTouched();
-            }
-        */
-        
-    }
-    
 
     onCategoryEditSubmit(): void {
         
         if(this.editCategoryForm.valid){
-            // const editCategory = {
-            //     id: this.editCategoryForm.value.main_category_id,
-            //     name: this.editCategoryForm.value.main_category,
-            // };
-            // console.log(editCategory);
-            // this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
-            
+
             let formData: any = new FormData();
             formData.append('id',  this.selectedRowData.id);
             formData.append('name', this.editCategoryForm.get('main_category')?.value);        
@@ -208,9 +165,9 @@ export class CategoryFormComponent {
                 
             this.category_service.patchCategory(formData).subscribe({
                 next: (response: any) => { 
-                    console.log(response);
-                    this.editCategoryForm.reset();
+                    this.RefreshTable.emit();
                     this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
+                    this.editCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
                     return throwError(() => error)
@@ -239,23 +196,67 @@ export class CategoryFormComponent {
     }
     
     onCategoryDeleteSubmit(): void {
-        
-        // const deleteCategory = {
-        //     id: this.deleteCategoryForm.value.main_category_id || this.selectedRowData?.id,
-        // };
-        // console.log(deleteCategory);
-        // this.CategorySuccess.emit("Category  "+this.selectedRowData?.name);
-            
             this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
                 next: (response: any) => { 
-                    console.log(response);
+                    this.RefreshTable.emit();
+                    this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
                     this.deleteCategoryForm.reset();
-                    this.CategorySuccess.emit("Category  "+this.deleteCategoryForm.value.main_category);
                 },
                 error: (error: HttpErrorResponse) => {
                     return throwError(() => error)
                 }
             });
             
+    }
+    
+    
+    onSubCategoryAddSubmit(): void {
+
+        if(this.addSubCategoryForm.valid){
+            // submit
+            console.warn(this.addSubCategoryForm.value);
+    
+            let formData: any = new FormData();
+            formData.append('name', this.addSubCategoryForm.get('main_category_id')?.value);
+            formData.append('name', this.addSubCategoryForm.get('main_category')?.value);
+
+    
+            for(const value of formData.entries()){
+                console.log(`${value[0]}, ${value[1]}`);
+            }
+            
+        this.category_service.postCategory(formData).subscribe({
+            next: (response: any) => { 
+                console.log(response);
+                this.addCategoryForm.reset();
+                this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
+            },
+            error: (error: HttpErrorResponse) => {
+                return throwError(() => error)
+            }
+        });
+        
+        }
+        
+        else if(this.addCategoryForm.invalid){
+            this.addCategoryForm.markAllAsTouched();
+        }
+    
+    
+    }
+
+    onSubCategoryDeleteSubmit(): void {
+        this.subcategory_service.deleteCategory(this.selectedRowData.id).subscribe({
+            next: (response: any) => { 
+                console.log(response)
+                this.RefreshTable.emit();
+                this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
+                this.deleteSubCategoryForm.reset();
+            },
+            error: (error: HttpErrorResponse) => {
+                return throwError(() => error)
+            }
+        });
+        
     }
 }

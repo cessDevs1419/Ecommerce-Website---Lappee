@@ -14,4 +14,17 @@ export interface User {
     created_at: string,
     last_login: string,
     user_type: number
+    
+}
+
+export interface BannedUserList {
+    success: string,
+    message: string,
+    data: BannedUser[]
+}
+
+export interface BannedUser {
+    id: string,
+    user_id: string,
+    reason: string
 }

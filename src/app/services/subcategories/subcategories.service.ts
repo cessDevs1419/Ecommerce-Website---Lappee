@@ -22,8 +22,8 @@ export class SubcategoriesService {
   }
 
   getAdminSubcategories(): Observable<SubcategoryList> {
-    //return this.http.get<SubcategoryList>(GETSubcategories);
-    return this.http.get<SubcategoryList>('../../assets/sampleData/subcategories.json')
+    return this.http.get<SubcategoryList>(GETSubcategories);
+    //return this.http.get<SubcategoryList>('../../assets/sampleData/subcategories.json')
   }
   
   postCategory(data: FormData): Observable<any> {
@@ -34,8 +34,18 @@ export class SubcategoriesService {
     return this.http.post<AdminSubcategory>(PATCHSubcategories, data, this.httpOptions);
   } 
   
-  deleteCategory(data: FormData): Observable<any> {
-    return this.http.post<AdminSubcategory>(DELETESubcategories, data, this.httpOptions);
-  } 
+  deleteCategory(categoryId: number): Observable<any> {
+    return this.http.delete(DELETESubcategories, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+          id: categoryId
+        }
+    })
+  }
 
 }

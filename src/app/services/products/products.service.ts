@@ -26,8 +26,8 @@ export class ProductsService {
   }
   
   public getAdminProducts(): Observable<ProductList> {
-    //return this.http.get<CategoryList>(GETAdminCategories);
-    return this.http.get<ProductList>('../../assets/sampleData/products.json');
+    return this.http.get<ProductList>(GETProducts);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
   
   postProduct(data: FormData): Observable<any> {

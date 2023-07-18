@@ -19,9 +19,12 @@ export class AdminParentFormComponent {
 	
 	//Forms
 	@Input() modalAddCategory!: boolean;
-	@Input() modalAddSubCategory!: boolean;
 	@Input() modalEditCategory!: boolean;
 	@Input() modalDeleteCategory!: boolean;
+	
+	@Input() modalAddSubCategory!: boolean;
+	@Input() modalEditSubCategory!: boolean;
+	@Input() modalDeleteSubCategory!: boolean;
 	
 	@Input() modalAddProduct!: boolean;
 	@Input() modalEditProduct!: boolean;
@@ -34,6 +37,7 @@ export class AdminParentFormComponent {
 	
 	//Account Forms
 	@Input() modalBanAccounts!: boolean;  
+	@Input() modalUnBanAccounts!: boolean; 
 	
 	//Parcel Forms
 	@Input() modalParcel!: boolean;
@@ -85,6 +89,20 @@ export class AdminParentFormComponent {
 	deleteSuccessToast(value: string): void {
         this.toastHeader = value;
         this.toastContent = "Successfully Deleted";
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+	banSuccessToast(value: string): void {
+        this.toastHeader = value;
+        this.toastContent = "Successfully Banned";
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+	unbanSuccessToast(value: string): void {
+        this.toastHeader = value;
+        this.toastContent = "Successfully UnBanned";
         this.toast.switchTheme('default');
         this.toast.show();
     }

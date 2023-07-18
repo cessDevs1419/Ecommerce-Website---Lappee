@@ -52,9 +52,9 @@ export class ProductFormComponent {
     {
 	    this.addProductForm = this.formBuilder.group({
 	        product_name: ['', Validators.required],
-	        product_quantity: [Number, Validators.required],
-	        product_price: ['', Validators.required],
-	        product_currency: ['', Validators.required],
+            product_price: ['', Validators.required],
+	        product_stock: [Number, Validators.required],
+            product_stock_limit: ['', Validators.required],
 	        product_category: ['', Validators.required],
             product_subcategory: ['', Validators.required],
 	        product_description: [''],
@@ -87,7 +87,9 @@ export class ProductFormComponent {
 	ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
     	this.sub_categories = this.sub_category_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
-    	
+        this.addProductForm.valueChanges.subscribe(() => {
+            this.updateBorders();
+        });
 	}
 	
     onCategorySelect(event: any): void {
@@ -96,7 +98,7 @@ export class ProductFormComponent {
             this.selectedSubCategory = null;
             this.filteredSubCategories = this.sub_categories.pipe(
                 map((subCategories: AdminSubcategory[]) =>
-                    subCategories.filter(subCategory => subCategory.main_category_id === categoryId)
+                    subCategories.filter(subCategory => subCategory.main_category === categoryId)
                 )
             );
         }
@@ -132,9 +134,31 @@ export class ProductFormComponent {
         this.product_images.removeAt(index);
     }
     
+    
+    updateBorders(): void {
+        const productPrice = this.addProductForm.get('product_price')?.value;
+        const productStock = this.addProductForm.get('product_stock')?.value;
+        const productStockLimit = this.addProductForm.get('product_stock_limit')?.value;
+        
+        
+        const priceInput = document.getElementById('addproductPrice') as HTMLInputElement;
+        const stockInput = document.getElementById('addproductQty') as HTMLInputElement;
+        const stocklimitInput = document.getElementById('addproductQtyLimit') as HTMLInputElement;
+
+        if (stockInput && stocklimitInput) {
+            //warning to inbalance stock and limit
+            stockInput.classList.toggle('border-warning', productStock < productStockLimit);
+            stocklimitInput.classList.toggle('border-warning', productStock < productStockLimit);
+            
+            //danger for invalid input
+            stockInput.classList.toggle('border-danger', productStock < 1);
+            priceInput.classList.toggle('border-danger', productPrice < 1);
+        }
+    }
+    
     //Submit Functions
     onProductAddSubmit(): void {
-		
+
         if(this.addProductForm.valid){
             const formData = this.addProductForm.value;
             console.log(this.addProductForm.value);
@@ -154,7 +178,7 @@ export class ProductFormComponent {
             //     console.log(`${value[0]}, ${value[1]}`);
             // }
             
-            // this.product_service.postCategory(formData).subscribe({
+            // this.product_service.postProduct(formData).subscribe({
             //     next: (response: any) => { 
             //         console.log(response);
             //         this.ProductSuccess.emit("Product "+this.addProductForm.value.product_name);

@@ -25,19 +25,13 @@
                 (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
-            
-            <app-category-form 
-                *ngIf="modalAddSubCategory"
-                [formAddSubCategory]="true"
-                (CategorySuccess)="postSuccessToast($event)"
-                (CategoryError)="ErrorToast($event)"
-            ></app-category-form>
         
             <app-category-form 
                 *ngIf="modalEditCategory"
                 [formEditCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="patchSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
     
             <app-category-form 
@@ -45,8 +39,25 @@
                 [formDeleteCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="deleteSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
             
+            <!--sub category -->
+            <app-category-form 
+                *ngIf="modalAddSubCategory"
+                [formAddSubCategory]="true"
+                (CategorySuccess)="postSuccessToast($event)"
+                (CategoryError)="ErrorToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
+            ></app-category-form>
+            
+            <app-category-form 
+                *ngIf="modalDeleteSubCategory"
+                [formDeleteSubCategory]="true"
+                [selectedRowData]="selectedRowData"
+                (CategorySuccess)="deleteSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
+            ></app-category-form>
             
             <!--products-->
             <app-product-form
@@ -95,7 +106,17 @@
             <app-accounts-form
                 *ngIf="modalBanAccounts"
                 [formBanAccount]="true"
-                (BanSuccess)="postSuccessToast($event)"
+                [selectedRowData]="selectedRowData"
+                (BanSuccess)="banSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
+            ></app-accounts-form>
+            
+            <app-accounts-form
+                *ngIf="modalUnBanAccounts"
+                [formUnBanAccount]="true"
+                [selectedRowData]="selectedRowData"
+                (BanSuccess)="unbanSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
             ></app-accounts-form>
         </div>
     </div>

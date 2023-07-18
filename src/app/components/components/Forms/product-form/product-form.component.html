@@ -14,21 +14,9 @@
                                 formControlName="product_name"
                                 required
                             >
+
                         </div>
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductQty" class="form-label">Quantity</label>
-                            <input 
-                                type="number" 
-                                class="form-control" 
-                                id="addproductQty" 
-                                name="addproductQty" 
-                                formControlName="product_quantity"
-                                required
-                            >
-                        </div>
-                    </div>
-                    
-                    <div class="row">
+                        
                         <div class="col-sm-6 mb-3">
                             <label for="addproductPrice" class="form-label">Price</label>
                             <input 
@@ -39,23 +27,13 @@
                                 formControlName="product_price"
                                 required
                             >
+                            <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('product_price')?.value < 1 " class="invalid-text">
+                                invalid input.
+                            </p>
                         </div>
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductCurrency" class="form-label">Price Currency</label>
-                            <select 
-                                class="form-select"  
-                                id="addproductPriceCurrency" 
-                                name="addproductPriceCurrency"
-                                formControlName="product_currency"
-                                required
-                            >
-                                <option selected>Select Currency</option>
-                                <option value="php">PHP</option>
-                                <option value="usd">USD</option>
-                                <option value="yen">YEN</option>
-                            </select>
-                        </div>
-                    </div>   
+
+                    </div>
+                    
                     
                     <div class="row">
                         <div class="col-sm-6 mb-3">    
@@ -85,7 +63,39 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductQty" class="form-label">Stock</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="addproductQty" 
+                                name="addproductQty" 
+                                formControlName="product_stock"
+                                required
+                            >
+                            <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('product_stock')?.value < 1 " class="invalid-text">
+                                invalid input.
+                            </p>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <label for="addproductQtyLimit" class="form-label">Stock Limit</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="addproductQtyLimit" 
+                                name="addproductQtyLimit" 
+                                formControlName="product_stock_limit"
+                                required
+                            >
 
+                        </div>
+                        <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('product_stock')?.value < addProductForm.get('product_stock_limit')?.value" class="invalid-text">
+                            Stock should be greater than Stock Limit.
+                        </p>
+
+                    </div>   
                     
                     <div class="mb-3">
                         <label for="addproductDescription" class="form-label">Product Description</label>
@@ -117,10 +127,15 @@
                     
                 </div>
                 
-                <div class="modal-footer border-0 ">
+                <div class="modal-footer border-0">
                     <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
-                </div>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary bg-light-primary"
+                        [disabled]="addProductForm.get('product_stock')?.value < addProductForm.get('product_stock_limit')?.value || (addProductForm.get('product_stock')?.value === 0 )"
+                    >CONFIRM</button>
+                </div>                
+                
         </form>
         
         <!--RESTOCK PRODUCT FORM-->

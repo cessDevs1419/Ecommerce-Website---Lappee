@@ -33,8 +33,12 @@ export const POSTRegister: string = api + "auth/register";
 export const POSTLogout: string = api + "auth/logout";
 export const GETUser: string = api + "auth/user";
 
-//User Endpoint
+//User Endpoints
 export const GETUsers: string = api + "api/admin/account/users";
+export const GETBanUsers: string = api + "api/admin/account/bans";
+export const POSTBanUsers: string = api + "api/admin/account/bans/ban";
+export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
+
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";

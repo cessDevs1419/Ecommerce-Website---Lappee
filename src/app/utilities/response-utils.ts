@@ -3,7 +3,7 @@ import { Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
-import { User } from "src/assets/models/user";
+import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 
 // Formatting
@@ -20,10 +20,10 @@ export function formatSubcategories(response: CategoryList) : Subcategory[] {
 }
 
 // returns an AdminSubcategory array from an Admin-side Subcategory List
-export function formatAdminSubcategories(response: SubcategoryList): Subcategory[] {
-  return response.data.map((data: Subcategory) => ({
+export function formatAdminSubcategories(response: SubcategoryList): AdminSubcategory[] {
+  return response.data.map((data: AdminSubcategory) => ({
     id: data.id,
-    main_category_id: data.main_category_id,
+    main_category: data.main_category,
     name: data.name
   }))
 }
@@ -107,6 +107,14 @@ export function formatUser(response: any): User[] {
       created_at: data.created_at,
       last_login: data.last_login,
       user_type: data.user_type
+    }));
+}
+
+export function formatBannedUser(response: any): BannedUser[] {
+  return response.data.map((data: BannedUser) => ({
+      id: data.id,
+      user_id: data.user_id,
+      reason: data.reason
     }));
 }
 

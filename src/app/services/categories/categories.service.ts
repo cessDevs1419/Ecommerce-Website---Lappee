@@ -33,7 +33,6 @@ export class CategoriesService {
 
   public getAdminCategories(): Observable<AdminCategoryList> {
     return this.http.get<AdminCategoryList>(GETAdminCategories);
-    //return this.http.get<AdminCategoryList>('../../assets/sampleData/categories.json');
   }
   
   postCategory(data: FormData): Observable<any> {

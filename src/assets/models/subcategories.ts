@@ -7,5 +7,5 @@ export interface SubcategoryList {
 export interface AdminSubcategory {
     id: string,
     name: string,
-    main_category_id: string
+    main_category: string
 }   

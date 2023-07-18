@@ -22,43 +22,6 @@
     </div>
 </form>
 
-<!--ADD SUB CATEGORY FORM-->
-<form *ngIf="formAddSubCategory" [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
-    <div class="modal-body text-center pt-0 pb-0 mb-3">
-        <div class="m-auto col-sm-8 mb-3">
-            <label for="categoryName" class="form-label">Select Main Category</label>
-            <select 
-                class="form-select"  
-                id="editproductCurrency" 
-                name="editproductCurrency" 
-                [value]="selectedRowData?.category"
-                formControlName="main_category"
-                required
-            >
-                <option *ngFor="let category of categories | async" [value]="category.id">{{ category.name }}</option>
-            </select>
-        </div>
-        <div class="d-flex align-items-center m-auto justify-content-center">
-            <label class="form-label mx-2" >Sub Category Name</label>
-            <button class="btn mb-3 border mx-2" type="button" (click)="addSubCategory()">+</button>
-        </div>
-        <div class="m-auto col-sm-8" formArrayName="subCategories">
-            <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
-                <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
-                <span class="input-group-text p-0" id="basic-addon2">
-                    <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
-                </span>
-            </div>
-
-        </div>
-    </div>
-    
-    <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
-    </div>
-</form>
-
 <!--EDIT CATEGORY FORM-->
 <form *ngIf="formEditCategory" [formGroup]="editCategoryForm"  (ngSubmit)="onCategoryEditSubmit()">
     <div class="modal-body text-center pt-0 pb-0 mb-3">
@@ -67,7 +30,7 @@
             <input 
                 type="hidden" 
                 [value]="selectedRowData?.id"
-                formControlName="main_category_id"
+
             >
             <input 
                 class="form-control" 
@@ -109,3 +72,59 @@
     </div>
 </form>
 
+<!--ADD SUB CATEGORY FORM-->
+<form *ngIf="formAddSubCategory" [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
+    <div class="modal-body text-center pt-0 pb-0 mb-3">
+        <div class="m-auto col-sm-8 mb-3">
+            <label for="categoryName" class="form-label">Select Main Category</label>
+            <select 
+                class="form-select"  
+                id="editproductCurrency" 
+                name="editproductCurrency" 
+                [value]="selectedRowData?.category"
+                formControlName="main_category"
+                required
+            >
+                <option *ngFor="let category of categories | async" [value]="category.id">{{ category.name }}</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center m-auto justify-content-center">
+            <label class="form-label mx-2" >Sub Category Name</label>
+            <button class="btn mb-3 border mx-2" type="button" (click)="addSubCategory()">+</button>
+        </div>
+        <div class="m-auto col-sm-8" formArrayName="subCategories">
+            <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
+                <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
+                <span class="input-group-text p-0" id="basic-addon2">
+                    <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
+                </span>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
+
+
+<!--EDIT SUB CATEGORY FORM-->
+
+
+<!--DELETE SUB CATEGORY FORM-->
+<form *ngIf="formDeleteSubCategory" [formGroup]="deleteSubCategoryForm"  (ngSubmit)="onSubCategoryDeleteSubmit()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <input 
+            type="hidden" 
+            [value]="selectedRowData?.id"
+        >
+        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
+        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
