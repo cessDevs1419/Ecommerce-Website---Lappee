@@ -34,7 +34,7 @@ export const POSTLogout: string = api + "auth/logout";
 export const GETUser: string = api + "auth/user";
 
 //User Endpoint
-export const GETUsers: string = api + "admin/account/users";
+export const GETUsers: string = api + "api/admin/account/users";
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";
