@@ -17,13 +17,14 @@
     ></app-table>
 </div>
 
+    <app-admin-parent-form
+        modalID="ban"
+        [modalTitle]="modalTitle"
+        modalSubTitle="ACCOUNT MANAGEMENT"
+        (RefreshTable)="refreshTableData()"
+        [modalBanAccounts]="modalBanAccounts"
+        [modalUnBanAccounts]="modalUnBanAccounts"
+        [selectedRowData]="selectedRowData"
+    ></app-admin-parent-form>
 
-<app-admin-parent-form
-    modalID="ban"
-    modalTitle="BAN ACCOUNT"
-    modalSubTitle="ACCOUNT MANAGEMENT"
-    
-    (RefreshTable)="refreshTableData()"
-    [modalBanAccounts]="true"
-    [selectedRowData]="selectedRowData"
-></app-admin-parent-form>
+

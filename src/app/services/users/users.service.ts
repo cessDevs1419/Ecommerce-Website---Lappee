@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BannedUserList, User, UserList } from 'src/assets/models/user';
-import { GETBanUsers, GETUsers, POSTBanUsers } from '../endpoints';
+import { DELETEBanUsers, GETBanUsers, GETUsers, POSTBanUsers } from '../endpoints';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -33,7 +33,7 @@ export class UsersService {
   } 
   
   unbanUsers(userId: number): Observable<any> {
-    return this.http.post(POSTBanUsers, {
+    return this.http.delete(DELETEBanUsers, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -41,7 +41,7 @@ export class UsersService {
       }),
       responseType: 'json',
       body: {
-          id: userId
+          user_id: userId
         }
     })
   } 

@@ -70,7 +70,17 @@ export class AccountsFormComponent {
     }
     
     onAccountUnBanSubmit(): void {
-    
+        this.userService.unbanUsers(this.selectedRowData.user_id).subscribe({
+            next: (response: any) => { 
+                console.log(response)
+                this.RefreshTable.emit();
+                this.BanSuccess.emit(this.BanSuccessMessage+this.selectedRowData.fname);
+                this.unbanAccountForm.reset();
+            },
+            error: (error: HttpErrorResponse) => {
+                return throwError(() => error)
+            }
+        });
     }
     
     

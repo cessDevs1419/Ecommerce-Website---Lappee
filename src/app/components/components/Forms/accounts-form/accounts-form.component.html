@@ -7,7 +7,7 @@
                     [value]="selectedRowData?.user_id"
                     formControlName="user_id"
                 >
-                <p class="fs-5 fw-bold mb-1">Are you sure to ban this user?</p>
+                <p class="fs-5 fw-bold mb-1">Are you sure you want to ban this user?</p>
                 <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.fname}}</h1>
                 <div class="mb-3 text-start">
                     <label for="reason" class="form-label ">Reason:</label>
@@ -28,21 +28,12 @@
     
     
     <!--UNBAN ACCOUNT FORM-->
-    <form *ngIf="formUnBanAccount" [formGroup]="banAccountForm"  (ngSubmit)="onAccountBanSubmit()">
+    <form *ngIf="formUnBanAccount" [formGroup]="unbanAccountForm"  (ngSubmit)="onAccountUnBanSubmit()">
         <div  class="modal-body text-center pt-0 pb-0">
             <div class="modal-body text-center pt-0 pb-0">
                 <input type="hidden" [value]="selectedRowData?.user_id">
-                <p class="fs-5 fw-bold mb-1">Are you sure to ban this user?</p>
+                <p class="fs-5 fw-bold mb-1">Are you sure you want to unban this user?</p>
                 <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.fname}}</h1>
-                <div class="mb-3 text-start">
-                    <label for="reason" class="form-label ">Reason:</label>
-                    <textarea 
-                        class="form-control" 
-                        id="reason" 
-                        rows="3"
-                        formControlName="account_reason"
-                    ></textarea>
-                </div>
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>

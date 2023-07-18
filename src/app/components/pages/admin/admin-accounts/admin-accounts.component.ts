@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 import { UsersService } from 'src/app/services/users/users.service';
 
@@ -11,7 +11,7 @@ import { BannedUser, User } from 'src/assets/models/user';
     templateUrl: './admin-accounts.component.html',
     styleUrls: ['./admin-accounts.component.css']
 })
-export class AdminAccountsComponent {
+export class AdminAccountsComponent implements OnInit {
 
     users!: Observable<User[]>;
     banned_users!: Observable<BannedUser[]>;
@@ -22,7 +22,9 @@ export class AdminAccountsComponent {
     private bannedUsersSubject = new BehaviorSubject<BannedUser[]>([]);
     banned_users$ = this.bannedUsersSubject.asObservable();
     
-
+    modalTitle: string;
+    modalBanAccounts: boolean;
+    modalUnBanAccounts: boolean;
 	constructor(
 		private user_service: UsersService
 	) {
@@ -33,24 +35,32 @@ export class AdminAccountsComponent {
         this.refreshData$.pipe(
             startWith(undefined),
             switchMap(() => this.user_service.getbannedUsers()),
-            map((Response: any) => formatBannedUser(Response)),
+            map((response: any) => formatBannedUser(response)),
             tap((bannedUsers: BannedUser[]) => {
-              this.bannedStatus = {};
-              bannedUsers.forEach((bannedUser: BannedUser) => {
-                this.bannedStatus[bannedUser.user_id] = true;
-              });
-              this.bannedUsersSubject.next(bannedUsers); // Update the BehaviorSubject
-              console.log("bannedStatus:", this.bannedStatus);
+                this.bannedStatus = {};
+                bannedUsers.forEach((bannedUser: BannedUser) => {
+                    this.bannedStatus[bannedUser.user_id] = true;
+                });
+                this.bannedUsersSubject.next(bannedUsers); 
+                //console.log("bannedStatus:", this.bannedStatus);
+    
+                if (this.selectedRowData) {
+                    this.modalBanAccounts = !this.bannedStatus[this.selectedRowData.user_id];
+                    this.modalUnBanAccounts = this.bannedStatus[this.selectedRowData.user_id];
+                    if (this.bannedStatus[this.selectedRowData.user_id]) {
+                        this.modalTitle = "UNBAN ACCOUNT";
+                    } else {
+                        this.modalTitle = "BAN ACCOUNT";
+                    }
+                }
             })
-          ).subscribe();
-        
-          this.users = this.refreshData$.pipe(
+        ).subscribe();
+    
+        this.users = this.refreshData$.pipe(
             startWith(undefined),
             switchMap(() => this.user_service.getUsers()),
             map((response: any) => formatUser(response)),
-            // No need to set the banned status here since we are doing it in the banned_users Observable
-          );
-
+        );
 	}
 	
     refreshTableData(): void {
@@ -61,7 +71,15 @@ export class AdminAccountsComponent {
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
-        
+
+        // Update modalBanAccounts, modalUnBanAccounts, and modalTitle when rowData is available
+        if (this.bannedStatus[this.selectedRowData.user_id]) {
+            this.modalTitle = "UNBAN ACCOUNT";
+        } else {
+            this.modalTitle = "BAN ACCOUNT";
+        }
+        this.modalBanAccounts = !this.bannedStatus[this.selectedRowData.user_id];
+        this.modalUnBanAccounts = this.bannedStatus[this.selectedRowData.user_id];
     }
 
 
