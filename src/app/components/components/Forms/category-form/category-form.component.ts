@@ -78,12 +78,11 @@ export class CategoryFormComponent {
         });
         
         this.editSubCategoryForm = this.formBuilder.group({
-            main_category: ['', Validators.required],
-            subCategories: this.formBuilder.array([])
+            sub_category: new FormControl('', Validators.required)
         });
         
         this.deleteSubCategoryForm = this.formBuilder.group({
-            main_category_id: new FormControl('', Validators.required)
+            sub_category_id: new FormControl('', Validators.required)
         });
     }
 
@@ -112,11 +111,6 @@ export class CategoryFormComponent {
             
             let formData: any = new FormData();
             formData.append('name', this.addCategoryForm.get('main_category')?.value);
-
-    
-            for(const value of formData.entries()){
-                console.log(`${value[0]}, ${value[1]}`);
-            }
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
@@ -158,10 +152,7 @@ export class CategoryFormComponent {
             let formData: any = new FormData();
             formData.append('id',  this.selectedRowData.id);
             formData.append('name', this.editCategoryForm.get('main_category')?.value);        
-    
-            for(const value of formData.entries()){
-                console.log(`${value[0]}, ${value[1]}`);
-            }
+
                 
             this.category_service.patchCategory(formData).subscribe({
                 next: (response: any) => { 
@@ -203,7 +194,14 @@ export class CategoryFormComponent {
                     this.deleteCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
-                    return throwError(() => error)
+                
+                    const errorData = {
+                        errorMessage: `Invalid Item`,
+                        suberrorMessage: 'Category has a sub-category'
+                    };
+                    
+                    this.CategoryError.emit(errorData);
+                    
                 }
             });
             
@@ -244,9 +242,54 @@ export class CategoryFormComponent {
     
     
     }
+    
+    onSubCategoryEditSubmit(): void {
+        
+        if(this.editSubCategoryForm.valid){
 
+            let formData: any = new FormData();
+            formData.append('sub_category_id',  this.selectedRowData.id);
+            formData.append('main_category_id', '');        
+            formData.append('name', this.editSubCategoryForm.get('sub_category')?.value);        
+    
+            for(const value of formData.entries()){
+                console.log(`${value[0]}, ${value[1]}`);
+            }
+                
+            this.subcategory_service.patchSubcategory(formData).subscribe({
+                next: (response: any) => { 
+                    this.RefreshTable.emit();
+                    this.CategorySuccess.emit("Category  "+this.editSubCategoryForm.value.main_category);
+                    this.editSubCategoryForm.reset();
+                },
+                error: (error: HttpErrorResponse) => {
+                    return throwError(() => error)
+                }
+            });
+            
+        }
+            
+        else if(this.editSubCategoryForm.invalid){
+            this.editSubCategoryForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.editSubCategoryForm.controls) {
+                if (this.editSubCategoryForm.controls.hasOwnProperty(controlName) && this.editSubCategoryForm.controls[controlName].errors?.['required']) {
+                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                    emptyFields.push(label);
+                }
+            }
+
+            const errorData = {
+                errorMessage: `Please fill in the following required fields: `,
+                suberrorMessage: emptyFields.join(', ')
+            };
+            this.CategoryError.emit(errorData);
+        }
+        
+    }
+    
     onSubCategoryDeleteSubmit(): void {
-        this.subcategory_service.deleteCategory(this.selectedRowData.id).subscribe({
+        this.subcategory_service.deleteSubcategory(this.selectedRowData.id).subscribe({
             next: (response: any) => { 
                 console.log(response)
                 this.RefreshTable.emit();

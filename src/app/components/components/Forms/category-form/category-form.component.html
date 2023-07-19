@@ -112,6 +112,37 @@
 
 <!--EDIT SUB CATEGORY FORM-->
 
+<form *ngIf="formEditSubCategory" [formGroup]="editSubCategoryForm"  (ngSubmit)="onSubCategoryEditSubmit()">
+    <div class="modal-body text-center pt-0 pb-0 mb-3">
+        <div class="m-auto col-sm-8 mb-3">
+            <label for="categoryName" class="form-label">Sub Category Name</label>
+            <input 
+                type="hidden" 
+                [value]="selectedRowData?.id"
+
+            >
+            <input 
+                class="form-control" 
+                type="text" 
+                id="subcategoryName" 
+                formControlName="sub_category" 
+                [value]="selectedRowData?.name"
+                required
+            >
+
+        </div>
+    </div>
+    
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button 
+            type="submit" 
+            class="btn btn-primary btn-primary-light text-white "
+            [ngClass]="{'disabled': !editSubCategoryForm.get('sub_category')?.value}"
+            
+        >CONFIRM</button>
+    </div>
+</form>
 
 <!--DELETE SUB CATEGORY FORM-->
 <form *ngIf="formDeleteSubCategory" [formGroup]="deleteSubCategoryForm"  (ngSubmit)="onSubCategoryDeleteSubmit()">
@@ -120,7 +151,7 @@
             type="hidden" 
             [value]="selectedRowData?.id"
         >
-        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
+        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Subcategory?</p>
         <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">

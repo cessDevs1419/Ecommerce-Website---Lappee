@@ -35,8 +35,8 @@
                 [addSubBtnclass]="size"
                 addSubtnName="ADD SUB CATEGORY"
                 [tableAction]="true"
-                [editBtn]="true"
-                [deleteBtn]="true"
+                [editSubBtn]="true"
+                [deleteSubBtn]="true"
                 
                 [tableHeader]="['CATEGORY ID','CATEGORY NAME','MAIN CATEGORY']"
                 [tableRows]="['id','name', 'main_category']"
@@ -47,6 +47,7 @@
         </div>
     </div>
 
+    <!--MAIN-->
     <app-admin-parent-form
         modalID="addproduct"
         modalTitle="ADD CATEGORY"
@@ -55,7 +56,7 @@
         [modalAddCategory]="true"
         (RefreshTable)="refreshTableData()"
     ></app-admin-parent-form>
-    <!---->
+    
     <app-admin-parent-form
         modalID="edit"
         modalTitle="EDIT CATEGORY"
@@ -76,6 +77,7 @@
         (RefreshTable)="refreshTableData()"
     ></app-admin-parent-form>
     
+    <!--SUB-->
     <app-admin-parent-form
     
         modalID="addsubproduct"
@@ -87,8 +89,18 @@
     ></app-admin-parent-form>
     
     <app-admin-parent-form
-        modalID="delete"
-        modalTitle="DELETE CATEGORY"
+        modalID="editSub"
+        modalTitle="EDIT SUB CATEGORY"
+        modalSubTitle="CATEGORY MANAGEMENT"
+        [modalEditSubCategory]="true"
+        
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+    ></app-admin-parent-form>
+    
+    <app-admin-parent-form
+        modalID="deleteSub"
+        modalTitle="DELETE SUB CATEGORY"
         modalSubTitle="CATEGORY MANAGEMENT"
     
         [modalDeleteSubCategory]="true"

@@ -36,7 +36,9 @@ export class TableComponent {
 	@Input() tableAction!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
+	@Input() editSubBtn!: boolean;
 	@Input() deleteBtn!: boolean;
+	@Input() deleteSubBtn!: boolean;
 	@Input() viewBtn!: boolean;
 	@Input() banBtn!: boolean;
 	@Input() bannedStatus: { [userId: number]: boolean } = {};

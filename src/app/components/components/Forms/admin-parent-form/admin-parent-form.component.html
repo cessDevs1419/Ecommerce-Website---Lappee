@@ -39,6 +39,7 @@
                 [formDeleteCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="deleteSuccessToast($event)"
+                (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
             
@@ -51,6 +52,14 @@
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
             
+            <app-category-form 
+                *ngIf="modalEditSubCategory"
+                [formEditSubCategory]="true"
+                [selectedRowData]="selectedRowData"
+                (CategorySuccess)="patchSuccessToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
+            ></app-category-form>
+        
             <app-category-form 
                 *ngIf="modalDeleteSubCategory"
                 [formDeleteSubCategory]="true"
