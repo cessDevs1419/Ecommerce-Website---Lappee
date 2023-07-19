@@ -1,6 +1,6 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
 import { Product, ProductList, Variant } from "src/assets/models/products";
-import { Review, ReviewList } from "src/assets/models/reviews";
+import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
@@ -75,17 +75,25 @@ export function formatProductVariants(response: ProductList): Variant[] {
 }
 
 // returns Review array from ReviewList
-export function formatReviews(response: any): Review[] {
-  return response.data.map((data:Review) => ({
-    id: data.id,
-    productId: data.productId,
-    name: data.name,
+export function formatReviews(response: any): ReviewItem[] {
+  return response.data.map((data:ReviewItem) => ({
+    product_id: data.product_id,
     rating: data.rating,
-    date: data.date,
-    comment: data.comment,
-    attachments: data.attachments,
-    isUsernameHidden: data.isUsernameHidden
+    count: data.count,
+    reviews: data.reviews
   }));
+}
+
+export function formatReviewsDetails(response: any): Review[] {
+  let reviewList = response.data.flatMap((data:ReviewItem) => data.reviews );
+  return reviewList.map((review: Review) => ({
+    id: review.id,
+    user_id: review.user_id,
+    rating: review.rating,
+    content: review.content,
+    reviewed_on: review.reviewed_on
+  }))
+  
 }
 
 export function formatCsrfToken(response: any): string {

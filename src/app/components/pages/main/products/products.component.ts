@@ -5,13 +5,13 @@ import { Product, ColorVariant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { formatProducts, filterProductsById } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
 import { GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
-import { Review } from 'src/assets/models/reviews';
+import { Review, ReviewItem } from 'src/assets/models/reviews';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 @Component({
@@ -20,6 +20,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
+  parseFloat = parseFloat;
   isFaved: boolean = false;
   productId!: string;
   products!: Observable<Product[]>;
@@ -27,7 +28,6 @@ export class ProductsComponent {
   imgArray!: GalleryItem[];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
-  reviews!: Observable<Review[]>;
   colorVariants: ColorVariant[] = [];
   selectedPrice!: number;
   hasVariant: boolean = true;
@@ -36,6 +36,9 @@ export class ProductsComponent {
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
+  
+  reviews!: Observable<ReviewItem[]>;
+  reviewsList!: Observable<Review[]>
 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
@@ -84,6 +87,12 @@ export class ProductsComponent {
       if(product.length > 0){
         this.currentProduct = product[0];
         this.selectedPrice = this.currentProduct.price;
+
+        // get reviews
+        this.reviews = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviews(response)));
+
+        this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)))
+    
         console.log('item found');
         
         this.initVariants();
@@ -102,6 +111,7 @@ export class ProductsComponent {
       this.cdr.detectChanges();
     });
 
+    // initialize gallery
     this.imgArray = [
       new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
       new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
@@ -119,8 +129,6 @@ export class ProductsComponent {
         this.position = ThumbnailsPosition.Bottom;
       }
     });
-
-    //this.reviews = this.reviewService.getReviews(this.currentProduct[0].id);
   }
 
   initVariants(): void {
