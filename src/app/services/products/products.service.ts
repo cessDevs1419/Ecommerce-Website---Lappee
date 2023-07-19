@@ -38,7 +38,18 @@ export class ProductsService {
     return this.http.post<Product>(PATCHProductsAdmin, data, this.httpOptions);
   } 
   
-  deleteProduct(data: FormData): Observable<any> {
-    return this.http.post<Product>(DELETEProductsAdmin, data, this.httpOptions);
-  } 
+
+  deleteProduct(prodId: number): Observable<any> {
+    return this.http.delete(DELETEProductsAdmin, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+          id: prodId
+        }
+    })
+  }
 }

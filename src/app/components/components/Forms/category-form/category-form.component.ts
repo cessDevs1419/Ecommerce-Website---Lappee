@@ -10,6 +10,7 @@ import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { GETCategories } from 'src/app/services/endpoints';
+import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
 
 @Component({
     selector: 'app-category-form',
@@ -20,6 +21,7 @@ import { GETCategories } from 'src/app/services/endpoints';
 export class CategoryFormComponent {
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
+    @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
 	@Output() CategoryError: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
 
@@ -46,6 +48,7 @@ export class CategoryFormComponent {
     sub_categories!: Observable<AdminSubcategory[]>;
 
 
+
     
     ngOnInit(): void {
         this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
@@ -56,16 +59,17 @@ export class CategoryFormComponent {
         private category_service: CategoriesService,
         private subcategory_service: SubcategoriesService,
         private formBuilder: FormBuilder,
+        private errorService: ErrorHandlingService,
         private http: HttpClient
     ) 
     {
         this.addCategoryForm = new FormGroup({
-            main_category: new FormControl('', Validators.required)
+            category: new FormControl('', Validators.required)
         });
         
         this.editCategoryForm = new FormGroup({
             //main_category_id: new FormControl('', Validators.required),
-            main_category: new FormControl('', Validators.required)
+            category: new FormControl('', Validators.required)
         });
         
         this.deleteCategoryForm = new FormGroup({
@@ -101,8 +105,6 @@ export class CategoryFormComponent {
         this.subCategories.removeAt(index);
     }
     
-    
-    
     //Submit Functions
     onCategoryAddSubmit(): void {
 
@@ -110,18 +112,30 @@ export class CategoryFormComponent {
 
             
             let formData: any = new FormData();
-            formData.append('name', this.addCategoryForm.get('main_category')?.value);
+            formData.append('name', this.addCategoryForm.get('category')?.value);
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
-                    this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
+                    this.CategorySuccess.emit("Category "+this.addCategoryForm.value.category);
                     this.addCategoryForm.reset();
 
                     
                 },
                 error: (error: HttpErrorResponse) => {
-                    return throwError(() => error)
+                    const errorData = this.errorService.handleError(error);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else {
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error);
+                    
+                    // const customErrorMessages = {
+                    //     errorMessage: 'Custom Error',
+                    //     suberrorMessage: 'This is a custom error message.',
+                    //   };
+                    //   const errorData = this.errorService.handleError(error, customErrorMessages);
                 }
             });
         
@@ -139,7 +153,7 @@ export class CategoryFormComponent {
                 errorMessage: `Please fill in the following required fields: `,
                 suberrorMessage: emptyFields.join(', ')
             };
-            this.CategoryError.emit(errorData);
+            this.CategoryWarn.emit(errorData);
             // this.addCategoryForm.markAllAsTouched();
         }
 
@@ -161,7 +175,13 @@ export class CategoryFormComponent {
                     this.editCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
-                    return throwError(() => error)
+                    const errorData = this.errorService.handleError(error);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else {
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error);
                 }
             });
             
@@ -181,7 +201,7 @@ export class CategoryFormComponent {
                 errorMessage: `Please fill in the following required fields: `,
                 suberrorMessage: emptyFields.join(', ')
             };
-            this.CategoryError.emit(errorData);
+            this.CategoryWarn.emit(errorData);
         }
         
     }
@@ -194,14 +214,18 @@ export class CategoryFormComponent {
                     this.deleteCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
-                
-                    const errorData = {
-                        errorMessage: `Invalid Item`,
-                        suberrorMessage: 'Category has a sub-category'
+                    const customErrorMessages = {
+                        errorMessage: 'Invalid Request',
+                        suberrorMessage: 'There are subcategories under this category',
                     };
                     
-                    this.CategoryError.emit(errorData);
-                    
+                    const errorData = this.errorService.handleError(error, customErrorMessages);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else {
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error); 
                 }
             });
             
@@ -217,20 +241,21 @@ export class CategoryFormComponent {
             let formData: any = new FormData();
             formData.append('name', this.addSubCategoryForm.get('main_category_id')?.value);
             formData.append('name', this.addSubCategoryForm.get('main_category')?.value);
-
-    
-            for(const value of formData.entries()){
-                console.log(`${value[0]}, ${value[1]}`);
-            }
             
         this.category_service.postCategory(formData).subscribe({
             next: (response: any) => { 
                 console.log(response);
                 this.addCategoryForm.reset();
-                this.CategorySuccess.emit("Category "+this.addCategoryForm.value.main_category);
+                this.CategorySuccess.emit("SubCategory "+this.addCategoryForm.value.main_category);
             },
             error: (error: HttpErrorResponse) => {
-                return throwError(() => error)
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                } else {
+                    this.CategoryWarn.emit(errorData);
+                }
+                return throwError(() => error);
             }
         });
         
@@ -251,19 +276,21 @@ export class CategoryFormComponent {
             formData.append('sub_category_id',  this.selectedRowData.id);
             formData.append('main_category_id', '');        
             formData.append('name', this.editSubCategoryForm.get('sub_category')?.value);        
-    
-            for(const value of formData.entries()){
-                console.log(`${value[0]}, ${value[1]}`);
-            }
                 
             this.subcategory_service.patchSubcategory(formData).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
-                    this.CategorySuccess.emit("Category  "+this.editSubCategoryForm.value.main_category);
+                    this.CategorySuccess.emit("SubCategory  "+this.editSubCategoryForm.value.main_category);
                     this.editSubCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
-                    return throwError(() => error)
+                    const errorData = this.errorService.handleError(error);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else {
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error);
                 }
             });
             
@@ -293,11 +320,17 @@ export class CategoryFormComponent {
             next: (response: any) => { 
                 console.log(response)
                 this.RefreshTable.emit();
-                this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
+                this.CategorySuccess.emit("SubCategory  "+this.selectedRowData.name);
                 this.deleteSubCategoryForm.reset();
             },
             error: (error: HttpErrorResponse) => {
-                return throwError(() => error)
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                } else {
+                    this.CategoryWarn.emit(errorData);
+                }
+                return throwError(() => error); 
             }
         });
         

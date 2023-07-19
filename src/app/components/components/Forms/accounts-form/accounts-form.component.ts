@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
+import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
 import { UsersService } from 'src/app/services/users/users.service';
 
 @Component({
@@ -12,6 +13,7 @@ import { UsersService } from 'src/app/services/users/users.service';
 export class AccountsFormComponent {
 	@Output() BanSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() BanError: EventEmitter<any> = new EventEmitter();
+	@Output() BanWarn: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
     
     @Input() selectedRowData: any;
@@ -19,22 +21,13 @@ export class AccountsFormComponent {
     @Input() formUnBanAccount!: boolean;
     
     BanSuccessMessage = 'User: ';
-	errorMessage = 'Please fill in all the required fields.';
-	
-    banTitle: 'BAN ACCOUNT';
-    unbanTitle: 'UNBAN ACCOUNT';
-    banFormID: 'ban';
-    unbanFormID: 'unban';
-    
-    title: '';
-    Id: '';
     
     banAccountForm: FormGroup;
     unbanAccountForm: FormGroup;
 
 	constructor(
-        private formBuilder: FormBuilder,
         private http: HttpClient,
+        private errorService: ErrorHandlingService,
         private userService: UsersService
     ) 
     {
@@ -62,7 +55,18 @@ export class AccountsFormComponent {
                 this.banAccountForm.reset();
             },
             error: (error: HttpErrorResponse) => {
-                return throwError(() => error)
+                const customErrorMessages = {
+                    errorMessage: 'Invalid Request',
+                    suberrorMessage: 'Account is already banned',
+                };
+                
+                const errorData = this.errorService.handleError(error, customErrorMessages);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.BanError.emit(errorData);
+                } else {
+                    this.BanWarn.emit(errorData);
+                }
+                return throwError(() => error); 
             }
         });
 
@@ -78,7 +82,13 @@ export class AccountsFormComponent {
                 this.unbanAccountForm.reset();
             },
             error: (error: HttpErrorResponse) => {
-                return throwError(() => error)
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.BanError.emit(errorData);
+                } else {
+                    this.BanWarn.emit(errorData);
+                }
+                return throwError(() => error); 
             }
         });
     }

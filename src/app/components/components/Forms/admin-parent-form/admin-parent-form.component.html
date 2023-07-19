@@ -22,6 +22,7 @@
                 *ngIf="modalAddCategory"
                 [formAddCategory]="true"
                 (CategorySuccess)="postSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
                 (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
@@ -31,6 +32,8 @@
                 [formEditCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="patchSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
+                (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
     
@@ -39,6 +42,7 @@
                 [formDeleteCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="deleteSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
                 (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
@@ -48,6 +52,7 @@
                 *ngIf="modalAddSubCategory"
                 [formAddSubCategory]="true"
                 (CategorySuccess)="postSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
                 (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
@@ -57,6 +62,8 @@
                 [formEditSubCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="patchSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
+                (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
         
@@ -65,6 +72,8 @@
                 [formDeleteSubCategory]="true"
                 [selectedRowData]="selectedRowData"
                 (CategorySuccess)="deleteSuccessToast($event)"
+                (CategoryWarn)="WarningToast($event)"
+                (CategoryError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-category-form>
             
@@ -74,6 +83,7 @@
                 [formAddProduct]="true"
                 (ProductSuccess)="postSuccessToast($event)"
                 (ProductError)="ErrorToast($event)"
+                (ProductWarning)="WarningToast($event)"
             >
             </app-product-form>
             
@@ -83,6 +93,7 @@
                 [selectedRowData]="selectedRowData"
                 (ProductSuccess)="patchSuccessToast($event)"
                 (ProductError)="ErrorToast($event)"
+                (ProductWarning)="WarningToast($event)"
             >
             </app-product-form>
         
@@ -92,6 +103,7 @@
                 [selectedRowData]="selectedRowData"
                 (ProductSuccess)="patchSuccessToast($event)"
                 (ProductError)="ErrorToast($event)"
+                (ProductWarning)="WarningToast($event)"
             >
             </app-product-form>
             
@@ -100,6 +112,9 @@
                 [formDeleteProduct]="true"
                 [selectedRowData]="selectedRowData"
                 (ProductSuccess)="deleteSuccessToast($event)"
+                (ProductError)="ErrorToast($event)"
+                (ProductWarning)="WarningToast($event)"
+                (RefreshTable)="triggerRefreshTable()"
             >
             </app-product-form>
             
@@ -117,6 +132,7 @@
                 [formBanAccount]="true"
                 [selectedRowData]="selectedRowData"
                 (BanSuccess)="banSuccessToast($event)"
+                (BanError)="ErrorToast($event)"
                 (RefreshTable)="triggerRefreshTable()"
             ></app-accounts-form>
             

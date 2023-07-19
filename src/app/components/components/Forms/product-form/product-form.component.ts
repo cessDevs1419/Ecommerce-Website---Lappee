@@ -9,6 +9,7 @@ import { SubcategoriesService } from 'src/app/services/subcategories/subcategori
 import { formatAdminCategories, formatAdminSubcategories} from 'src/app/utilities/response-utils';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
 
 @Component({
     selector: 'app-product-form',
@@ -19,7 +20,9 @@ export class ProductFormComponent {
 
 	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
-	
+    @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
+    @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
+    
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
@@ -47,13 +50,14 @@ export class ProductFormComponent {
 	    private category_service: CategoriesService,
 	    private sub_category_service: SubcategoriesService,
         private product_service: ProductsService,
+        private errorService: ErrorHandlingService,
 	    private formBuilder: FormBuilder
     ) 
     {
 	    this.addProductForm = this.formBuilder.group({
 	        product_name: ['', Validators.required],
-            product_price: ['', Validators.required],
-	        product_stock: [Number, Validators.required],
+            product_price: ['1', Validators.required],
+	        product_stock: ['1', Validators.required],
             product_stock_limit: ['', Validators.required],
 	        product_category: ['', Validators.required],
             product_subcategory: ['', Validators.required],
@@ -309,30 +313,23 @@ export class ProductFormComponent {
     }
     
     onProductDeleteSubmit(): void {
-
-            const deleteProduct = {
-                id: this.deleteProductForm.value.product_id || this.selectedRowData?.id
-            };
-            console.log(deleteProduct);
-            this.ProductSuccess.emit(this.productSuccessMessage+this.selectedRowData?.name);
-
-            // let formData: any = new FormData();
-            // formData.append('id', this.deleteProductForm.value.product_id || this.selectedRowData?.id,);
-            // formData.append('name', this.deleteProductForm.value.product_name || this.selectedRowData?.name,);
-    
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
-            
-            // this.product_service.deleteProduct(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.deleteProductForm.reset();
-            //         this.ProductSuccess.emit("Product  "+ this.deleteProductForm.value.product_name);
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
+        this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
+            next: (response: any) => { 
+                console.log(response)
+                this.RefreshTable.emit();
+                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
+                this.deleteProductForm.reset();
+            },
+            error: (error: HttpErrorResponse) => {
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.ProductError.emit(errorData);
+                } else {
+                    this.ProductWarning.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+        
     }
 }

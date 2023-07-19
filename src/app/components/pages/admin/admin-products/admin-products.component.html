@@ -97,7 +97,7 @@
     modalSubTitle="PRODUCT CONTROL"
 
     [modalAddProduct]="true"
-
+    (RefreshTable)="refreshTableData()"
 ></app-admin-parent-form>
 
 <app-admin-parent-form
@@ -106,7 +106,7 @@
     modalSubTitle="PRODUCT CONTROL"
 
     [modalEditProduct]="true"
-
+    (RefreshTable)="refreshTableData()"
     
     [selectedRowData]="selectedRowData"
 ></app-admin-parent-form>
@@ -117,7 +117,7 @@
     modalSubTitle="PRODUCT CONTROL"
 
     [modalDeleteProduct]="true"
-
+    (RefreshTable)="refreshTableData()"
     
     [selectedRowData]="selectedRowData"
 ></app-admin-parent-form>
@@ -128,7 +128,7 @@
     modalSubTitle="PRODUCT CONTROL"
 
     [modalRestockProduct]="true"
-
+    (RefreshTable)="refreshTableData()"
     
 ></app-admin-parent-form>
 

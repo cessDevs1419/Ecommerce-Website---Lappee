@@ -107,12 +107,18 @@ export class AdminParentFormComponent {
         this.toast.show();
     }
     
-    ErrorToast(value: any): void {
+    WarningToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('warn');
+        this.toast.show();
+    }
+    
+	ErrorToast(value: any): void {
         this.toastHeader = value.errorMessage;
         this.toastContent = value.suberrorMessage;
         this.toast.switchTheme('negative');
         this.toast.show();
-        console.log(this.toastTheme);
     }
 }
 

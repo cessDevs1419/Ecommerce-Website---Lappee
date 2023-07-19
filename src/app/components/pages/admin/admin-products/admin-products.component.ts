@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject, startWith, switchMap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { Product, ProductList } from 'src/assets/models/products';
 import { formatProducts } from 'src/app/utilities/response-utils';
@@ -14,17 +14,25 @@ import { map } from 'rxjs';
 export class AdminProductsComponent {
 
     products!: Observable<Product[]>;
-
+	private refreshData$ = new Subject<void>();
+	
 	constructor(
 		private service: ProductsService,
 	) {}
 	
 	ngOnInit(): void{
-		this.products = this.service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
+		
+		this.products = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.service.getAdminProducts()),
+            map((Response: any) => formatProducts(Response))
+        );
 	}
 	
+    refreshTableData(): void {
+        this.refreshData$.next();
+    }
 
-	/*Needed for table to send data to modal*/
 	selectedRowData: any;
 
     onRowDataSelected(rowData: any) {
