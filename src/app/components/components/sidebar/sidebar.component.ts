@@ -24,7 +24,7 @@ export class SidebarComponent {
   ngOnInit(): void {
   
     if (this.admin) {
-      this.router.navigate([{ outlets: { dashboard: ['overview'] } }]);
+      this.router.navigate(['overview']);
     } else if (this.courier) {
       this.router.navigate([{ outlets: { courier: ['pending-management'] } }]);
     }  

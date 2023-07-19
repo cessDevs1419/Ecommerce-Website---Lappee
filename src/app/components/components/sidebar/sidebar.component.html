@@ -36,35 +36,35 @@
         
         <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
             
-            <li [routerLink]="['', { outlets: { dashboard: ['overview'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'overview'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
                     Overview
                 </a>
             </li>
             
-            <li [routerLink]="['', { outlets: { dashboard: ['category-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'category-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
                 <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Category Setup
                 </a>
             </li>
             
-            <li [routerLink]="[{ outlets: { dashboard: ['product-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'product-management'"   routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Products
                 </a>
             </li>
         
-            <li [routerLink]="[{ outlets: { dashboard: ['sales-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'sales-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Sales
                 </a>
             </li>
             
-            <li [routerLink]="[{ outlets: { dashboard: ['accounts-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'accounts-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-people-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Accounts
@@ -94,7 +94,7 @@
             -->
 
             
-            <li [routerLink]="[{ outlets: { dashboard: ['order-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'order-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Track Orders
@@ -102,21 +102,21 @@
             </li>
 
 
-            <li [routerLink]="[{ outlets: { dashboard: ['stocks-management'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'stocks-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Stock Reports
                 </a>
             </li>
             
-            <li [routerLink]="['/profile']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'profile'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-person-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     User Profile
                 </a>
             </li>
             
-            <li [routerLink]="['/notifications']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'notifications'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bell-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Notifications

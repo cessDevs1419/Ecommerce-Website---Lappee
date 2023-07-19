@@ -128,6 +128,7 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
     AppRoutingModule,
     RouterModule.forRoot([
       
+      //client
       {path: 'home', component: HomeComponent},
       {path: 'account', component: AccountComponent, canActivate: [authGuard]},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
@@ -138,17 +139,16 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
       {path: 'contactus', component: ContactusComponent},
 
       //admin
-      {path: 'dashboard', component: AdminRoutingComponent },
-      {path: 'overview', component: AdminOverviewComponent, outlet: 'dashboard'},
-      {path: 'category-management', component: AdminCategoriesComponent, outlet: 'dashboard'},
-      {path: 'product-management', component: AdminProductsComponent, outlet: 'dashboard'},
-      {path: 'sales-management', component: AdminSalesComponent, outlet: 'dashboard'},
-      {path: 'discounts-management', component: AdminDiscountsComponent, outlet: 'dashboard'},
-      {path: 'accounts-management', component: AdminAccountsComponent, outlet: 'dashboard'},
-      {path: 'parcel-management', component: AdminParcelManagementComponent, outlet: 'dashboard'},
-      {path: 'order-management', component: AdminOrderManagementComponent, outlet: 'dashboard'},
-      {path: 'courier-management', component: AdminCourierManagementComponent, outlet: 'dashboard'},
-      {path: 'stocks-management', component: AdminStocksManagementComponent, outlet: 'dashboard'},
+      {path: 'overview', component: AdminOverviewComponent},
+      {path: 'category-management', component: AdminCategoriesComponent},
+      {path: 'product-management', component: AdminProductsComponent},
+      {path: 'sales-management', component: AdminSalesComponent},
+      {path: 'discounts-management', component: AdminDiscountsComponent},
+      {path: 'accounts-management', component: AdminAccountsComponent},
+      {path: 'parcel-management', component: AdminParcelManagementComponent},
+      {path: 'order-management', component: AdminOrderManagementComponent},
+      {path: 'courier-management', component: AdminCourierManagementComponent},
+      {path: 'stocks-management', component: AdminStocksManagementComponent},
 
       //courier
       {path: 'courier', component: CourierRoutingComponent },
