@@ -1,13 +1,15 @@
 <form class="flex-grow-1" action="" name="search">
     <div class="d-flex flex-row align-items-center" id="navSearch">
-        <input 
-            class="form-control" 
-            type="text" 
-            placeholder="Type to start searching now..." 
-            id="navSearchBar"
-            name="navSearchBar"
-            [(ngModel)]="searchString"
-        />
-        <button class="gradientButton" type="submit"><i class="bi bi-search"></i></button>
+        <div class="input-group">
+            <input 
+                class="form-control" 
+                type="text" 
+                placeholder="Type to start searching now..." 
+                id="navSearchBar"
+                name="navSearchBar"
+                [(ngModel)]="searchString"
+            />
+            <button class="gradientButton search-button" type="submit"><i class="bi bi-search"></i></button>
+        </div>
     </div>
 </form>

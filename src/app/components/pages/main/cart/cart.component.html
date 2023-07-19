@@ -19,9 +19,9 @@
                                 <div *ngIf="!isItemSelected" class="bg-danger-subtle text-danger p-3 my-2">
                                     <p class="m-0">You need to select one or more items from your cart.</p>
                                 </div>
-                                <table class="table table-hover">
+                                <table class="table table-hover table-group">
                                     <thead>
-                                        <tr class="m-0 p-0">
+                                        <tr class="m-0 p-0 bg-none">
                                             <th scope="col">Select</th>
                                             <th scope="col">Preview</th>
                                             <th scope="col">Name</th>
@@ -31,7 +31,7 @@
                                         </tr>
                                     </thead>
                                     <tbody *ngIf="cartContents.length == 0" class="table-group-divider">
-                                        <td colspan="6"><div class="p-3 text-center">You do not have items in your cart.</div></td>
+                                        <td colspan="6"><div class="p-3 text-center bg-none">You do not have items in your cart.</div></td>
                                     </tbody>
 
                                     <tbody *ngIf="cartContents.length != 0" class="table-group-divider">
@@ -132,7 +132,7 @@
                                     <p class="fw-bold">SUBTOTAL</p>
                                     <div class="text-end">
                                         <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
-                                        <p class="color-primary">Saved 100.00 dont mind me</p>
+                                        <!--<p class="color-primary">Saved 100.00 dont mind me</p>-->
                                     </div>
                                 </div>
                                 <hr class="muted-text">

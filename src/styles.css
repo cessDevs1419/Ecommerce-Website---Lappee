@@ -33,6 +33,11 @@ body {
 .bg-banned{
     background-color: #FB5757;
 }
+
+.bg-none {
+    background-color: transparent;
+}
+
 .muted-text {
     color: var(--muted-gray);
 }
@@ -61,7 +66,7 @@ body {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    transition: all .4s;
+    transition: background .4s;
 }
 
 .button-primary {
@@ -131,13 +136,23 @@ a:hover {
     color: #FFFFFF;
 }
 
+.toggle-passtext:focus i {
+    color: #FFFFFF;
+}
+
 .check-outline {
     border-color: var(--muted-gray);
 }
 
 input[type=text], input[type=password], input[type=email], textarea {
     border-color: var(--muted-gray) !important;
+    transition: border-color .4s;
 }
+
+ /* input:focus + button {
+    
+    outline: var(--bs-focus-ring-color) solid var(--bs-focus-ring-width);
+} */
 
 .animated-transition {
     transition: display .4s;
