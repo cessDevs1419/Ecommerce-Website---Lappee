@@ -17,7 +17,6 @@ export const POSTCategories: string = api + "api/admin/category/main/store";
 export const PATCHCategories: string = api + "api/admin/category/main/edit";
 export const DELETECategories: string = api + "api/admin/category/main/delete";
 
-
 // Product Client Endpoints
 export const GETProducts: string = api + "api/client/products";
 
@@ -31,7 +30,7 @@ export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 export const POSTLogin: string = api + "auth/login";
 export const POSTRegister: string = api + "auth/register";
 export const POSTLogout: string = api + "auth/logout";
-export const GETUser: string = api + "auth/user";
+export const GETUser: string = api + "api/client/user-info";
 
 //User Endpoints
 export const GETUsers: string = api + "api/admin/account/users";
@@ -42,3 +41,4 @@ export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";
+export const POSTComment: string = api + "api/client/products/reviews/store";
