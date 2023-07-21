@@ -1,7 +1,7 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
 import { Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
@@ -75,20 +75,24 @@ export function formatProductVariants(response: ProductList): Variant[] {
 }
 
 // returns Review array from ReviewList
-export function formatReviews(response: any): ReviewItem[] {
-  return response.data.map((data:ReviewItem) => ({
+export function formatReviews(response: ReviewList): Observable<ReviewItem> {
+  console.log(response);
+  let data = response.data;
+  let format: ReviewItem = {
     product_id: data.product_id,
     rating: data.rating,
     count: data.count,
     reviews: data.reviews
-  }));
+  }
+  return of(format)
 }
 
 export function formatReviewsDetails(response: any): Review[] {
-  let reviewList = response.data.flatMap((data:ReviewItem) => data.reviews );
+  let reviewList = response.data.reviews;
+  console.log(reviewList);
   return reviewList.map((review: Review) => ({
     id: review.id,
-    user_id: review.user_id,
+    email: review.email,
     rating: review.rating,
     content: review.content,
     reviewed_on: review.reviewed_on

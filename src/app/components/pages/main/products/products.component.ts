@@ -13,6 +13,7 @@ import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { Review, ReviewItem } from 'src/assets/models/reviews';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-products',
@@ -37,7 +38,7 @@ export class ProductsComponent {
   toastHeader: string = "";
   toastTheme: string = "default"; 
   
-  reviews!: Observable<ReviewItem[]>;
+  reviews!: Observable<ReviewItem>;
   reviewsList!: Observable<Review[]>
 
   @ViewChild(ToastComponent) toast: ToastComponent;
@@ -65,8 +66,7 @@ export class ProductsComponent {
   });
 
   postComment: FormGroup = this.fb.group({
-    message: ['', Validators.required],
-    showUser: ['']
+    message: ['', Validators.required]
   });
 
   selectedColorSizes: string[] = [];
@@ -75,7 +75,7 @@ export class ProductsComponent {
   get productSize() { return this.productToCart.get('size') }
 
   get commentMessage() { return this.postComment.get('message') }
-  get commentShowUser() { return this.postComment.get('showUser') }
+  //get commentShowUser() { return this.postComment.get('showUser') }
 
   ngOnInit() {
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
@@ -89,7 +89,8 @@ export class ProductsComponent {
         this.selectedPrice = this.currentProduct.price;
 
         // get reviews
-        this.reviews = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviews(response)));
+        let reviewData = this.reviewService.getReviews(this.currentProduct.id);
+        reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
 
         this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)))
     
@@ -239,8 +240,29 @@ export class ProductsComponent {
   }
 
   submitComment(): void {
+    let formData: any = new FormData();
+    formData.append('product_id', this.currentProduct.id);
+    formData.append('rating', 4);
+    formData.append('content', this.commentMessage?.value);
+
+
     if(this.postComment.valid){
       console.log(this.postComment.value);
+      this.reviewService.postComment(formData).subscribe({
+        next: (response: any) => {
+          this.toastHeader = "Successful!";
+          this.toastContent = "Your review has been added.";
+          this.toast.switchTheme('default');
+          this.toast.show();
+
+          let reviewData = this.reviewService.getReviews(this.currentProduct.id);
+          reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
+          this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
+        }
+      })
       console.warn('comment submitted');
     }
 

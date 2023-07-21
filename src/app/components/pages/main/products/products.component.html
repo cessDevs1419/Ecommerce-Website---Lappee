@@ -11,9 +11,9 @@
                 <div>
                     <h3>{{match.name}}</h3>
                     <p>{{match.id}}</p>
-                    <div class="d-flex flex-row justify-content-start rating-yellow">
-                        <app-star-ratings [rating]="3.5"></app-star-ratings>
-                        <p class="ms-1">(hardcoded 753 reviews)</p>
+                    <div class="d-flex flex-row justify-content-start rating-yellow"  *ngIf="this.reviews | async as review">
+                        <app-star-ratings [rating]="review.rating"></app-star-ratings>
+                        <p class="ms-1">{{review.count.total}} total review/s</p>
                     </div>
                     <div class="d-flex flex-row">
                         <p class="h2 m-0">{{this.selectedPrice | currency}}</p>
@@ -27,11 +27,11 @@
                 <div class="accordion accordion-flush " id="accordionProductDesc">
                     <div class="accordion-item">
                         <h3 class="accordion-header fw-bold">
-                            <div class="accordion-button collapsed product-description-accordion" type="button" data-bs-toggle="collapse" data-bs-target="#productDescription">
+                            <button class="accordion-button product-description-accordion" type="button" data-bs-toggle="collapse" data-bs-target="#productDescription">
                                 Product Description
-                            </div>
+                            </button>
                         </h3>
-                        <div class="accordion-collapse collapse product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
+                        <div class="accordion-collapse collapse show product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
                             <div class="accordion-body">
                                 {{match.description}} 
                             </div>
@@ -89,39 +89,39 @@
 
         </div>
     </div>
-    <div class="row reviews-overview mt-5 py-3 px-5" *ngFor="let item of this.reviews | async">
+    <div class="row reviews-overview mt-5 py-3 px-5" *ngIf="this.reviews | async as review">
         <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
-            <div class="fs-1 fw-bold">{{ item.rating }}<span class="muted-text fs-2">/5.0</span></div>
+            <div class="fs-1 fw-bold">{{ review.rating }}<span class="muted-text fs-2">/5.0</span></div>
             <app-star-ratings [rating]="4" class="fs-3 rating-yellow"></app-star-ratings>
-            <div class="fs-6">{{ item.count.total }} ratings</div>
+            <div class="fs-6">{{ review.count.total }} ratings</div>
         </div>
         <div class="col-lg d-flex flex-column align-items-center justify-content-center rating-details">
             <div class="d-flex flex-row align-items-center">
                 <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="item.count.by_rating[5]" [total]="item.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{item.count.by_rating[5]}}</div>
+                <app-progress-bar [amount]="review.count['by-rating']['5.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">{{review.count['by-rating']['5.00']}}</div>
             </div>
             <div class="d-flex flex-row align-items-center">
                 <app-star-ratings [rating]="4" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="item.count.by_rating[4]" [total]="item.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{item.count.by_rating[4]}}</div>
+                <app-progress-bar [amount]="review.count['by-rating']['4.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">{{review.count['by-rating']['4.00']}}</div>
             </div>
             <div class="d-flex flex-row align-items-center">
                 <app-star-ratings [rating]="3" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="item.count.by_rating[3]" [total]="item.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{item.count.by_rating[3]}}</div>
+                <app-progress-bar [amount]="review.count['by-rating']['3.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">{{review.count['by-rating']['3.00']}}</div>
             </div>
         </div>
         <div class="col-lg d-flex flex-column align-items-start justify-content-center rating-details">
             <div class="d-flex flex-row align-items-center justify-content-between">
                 <app-star-ratings [rating]="2" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="item.count.by_rating[2]" [total]="item.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{item.count.by_rating[2]}}</div>
+                <app-progress-bar [amount]="review.count['by-rating']['2.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">{{review.count['by-rating']['2.00']}}</div>
             </div>
             <div class="d-flex flex-row align-items-center">
                 <app-star-ratings [rating]="1" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="item.count.by_rating[1]" [total]="item.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{item.count.by_rating[1]}}</div>
+                <app-progress-bar [amount]="review.count['by-rating']['1.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                <div class="w-25 w-lg-100">{{review.count['by-rating']['1.00']}}</div>
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@
             <div class="row d-flex flex-row space-between">
                 <div class="col d-flex flex-column">
                     <app-star-ratings [rating]="parseFloat(review.rating)" class="rating-yellow"></app-star-ratings>
-                    <div>{{review.user_id}}</div>
+                    <div>{{review.email}}</div>
                 </div>
                 <div class="col text-end">
                     {{review.reviewed_on}}
@@ -157,7 +157,7 @@
 
                 <div class="d-flex flex-row justify-content-between mt-3">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="true" id="checkboxShowUser" formControlName="showUser"/>
+                        <input type="checkbox" class="form-check-input" value="true" id="checkboxShowUser"/>
                         <label for="checkboxShowUser" class="form-check-label">Show your username on review</label> 
                     </div>
 
