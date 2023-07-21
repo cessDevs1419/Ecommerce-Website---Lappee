@@ -13,7 +13,7 @@ export class ErrorHandlingService {
 		switch (error.status) {
 			case 400:
 				return {
-				    errorMessage: 'Invalid input.',
+				    errorMessage: 'Invalid input',
 				    suberrorMessage: 'There is something wrong with your input',
 				};
 			case 401:

@@ -35,7 +35,7 @@ export class ProductsService {
   } 
   
   patchProduct(data: FormData): Observable<any> {
-    return this.http.post<Product>(PATCHProductsAdmin, data, this.httpOptions);
+    return this.http.patch<Product>(PATCHProductsAdmin, data, this.httpOptions);
   } 
   
 

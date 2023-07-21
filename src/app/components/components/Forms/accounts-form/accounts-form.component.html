@@ -21,7 +21,12 @@
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+                <button 
+                    type="submit" 
+                    class="btn btn-primary bg-light-primary text-white"
+                    [ngClass]="{'disabled': !banAccountForm.get('account_reason')?.value}"
+                    >
+                    CONFIRM</button>
             </div>
         </div>
     </form>

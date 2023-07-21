@@ -81,7 +81,7 @@
                 class="form-select"  
                 id="editproductCurrency" 
                 name="editproductCurrency" 
-                [value]="selectedRowData?.category"
+
                 formControlName="main_category"
                 required
             >
@@ -92,14 +92,14 @@
             <label class="form-label mx-2" >Sub Category Name</label>
             <button class="btn mb-3 border mx-2" type="button" (click)="addSubCategory()">+</button>
         </div>
-        <div class="m-auto col-sm-8" formArrayName="subCategories">
+        
+        <div class="m-auto col-sm-8" formArrayName="sub_categories">
             <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
                 <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
                 <span class="input-group-text p-0" id="basic-addon2">
                     <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
                 </span>
             </div>
-
         </div>
     </div>
     

@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
-import { Observable, map, throwError } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from '../../toast/toast.component';
 
@@ -19,6 +19,7 @@ import { ErrorHandlingService } from 'src/app/services/errors/error-handling-ser
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryFormComponent {
+    
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
     @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
@@ -46,13 +47,22 @@ export class CategoryFormComponent {
 
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
-
+    private refreshData$ = new Subject<void>();
 
 
     
     ngOnInit(): void {
-        this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
-        this.sub_categories = this.subcategory_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
+        this.categories = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.category_service.getAdminCategories()),
+            map((Response: any) => formatAdminCategories(Response))
+        );
+        
+        this.sub_categories = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.subcategory_service.getAdminSubcategories()),
+            map((Response: any) => formatAdminSubcategories(Response))
+        );
     }
     
     constructor(
@@ -78,7 +88,7 @@ export class CategoryFormComponent {
         
         this.addSubCategoryForm = this.formBuilder.group({
             main_category: ['', Validators.required],
-            subCategories: this.formBuilder.array([])
+            sub_categories: this.formBuilder.array([])
         });
         
         this.editSubCategoryForm = this.formBuilder.group({
@@ -91,10 +101,14 @@ export class CategoryFormComponent {
     }
 
 
-    //ADD SUB CATEGORY
     
+    refreshTableData(): void {
+        this.refreshData$.next();
+    }
+    
+    //ADD SUB CATEGORY
     get subCategories(): FormArray {
-        return this.addSubCategoryForm.get('subCategories') as FormArray;
+        return this.addSubCategoryForm.get('sub_categories') as FormArray;
     }
     
     addSubCategory(): void {
@@ -104,6 +118,7 @@ export class CategoryFormComponent {
     removeSubCategory(index: number): void {
         this.subCategories.removeAt(index);
     }
+    
     
     //Submit Functions
     onCategoryAddSubmit(): void {
@@ -117,10 +132,10 @@ export class CategoryFormComponent {
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
+                    this.refreshTableData();
                     this.CategorySuccess.emit("Category "+this.addCategoryForm.value.category);
                     this.addCategoryForm.reset();
 
-                    
                 },
                 error: (error: HttpErrorResponse) => {
                     const errorData = this.errorService.handleError(error);
@@ -165,13 +180,14 @@ export class CategoryFormComponent {
 
             let formData: any = new FormData();
             formData.append('id',  this.selectedRowData.id);
-            formData.append('name', this.editCategoryForm.get('main_category')?.value);        
+            formData.append('name', this.editCategoryForm.get('category')?.value);        
 
                 
             this.category_service.patchCategory(formData).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
-                    this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.main_category);
+                    this.refreshTableData();
+                    this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.category);
                     this.editCategoryForm.reset();
                 },
                 error: (error: HttpErrorResponse) => {
@@ -210,8 +226,10 @@ export class CategoryFormComponent {
             this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
+                    this.refreshTableData();
                     this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
                     this.deleteCategoryForm.reset();
+                    
                 },
                 error: (error: HttpErrorResponse) => {
                     const customErrorMessages = {
@@ -235,18 +253,19 @@ export class CategoryFormComponent {
     onSubCategoryAddSubmit(): void {
 
         if(this.addSubCategoryForm.valid){
-            // submit
-            console.warn(this.addSubCategoryForm.value);
     
             let formData: any = new FormData();
-            formData.append('name', this.addSubCategoryForm.get('main_category_id')?.value);
-            formData.append('name', this.addSubCategoryForm.get('main_category')?.value);
+            formData.append('main_category_id', this.addSubCategoryForm.get('main_category')?.value);
+            formData.append('name', this.addSubCategoryForm.get('sub_categories')?.value);
             
-        this.category_service.postCategory(formData).subscribe({
+        this.subcategory_service.postSubcategory(formData).subscribe({
             next: (response: any) => { 
-                console.log(response);
-                this.addCategoryForm.reset();
-                this.CategorySuccess.emit("SubCategory "+this.addCategoryForm.value.main_category);
+                this.RefreshTable.emit();
+                this.refreshTableData();
+                this.CategorySuccess.emit("sub_category "+this.addSubCategoryForm.value.name);
+                this.editCategoryForm.reset();
+                
+                
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);
@@ -280,6 +299,7 @@ export class CategoryFormComponent {
             this.subcategory_service.patchSubcategory(formData).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
+                    this.refreshTableData();
                     this.CategorySuccess.emit("SubCategory  "+this.editSubCategoryForm.value.main_category);
                     this.editSubCategoryForm.reset();
                 },
@@ -320,16 +340,28 @@ export class CategoryFormComponent {
             next: (response: any) => { 
                 console.log(response)
                 this.RefreshTable.emit();
+                this.refreshTableData();
                 this.CategorySuccess.emit("SubCategory  "+this.selectedRowData.name);
                 this.deleteSubCategoryForm.reset();
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);
-                if (errorData.errorMessage === 'Unexpected Error') {
-                    this.CategoryError.emit(errorData);
-                } else {
+                
+                if (errorData.errorMessage === 'Invalid input') {
+                    const errorMessage = {
+                        errorMessage: 'Invalid Request',
+                        suberrorMessage: 'There are products under this sub category! ',
+                    }
+                    this.CategoryWarn.emit(errorMessage);
+                } else  if (errorData.errorMessage === 'Unprocessable Entity') {
                     this.CategoryWarn.emit(errorData);
+                }else  if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                }else{
+                
                 }
+                
+                
                 return throwError(() => error); 
             }
         });

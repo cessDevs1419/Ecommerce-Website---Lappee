@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { Observable, map, throwError } from 'rxjs';
+import { Observable, Subscription, combineLatest, map, switchMap, throwError } from 'rxjs';
 
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
@@ -17,7 +17,9 @@ import { ErrorHandlingService } from 'src/app/services/errors/error-handling-ser
     styleUrls: ['./product-form.component.css']
 })
 export class ProductFormComponent {
-
+    
+    @ViewChild('priceInput', { static: false }) priceInputRef!: ElementRef<HTMLInputElement>;
+	
 	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
@@ -40,9 +42,11 @@ export class ProductFormComponent {
 	//Display Categories to Select
 	categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
+    edit_sub_categories!: Observable<AdminSubcategory[]>;
 	filteredSubCategories!: Observable<AdminSubcategory[]>;
     selectedSubCategory: null;
-    
+    hideselectedsub: boolean = true;
+    product_sub: '';
     
 	
     constructor(
@@ -55,50 +59,66 @@ export class ProductFormComponent {
     ) 
     {
 	    this.addProductForm = this.formBuilder.group({
-	        product_name: ['', Validators.required],
-            product_price: ['1', Validators.required],
-	        product_stock: ['1', Validators.required],
-            product_stock_limit: ['', Validators.required],
-	        product_category: ['', Validators.required],
-            product_subcategory: ['', Validators.required],
-	        product_description: [''],
-	        product_images: this.formBuilder.array([]),
+	        name: ['', Validators.required],
+            price: [1, Validators.required],
+	        stock: ['', Validators.required],
+            stock_limit: ['', Validators.required],
+            category: ['', Validators.required],
+            subcategory: ['', Validators.required],
+	        description: [''],
+	        //images: this.formBuilder.array([]),
 	    });
 	    
-        this.restockProductForm = new FormGroup({
-            product_name: new FormControl('', Validators.required),
-            product_quantity: new FormControl('', Validators.required)
-        });
-	    
 		this.editProductForm = this.formBuilder.group({
-            //product_id: ['', Validators.required],
-	        product_name: ['', Validators.required],
-	        product_quantity: [Number, Validators.required],
-	        product_price: ['', Validators.required],
-	        product_currency: ['', Validators.required],
-	        product_category: ['', Validators.required],
-            product_subcategory: ['', Validators.required],
-	        product_description: [''],
-	        product_images: this.formBuilder.array([]),
+            name: [''],
+            price: [''],
+            stock_limit: [''],
+	        category: ['', Validators.required],
+            subcategory: [''],
+	        description: [''],
 	    });
 	    
         this.deleteProductForm = new FormGroup({
             product_id: new FormControl('', Validators.required)
         });
-
+        
+        this.restockProductForm = new FormGroup({
+            product_name: new FormControl('', Validators.required),
+            product_quantity: new FormControl('', Validators.required)
+        });
     }
-    
+
 	ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
     	this.sub_categories = this.sub_category_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
         this.addProductForm.valueChanges.subscribe(() => {
             this.updateBorders();
         });
+        
+
+        this.edit_sub_categories = this.sub_category_service.getAdminSubcategories().pipe(
+            map((Response: any) => formatAdminSubcategories(Response)), 
+            map((adminSubcategories: AdminSubcategory[]) => {
+                const selectedSubCategoryId = this.selectedRowData.sub_category_id; 
+                return adminSubcategories.filter(subCategory => subCategory.id === selectedSubCategoryId);
+            })
+        );
+
+
 	}
-	
+
+    isDecimal(value: number): boolean {
+        const valueString = value.toString();
+        return /^\d+(\.\d{3,3})?$/.test(valueString);
+    }
+    
     onCategorySelect(event: any): void {
+        this.hideselectedsub = false;
         const categoryId = event.target.value;
         if (categoryId) {
+            this.editProductForm.patchValue({
+                subcategory: null // Set the value of 'subcategory' form control to null
+            });
             this.selectedSubCategory = null;
             this.filteredSubCategories = this.sub_categories.pipe(
                 map((subCategories: AdminSubcategory[]) =>
@@ -108,10 +128,14 @@ export class ProductFormComponent {
         }
     }
     
+    isFormEmpty(): boolean {
+        const formValues = this.editProductForm.value;
+        return Object.values(formValues).every(value => !value);
+    }
     
 	//Get Image Value to Array
     get product_images(): FormArray {
-        return this.addProductForm.get('product_images') as FormArray;
+        return this.addProductForm.get('images') as FormArray;
     }
     
     selectFileForAdding() {
@@ -140,9 +164,9 @@ export class ProductFormComponent {
     
     
     updateBorders(): void {
-        const productPrice = this.addProductForm.get('product_price')?.value;
-        const productStock = this.addProductForm.get('product_stock')?.value;
-        const productStockLimit = this.addProductForm.get('product_stock_limit')?.value;
+        const productPrice = this.addProductForm.get('price')?.value;
+        const productStock = this.addProductForm.get('stock')?.value;
+        const productStockLimit = this.addProductForm.get('stock_limit')?.value;
         
         
         const priceInput = document.getElementById('addproductPrice') as HTMLInputElement;
@@ -163,46 +187,70 @@ export class ProductFormComponent {
     //Submit Functions
     onProductAddSubmit(): void {
 
-        if(this.addProductForm.valid){
-            const formData = this.addProductForm.value;
-            console.log(this.addProductForm.value);
-            this.ProductSuccess.emit(this.productSuccessMessage +this.addProductForm.value.product_name);
-            this.addProductForm.reset();
-            this. product_images.clear();
-            // let formData: any = new FormData();
-            // formData.append('name', this.addProductForm.get('product_name')?.value);
-            // formData.append('stock', this.addProductForm.get('product_quantity')?.value);
-            // formData.append('stock-limit', this.addProductForm.get('product_quantity_limit')?.value);
-            // formData.append('price', this.addProductForm.get('product_price')?.value);
-            // formData.append('sub_category_id', this.addProductForm.get('product_category')?.value);
-            // formData.append('description', this.addProductForm.get('product_description')?.value);
-            // formData.append('product_variants', this.addProductForm.get('product_variant')?.value);
-    
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
-            
-            // this.product_service.postProduct(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.ProductSuccess.emit("Product "+this.addProductForm.value.product_name);
-            //         this.addProductForm.reset();
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
         
-        }else{
+        let formData: any = new FormData();
+        formData.append('name', this.addProductForm.get('name')?.value);
+        formData.append('stock', this.addProductForm.get('stock')?.value);
+        formData.append('limit', this.addProductForm.get('stock_limit')?.value);
+        formData.append('price', this.addProductForm.get('price')?.value);
+        formData.append('category', this.addProductForm.get('subcategory')?.value);
+        formData.append('description', this.addProductForm.get('description')?.value);
+        
+        if(this.addProductForm.valid){
+            this.product_service.postProduct(formData).subscribe({
+                next: (response: any) => { 
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
+                    this.addProductForm.reset();
+                },
+                error: (error: HttpErrorResponse) => {
+                    const errorData = this.errorService.handleError(error);
+                
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                            this.ProductError.emit(errorData);
+                    }else if (errorData.errorMessage === 'Invalid input') {
+                        
+                        if(this.editProductForm.get('subcategory')?.value === null){
+                            const errorMessage = {
+                                errorMessage: 'Invalid Request',
+                                suberrorMessage: 'sub category is required! ',
+                            }
+                            this.ProductError.emit(errorMessage);
+                        }else {
+                            const errorMessage = {
+                                errorMessage: 'Invalid Request',
+                                suberrorMessage: 'There are no changes were made',
+                            }
+                            this.ProductError.emit(errorMessage);
+                        }
+
+                    }else if (errorData.errorMessage === 'Unprocessable Entity') {
+                        if(error.error.data.error){
+                            const errorMessage = {
+                                errorMessage: 'Unprocessable Entity',
+                                suberrorMessage: error.error.data.error.limit || error.error.data.error.category  || error.error.data.error.price,
+                            };
+                            
+                            this.ProductWarning.emit(errorMessage);
+                        }
+                    }
+                    return throwError(() => error);
+                }
+            });
+                
+        } else{
             this.addProductForm.markAllAsTouched();
             const emptyFields = [];
             for (const controlName in this.addProductForm.controls) {
-                if (this.addProductForm.controls.hasOwnProperty(controlName) && this.addProductForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
+                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+                    const control = this.addProductForm.controls[controlName];
+                    if (control.errors?.['required'] && control.invalid) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
                 }
             }
-
+            
             const errorData = {
                 errorMessage: this.errorMessage,
                 suberrorMessage: emptyFields.join(', ')
@@ -210,9 +258,108 @@ export class ProductFormComponent {
             this.ProductError.emit(errorData);
         }
         
+        
     
     }
+    
+    onProductEditSubmit(): void {
+        let formData: any = new FormData();
+        
+        // Common FormData appending logic
+        formData.append('id', this.selectedRowData.id);
+        formData.append('name', this.editProductForm.get('name')?.value || this.selectedRowData.name);
+        formData.append('price', this.editProductForm.get('price')?.value || this.selectedRowData.price);
+        formData.append('limit', this.editProductForm.get('stock_limit')?.value || this.selectedRowData.stock_limit);
+        formData.append('description', this.editProductForm.get('description')?.value || this.selectedRowData.description);
+        formData.append('category', this.editProductForm.get('subcategory')?.value || this.selectedRowData.sub_category_id);
 
+            
+            this.product_service.patchProduct(formData).subscribe({
+                next: (response: any) => { 
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit("Product "+this.editProductForm.value.product_name);
+                },
+                error: (error: HttpErrorResponse) => {
+                    const errorData = this.errorService.handleError(error);
+                
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                            this.ProductError.emit(errorData);
+                    }else if (errorData.errorMessage === 'Invalid input') {
+                        
+                        if(this.editProductForm.get('subcategory')?.value === null){
+                            const errorMessage = {
+                                errorMessage: 'Invalid Request',
+                                suberrorMessage: 'sub category is required! ',
+                            }
+                            this.ProductError.emit(errorMessage);
+                        }else {
+                            const errorMessage = {
+                                errorMessage: 'Invalid Request',
+                                suberrorMessage: 'There are no changes were made',
+                            }
+                            this.ProductError.emit(errorMessage);
+                        }
+
+                    }else if (errorData.errorMessage === 'Unprocessable Entity') {
+                        const errorMessages: string[] = [];
+                    
+                        // Check if errorData.data.error is not null or undefined
+                        if (errorData.data && errorData.data.error) {
+                            for (const fieldName in errorData.data.error) {
+                                if (Object.prototype.hasOwnProperty.call(errorData.data.error, fieldName)) {
+                                    const fieldErrors: string[] = errorData.data.error[fieldName];
+                                    const errorMessage = `${fieldName}: ${fieldErrors.join(', ')}`;
+                                    errorMessages.push(errorMessage);
+                                }
+                            }
+                            const errorFields = errorMessages.join(' | ');
+                            const errorMessage = {
+                                errorMessage: 'Unprocessable Entity',
+                                suberrorMessage: errorFields,
+                            }
+                            this.ProductWarning.emit(errorMessage);
+                            
+                            
+                        } else {
+                            const errorMessage = {
+                                errorMessage: 'Unprocessable Entity',
+                                suberrorMessage: 'Data may already exist or didnt change all',
+                            }
+                            this.ProductWarning.emit(errorMessage);
+                            return throwError(() => error);
+                        }
+                    
+    
+                    } 
+                
+                    return throwError(() => error);
+                }
+            });
+
+        
+    }
+    
+    onProductDeleteSubmit(): void {
+        this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
+            next: (response: any) => { 
+                console.log(response)
+                this.RefreshTable.emit();
+                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
+                this.deleteProductForm.reset();
+            },
+            error: (error: HttpErrorResponse) => {
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.ProductError.emit(errorData);
+                } else {
+                    this.ProductWarning.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+        
+    }
+    
     onProductRestockSubmit(): void {
         
         if(this.restockProductForm.valid){
@@ -258,78 +405,6 @@ export class ProductFormComponent {
             this.ProductError.emit(errorData);
         }
         
-        
-    }
-    
-    onProductEditSubmit(): void {
-        
-        if(this.editProductForm.valid){
-            const formData = this.editProductForm.value;
-            console.log(this.editProductForm.value);
-            this.ProductSuccess.emit(this.productSuccessMessage+this.editProductForm.value.product_name);
-            this.editProductForm.reset();
-            this. product_images.clear();
-            // let formData: any = new FormData();
-            // formData.append('name', this.editProductForm.get('product_name')?.value);
-            // formData.append('stock', this.editProductForm.get('product_quantity')?.value);
-            // formData.append('stock-limit', this.editProductForm.get('product_quantity_limit')?.value);
-            // formData.append('price', this.editProductForm.get('product_price')?.value);
-            // formData.append('sub_category_id', this.editProductForm.get('product_category')?.value);
-            // formData.append('description', this.editProductForm.get('product_description')?.value);
-            // formData.append('product_variants', this.editProductForm.get('product_variant')?.value);
-    
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
-            
-            // this.product_service.postCategory(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.ProductSuccess.emit("Product "+this.editProductForm.value.product_name);
-            //         this.editProductForm.reset();
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
-        
-        }else{
-            this.editProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.editProductForm.controls) {
-                if (this.editProductForm.controls.hasOwnProperty(controlName) && this.editProductForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
-                }
-            }
-
-            const errorData = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
-            this.ProductError.emit(errorData);
-        }
-        
-    }
-    
-    onProductDeleteSubmit(): void {
-        this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
-            next: (response: any) => { 
-                console.log(response)
-                this.RefreshTable.emit();
-                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
-                this.deleteProductForm.reset();
-            },
-            error: (error: HttpErrorResponse) => {
-                const errorData = this.errorService.handleError(error);
-                if (errorData.errorMessage === 'Unexpected Error') {
-                    this.ProductError.emit(errorData);
-                } else {
-                    this.ProductWarning.emit(errorData);
-                }
-                return throwError(() => error); 
-            }
-        });
         
     }
 }

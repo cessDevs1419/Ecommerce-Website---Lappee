@@ -34,7 +34,6 @@ export class AdminCategoriesComponent {
 	
 	ngOnInit(): void{
     
-    	
         this.categories = this.refreshData$.pipe(
             startWith(undefined), 
             switchMap(() => this.category_service.getAdminCategories()),
