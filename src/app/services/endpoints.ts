@@ -38,7 +38,10 @@ export const GETBanUsers: string = api + "api/admin/account/bans";
 export const POSTBanUsers: string = api + "api/admin/account/bans/ban";
 export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 
-
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";
 export const POSTComment: string = api + "api/client/products/reviews/store";
+
+//Address Endpoitns
+export const GETAddresses: string = api + "api/client/user-info/address";
+export const POSTAddress: string = api + "api/client/user-info/address/store";

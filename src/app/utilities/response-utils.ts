@@ -5,6 +5,7 @@ import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
+import { Address, AddressList } from "src/assets/models/address";
 
 // Formatting
 
@@ -130,6 +131,18 @@ export function formatBannedUser(response: any): BannedUser[] {
     }));
 }
 
+export function formatAddress(response: AddressList): Address[] {
+  return response.data.map((data: Address) => ({
+    user_id: data.user_id,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code,
+    address_line_1: data.address_line_1,
+    address_line_2: data.address_line_2,
+    id: data.id
+  }))
+}
+
 // Filtering
 export function filterSubcategories(subcategoryID: string,input: Observable<Subcategory[]>): Observable<Subcategory[]> {
   return input.pipe(map((subs: Subcategory[]) => {
@@ -147,6 +160,18 @@ export function filterProductsBySubcategory(subcategoryID: string, productObserv
 export function filterProductsById(productID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
   return productObservable.pipe(map((prods: Product[]) => {
     return prods.filter((product: Product) => product.id === productID);
+  }));
+}
+
+export function filterAddresses(userID: string, addressObservable: Observable<Address[]>): Observable<Address | null> {
+  return addressObservable.pipe(map((entry: Address[]) => {
+    return entry.find((address: Address) => address.user_id === userID) || null;
+  }));
+}
+
+export function findAddresses(userID: string, addressObservable: Observable<Address[]>): Observable<boolean> {
+  return addressObservable.pipe(map((addresses: Address[]) => {
+    return addresses.some((address: Address) => address.user_id === userID);
   }));
 }
 
