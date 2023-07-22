@@ -156,6 +156,7 @@ export class CategoryFormComponent {
         
         
         }else{
+            this.addCategoryForm.markAllAsTouched();
             const emptyFields = [];
             for (const controlName in this.addCategoryForm.controls) {
                 if (this.addCategoryForm.controls.hasOwnProperty(controlName) && this.addCategoryForm.controls[controlName].errors?.['required']) {
@@ -169,7 +170,7 @@ export class CategoryFormComponent {
                 suberrorMessage: emptyFields.join(', ')
             };
             this.CategoryWarn.emit(errorData);
-            // this.addCategoryForm.markAllAsTouched();
+            
         }
 
     }
@@ -268,20 +269,41 @@ export class CategoryFormComponent {
                 
             },
             error: (error: HttpErrorResponse) => {
+
                 const errorData = this.errorService.handleError(error);
                 if (errorData.errorMessage === 'Unexpected Error') {
                     this.CategoryError.emit(errorData);
-                } else {
+                } else if (errorData.errorMessage === 'Unprocessable Entity')  {
+                    const errorData = {
+                        errorMessage: `The Sub Category is Required: `,
+                        suberrorMessage: `Add sub category to proceed `
+                    };
+                    this.CategoryWarn.emit(errorData);
+                } else{
                     this.CategoryWarn.emit(errorData);
                 }
                 return throwError(() => error);
+
             }
         });
         
         }
         
-        else if(this.addCategoryForm.invalid){
-            this.addCategoryForm.markAllAsTouched();
+        else if(this.addSubCategoryForm.invalid){
+            this.addSubCategoryForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.addSubCategoryForm.controls) {
+                if (this.addSubCategoryForm.controls.hasOwnProperty(controlName) && this.addSubCategoryForm.controls[controlName].errors?.['required']) {
+                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                    emptyFields.push(label);
+                }
+            }
+
+            const errorData = {
+                errorMessage: `Please fill in the following required fields `,
+                suberrorMessage: emptyFields.join(', ')
+            };
+            this.CategoryWarn.emit(errorData);
         }
     
     
