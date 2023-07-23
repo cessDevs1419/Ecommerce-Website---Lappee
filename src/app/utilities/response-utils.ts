@@ -51,10 +51,7 @@ export function formatProducts(response: ProductList): Product[] {
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
-    stock: data.stock,
-    stock_limit: data.stock_limit,
     sub_category_id: data.sub_category_id,
-    price: data.price,
     description: data.description,
     product_variants: data.product_variants
   }));

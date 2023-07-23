@@ -88,9 +88,9 @@ export class CartComponent {
       let variantIndex = this.matchIndexAndVariant(index);
       this.subtotal += parseFloat(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
     }
-    else {
+    /* else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
-    }
+    } */
     this.isItemSelected = true;
   }
 

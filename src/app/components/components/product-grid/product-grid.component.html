@@ -10,11 +10,11 @@
                 <div class="d-flex flex-column flex-md-row justify-content-between">
                     <div class="d-inline-flex align-items-center">
                         <div class="product-price fs-5 fw-bold">
-                            {{product.price | currency}}
+                            {{product.product_variants[0].price | currency}}
                         </div>
-                        <div class="muted-text text-decoration-line-through">
+                        <!-- <div class="muted-text text-decoration-line-through">
                             {{product.price | currency}}
-                        </div>
+                        </div> -->
                     </div>
                     <div class="d-flex justify-content-start justify-content-md-end text-muted align-items-center">
                         32k sold

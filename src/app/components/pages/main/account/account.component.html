@@ -1,7 +1,7 @@
+<div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
+    <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+</div>
 <div class="container-md" id="entryDiv">
-    <div class="position-relative mt-5 w-100">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
     <div class="row d-flex d-md-none text-center my-5 mx-2 entry-selector">
         <div class="col py-3" [ngClass]="isSignIn ? 'active-shown' : 'inactive-hidden'" (click)="signInToggle()">Sign In</div>
         <div class="col py-3" [ngClass]="isSignIn ? 'inactive-hidden' : 'active-shown'" (click)="signUpToggle()">Sign Up</div>

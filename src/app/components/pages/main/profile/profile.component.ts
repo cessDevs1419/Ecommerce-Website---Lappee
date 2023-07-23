@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { AddressService } from 'src/app/services/address/address.service';
 import { filterAddresses, findAddresses, formatAddress } from 'src/app/utilities/response-utils';
@@ -34,10 +35,19 @@ export class ProfileComponent {
   get editAddressLine() { return this.editProfileForm.get('editAddressLine')}
   get editZipCode() { return this.editProfileForm.get('editZipCode')}
 
+  toastTheme!: string;
+  toastHeader!: string;
+  toastContent!: string;
+  @ViewChild(ToastComponent) toast: ToastComponent;
+
   constructor(private accountService: AccountsService, private router: Router, private addressService: AddressService) {}
   
 
   ngOnInit(): void {
+    this.checkAddress();
+  }
+
+  checkAddress(): void {
     this.addresses = this.addressService.getAddresses().pipe(map((response: any) => formatAddress(response)));
     this.user.subscribe({
       next: (response: any) => {
@@ -74,8 +84,6 @@ export class ProfileComponent {
         console.log(err)
       }
     });
-    
-    
   }
 
   submitAddress(): void {
@@ -92,10 +100,20 @@ export class ProfileComponent {
 
       this.addressService.postAddress(formData).subscribe({
         next: (response: any) => {
-          console.log('success')
+          this.toastHeader = "Successful!";
+          this.toastContent = "Your address has been updated.";
+          this.toast.switchTheme('default');
+          this.toast.show();
         },
         error: (err: HttpErrorResponse) => {
           console.log(err)
+          this.toastHeader = "Action failed!";
+          this.toastContent = "Please try again in a few moments.";
+          this.toast.switchTheme('negative');
+          this.toast.show();
+        },
+        complete: () => {
+          this.isEditMode = false;
         }
       })
     }

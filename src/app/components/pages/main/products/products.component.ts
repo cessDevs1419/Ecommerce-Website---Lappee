@@ -86,7 +86,7 @@ export class ProductsComponent {
     this.productMatch.subscribe((product: Product[]) => {
       if(product.length > 0){
         this.currentProduct = product[0];
-        this.selectedPrice = this.currentProduct.price;
+        this.selectedPrice = parseFloat(this.currentProduct.product_variants[0].price);
 
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
@@ -218,11 +218,11 @@ export class ProductsComponent {
     }
 
     // add to cart without variant
-    else {
+    /* else {
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, "", "", 1, this.currentProduct.price.toString());
         console.warn('added to cart');
-    }
+    } */
   }
 
   onSubmit(): void {
