@@ -6,6 +6,11 @@ import { User } from 'src/assets/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Carousel } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
+import { AddressService } from 'src/app/services/address/address.service';
+import { Address } from 'src/assets/models/address';
+import { Observable, map } from 'rxjs';
+import { filterAddresses, findAddresses, formatAddress } from 'src/app/utilities/response-utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart',
@@ -21,6 +26,12 @@ export class CartComponent {
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
   isAddressSelected: boolean = true;
+
+  addresses!: Observable<Address[]>;
+  isAddressRegistered!: boolean
+  filteredAddress!: Observable<Address | null>
+
+  address!: string;
   
   cartContents!: CartItem[];
   orderList: CartItem[] = [];
@@ -44,15 +55,54 @@ export class CartComponent {
 
 
   constructor(private cart: CartService,
-              public accountService: AccountsService) {}
+              public accountService: AccountsService,
+              private addressService: AddressService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
+    this.checkAddress();
     //this.user = this.accountService.getCurrentUser();
   }
 
   ngAfterViewInit() {
     console.log(this.carousel);
+  }
+
+  checkAddress() {
+    this.addresses = this.addressService.getAddresses().pipe(map((response: any) => formatAddress(response)));
+    this.accountService.getLoggedUser().subscribe({
+      next: (response: any) => {
+        findAddresses(response.user_id, this.addresses).subscribe({
+          next: (match: boolean) => {
+            if(match) {
+              console.log('has matching address')
+              this.isAddressRegistered = true;
+              this.filteredAddress = filterAddresses(response.user_id, this.addresses);
+              this.filteredAddress.subscribe({
+                next: (address: Address | null) => {
+                  if(address){
+                    this.isAddressSelected = true;
+                  }
+                  else {
+                    this.isAddressSelected = false;
+                  }
+                }
+              });
+            }
+            else {
+              console.log('no matching address')
+              this.isAddressRegistered = false;
+            }
+          },
+          error: (err: HttpErrorResponse) => {
+            console.log(err)
+          }
+        })
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err)
+      }
+    });
   }
 
   matchProduct(sender: any, operation: string): void {
