@@ -1,7 +1,7 @@
 <div class="container-md m-auto h-auto p-2" >
     
     <div class="row p-3">
-        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2">
+        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 ">
             <div class=" rounded-4 pt-4 panel-container text-center d-flex flex-column justify-content-center ">
                 <div class="panel-body">
                     <div class="icon-container rounded-circle m-auto d-flex align-items-center justify-content-center">
@@ -84,52 +84,25 @@
         [tableData]="products"
         
         (rowDataSelected)="onRowDataSelected($event)"
-
+        (ShowAddForm)="showAddForm()"
+        (ShowEditForm)="showEditForm()"
     ></app-table>
     
     
 </div>
 
 
-<app-admin-parent-form
-    modalID="addproduct"
-    modalTitle="ADD PRODUCT"
-    modalSubTitle="PRODUCT CONTROL"
 
-    [modalAddProduct]="true"
-    (RefreshTable)="refreshTableData()"
-></app-admin-parent-form>
-
-<app-admin-parent-form
-    modalID="edit"
-    modalTitle="EDIT PRODUCT"
-    modalSubTitle="PRODUCT CONTROL"
-
-    [modalEditProduct]="true"
-    (RefreshTable)="refreshTableData()"
-    
-    [selectedRowData]="selectedRowData"
-></app-admin-parent-form>
-
-<app-admin-parent-form
-    modalID="delete"
+<app-modal
+    modalId="delete"
     modalTitle="DELETE PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
 
     [modalDeleteProduct]="true"
     (RefreshTable)="refreshTableData()"
-    
     [selectedRowData]="selectedRowData"
-></app-admin-parent-form>
+></app-modal>
 
-<app-admin-parent-form
-    modalID="restock"
-    modalTitle="RESTOCK PRODUCT"
-    modalSubTitle="PRODUCT CONTROL"
 
-    [modalRestockProduct]="true"
-    (RefreshTable)="refreshTableData()"
-    
-></app-admin-parent-form>
 
     

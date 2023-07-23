@@ -7,6 +7,7 @@ import { formatAdminSubcategories, formatProducts } from 'src/app/utilities/resp
 import { map } from 'rxjs';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-products',
@@ -19,9 +20,16 @@ export class AdminProductsComponent {
     sub_categories: Observable<AdminSubcategory[]>;
 	private refreshData$ = new Subject<void>();
     
+    selectedRowData: any;
+    /*classes*/
+	margin = "mx-lg-2"
+	size = "w-100"
+    
+    
 	constructor(
 		private service: ProductsService,
-		private subcategory_service: SubcategoriesService
+		private subcategory_service: SubcategoriesService,
+		private router: Router
 	) {}
 	
 	ngOnInit(): void{
@@ -36,15 +44,22 @@ export class AdminProductsComponent {
         this.refreshData$.next();
     }
 
-	selectedRowData: any;
-
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
     }
     
-	/*classes*/
-	margin = "mx-lg-2"
-	size = "w-100"
+	
+    showAddForm(): void{
+        this.router.navigate(['/form','product','add','']);
+	}
+	
+    showEditForm(): void{
+        this.router.navigate(['/form','product','edit',this.selectedRowData.id]);
+	}
+	
+	
+	
+
 	
 
 }

@@ -11,6 +11,7 @@ import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { GETCategories } from 'src/app/services/endpoints';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-category-form',
@@ -49,28 +50,18 @@ export class CategoryFormComponent {
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
 
-
+    editCategories: string;
+    editSubCategories: string;
     
-    ngOnInit(): void {
-        this.categories = this.refreshData$.pipe(
-            startWith(undefined), 
-            switchMap(() => this.category_service.getAdminCategories()),
-            map((Response: any) => formatAdminCategories(Response))
-        );
-        
-        this.sub_categories = this.refreshData$.pipe(
-            startWith(undefined), 
-            switchMap(() => this.subcategory_service.getAdminSubcategories()),
-            map((Response: any) => formatAdminSubcategories(Response))
-        );
-    }
+
     
     constructor(
         private category_service: CategoriesService,
         private subcategory_service: SubcategoriesService,
         private formBuilder: FormBuilder,
         private errorService: ErrorHandlingService,
-        private http: HttpClient
+        private http: HttpClient,
+        private router: Router
     ) 
     {
         this.addCategoryForm = new FormGroup({
@@ -100,7 +91,37 @@ export class CategoryFormComponent {
         });
     }
 
+    ngOnInit(): void {
+        this.categories = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.category_service.getAdminCategories()),
+            map((Response: any) => formatAdminCategories(Response))
+        );
+        
+        this.sub_categories = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.subcategory_service.getAdminSubcategories()),
+            map((Response: any) => formatAdminSubcategories(Response))
+        );
+        
+        this.categories.subscribe((categories: any[]) => { 
+            this.editCategories = categories.find(category => category.id === this.selectedRowData)?.name || 'error';
+            
+            this.editCategoryForm.patchValue({
+                category: this.editCategories ? this.editCategories : null
+            });
+        });
+        
+        this.sub_categories.subscribe((sub_categories: any[]) => { 
+            this.editSubCategories = sub_categories.find(sub_category => sub_category.id === this.selectedRowData)?.name || 'error';
+            
+            this.editSubCategoryForm.patchValue({
+                sub_category: this.editSubCategories ? this.editSubCategories : null
+            });
+        });
+        
 
+    }
     
     refreshTableData(): void {
         this.refreshData$.next();
@@ -119,6 +140,14 @@ export class CategoryFormComponent {
         this.subCategories.removeAt(index);
     }
     
+    asyncTask(): Promise<void> {
+        // Simulate an asynchronous task with a delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+            resolve();
+            }, 2500); 
+        });
+    }
     
     //Submit Functions
     onCategoryAddSubmit(): void {
@@ -175,12 +204,12 @@ export class CategoryFormComponent {
 
     }
 
-    onCategoryEditSubmit(): void {
+    async onCategoryEditSubmit() {
         
         if(this.editCategoryForm.valid){
 
             let formData: any = new FormData();
-            formData.append('id',  this.selectedRowData.id);
+            formData.append('id',  this.selectedRowData);
             formData.append('name', this.editCategoryForm.get('category')?.value);        
 
                 
@@ -190,6 +219,7 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.category);
                     this.editCategoryForm.reset();
+
                 },
                 error: (error: HttpErrorResponse) => {
                     const errorData = this.errorService.handleError(error);
@@ -200,8 +230,11 @@ export class CategoryFormComponent {
                     }
                     return throwError(() => error);
                 }
+
             });
             
+            await this.asyncTask();
+            this.router.navigate(['/category-management']);
         }
             
         else if(this.editCategoryForm.invalid){
@@ -309,12 +342,12 @@ export class CategoryFormComponent {
     
     }
     
-    onSubCategoryEditSubmit(): void {
+    async onSubCategoryEditSubmit() {
         
         if(this.editSubCategoryForm.valid){
 
             let formData: any = new FormData();
-            formData.append('sub_category_id',  this.selectedRowData.id);
+            formData.append('sub_category_id',  this.selectedRowData);
             formData.append('main_category_id', '');        
             formData.append('name', this.editSubCategoryForm.get('sub_category')?.value);        
                 
@@ -335,6 +368,9 @@ export class CategoryFormComponent {
                     return throwError(() => error);
                 }
             });
+            
+            await this.asyncTask();
+            this.router.navigate(['/category-management']);
             
         }
             
@@ -389,4 +425,6 @@ export class CategoryFormComponent {
         });
         
     }
+
+    
 }

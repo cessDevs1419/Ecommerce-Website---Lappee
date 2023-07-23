@@ -63,6 +63,7 @@ import { AccountsFormComponent } from './components/components/Forms/accounts-fo
 import { AssignParcelsFormComponent } from './components/components/Forms/assign-parcels-form/assign-parcels-form.component';
 import { ContactusComponent } from './components/pages/main/contactus/contactus.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -151,10 +152,13 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
       {path: 'stocks-management', component: AdminStocksManagementComponent},
 
       //courier
-      {path: 'courier', component: CourierRoutingComponent },
-      {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
-      {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
+      // {path: 'courier', component: CourierRoutingComponent },
+      // {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
+      // {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
 
+      {path: 'form/:page/:action/:id', component: AdminParentFormComponent},
+
+      
       {path: '', redirectTo: 'home', pathMatch:'full'}
     ]),
 

@@ -12,8 +12,26 @@
             </div>
         </div> 
         <div class="col-lg-8 ">
-            <div class="container bg-white rounded-5 p-3 d-flex align-items-center justify-content-between">
+            <div class="container bg-white rounded-5 p-0">
+                <div class="data-container p-2 text-center">
+                    <select class="form-select w-25 border-0" aria-label="Default select example">
+                        <option selected>Select Graph Data</option>
+                        <option value="yearly">Yearly Sales Graphs</option>
+                        <option value="monthly">Monthly Sales Graphs</option>
+                        <option value="weekly">Weekly Sales Graphs</option>
+                    </select>
+                    <div class="data-text-container w-25">
+                        <h1 class="fs-3 fw-bold mb-0">₱102.7k</h1>
+                        <p class="text-light-muted mt-0">Overall Revenue</p>
+                    </div>
+                </div>
                 
+                <app-line-graph
+                    [data]="lineChartData"
+                    width="860"
+                    height="150"
+                >
+                </app-line-graph>
             </div>
         </div>
     </div>

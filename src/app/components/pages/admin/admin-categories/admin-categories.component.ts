@@ -7,6 +7,7 @@ import { SubcategoriesService } from 'src/app/services/subcategories/subcategori
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-categories',
@@ -19,15 +20,15 @@ export class AdminCategoriesComponent {
     
     
     size = "w-100"
-    
-    /*SET DATA*/
+    selectedRowData: any;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
     
 	constructor(
 		private category_service: CategoriesService,
-        private subcategory_service: SubcategoriesService
+        private subcategory_service: SubcategoriesService,
+        private router: Router
 	) {
     
 	}
@@ -50,14 +51,26 @@ export class AdminCategoriesComponent {
     refreshTableData(): void {
         this.refreshData$.next();
     }
-
-	
-    selectedRowData: any;
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
     }
-
+    
+	showAddCategoryForm(): void{
+        this.router.navigate(['/form','category','add','']);
+	}
+	
+    showEditCategoryForm(): void{
+        this.router.navigate(['/form','category','edit',this.selectedRowData.id]);
+	}
+	
+    showAddSubCategoryForm(): void{
+        this.router.navigate(['/form','subcategory','add','']);
+	}
+	
+    showEditSubCategoryForm(): void{
+        this.router.navigate(['/form','subcategory','edit',this.selectedRowData.id]);
+	}
 
 
 

@@ -14,6 +14,12 @@ interface TableItem {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent {
+	
+	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
+	@Output() ShowAddForm: EventEmitter<any> = new EventEmitter<any>();
+	@Output() ShowEditForm: EventEmitter<any> = new EventEmitter<any>();
+	@Output() ShowAddSubForm: EventEmitter<any> = new EventEmitter<any>();
+	@Output() ShowEditSubForm: EventEmitter<any> = new EventEmitter<any>();
 
 	public searchString: string;
 	
@@ -29,6 +35,8 @@ export class TableComponent {
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addbtnName!: string;
+	@Input() addCategoryBtn!: boolean;
+	@Input() addCategoryName!: string;
 	@Input() addSubBtn!: boolean;
 	@Input() addSubtnName!: string;
 	
@@ -123,11 +131,29 @@ export class TableComponent {
 	  this.calculatePagination();
 	}
 	
-	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
+	
 
 	sendRowData(row: any) {
 	    this.rowDataSelected.emit(row);
 	}
+	
+	showAddForm(): void{
+		this.ShowAddForm.emit()
+	}
+	
+	showEditForm(): void{
+		this.ShowEditForm.emit()
+	}
+
+	showAddSubForm(): void{
+		this.ShowAddSubForm.emit()
+	}
+
+	showEditSubForm(): void{
+		this.ShowEditSubForm.emit()
+	}
+	
+
 	
 	
 }

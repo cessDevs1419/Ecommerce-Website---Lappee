@@ -29,7 +29,7 @@
             <label for="categoryName" class="form-label">Category Name</label>
             <input 
                 type="hidden" 
-                [value]="selectedRowData?.id"
+                [value]="selectedRowData"
 
             >
             <input 
@@ -37,7 +37,7 @@
                 type="text" 
                 id="categoryName" 
                 formControlName="category" 
-                [value]="selectedRowData?.name"
+                [value]="editCategories"
                 required
             >
 

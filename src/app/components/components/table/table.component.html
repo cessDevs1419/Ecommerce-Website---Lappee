@@ -36,25 +36,27 @@
                     
                     <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
                         <button
-                        *ngIf="addBtn"
-                        type="button" 
-                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addBtnclass}}"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addproduct"
-                        >{{addbtnName}}</button>
+                            *ngIf="addBtn"
+                            type="button" 
+                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addBtnclass}}"
+                            (click)="showAddForm()"
+                            >{{addbtnName}}
+                        </button>
+
                         
                         <button
-                        *ngIf="addSubBtn"
-                        type="button" 
-                        class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addSubBtnclass}}"
-                        data-bs-toggle="modal" data-bs-target="#addsubproduct"
-                        >{{addSubtnName}}</button>
+                            *ngIf="addSubBtn"
+                            type="button" 
+                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addSubBtnclass}}"
+                            (click)="showAddSubForm()"
+                            >{{addSubtnName}}
+                        </button>
                         
                         <button 
                             *ngIf="restockBtn"
                             type="button" 
                             class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{restockBtnclass}}"
-                            data-bs-toggle="modal" data-bs-target="#restock"
+                            
                             >RESTOCK</button>
                     </div>
                 
@@ -95,7 +97,7 @@
                                 *ngIf="editBtn"
                                 type="button" 
                                 class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#edit"
+                                (click)="showEditForm()"
                             >
                                 <i class="bi bi-pencil-square fs-5"></i>
                             </button>
@@ -105,7 +107,7 @@
                                 *ngIf="editSubBtn"
                                 type="button" 
                                 class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#editSub"
+                                (click)="showEditSubForm()"
                             >
                                 <i class="bi bi-pencil-square fs-5"></i>
                             </button>
@@ -146,8 +148,7 @@
                                 *ngIf="banBtn"
                                 type="button"
                                 [class]="bannedStatus[item.user_id] ? 'btn btn-danger bg-banned text-white border-danger rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center' : 'btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center'"
-                                data-bs-toggle="modal"
-                                data-bs-target="#ban"
+                                data-bs-toggle="modal" data-bs-target="#ban"
                             >
                                 <i class="bi bi-hammer fs-5"></i>
                             </button>

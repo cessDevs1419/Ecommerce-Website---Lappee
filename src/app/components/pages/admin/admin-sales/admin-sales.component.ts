@@ -7,4 +7,18 @@ import { Component } from '@angular/core';
 })
 export class AdminSalesComponent {
 
+  lineChartData: { label: string, value: number }[] = [
+    { label: 'January', value: 50 },
+    { label: 'February', value: 30 },
+    { label: 'March', value: 60 },
+    { label: 'April', value: 70 },
+    { label: 'January', value: 50 },
+    { label: 'February', value: 30 },
+    { label: 'March', value: 60 },
+    { label: 'April', value: 70 },
+    { label: 'January', value: 50 },
+    { label: 'February', value: 30 },
+    { label: 'May', value: 40 }
+  ];
+  
 }

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 @Component({
@@ -12,60 +13,48 @@ export class AdminParentFormComponent {
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
 	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
-	
-	@Input() modalID: string;
-	@Input() modalTitle!: string;
-	@Input() modalSubTitle!: string;
-	
-	//Forms
-	@Input() modalAddCategory!: boolean;
-	@Input() modalEditCategory!: boolean;
-	@Input() modalDeleteCategory!: boolean;
-	
-	@Input() modalAddSubCategory!: boolean;
-	@Input() modalEditSubCategory!: boolean;
-	@Input() modalDeleteSubCategory!: boolean;
-	
-	@Input() modalAddProduct!: boolean;
-	@Input() modalEditProduct!: boolean;
-	@Input() modalDeleteProduct!: boolean;
-	@Input() modalRestockProduct!: boolean;
-	
-	@Input() modalAddDiscount!: boolean;
-	@Input() modalEditDiscount!: boolean;  
-	@Input() modalDeleteDiscount!: boolean;   
-	
-	//Account Forms
-	@Input() modalBanAccounts!: boolean;  
-	@Input() modalUnBanAccounts!: boolean; 
-	
-	//Parcel Forms
-	@Input() modalParcel!: boolean;
-	@Input() modalAddParcel!: boolean; 
-	@Input() modalEditParcel!: boolean;  
-	
-	//Order Forms
-	@Input() modalOrder!: boolean;
-	@Input() modalEditOrder!: boolean;  
-	@Input() modalViewOrder!: boolean;  
-	
-	//Admin-Courier Forms
-	@Input() modalAdminCourier!: boolean;
-	@Input() modalEditCourier!: boolean;   
-	
-	//Courier Forms
-	@Input() modalCourier!: boolean;
-	@Input() modalNotifyCourier!: boolean;  
-	@Input() modalCheckCourier!: boolean;  
-	@Input() modalViewCourier!: boolean; 
-	
-	//GetSelectedRowData
-	@Input() selectedRowData: any;
 
+	selectedRowData: any;
 	
+	//CRUD
+	AddCategory: boolean;
+	EditCategory: boolean;
+	
+	AddSubCategory: boolean;
+	EditSubCategory: boolean;
+	
+	AddProduct: boolean;
+	EditProduct: boolean;
+	
+
     toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default"; 
+    
+    
+	constructor(private route: ActivatedRoute) {}
+	
+	ngOnInit() {
+		this.route.paramMap.subscribe((params) => {
+			const page = params.get('page');
+		    const action = params.get('action');
+		    const id = params.get('id');
+		    
+			this.AddCategory = page === 'category' && action === 'add';
+			this.EditCategory = page === 'category' && action === 'edit';
+
+			
+			this.AddSubCategory = page === 'subcategory' && action === 'add';
+			this.EditSubCategory = page === 'subcategory' && action === 'edit';
+			
+			this.AddProduct = page === 'product' && action === 'add';
+			this.EditProduct = page === 'product' && action === 'edit';
+			this.selectedRowData = id
+
+		});
+	}
+	
+
     //Toast Functions
     
     triggerRefreshTable(): void {

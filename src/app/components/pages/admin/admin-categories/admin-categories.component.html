@@ -21,8 +21,11 @@
                 [tableData]="categories"
                 
                 (rowDataSelected)="onRowDataSelected($event)"
+                (ShowAddForm)="showAddCategoryForm()"
+                (ShowEditForm)="showEditCategoryForm()"
             ></app-table>
         </div>
+        
         <div class="col-xl-6 p-2">
             <app-table
                 tableTitle="SUB CATEGORIES"
@@ -43,71 +46,37 @@
                 [tableData]="sub_categories "
                 
                 (rowDataSelected)="onRowDataSelected($event)"
+                (ShowAddSubForm)="showAddSubCategoryForm()"
+                (ShowEditSubForm)="showEditSubCategoryForm()"
             ></app-table>
         </div>
     </div>
 
     <!--MAIN-->
-    <app-admin-parent-form
-        modalID="addproduct"
-        modalTitle="ADD CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
+   
     
-        [modalAddCategory]="true"
-        (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
-    
-    <app-admin-parent-form
-        modalID="edit"
-        modalTitle="EDIT CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
-        [modalEditCategory]="true"
-        [selectedRowData]="selectedRowData"
-        (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
-    
-    <app-admin-parent-form
-        modalID="delete"
+    <app-modal
+        modalId="delete"
         modalTitle="DELETE CATEGORY"
         modalSubTitle="CATEGORY MANAGEMENT"
     
+    
         [modalDeleteCategory]="true"
-        
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
+    ></app-modal> 
     
     <!--SUB-->
-    <app-admin-parent-form
     
-        modalID="addsubproduct"
-        modalTitle="ADD SUB-CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
-        
-        [modalAddSubCategory]="true"
-        (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
-    
-    <app-admin-parent-form
-        modalID="editSub"
-        modalTitle="EDIT SUB CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
-        [modalEditSubCategory]="true"
-        
-        [selectedRowData]="selectedRowData"
-        (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
-    
-    <app-admin-parent-form
-        modalID="deleteSub"
+    <app-modal
+        modalId="deleteSub"
         modalTitle="DELETE SUB CATEGORY"
         modalSubTitle="CATEGORY MANAGEMENT"
     
         [modalDeleteSubCategory]="true"
-        
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
-    ></app-admin-parent-form>
+    ></app-modal> 
 
 
 </div>

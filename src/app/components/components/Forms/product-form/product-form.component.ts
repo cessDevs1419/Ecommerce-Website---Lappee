@@ -47,6 +47,7 @@ export class ProductFormComponent {
     selectedSubCategory: null;
     hideselectedsub: boolean = true;
     product_sub: '';
+    varianForm: boolean;
     
 	
     constructor(
@@ -66,6 +67,7 @@ export class ProductFormComponent {
             category: ['', Validators.required],
             subcategory: ['', Validators.required],
 	        description: [''],
+	        variants: this.formBuilder.array([]),
 	        //images: this.formBuilder.array([]),
 	    });
 	    
@@ -143,6 +145,8 @@ export class ProductFormComponent {
         addInput?.click();
 
     }
+    
+    
     
     selectFileForEditing() {
         const editInput = document.getElementById('editimages');

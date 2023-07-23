@@ -1,145 +1,184 @@
-            
+
         <!--ADD PRODUCT FORM-->
         <form *ngIf="formAddProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
-                <div class="modal-body pt-0 pb-0">
-                    
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductName" class="form-label">Product Name</label>
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="addproductName" 
-                                name="addproductName" 
-                                formControlName="name"
-                                required
-                            >
-
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                        <div class="form-title text-start mb-4">
+                            <h1 class="modal-title fs-4 fw-bolder mb-0" >ADD PRODUCT</h1>
+                            <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">PRODUCT CONTROL</div>
                         </div>
+                        <div class="body pt-0 pb-0">
                         
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductPrice" class="form-label">Price</label>
-                            <input 
-                                type="number" 
-                                class="form-control" 
-                                id="addproductPrice" 
-                                name="addproductPrice" 
-                                [value]="1"
-                                formControlName="price"
-                                required
-                                step="0.01"
-                                [placeholder]="00.00"
-                            >
-                            <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('price')?.value < 1 || isDecimal(addProductForm.get('price')?.value)" class="invalid-text">
-                                Required 2 decimal place.
-                            </p>
-                        </div>
-
-                    </div>
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="addproductName" class="form-label">Product Name</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="addproductName" 
+                                        name="addproductName" 
+                                        formControlName="name"
+                                        required
+                                    >
+        
+                                </div>
                                 
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">    
-                            <label for="addproductCategory" class="form-label">Category</label>
-                            <select 
-                                class="form-select" 
-                                id="addproductCategory"
-                                name="addproductCategory" 
-                                (change)="onCategorySelect($event)"
-                                formControlName="category" 
-                                required
-                            >
-
-                                <option *ngFor="let category of categories | async" [value]=" category.name ">{{ category.name }}</option>
-                            </select>
-                        </div>
-                        
-                        <div class="col-sm-6 mb-3">    
-                            <label for="addproductSubCategory" class="form-label">Sub Category</label>
-                            <select 
-                                class="form-select" 
-                                id="addproductSubCategory" 
-                                name="addproductSubCategory" 
-                                formControlName="subcategory" 
-
-                            >
-
-                                <option *ngFor="let subCategory of (filteredSubCategories | async) ?? []" [value]="subCategory.id">{{ subCategory.name }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductQty" class="form-label">Stock</label>
-                            <input 
-                                type="number" 
-                                class="form-control" 
-                                id="addproductQty" 
-                                name="addproductQty" 
-                                formControlName="stock"
-                                required
-                            >
-                            <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('stock')?.value < 1 " class="invalid-text">
-                                Required higher than limit.
-                            </p>
-                        </div>
-                        <div class="col-sm-6 mb-3">
-                            <label for="addproductQtyLimit" class="form-label">Stock Limit</label>
-                            <input 
-                                type="number" 
-                                class="form-control" 
-                                id="addproductQtyLimit" 
-                                name="addproductQtyLimit" 
-                                formControlName="stock_limit"
-                                required
-                            >
-
-                        </div>
-                        <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('stock')?.value < addProductForm.get('stock_limit')?.value" class="invalid-text">
-                            Stock should be greater than Stock Limit.
-                        </p>
-
-                    </div>   
-                    
-                    <div class="mb-3">
-                        <label for="addproductDescription" class="form-label">Product Description</label>
-                        <textarea 
-                            class="form-control" 
-                            id="addproductDescription" 
-                            name="addproductPriceDescription" 
-                            rows="3" 
-                            formControlName="description"
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <!-- <div>
-                        <button type="button" (click)="selectFileForAdding()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
-                            <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
-                            <i class="bi bi-upload text-dark"></i>
-                            <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
-                        </button>
-                        <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
-                            <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
-                                <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
-                                <button type="button" class="btn p-0" (click)="removeImage(i)">
-                                    <i class="bi bi-x-lg text-dark"></i>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="addproductPrice" class="form-label">Price</label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="addproductPrice" 
+                                        name="addproductPrice" 
+                                        [value]="1"
+                                        formControlName="price"
+                                        required
+                                        step="0.01"
+                                        [placeholder]="00.00"
+                                    >
+                                    <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('price')?.value < 1 || isDecimal(addProductForm.get('price')?.value)" class="invalid-text">
+                                        Required 2 decimal place.
+                                    </p>
+                                </div>
+        
+                            </div>
+                                        
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">    
+                                    <label for="addproductCategory" class="form-label">Category</label>
+                                    <select 
+                                        class="form-select" 
+                                        id="addproductCategory"
+                                        name="addproductCategory" 
+                                        (change)="onCategorySelect($event)"
+                                        formControlName="category" 
+                                        required
+                                    >
+        
+                                        <option *ngFor="let category of categories | async" [value]=" category.name ">{{ category.name }}</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-sm-6 mb-3">    
+                                    <label for="addproductSubCategory" class="form-label">Sub Category</label>
+                                    <select 
+                                        class="form-select" 
+                                        id="addproductSubCategory" 
+                                        name="addproductSubCategory" 
+                                        formControlName="subcategory" 
+        
+                                    >
+        
+                                        <option *ngFor="let subCategory of (filteredSubCategories | async) ?? []" [value]="subCategory.id">{{ subCategory.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="addproductQty" class="form-label">Stock</label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="addproductQty" 
+                                        name="addproductQty" 
+                                        formControlName="stock"
+                                        required
+                                    >
+                                    <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('stock')?.value < 1 " class="invalid-text">
+                                        Required higher than limit.
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label for="addproductQtyLimit" class="form-label">Stock Limit</label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="addproductQtyLimit" 
+                                        name="addproductQtyLimit" 
+                                        formControlName="stock_limit"
+                                        required
+                                    >
+        
+                                </div>
+                                <p class="text-danger d-flex justify-content-center" *ngIf="addProductForm.get('stock')?.value < addProductForm.get('stock_limit')?.value" class="invalid-text">
+                                    Stock should be greater than Stock Limit.
+                                </p>
+        
+                            </div>   
+                            
+                            <div class="mb-3">
+                                <label for="addproductDescription" class="form-label">Product Description</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="addproductDescription" 
+                                    name="addproductPriceDescription" 
+                                    rows="3" 
+                                    formControlName="description"
+                                    required
+                                ></textarea>
+                            </div>
+                            
+                            <!-- <div>
+                                <button type="button" (click)="selectFileForAdding()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                                    <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                                    <i class="bi bi-upload text-dark"></i>
+                                    <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                 </button>
-                            </li>
-                        </ul>
-                    </div> -->
-                    
+                                <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
+                                    <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                        <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
+                                        <button type="button" class="btn p-0" (click)="removeImage(i)">
+                                            <i class="bi bi-x-lg text-dark"></i>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div> -->
+                            <div class="modal-footer border-0">
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary bg-light-primary"
+                                    [disabled]="addProductForm.get('stock')?.value < addProductForm.get('stock_limit')?.value || addProductForm.get('variants')?.value"
+                                >ADD PRODUCT</button>
+                            </div>   
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                    <button 
-                        type="submit" 
-                        class="btn btn-primary bg-light-primary"
-                        [disabled]="addProductForm.get('stock')?.value < addProductForm.get('stock_limit')?.value || (addProductForm.get('product_stock')?.value === 0 )"
-                    >CONFIRM</button>
-                </div>                
-                
+                <div class="col-lg-6 mt-lg-0 mt-4">
+                    <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                        <div class="form-title text-start mb-4">
+                            <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
+                            <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
+                        </div>
+                        
+                        <div class="body pt-0 pb-0">
+                            <div 
+                                class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
+                                *ngIf="addProductForm.get('variants')?.value"
+                                >
+                                <h1 class="m-auto">NO VARIANTS LISTED</h1>
+                            </div>
+                            
+                            <div class="modal-footer border-0 mt-4">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-primary bg-light-primary"
+                                    
+                                >ADD VARIANTS</button>
+                                
+                                <button 
+                                    
+                                    type="submit" 
+                                    class="btn btn-primary bg-light-primary"
+                                    
+                                >ADD VARIANTS</button>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
         
         <!--EDIT PRODUCT FORM-->

@@ -1,156 +1,85 @@
-<div class="modal fade" id={{modalID}}  tabindex="-1" data-backdrop="true">
+<!-- <div class="modal fade" id={{modalID}}  tabindex="-1" data-backdrop="true">
     
+
+
+</div> -->
+<div class="parent-form-container">
     <div class="position-relative w-100 mt-3">
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
-                <div class="modal-title text-start">
-                    <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
-                    <div class="modal-sub-title text-dark-emphasis fs-6">{{modalSubTitle}}</div>
-                </div>
+    <div class="container p-0">
                 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            
-            </div>
-            <hr class="divider m-0 mb-3">
-            
             <!--categories-->
-            <app-category-form 
-                *ngIf="modalAddCategory"
-                [formAddCategory]="true"
-                (CategorySuccess)="postSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
+                <app-category-form 
+                    *ngIf="AddCategory"
+                    [formAddCategory]="true"
+                    (CategorySuccess)="postSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                ></app-category-form>
+            
+                <app-category-form 
+                    *ngIf="EditCategory"
+                    [formEditCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="patchSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                ></app-category-form>
         
-            <app-category-form 
-                *ngIf="modalEditCategory"
-                [formEditCategory]="true"
-                [selectedRowData]="selectedRowData"
-                (CategorySuccess)="patchSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
-    
-            <app-category-form 
-                *ngIf="modalDeleteCategory"
-                [formDeleteCategory]="true"
-                [selectedRowData]="selectedRowData"
-                (CategorySuccess)="deleteSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
+
             
             <!--sub category -->
-            <app-category-form 
-                *ngIf="modalAddSubCategory"
-                [formAddSubCategory]="true"
-                (CategorySuccess)="postSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
+                <app-category-form 
+                    *ngIf="AddSubCategory"
+                    
+                    [formAddSubCategory]="true"
+                    (CategorySuccess)="postSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                ></app-category-form>
+                
+                <app-category-form 
+                    *ngIf="EditSubCategory"
+                    
+                    [formEditSubCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="patchSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                ></app-category-form>
             
-            <app-category-form 
-                *ngIf="modalEditSubCategory"
-                [formEditSubCategory]="true"
-                [selectedRowData]="selectedRowData"
-                (CategorySuccess)="patchSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
-        
-            <app-category-form 
-                *ngIf="modalDeleteSubCategory"
-                [formDeleteSubCategory]="true"
-                [selectedRowData]="selectedRowData"
-                (CategorySuccess)="deleteSuccessToast($event)"
-                (CategoryWarn)="WarningToast($event)"
-                (CategoryError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-category-form>
+
             
             <!--products-->
-            <app-product-form
-                *ngIf="modalAddProduct"
-                [formAddProduct]="true"
-                (ProductSuccess)="postSuccessToast($event)"
-                (ProductError)="ErrorToast($event)"
-                (ProductWarning)="WarningToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            >
-            </app-product-form>
             
-            <app-product-form
-                *ngIf="modalRestockProduct"
-                [formRestockProduct]="true"
-                [selectedRowData]="selectedRowData"
-                (ProductSuccess)="patchSuccessToast($event)"
-                (ProductError)="ErrorToast($event)"
-                (ProductWarning)="WarningToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            >
-            </app-product-form>
-        
-            <app-product-form
-                *ngIf="modalEditProduct"
-                [formEditProduct]="true"
-                [selectedRowData]="selectedRowData"
-                (ProductSuccess)="patchSuccessToast($event)"
-                (ProductError)="ErrorToast($event)"
-                (ProductWarning)="WarningToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            >
-            </app-product-form>
+                <app-product-form
+                    *ngIf="AddProduct"
+                    [formAddProduct]="true"
+                    (ProductSuccess)="postSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
             
-            <app-product-form
-                *ngIf="modalDeleteProduct"
-                [formDeleteProduct]="true"
-                [selectedRowData]="selectedRowData"
-                (ProductSuccess)="deleteSuccessToast($event)"
-                (ProductError)="ErrorToast($event)"
-                (ProductWarning)="WarningToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            >
-            </app-product-form>
-            
-            <!--discount-->
-            <app-discount-form
-                *ngIf="modalAddDiscount"
-                [formAddDiscount]="true"
-                (ProductSuccess)="postSuccessToast($event)"
-            ></app-discount-form>
-
-
-            <!--account-->
-            <app-accounts-form
-                *ngIf="modalBanAccounts"
-                [formBanAccount]="true"
-                [selectedRowData]="selectedRowData"
-                (BanSuccess)="banSuccessToast($event)"
-                (BanError)="ErrorToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-accounts-form>
-            
-            <app-accounts-form
-                *ngIf="modalUnBanAccounts"
-                [formUnBanAccount]="true"
-                [selectedRowData]="selectedRowData"
-                (BanSuccess)="unbanSuccessToast($event)"
-                (RefreshTable)="triggerRefreshTable()"
-            ></app-accounts-form>
-        </div>
+                <app-product-form
+                    *ngIf="EditProduct"
+                    [formEditProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="patchSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
     </div>
-
 </div>
-
 
 
 
