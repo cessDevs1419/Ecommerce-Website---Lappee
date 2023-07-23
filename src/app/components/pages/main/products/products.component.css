@@ -93,8 +93,8 @@
     gap: 2rem;
 }
 
-.review-comment {
-    
+gallery-image {
+    z-index: 0;
 }
 
 .product-gallery {

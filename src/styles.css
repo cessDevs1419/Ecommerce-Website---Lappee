@@ -170,6 +170,16 @@ input[type=text], input[type=password], input[type=email], textarea {
     transition: display .4s;
 }
 
+.container-md {
+    overflow-x: hidden;
+}
+
+.toast-container-parent {
+    width: 100%;
+    max-width: 100%;
+    margin: auto 0;
+}
+
 @media screen and (min-width: 768px){
     /* lock entry form toggling at 768px and UP*/
     .entry-form {
