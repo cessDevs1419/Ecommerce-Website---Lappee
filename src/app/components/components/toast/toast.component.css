@@ -20,7 +20,7 @@
 
 @media screen and (max-width: 576px) {
     .toast-container-custom {
-        width: 100%;
+        width: 90%;
     }
 
     .toast-dismiss-btn {

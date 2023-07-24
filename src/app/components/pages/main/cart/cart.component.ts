@@ -1,11 +1,17 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { CartItem } from 'src/assets/models/products';
+import { CartItem, Order } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { User } from 'src/assets/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Carousel } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
+import { AddressService } from 'src/app/services/address/address.service';
+import { Address } from 'src/assets/models/address';
+import { Observable, map } from 'rxjs';
+import { filterAddresses, findAddresses, formatAddress } from 'src/app/utilities/response-utils';
+import { HttpErrorResponse } from '@angular/common/http';
+import { OrderService } from 'src/app/services/order/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -21,6 +27,12 @@ export class CartComponent {
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
   isAddressSelected: boolean = true;
+
+  addresses!: Observable<Address[]>;
+  isAddressRegistered!: boolean
+  filteredAddress!: Observable<Address | null>
+
+  address!: string;
   
   cartContents!: CartItem[];
   orderList: CartItem[] = [];
@@ -31,10 +43,14 @@ export class CartComponent {
 
   user: User;
 
+  orderedProducts: Order[] = [];
+
+  orderId: string;
+  
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
     orderPaymentMethod: new FormControl('', Validators.required),
-    orderPaymentProof: new FormControl('', Validators.required)
+    orderPaymentProof: new FormControl('')
   })
 
   get orderItems() { return this.orderForm.get('orderItems') }
@@ -44,15 +60,61 @@ export class CartComponent {
 
 
   constructor(private cart: CartService,
-              public accountService: AccountsService) {}
+              public accountService: AccountsService,
+              private addressService: AddressService,
+              private orderService: OrderService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
+    this.checkAddress();
     //this.user = this.accountService.getCurrentUser();
   }
 
   ngAfterViewInit() {
     console.log(this.carousel);
+  }
+
+  checkAddress() {
+    this.addresses = this.addressService.getAddresses().pipe(map((response: any) => formatAddress(response)));
+    this.accountService.checkLoggedIn().subscribe({
+      next: (response: any) => {
+        if(response) {
+          this.accountService.getLoggedUser().subscribe({
+            next: (response: any) => {
+              findAddresses(response.user_id, this.addresses).subscribe({
+                next: (match: boolean) => {
+                  if(match) {
+                    console.log('has matching address')
+                    this.isAddressRegistered = true;
+                    this.filteredAddress = filterAddresses(response.user_id, this.addresses);
+                    this.filteredAddress.subscribe({
+                      next: (address: Address | null) => {
+                        if(address){
+                          this.isAddressSelected = true;
+                        }
+                        else {
+                          this.isAddressSelected = false;
+                        }
+                      }
+                    });
+                  }
+                  else {
+                    console.log('no matching address')
+                    this.isAddressRegistered = false;
+                  }
+                },
+                error: (err: HttpErrorResponse) => {
+                  console.log(err)
+                }
+              })
+            },
+            error: (err: HttpErrorResponse) => {
+              console.log(err)
+            }
+          });
+        }
+      }
+    });
   }
 
   matchProduct(sender: any, operation: string): void {
@@ -186,10 +248,31 @@ export class CartComponent {
     if(this.orderForm?.valid && this.orderList.length > 0 && this.isAddressSelected){
 
       //post the request here
-      
+      for(let order of this.orderList){
+        this.orderedProducts.push({ id: order.product.id, variant_id: order.variant, quantity: order.quantity })
+      }
 
-      const instance = new bootstrap.Carousel(this.carousel.nativeElement);
-      instance.next();
+      let formData = new FormData();
+      this.orderedProducts.forEach((item, index) => {
+        formData.append('products[' + index + "][id]", item.id);
+        formData.append('products[' + index + "][variant_id]", item.variant_id);
+        formData.append('products[' + index + "][quantity]", item.quantity.toString());
+      });
+
+      console.log(formData);
+
+      this.orderService.postOrder(formData).subscribe({
+        next: (response: any) => {
+          console.log(response.data.order_id);
+          this.orderId = response.data.order_id;
+          const instance = new bootstrap.Carousel(this.carousel.nativeElement);
+          instance.next();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err)
+        }
+      })
+
     }
     else {
       console.log("Order Form Valid: " + this.orderForm?.valid);

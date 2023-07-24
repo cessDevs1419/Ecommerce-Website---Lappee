@@ -2,8 +2,8 @@
 
     <div id="navbarInfoBg" class="mb-0 mb-md-3">
         <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
-            <p class="fs-6 my-2"><a href="#" (click)="this.accountService.checkLoggedIn()" class="text-reset"><i class="bi bi-question-circle"></i> Help</a></p>
-            <p class="fs-6 my-2" *ngIf="this.accountService.getLoggedUser() | async"><a href="#" class="text-reset" (click)="this.gotoaccount()"><i class="bi bi-bell"></i> Notifications</a></p>
+            <p class="fs-6 my-2"><a href="#" (click)="this.accountService.checkLoggedIn()" class="text-reset"><i class="bi bi-question-circle"></i> Help</a></p><!-- 
+            <p class="fs-6 my-2" *ngIf="this.accountService.getLoggedUser() | async"><a href="#" class="text-reset" (click)="this.gotoaccount()"><i class="bi bi-bell"></i> Notifications</a></p> -->
             <p class="fs-6 my-2" *ngIf="!this.accountService.getIsLoggedIn()"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
             <p class="fs-6 my-2" *ngIf="this.accountService.getIsLoggedIn()">
                 <a title="User Profile" [routerLink]="['/profile']" class="text-reset" >
@@ -79,14 +79,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <app-searchbar class="d-block d-md-none"></app-searchbar>
                     <hr>
                     <div id="" class="mb-0 mb-md-3 d-block d-md-none">
-                        <div class="container-md d-flex flex-row justify-content-end align-items-center fs-6" id="navbarInfo">
-                            <p class="fs-6 my-2"><a href="#" class="text-reset"><i class="bi bi-question-circle"></i>Help</a></p>
-                            <p class="fs-6 my-2"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+                        <div class="container-md d-flex flex-row align-items-center fs-6" id="navbarInfo">
+                            <p class="fs-6 my-2 mx-auto" *ngIf="!this.accountService.getIsLoggedIn()"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+
+                            <div class="my-2 position-relative d-flex flex-row w-100" *ngIf="this.accountService.getIsLoggedIn()">
+                                <a [routerLink]="['profile']"><span class="link-span"></span></a>
+                                <div class="d-flex flex-row align-items-center" *ngIf="this.accountService.getLoggedUser() | async; let user">
+                                    <div>
+                                        <img src="https://picsum.photos/200" class="navbar-profile-pic-lg me-3">
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start justify-content-center" >
+                                        <p class="color-primary fw-bold fs-3 m-0">{{this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "")}}</p>
+                                        <a routerLink="['profile']" class="text-muted m-0 text-center text-lg-start">My Profile </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <hr>
+                    <app-searchbar class="d-block d-md-none"></app-searchbar>
                     <hr>
                     <ul class="navbar-nav">
                         <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">

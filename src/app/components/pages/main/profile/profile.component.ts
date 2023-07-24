@@ -126,13 +126,13 @@ export class ProfileComponent {
     this.accountService.logoutUser().subscribe({
       next: (response: any) => {
         console.log(response);
+        this.accountService.checkLoggedIn().subscribe();
         this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {
         console.log(err);
       }
     });
-    this.accountService.checkLoggedIn().subscribe();
   }
 
 }

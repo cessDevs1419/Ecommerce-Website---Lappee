@@ -61,6 +61,12 @@
     border-radius: 50%;
 }
 
+.navbar-profile-pic-lg {
+    width: 5rem;
+    height: auto;
+    border-radius: 50%;
+}
+
 /* disable modalBackground on mobile */
 @media screen and (max-width: 768px) {
     #modalBackground {
