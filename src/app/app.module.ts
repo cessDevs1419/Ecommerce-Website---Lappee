@@ -141,7 +141,7 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
 
       //admin
       {path: 'overview', component: AdminOverviewComponent},
-      {path: 'category-management', component: AdminCategoriesComponent},
+      {path: 'category-management', component: AdminCategoriesComponent,},
       {path: 'product-management', component: AdminProductsComponent},
       {path: 'sales-management', component: AdminSalesComponent},
       {path: 'discounts-management', component: AdminDiscountsComponent},
@@ -156,8 +156,8 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
       // {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
       // {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
 
-      {path: 'form/:page/:action/:id', component: AdminParentFormComponent},
-
+      {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},
+      {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
       
       {path: '', redirectTo: 'home', pathMatch:'full'}
     ]),

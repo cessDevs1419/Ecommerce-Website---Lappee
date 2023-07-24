@@ -10,7 +10,9 @@ import { formatAdminCategories, formatAdminSubcategories} from 'src/app/utilitie
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
-
+import { Router } from '@angular/router';
+import { FormsDataService
+} from 'src/app/services/forms/forms-data.service';
 @Component({
     selector: 'app-product-form',
     templateUrl: './product-form.component.html',
@@ -24,17 +26,21 @@ export class ProductFormComponent {
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
-    
+    //@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
+
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
     @Input() selectedRowData: any;
     @Input() formAddProduct!: boolean;
     @Input() formEditProduct!: boolean;
+    @Input() formAddVariant!: boolean;
+    @Input() formEditVariant!: boolean;
     @Input() formDeleteProduct!: boolean;
     @Input() formRestockProduct!: boolean;
 
     addProductForm: FormGroup;
+    addVariantForm: FormGroup;
 	editProductForm: FormGroup;
 	deleteProductForm: FormGroup;
 	restockProductForm: FormGroup;
@@ -48,29 +54,41 @@ export class ProductFormComponent {
     hideselectedsub: boolean = true;
     product_sub: '';
     varianForm: boolean;
-    
+    variantsList: FormArray;
+	showForm: boolean = false;
 	
+
     constructor(
 	    private http: HttpClient,
 	    private category_service: CategoriesService,
 	    private sub_category_service: SubcategoriesService,
         private product_service: ProductsService,
         private errorService: ErrorHandlingService,
-	    private formBuilder: FormBuilder
+	    private formBuilder: FormBuilder,
+	    private router: Router,
+	    private formDataService: FormsDataService
     ) 
     {
 	    this.addProductForm = this.formBuilder.group({
 	        name: ['', Validators.required],
-            price: [1, Validators.required],
-	        stock: ['', Validators.required],
-            stock_limit: ['', Validators.required],
-            category: ['', Validators.required],
             subcategory: ['', Validators.required],
 	        description: [''],
-	        variants: this.formBuilder.array([]),
 	        //images: this.formBuilder.array([]),
+
+            //Variants
+            variants: this.formBuilder.array([
+            ]),
 	    });
 	    
+        this.addVariantForm = this.formBuilder.group({
+            size: ['', Validators.required],
+            stock: ['', Validators.required],
+            stock_limit: ['', Validators.required],
+            price: [1, Validators.required],
+            color: ['', Validators.required],
+            color_title: ['', Validators.required],
+        });
+
 		this.editProductForm = this.formBuilder.group({
             name: [''],
             price: [''],
@@ -88,6 +106,8 @@ export class ProductFormComponent {
             product_name: new FormControl('', Validators.required),
             product_quantity: new FormControl('', Validators.required)
         });
+
+        this.variantsList = this.addProductForm.get('variants') as FormArray;
     }
 
 	ngOnInit(): void{
@@ -105,7 +125,14 @@ export class ProductFormComponent {
                 return adminSubcategories.filter(subCategory => subCategory.id === selectedSubCategoryId);
             })
         );
-
+        const savedFormData = this.formDataService.getFormData();
+        if (savedFormData) {
+            this.addProductForm.patchValue(savedFormData);
+        }
+    
+        this.addProductForm.valueChanges.subscribe((formData) => {
+            this.formDataService.saveFormData(formData);
+        });
 
 	}
 
@@ -135,6 +162,50 @@ export class ProductFormComponent {
         return Object.values(formValues).every(value => !value);
     }
     
+    asyncTask(): Promise<void> {
+        // Simulate an asynchronous task with a delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+            resolve();
+            }, 2500); 
+        });
+    }
+    
+    //Add Variant
+
+    showForms() {
+        this.showForm = true;
+        this.router.navigate(['/product-management','variant','add','']);
+    }
+
+    async addVariant() {
+        const variantForm = this.addVariantForm.value;
+        const newVariantFormGroup = this.formBuilder.group(variantForm);
+        this.variantsList.push(newVariantFormGroup);
+        console.log(variantForm);
+        //his.addVariantForm.reset();
+        //this.showForm = false;
+
+        await this.asyncTask();
+        this.router.navigate(['/product-management','product','add','']);
+    }
+
+    get variants(): FormArray {
+        return this.addProductForm.get('variants') as FormArray;
+    }
+    
+    async addProductVariants() {
+        this.variants.push(this.formBuilder.control('', Validators.required));
+
+        await this.asyncTask();
+        this.router.navigate(['/product-management','product','add','']);
+    }
+    
+    // removeSubCategory(index: number): void {
+    //     this.variants.removeAt(index);
+    // }
+    
+
 	//Get Image Value to Array
     get product_images(): FormArray {
         return this.addProductForm.get('images') as FormArray;
@@ -145,8 +216,6 @@ export class ProductFormComponent {
         addInput?.click();
 
     }
-    
-    
     
     selectFileForEditing() {
         const editInput = document.getElementById('editimages');
@@ -188,79 +257,78 @@ export class ProductFormComponent {
         }
     }
     
+    
     //Submit Functions
     onProductAddSubmit(): void {
 
         
         let formData: any = new FormData();
         formData.append('name', this.addProductForm.get('name')?.value);
-        formData.append('stock', this.addProductForm.get('stock')?.value);
-        formData.append('limit', this.addProductForm.get('stock_limit')?.value);
-        formData.append('price', this.addProductForm.get('price')?.value);
-        formData.append('category', this.addProductForm.get('subcategory')?.value);
+        formData.append('subcategory', this.addProductForm.get('subcategory')?.value);
         formData.append('description', this.addProductForm.get('description')?.value);
+        formData.append('variants', this.addProductForm.get('variants')?.value);
         
-        if(this.addProductForm.valid){
-            this.product_service.postProduct(formData).subscribe({
-                next: (response: any) => { 
-                    this.RefreshTable.emit();
-                    this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-                    this.addProductForm.reset();
-                },
-                error: (error: HttpErrorResponse) => {
-                    const errorData = this.errorService.handleError(error);
+        // if(this.addProductForm.valid){
+        //     this.product_service.postProduct(formData).subscribe({
+        //         next: (response: any) => { 
+        //             this.RefreshTable.emit();
+        //             this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
+        //             this.addProductForm.reset();
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             const errorData = this.errorService.handleError(error);
                 
-                    if (errorData.errorMessage === 'Unexpected Error') {
-                            this.ProductError.emit(errorData);
-                    }else if (errorData.errorMessage === 'Invalid input') {
+        //             if (errorData.errorMessage === 'Unexpected Error') {
+        //                     this.ProductError.emit(errorData);
+        //             }else if (errorData.errorMessage === 'Invalid input') {
                         
-                        if(this.editProductForm.get('subcategory')?.value === null){
-                            const errorMessage = {
-                                errorMessage: 'Invalid Request',
-                                suberrorMessage: 'sub category is required! ',
-                            }
-                            this.ProductError.emit(errorMessage);
-                        }else {
-                            const errorMessage = {
-                                errorMessage: 'Invalid Request',
-                                suberrorMessage: 'There are no changes were made',
-                            }
-                            this.ProductError.emit(errorMessage);
-                        }
+        //                 if(this.editProductForm.get('subcategory')?.value === null){
+        //                     const errorMessage = {
+        //                         errorMessage: 'Invalid Request',
+        //                         suberrorMessage: 'sub category is required! ',
+        //                     }
+        //                     this.ProductError.emit(errorMessage);
+        //                 }else {
+        //                     const errorMessage = {
+        //                         errorMessage: 'Invalid Request',
+        //                         suberrorMessage: 'There are no changes were made',
+        //                     }
+        //                     this.ProductError.emit(errorMessage);
+        //                 }
 
-                    }else if (errorData.errorMessage === 'Unprocessable Entity') {
-                        if(error.error.data.error){
-                            const errorMessage = {
-                                errorMessage: 'Unprocessable Entity',
-                                suberrorMessage: error.error.data.error.limit || error.error.data.error.category  || error.error.data.error.price,
-                            };
+        //             }else if (errorData.errorMessage === 'Unprocessable Entity') {
+        //                 if(error.error.data.error){
+        //                     const errorMessage = {
+        //                         errorMessage: 'Unprocessable Entity',
+        //                         suberrorMessage: error.error.data.error.limit || error.error.data.error.category  || error.error.data.error.price,
+        //                     };
                             
-                            this.ProductWarning.emit(errorMessage);
-                        }
-                    }
-                    return throwError(() => error);
-                }
-            });
+        //                     this.ProductWarning.emit(errorMessage);
+        //                 }
+        //             }
+        //             return throwError(() => error);
+        //         }
+        //     });
                 
-        } else{
-            this.addProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addProductForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-                    const control = this.addProductForm.controls[controlName];
-                    if (control.errors?.['required'] && control.invalid) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
+        // } else{
+        //     this.addProductForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addProductForm.controls) {
+        //         if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+        //             const control = this.addProductForm.controls[controlName];
+        //             if (control.errors?.['required'] && control.invalid) {
+        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                 emptyFields.push(label);
+        //             }
+        //         }
+        //     }
             
-            const errorData = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
-            this.ProductError.emit(errorData);
-        }
+        //     const errorData = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
+        //     this.ProductError.emit(errorData);
+        // }
         
 
     

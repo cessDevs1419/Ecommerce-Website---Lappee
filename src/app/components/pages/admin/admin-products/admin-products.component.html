@@ -72,15 +72,14 @@
         addbtnName="ADD ITEM"
         [searchBarclass]="margin"
         [addBtnclass]="size"
-
         
         [restockBtn]="false"
         [tableAction]="true"
         [editBtn]="true"
         [deleteBtn]="true"
 
-        [tableHeader]="['ID','ITEM NAME','STOCKS', 'STOCKS LIMIT', 'PRICE', 'SUB CATEGORY','DESCRIPTION']"
-        [tableRows]="['id','name', 'stock','stock_limit','price', 'sub_category_id', 'description']"
+        [tableHeader]="['ITEM NAME','DESCRIPTION']"
+        [tableRows]="['name', 'description']"
         [tableData]="products"
         
         (rowDataSelected)="onRowDataSelected($event)"

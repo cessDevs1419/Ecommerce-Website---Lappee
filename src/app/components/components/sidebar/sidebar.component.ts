@@ -13,6 +13,8 @@ export class SidebarComponent {
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
   }
+
+
   
   @Input() headerName: string;
   @Input() admin!: boolean;

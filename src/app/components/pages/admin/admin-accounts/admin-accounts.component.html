@@ -18,12 +18,13 @@
 </div>
 
     <app-modal
-        modalID="ban"
+        modalId="ban"
         [modalTitle]="modalTitle"
         modalSubTitle="ACCOUNT MANAGEMENT"
         (RefreshTable)="refreshTableData()"
         [modalBanAccounts]="modalBanAccounts"
         [modalUnBanAccounts]="modalUnBanAccounts"
+        [selectedRowData]="selectedRowData"
     ></app-modal>
 
 

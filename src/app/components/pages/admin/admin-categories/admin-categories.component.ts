@@ -57,19 +57,19 @@ export class AdminCategoriesComponent {
     }
     
 	showAddCategoryForm(): void{
-        this.router.navigate(['/form','category','add','']);
+        this.router.navigate(['/category-management','category','add','']);
 	}
 	
     showEditCategoryForm(): void{
-        this.router.navigate(['/form','category','edit',this.selectedRowData.id]);
+        this.router.navigate(['/category-management','category','edit',this.selectedRowData.id]);
 	}
 	
     showAddSubCategoryForm(): void{
-        this.router.navigate(['/form','subcategory','add','']);
+        this.router.navigate(['/category-management','subcategory','add','']);
 	}
 	
     showEditSubCategoryForm(): void{
-        this.router.navigate(['/form','subcategory','edit',this.selectedRowData.id]);
+        this.router.navigate(['/category-management','subcategory','edit',this.selectedRowData.id]);
 	}
 
 

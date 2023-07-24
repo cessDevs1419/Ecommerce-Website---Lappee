@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import { Observable, Subject, combineLatest, startWith, switchMap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
@@ -16,10 +16,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AdminProductsComponent {
 
+
     products!: Observable<Product[]>;
     sub_categories: Observable<AdminSubcategory[]>;
 	private refreshData$ = new Subject<void>();
-    
+
     selectedRowData: any;
     /*classes*/
 	margin = "mx-lg-2"
@@ -50,11 +51,12 @@ export class AdminProductsComponent {
     
 	
     showAddForm(): void{
-        this.router.navigate(['/form','product','add','']);
+        this.router.navigate(['/product-management','product','add','']);
+
 	}
 	
     showEditForm(): void{
-        this.router.navigate(['/form','product','edit',this.selectedRowData.id]);
+        this.router.navigate(['/product-management','product','edit',this.selectedRowData.id]);
 	}
 	
 	

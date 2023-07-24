@@ -26,7 +26,9 @@ export class AdminParentFormComponent {
 	AddProduct: boolean;
 	EditProduct: boolean;
 	
-
+	AddVariant: boolean;
+	EditVariant: boolean;
+	
     toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default"; 
@@ -49,6 +51,10 @@ export class AdminParentFormComponent {
 			
 			this.AddProduct = page === 'product' && action === 'add';
 			this.EditProduct = page === 'product' && action === 'edit';
+
+            this.AddVariant = page === 'variant' && action === 'add';
+			this.EditVariant = page === 'variant' && action === 'edit';
+
 			this.selectedRowData = id
 
 		});

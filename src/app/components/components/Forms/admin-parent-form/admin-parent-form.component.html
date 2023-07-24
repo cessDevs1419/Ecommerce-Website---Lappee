@@ -78,6 +78,27 @@
                     (RefreshTable)="triggerRefreshTable()"
                 >
                 </app-product-form>
+
+                <app-product-form
+                    *ngIf="AddVariant"
+                    [formAddVariant]="true"
+                    (ProductSuccess)="postSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
+            
+                <app-product-form
+                    *ngIf="EditVariant"
+                    [formEditVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="patchSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
     </div>
 </div>
 

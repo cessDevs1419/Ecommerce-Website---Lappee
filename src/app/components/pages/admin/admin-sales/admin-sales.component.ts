@@ -15,10 +15,7 @@ export class AdminSalesComponent {
     { label: 'January', value: 50 },
     { label: 'February', value: 30 },
     { label: 'March', value: 60 },
-    { label: 'April', value: 70 },
-    { label: 'January', value: 50 },
-    { label: 'February', value: 30 },
-    { label: 'May', value: 40 }
+    { label: 'April', value: 70 }
   ];
   
 }

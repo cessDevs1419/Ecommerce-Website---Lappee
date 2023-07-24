@@ -291,34 +291,34 @@ export class CategoryFormComponent {
             let formData: any = new FormData();
             formData.append('main_category_id', this.addSubCategoryForm.get('main_category')?.value);
             formData.append('name', this.addSubCategoryForm.get('sub_categories')?.value);
-            
-        this.subcategory_service.postSubcategory(formData).subscribe({
-            next: (response: any) => { 
-                this.RefreshTable.emit();
-                this.refreshTableData();
-                this.CategorySuccess.emit("sub_category "+this.addSubCategoryForm.value.name);
-                this.editCategoryForm.reset();
-                
-                
-            },
-            error: (error: HttpErrorResponse) => {
 
-                const errorData = this.errorService.handleError(error);
-                if (errorData.errorMessage === 'Unexpected Error') {
-                    this.CategoryError.emit(errorData);
-                } else if (errorData.errorMessage === 'Unprocessable Entity')  {
-                    const errorData = {
-                        errorMessage: `The Sub Category is Required: `,
-                        suberrorMessage: `Add sub category to proceed `
-                    };
-                    this.CategoryWarn.emit(errorData);
-                } else{
-                    this.CategoryWarn.emit(errorData);
+            this.subcategory_service.postSubcategory(formData).subscribe({
+                next: (response: any) => { 
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.CategorySuccess.emit("sub_category "+this.addSubCategoryForm.value.name);
+                    this.editCategoryForm.reset();
+                    
+                    
+                },
+                error: (error: HttpErrorResponse) => {
+    
+                    const errorData = this.errorService.handleError(error);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else if (errorData.errorMessage === 'Unprocessable Entity')  {
+                        const errorData = {
+                            errorMessage: `The Sub Category is Required: `,
+                            suberrorMessage: `Add sub category to proceed `
+                        };
+                        this.CategoryWarn.emit(errorData);
+                    } else{
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error);
+    
                 }
-                return throwError(() => error);
-
-            }
-        });
+            });
         
         }
         
