@@ -45,3 +45,7 @@ export const POSTComment: string = api + "api/client/products/reviews/store";
 //Address Endpoitns
 export const GETAddresses: string = api + "api/client/user-info/address";
 export const POSTAddress: string = api + "api/client/user-info/address/store";
+
+//Order Endpoints
+export const GETOrderDetail: string = api + "api/client/orders/details?order_id="
+export const POSTOrder: string = api + "api/client/orders/store"

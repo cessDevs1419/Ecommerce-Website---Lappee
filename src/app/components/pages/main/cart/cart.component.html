@@ -64,10 +64,13 @@
                                         <div *ngIf="this.filteredAddress | async as address">{{address.address_line_1}}, {{address.city}}, {{address.province}} {{address.zip_code}}</div>
                                     </div>
                                 </div>
-                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="!this.isAddressSelected">
-                                    <p class="m-0">Please log in to set your delivery address</p>
+                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isAddressSelected) && (!this.accountService.getIsLoggedIn())">
+                                    <p class="m-0">Please log in to set your delivery address.</p>
                                 </div>
-                                <div class="p-3" *ngIf="(!this.accountService.getIsLoggedIn()) && (!this.isAddressRegistered)">
+                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isAddressSelected) && (this.accountService.getIsLoggedIn())">
+                                    <p class="m-0">Please setup your delivery address first.</p>
+                                </div>
+                                <div class="p-3" *ngIf="(this.accountService.getIsLoggedIn()) && (!this.isAddressRegistered)">
                                     <p>Setup your delivery address through the Edit Profile form.</p>
                                 </div>
                                 <div class="p-3" *ngIf="!this.accountService.getIsLoggedIn()">
@@ -219,7 +222,7 @@
                                         <div *ngIf="this.accountService.getLoggedUser() | async; let user">
                                             <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
                                             <div>HRDCD-PHONE-NUMBER</div>
-                                            <div>HRDCD{{this.accountService.fullAddress}}</div>
+                                            <div *ngIf="this.filteredAddress | async as address">{{address.address_line_1}}, {{address.city}}, {{address.province}} {{address.zip_code}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -273,6 +276,7 @@
                         <img src="../../../../assets/images/checkout-checkmark.png" class="img-fluid w-50">
                         <p class="fs-1 mt-2">Thank you for purchasing!</p>
                         <p class="m-0">Don't forget to leave a review.</p>
+                        <p class="m-0">Your Order ID is <span class="fw-bold">{{this.orderId}}</span> </p>
                         <a class="mt-3" [routerLink]="['/']">Home</a>
                     </div>
 

@@ -36,3 +36,9 @@ export interface ColorVariant {
     name: string,
     sizes: string[]
 }
+
+export interface Order {
+    id: string,
+    variant_id: string,
+    quantity: number
+}
