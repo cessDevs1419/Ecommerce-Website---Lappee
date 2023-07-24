@@ -13,6 +13,7 @@ import { ErrorHandlingService } from 'src/app/services/errors/error-handling-ser
 import { Router } from '@angular/router';
 import { FormsDataService
 } from 'src/app/services/forms/forms-data.service';
+import { VariantsService } from 'src/app/services/variants/variants.service';
 @Component({
     selector: 'app-product-form',
     templateUrl: './product-form.component.html',
@@ -53,10 +54,9 @@ export class ProductFormComponent {
     selectedSubCategory: null;
     hideselectedsub: boolean = true;
     product_sub: '';
-    varianForm: boolean;
     variantsList: FormArray;
 	showForm: boolean = false;
-	
+
 
     constructor(
 	    private http: HttpClient,
@@ -66,27 +66,31 @@ export class ProductFormComponent {
         private errorService: ErrorHandlingService,
 	    private formBuilder: FormBuilder,
 	    private router: Router,
-	    private formDataService: FormsDataService
+	    private formDataService: FormsDataService,
+	    private variantService: VariantsService
     ) 
     {
+        this.variantsList = this.variantService.getVariants();
+        this.addVariantForm = this.variantService.createVariantForm();
+
 	    this.addProductForm = this.formBuilder.group({
 	        name: ['', Validators.required],
+            category: ['', Validators.required],
             subcategory: ['', Validators.required],
 	        description: [''],
 	        //images: this.formBuilder.array([]),
 
             //Variants
-            variants: this.formBuilder.array([
-            ]),
+            variants: this.variantsList,
 	    });
-	    
-        this.addVariantForm = this.formBuilder.group({
+
+	    this.addVariantForm = this.formBuilder.group({
             size: ['', Validators.required],
             stock: ['', Validators.required],
             stock_limit: ['', Validators.required],
             price: [1, Validators.required],
-            color: ['', Validators.required],
-            color_title: ['', Validators.required],
+            color: [''],
+            color_title: [''],
         });
 
 		this.editProductForm = this.formBuilder.group({
@@ -107,7 +111,7 @@ export class ProductFormComponent {
             product_quantity: new FormControl('', Validators.required)
         });
 
-        this.variantsList = this.addProductForm.get('variants') as FormArray;
+        
     }
 
 	ngOnInit(): void{
@@ -133,6 +137,7 @@ export class ProductFormComponent {
         this.addProductForm.valueChanges.subscribe((formData) => {
             this.formDataService.saveFormData(formData);
         });
+
 
 	}
 
@@ -167,7 +172,7 @@ export class ProductFormComponent {
         return new Promise((resolve) => {
             setTimeout(() => {
             resolve();
-            }, 2500); 
+            }, 2000); 
         });
     }
     
@@ -178,32 +183,26 @@ export class ProductFormComponent {
         this.router.navigate(['/product-management','variant','add','']);
     }
 
-    async addVariant() {
-        const variantForm = this.addVariantForm.value;
-        const newVariantFormGroup = this.formBuilder.group(variantForm);
-        this.variantsList.push(newVariantFormGroup);
-        console.log(variantForm);
-        //his.addVariantForm.reset();
-        //this.showForm = false;
+    async addProductVariants(): Promise<void> {
+        if (this.addVariantForm.valid) {
+            const variantForm = this.addVariantForm.value;
+            const newVariantFormGroup = this.formBuilder.group(variantForm);
+            this.variantsList.push(newVariantFormGroup);
 
-        await this.asyncTask();
-        this.router.navigate(['/product-management','product','add','']);
-    }
+            // Update the 'variants' form control with the current value of variantsList
+            this.addProductForm.get('variants')?.setValue(this.variantsList.value);
+    
+            await this.asyncTask();
+            this.router.navigate(['/product-management', 'product', 'add', '']);
+        }
 
-    get variants(): FormArray {
-        return this.addProductForm.get('variants') as FormArray;
     }
     
-    async addProductVariants() {
-        this.variants.push(this.formBuilder.control('', Validators.required));
-
-        await this.asyncTask();
-        this.router.navigate(['/product-management','product','add','']);
+    removeVariants(index: number): void {
+        if (index >= 0 && index < this.variantsList.length) {
+            this.variantsList.removeAt(index);
+        }
     }
-    
-    // removeSubCategory(index: number): void {
-    //     this.variants.removeAt(index);
-    // }
     
 
 	//Get Image Value to Array
@@ -259,76 +258,111 @@ export class ProductFormComponent {
     
     
     //Submit Functions
-    onProductAddSubmit(): void {
+    async onProductAddSubmit(): Promise<void> {
 
-        
+        await this.addProductVariants();
+
         let formData: any = new FormData();
         formData.append('name', this.addProductForm.get('name')?.value);
-        formData.append('subcategory', this.addProductForm.get('subcategory')?.value);
+        formData.append('category', this.addProductForm.get('subcategory')?.value);
         formData.append('description', this.addProductForm.get('description')?.value);
-        formData.append('variants', this.addProductForm.get('variants')?.value);
         
-        // if(this.addProductForm.valid){
-        //     this.product_service.postProduct(formData).subscribe({
-        //         next: (response: any) => { 
-        //             this.RefreshTable.emit();
-        //             this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-        //             this.addProductForm.reset();
-        //         },
-        //         error: (error: HttpErrorResponse) => {
-        //             const errorData = this.errorService.handleError(error);
-                
-        //             if (errorData.errorMessage === 'Unexpected Error') {
-        //                     this.ProductError.emit(errorData);
-        //             }else if (errorData.errorMessage === 'Invalid input') {
-                        
-        //                 if(this.editProductForm.get('subcategory')?.value === null){
-        //                     const errorMessage = {
-        //                         errorMessage: 'Invalid Request',
-        //                         suberrorMessage: 'sub category is required! ',
-        //                     }
-        //                     this.ProductError.emit(errorMessage);
-        //                 }else {
-        //                     const errorMessage = {
-        //                         errorMessage: 'Invalid Request',
-        //                         suberrorMessage: 'There are no changes were made',
-        //                     }
-        //                     this.ProductError.emit(errorMessage);
-        //                 }
+        const variantsList = this.addProductForm.get('variants') as FormArray;
+        for (let i = 0; i < variantsList.length; i++) {
+            const variantFormGroup = variantsList.at(i) as FormGroup;
+            const variant = variantFormGroup.value;
+            formData.append(`variants[${i}].size`, variant.size);
+            formData.append(`variants[${i}].quantity`, variant.stock);
+            formData.append(`variants[${i}].limit`, variant.stock_limit);
+            formData.append(`variants[${i}].price`, variant.price);
+            formData.append(`variants[${i}].color`, variant.color);
+            formData.append(`variants[${i}].color_title`, variant.color_title);
+        }
 
-        //             }else if (errorData.errorMessage === 'Unprocessable Entity') {
-        //                 if(error.error.data.error){
-        //                     const errorMessage = {
-        //                         errorMessage: 'Unprocessable Entity',
-        //                         suberrorMessage: error.error.data.error.limit || error.error.data.error.category  || error.error.data.error.price,
-        //                     };
-                            
-        //                     this.ProductWarning.emit(errorMessage);
-        //                 }
-        //             }
-        //             return throwError(() => error);
-        //         }
-        //     });
+        for (const value of formData.entries()) {
+            console.log(`${value[0]}, ${value[1]}`);
+        }
+        
+        if(this.addProductForm.valid){
+            this.product_service.postProduct(formData).subscribe({
+                next: (response: any) => { 
+                    
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
+                    this.addProductForm.reset();
+                },
+                error: (error: HttpErrorResponse) => {
+                    const errorData = this.errorService.handleError(error);
                 
-        // } else{
-        //     this.addProductForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.addProductForm.controls) {
-        //         if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-        //             const control = this.addProductForm.controls[controlName];
-        //             if (control.errors?.['required'] && control.invalid) {
-        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //                 emptyFields.push(label);
-        //             }
-        //         }
-        //     }
+                    // if (errorData.errorMessage === 'Unexpected Error') {
+                    //         this.ProductError.emit(errorData);
+                    // }else if (errorData.errorMessage === 'Invalid input') {
+                        
+                    //     if(this.editProductForm.get('subcategory')?.value === null){
+                    //         const errorMessage = {
+                    //             errorMessage: 'Invalid Request',
+                    //             suberrorMessage: 'sub category is required! ',
+                    //         }
+                    //         this.ProductError.emit(errorMessage);
+                    //     }else {
+                    //         const errorMessage = {
+                    //             errorMessage: 'Invalid Request',
+                    //             suberrorMessage: 'There are no changes were made',
+                    //         }
+                    //         this.ProductError.emit(errorMessage);
+                    //     }
+
+                    // }else if (errorData.errorMessage === 'Unprocessable Entity') {
+                    //     if(error.error.data.error){
+                    //         const errorMessage = {
+                    //             errorMessage: 'Unprocessable Entity',
+                    //             suberrorMessage: error.error.data.error.limit || error.error.data.error.category  || error.error.data.error.price,
+                    //         };
+                            
+                    //         this.ProductWarning.emit(errorMessage);
+                    //     }
+                    // }
+                    
+                    return throwError(() => error);
+                }
+            });
+                
+        } else{
+            this.addProductForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.addProductForm.controls) {
+                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+                    const control = this.addProductForm.controls[controlName];
+                    if (control.errors?.['required'] && control.invalid) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
+                }
+            }
             
-        //     const errorData = {
-        //         errorMessage: this.errorMessage,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
-        //     this.ProductError.emit(errorData);
-        // }
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            for (const controlName in this.addVariantForm.controls) {
+                if ( this.addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const control = this.addVariantForm.controls[controlName];
+                    if (control.errors?.['required'] && control.invalid) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
+                }
+            }
+            
+            const errorDataforVariant = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+            this.ProductError.emit(errorDataforVariant);
+        }
         
 
     
