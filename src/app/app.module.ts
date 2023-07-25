@@ -157,6 +157,8 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
           {path: 'stocks-management', component: AdminStocksManagementComponent},
           {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
+          {path: 'category-management/:page/:action', component: AdminParentFormComponent},
+          {path: 'product-management/:page/:action', component: AdminParentFormComponent},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

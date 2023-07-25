@@ -51,12 +51,11 @@ export class AdminProductsComponent {
     
 	
     showAddForm(): void{
-        this.router.navigate(['/product-management','product','add','']);
-
+        this.router.navigate(['/admin/product-management','product','add']);
 	}
 	
     showEditForm(): void{
-        this.router.navigate(['/product-management','product','edit',this.selectedRowData.id]);
+        this.router.navigate(['/admin/product-management','product','edit',this.selectedRowData.id]);
 	}
 	
 	

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product, ProductList } from 'src/assets/models/products';
+import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DELETEProductsAdmin, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { Observable } from 'rxjs';
@@ -33,6 +33,7 @@ export class ProductsService {
   postProduct(data: FormData): Observable<any> {
     return this.http.post<Product>(POSTProductsAdmin, data, this.httpOptions);
   } 
+
   
   patchProduct(data: FormData): Observable<any> {
     return this.http.patch<Product>(PATCHProductsAdmin, data, this.httpOptions);
