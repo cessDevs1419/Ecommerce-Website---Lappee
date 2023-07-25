@@ -122,7 +122,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-10 d-flex align-content-center mt-2 mt-sm-0">
-                                                <div class="data w-75">
+                                                <div class="data w-100">
                                                     <div class="row ms-0 m-auto w-100 ">
                                                         <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
                                                             <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">{{ variant.color_title }}</h1>
@@ -331,7 +331,7 @@
                                     id="addproductSize" 
                                     name="addproductSize" 
                                     formControlName="size"
-                                    placeholder="sm/md/lg/xl"
+                                    placeholder="sizes"
                                     required
                                 >
     
@@ -348,8 +348,14 @@
                                     formControlName="price"
                                     required
                                     step="0.01"
-                                    [placeholder]="00.00"
+                                    [class.border]="isDecimal(addVariantForm.get('price')?.value)"
+                                    [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
+                                    [placeholder]="01.01"
+                                    (click)="addVariantForm.get('price')?.setValue(null)"
                                 >
+                                <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
+                                    price must be 2 decimal places, 00.00
+                                </p>
                             </div>
     
                         </div>
@@ -365,7 +371,12 @@
                                     formControlName="stock"
                                     placeholder="300"
                                     required
+                                    [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                    [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
                                 >
+                                <p *ngIf="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value">
+                                    stock should be higher than limit
+                                </p>
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label for="addvariantQtyLimit" class="form-label">Stock Limit</label>
@@ -377,6 +388,8 @@
                                     formControlName="stock_limit"
                                     placeholder="30"
                                     required
+                                    [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                    [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
                                 >
     
                             </div>
@@ -393,8 +406,13 @@
                                     name="addproductColor" 
                                     formControlName="color"
                                     placeholder="#3C3C3CS"
-                                    required
+                                    pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                                    [class.border]="addVariantForm.get('color')?.valid"
+                                    [class.border-danger]="addVariantForm.get('color')?.invalid"
                                 >
+                                <p *ngIf="addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty">
+                                    Color must be in the hex format "#3C3C3C".
+                                </p>
                             </div>
                             
                             <div class="col-sm-6 mb-3">
@@ -406,7 +424,6 @@
                                     name="addproductColorTitle" 
                                     formControlName="color_title"
                                     placeholder="color name"
-                                    required
                                 >
                             </div>
     

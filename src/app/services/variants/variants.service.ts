@@ -25,7 +25,7 @@ export class VariantsService {
       size: ['', Validators.required],
       stock: ['', Validators.required],
       stock_limit: ['', Validators.required],
-      price: [1, Validators.required],
+      price: [1.01, Validators.required],
       color: ['', Validators.required],
       color_title: ['', Validators.required],
     });

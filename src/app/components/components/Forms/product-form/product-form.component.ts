@@ -88,7 +88,7 @@ export class ProductFormComponent {
             size: ['', Validators.required],
             stock: ['', Validators.required],
             stock_limit: ['', Validators.required],
-            price: [1, Validators.required],
+            price: [1.01, Validators.required],
             color: [''],
             color_title: [''],
         });
@@ -117,9 +117,6 @@ export class ProductFormComponent {
 	ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
     	this.sub_categories = this.sub_category_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
-        this.addProductForm.valueChanges.subscribe(() => {
-            this.updateBorders();
-        });
         
 
         this.edit_sub_categories = this.sub_category_service.getAdminSubcategories().pipe(
@@ -141,25 +138,19 @@ export class ProductFormComponent {
 
 	}
 
+    //Validate
     isDecimal(value: number): boolean {
+        if (value === null) {
+            return false;
+        }
         const valueString = value.toString();
-        return /^\d+(\.\d{3,3})?$/.test(valueString);
+        return /^\d+\.\d{2}$/.test(valueString);
     }
     
-    onCategorySelect(event: any): void {
-        this.hideselectedsub = false;
-        const categoryId = event.target.value;
-        if (categoryId) {
-            this.editProductForm.patchValue({
-                subcategory: null // Set the value of 'subcategory' form control to null
-            });
-            this.selectedSubCategory = null;
-            this.filteredSubCategories = this.sub_categories.pipe(
-                map((subCategories: AdminSubcategory[]) =>
-                    subCategories.filter(subCategory => subCategory.main_category === categoryId)
-                )
-            );
-        }
+    isHexColor(color: string | null): boolean {
+        if (!color) return false;
+        const hexColorPattern = /^#[0-9A-Fa-f]{6}$/;
+        return hexColorPattern.test(color);
     }
     
     isFormEmpty(): boolean {
@@ -180,7 +171,7 @@ export class ProductFormComponent {
 
     showForms() {
         this.showForm = true;
-        this.router.navigate(['/product-management','variant','add','']);
+        this.router.navigate(['/admin/product-management','variant','add']);
     }
 
     async addProductVariants(): Promise<void> {
@@ -193,7 +184,28 @@ export class ProductFormComponent {
             this.addProductForm.get('variants')?.setValue(this.variantsList.value);
     
             await this.asyncTask();
-            this.router.navigate(['/product-management', 'product', 'add', '']);
+            this.router.navigate(['/admin/product-management', 'product', 'add']);
+        }else{
+        
+            this.addVariantForm.markAllAsTouched();
+            const emptyFields = [];
+            
+            for (const controlName in this.addVariantForm.controls) {
+                if ( this.addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const variantcontrol = this.addVariantForm.controls[controlName];
+                    if ( variantcontrol.errors?.['required'] && variantcontrol.invalid) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
+                }
+            }
+            
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            this.ProductError.emit(errorDataforProduct);
         }
 
     }
@@ -204,6 +216,22 @@ export class ProductFormComponent {
         }
     }
     
+    //select category
+    onCategorySelect(event: any): void {
+        this.hideselectedsub = false;
+        const categoryId = event.target.value;
+        if (categoryId) {
+            this.editProductForm.patchValue({
+                subcategory: null // Set the value of 'subcategory' form control to null
+            });
+            this.selectedSubCategory = null;
+            this.filteredSubCategories = this.sub_categories.pipe(
+                map((subCategories: AdminSubcategory[]) =>
+                    subCategories.filter(subCategory => subCategory.main_category === categoryId)
+                )
+            );
+        }
+    }
 
 	//Get Image Value to Array
     get product_images(): FormArray {
@@ -235,28 +263,6 @@ export class ProductFormComponent {
     }
     
     
-    updateBorders(): void {
-        const productPrice = this.addProductForm.get('price')?.value;
-        const productStock = this.addProductForm.get('stock')?.value;
-        const productStockLimit = this.addProductForm.get('stock_limit')?.value;
-        
-        
-        const priceInput = document.getElementById('addproductPrice') as HTMLInputElement;
-        const stockInput = document.getElementById('addproductQty') as HTMLInputElement;
-        const stocklimitInput = document.getElementById('addproductQtyLimit') as HTMLInputElement;
-
-        if (stockInput && stocklimitInput) {
-            //warning to inbalance stock and limit
-            stockInput.classList.toggle('border-warning', productStock < productStockLimit);
-            stocklimitInput.classList.toggle('border-warning', productStock < productStockLimit);
-            
-            //danger for invalid input
-            stockInput.classList.toggle('border-danger', productStock < 1);
-            priceInput.classList.toggle('border-danger', productPrice < 1);
-        }
-    }
-    
-    
     //Submit Functions
     async onProductAddSubmit(): Promise<void> {
 
@@ -271,12 +277,12 @@ export class ProductFormComponent {
         for (let i = 0; i < variantsList.length; i++) {
             const variantFormGroup = variantsList.at(i) as FormGroup;
             const variant = variantFormGroup.value;
-            formData.append(`variants[${i}].size`, variant.size);
-            formData.append(`variants[${i}].quantity`, variant.stock);
-            formData.append(`variants[${i}].limit`, variant.stock_limit);
-            formData.append(`variants[${i}].price`, variant.price);
-            formData.append(`variants[${i}].color`, variant.color);
-            formData.append(`variants[${i}].color_title`, variant.color_title);
+            formData.append(`variants[${i}][size]`, variant.size);
+            formData.append(`variants[${i}][quantity]`, variant.stock);
+            formData.append(`variants[${i}][limit]`, variant.stock_limit);
+            formData.append(`variants[${i}][price]`, variant.price);
+            formData.append(`variants[${i}][color]`, variant.color);
+            formData.append(`variants[${i}][color_title]`, variant.color_title);
         }
 
         for (const value of formData.entries()) {
@@ -290,6 +296,7 @@ export class ProductFormComponent {
                     this.RefreshTable.emit();
                     this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
                     this.addProductForm.reset();
+                    this.variantsList.clear();
                 },
                 error: (error: HttpErrorResponse) => {
                     const errorData = this.errorService.handleError(error);
@@ -330,10 +337,11 @@ export class ProductFormComponent {
         } else{
             this.addProductForm.markAllAsTouched();
             const emptyFields = [];
-            for (const controlName in this.addProductForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-                    const control = this.addProductForm.controls[controlName];
-                    if (control.errors?.['required'] && control.invalid) {
+            for (const controlName in this.addProductForm.controls || this.addVariantForm.controls) {
+                if ( this.addProductForm.controls.hasOwnProperty(controlName) || this.addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const productcontrol = this.addProductForm.controls[controlName];
+                    const variantcontrol = this.addProductForm.controls[controlName];
+                    if (productcontrol.errors?.['required'] && productcontrol.invalid || variantcontrol.errors?.['required'] && variantcontrol.invalid) {
                         const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
                         emptyFields.push(label);
                     }
@@ -345,23 +353,10 @@ export class ProductFormComponent {
                 suberrorMessage: emptyFields.join(', ')
             };
 
-            for (const controlName in this.addVariantForm.controls) {
-                if ( this.addVariantForm.controls.hasOwnProperty(controlName)) {
-                    const control = this.addVariantForm.controls[controlName];
-                    if (control.errors?.['required'] && control.invalid) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
-            
-            const errorDataforVariant = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
+
+
 
             this.ProductError.emit(errorDataforProduct);
-            this.ProductError.emit(errorDataforVariant);
         }
         
 
