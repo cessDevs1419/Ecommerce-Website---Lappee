@@ -51,7 +51,20 @@ input[type=file] {
     display: none;
 }
 
+.img-fluid {
+}
+
 .img-fluid-sm {
     height: 5rem;
     width: auto;
+}
+
+.qr-code-section {
+    width: 50%;
+}
+
+@media screen and (max-width: 576px) {
+    .qr-code-section {
+        width: 100%;
+    }
 }

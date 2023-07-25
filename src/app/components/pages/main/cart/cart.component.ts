@@ -23,6 +23,7 @@ export class CartComponent {
   parseFloat = parseFloat;
 
   @ViewChild('carousel') carousel: ElementRef;
+  @ViewChild('orderPaymentProofInput') imginput: ElementRef;
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
@@ -47,6 +48,8 @@ export class CartComponent {
 
   orderId: string;
   
+  orderPaymentProofError: boolean = false;
+
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
     orderPaymentMethod: new FormControl('', Validators.required),
@@ -194,6 +197,15 @@ export class CartComponent {
     reader.readAsDataURL(img);
   }
 
+  clearImg(event: any): void {
+    this.imginput.nativeElement.value = null;
+    this.imginput.nativeElement.files = null;
+    this.imgpath = '';
+    this.imgname = ''; 
+    this.orderPaymentProof?.setValue(null);
+    console.log("Img Proof: " + this.orderPaymentProof?.valid);
+  }
+
   prevPage(): void {
     const instance = new bootstrap.Carousel(this.carousel.nativeElement);
     if(this.orderPaymentMethod?.value == "gcash"){
@@ -202,6 +214,11 @@ export class CartComponent {
     else {
       instance.to(0);
     }
+  }
+
+  nextPage(): void {
+    const instance = new bootstrap.Carousel(this.carousel.nativeElement);
+    instance.next();
   }
 
   validatePage1(): void {
@@ -234,11 +251,13 @@ export class CartComponent {
   }
 
   validatePage2(): void {
-    if(this.orderPaymentProof?.valid){
+    if(this.orderPaymentProof?.value){
+      console.log(this.orderPaymentProof.value);
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
       instance.next();
     }
     else {
+      this.orderPaymentProofError = true;
       this.orderPaymentProof?.markAsTouched();
     }
   }
