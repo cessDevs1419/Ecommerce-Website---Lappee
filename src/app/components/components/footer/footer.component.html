@@ -1,5 +1,5 @@
-<hr>
-<div class="container-md my-3 d-flex flex-column align-items-center">
+<hr *ngIf="!this.isAdminDashboard">
+<div class="container-md my-3 d-flex flex-column align-items-center" *ngIf="!this.isAdminDashboard">
     <div>
         <a [routerLink]="['contactus']">Contact Us</a>
     </div>

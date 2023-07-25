@@ -36,35 +36,35 @@
         
         <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
             
-            <li [routerLink]="'overview'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/overview'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
                     Overview
                 </a>
             </li>
             
-            <li [routerLink]="'category-management'"  routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/category-management'"  routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
                 <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Category Setup
                 </a>
             </li>
             
-            <li [routerLink]="'product-management'"   routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/product-management'"   routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Products
                 </a>
             </li>
         
-            <li [routerLink]="'sales-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/sales-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Sales
                 </a>
             </li>
             
-            <li [routerLink]="'accounts-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/accounts-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-people-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Accounts
@@ -94,7 +94,7 @@
             -->
 
             
-            <li [routerLink]="'order-management'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/order-management'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Track Orders

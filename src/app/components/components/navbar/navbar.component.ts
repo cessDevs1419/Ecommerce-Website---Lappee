@@ -12,6 +12,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { CsrfService } from 'src/app/services/csrf/csrf.service';
 import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
 import { User } from 'src/assets/models/user';
+import { LocationStrategy } from '@angular/common';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class NavbarComponent {
   targetElement!: HTMLElement;
   loginState$: Observable<boolean>;
   currentUser: Observable<User> = this.accountService.getLoggedUser();
+  isAdminDashboard: boolean = false;
   
   // 3/23/2023 - use Renderer2 to handle clicks
   constructor(private CategoriesService: CategoriesService, 
@@ -42,7 +44,8 @@ export class NavbarComponent {
               private cart: CartService,
               public accountService: AccountsService,
               private router: Router,
-              private csrfService: CsrfService) {
+              private csrfService: CsrfService,
+              private url: LocationStrategy) {
       this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
@@ -68,7 +71,19 @@ export class NavbarComponent {
    
     // initialize csrf token 
     this.csrfService.init();
-    
+
+   /*  console.log("Is admin dashboard: " + this.url.path().includes('/admin') + " | " + this.url.path());
+    if(this.url.path().includes('/admin')){
+      this.isAdminDashboard = true;
+    } */
+
+    this.updateAdminDashboardFlag();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.updateAdminDashboardFlag();
+      }
+    });
+
     // load JSONs
     let categoryList = this.CategoriesService.getCategories();
     this.categories = categoryList.pipe(map((response: any) => formatCategories(response)));
@@ -80,6 +95,12 @@ export class NavbarComponent {
   ngOnChanges(): void {
     this.accountService.checkLoggedIn();
     console.log('ngOnchanges');
+  }
+
+  updateAdminDashboardFlag(): void {
+    const currentUrl = this.url.path();
+    this.isAdminDashboard = currentUrl.includes('/admin');
+    console.log("Is admin dashboard: " + this.isAdminDashboard + " | " + currentUrl);
   }
 
   // color toggling for nav links and modal background

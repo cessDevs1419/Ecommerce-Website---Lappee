@@ -140,25 +140,33 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
       {path: 'contactus', component: ContactusComponent},
 
       //admin
-      {path: 'overview', component: AdminOverviewComponent},
-      {path: 'category-management', component: AdminCategoriesComponent,},
-      {path: 'product-management', component: AdminProductsComponent},
-      {path: 'sales-management', component: AdminSalesComponent},
-      {path: 'discounts-management', component: AdminDiscountsComponent},
-      {path: 'accounts-management', component: AdminAccountsComponent},
-      {path: 'parcel-management', component: AdminParcelManagementComponent},
-      {path: 'order-management', component: AdminOrderManagementComponent},
-      {path: 'courier-management', component: AdminCourierManagementComponent},
-      {path: 'stocks-management', component: AdminStocksManagementComponent},
+      {
+        path: 'admin', 
+        component: AdminRoutingComponent,
+        children: [
+          {path: '', redirectTo: 'overview', pathMatch: 'full'},
+          {path: 'overview', component: AdminOverviewComponent},
+          {path: 'category-management', component: AdminCategoriesComponent,},
+          {path: 'product-management', component: AdminProductsComponent},
+          {path: 'sales-management', component: AdminSalesComponent},
+          {path: 'discounts-management', component: AdminDiscountsComponent},
+          {path: 'accounts-management', component: AdminAccountsComponent},
+          {path: 'parcel-management', component: AdminParcelManagementComponent},
+          {path: 'order-management', component: AdminOrderManagementComponent},
+          {path: 'courier-management', component: AdminCourierManagementComponent},
+          {path: 'stocks-management', component: AdminStocksManagementComponent},
+          {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},
+          {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
+        ],
+        canActivate: [authGuard],
+        canActivateChild: [authGuard]
+      },
 
       //courier
       // {path: 'courier', component: CourierRoutingComponent },
       // {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
       // {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
 
-      {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},
-      {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
-      
       {path: '', redirectTo: 'home', pathMatch:'full'}
     ]),
 
