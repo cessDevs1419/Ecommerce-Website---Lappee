@@ -52,30 +52,17 @@ export class SigninformComponent {
           console.log(response);
           this.signInForm.reset();
           this.loginSuccess.emit();
-          this.accountService.checkLoggedIn().subscribe({
-            next: (response: any) => {
-              this.accountService.getLoggedUser().subscribe({
-                next: (response: User) => {
-                  if(response.user_type == 200) {
-                    setTimeout(() => {
-                      this.router.navigate(['/admin/overview']);
-                    },1000);
-                  }
-                  else {
-                    setTimeout(() => {
-                      this.router.navigate(['/home']);
-                    },1000);
-                  }
-                },
-                error: (err: HttpErrorResponse) => {
-                  console.log(err);
-                }
-              })
-            },
-            error: (err: HttpErrorResponse) => {
-              console.log(err);
-            }
-          });
+          this.accountService.checkLoggedIn().subscribe();
+          if(response.data.user_type == 200) {
+            setTimeout(() => {
+              this.router.navigate(['/admin/overview']);
+            },1000);
+          }
+          else {
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+            },1000);
+          }
         },
         error: (error: HttpErrorResponse) => {
           if(error.status === 401) {
