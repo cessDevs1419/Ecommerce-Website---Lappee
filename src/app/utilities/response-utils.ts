@@ -5,7 +5,7 @@ import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
-import { Address, AddressList } from "src/assets/models/address";
+import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 
 // Formatting
 
@@ -128,15 +128,16 @@ export function formatBannedUser(response: any): BannedUser[] {
     }));
 }
 
-export function formatAddress(response: AddressList): Address[] {
-  return response.data.map((data: Address) => ({
+export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
+  return response.data.map((data: DeliveryInfo) => ({
     user_id: data.user_id,
     city: data.city,
     province: data.province,
     zip_code: data.zip_code,
     address_line_1: data.address_line_1,
     address_line_2: data.address_line_2,
-    id: data.id
+    id: data.id,
+    number: data.number
   }))
 }
 
@@ -160,15 +161,15 @@ export function filterProductsById(productID: string, productObservable: Observa
   }));
 }
 
-export function filterAddresses(userID: string, addressObservable: Observable<Address[]>): Observable<Address | null> {
-  return addressObservable.pipe(map((entry: Address[]) => {
-    return entry.find((address: Address) => address.user_id === userID) || null;
+export function filterDeliveryInfo(userID: string, DeliveryInfoObservable: Observable<DeliveryInfo[]>): Observable<DeliveryInfo | null> {
+  return DeliveryInfoObservable.pipe(map((entry: DeliveryInfo[]) => {
+    return entry.find((DeliveryInfo: DeliveryInfo) => DeliveryInfo.user_id === userID) || null;
   }));
 }
 
-export function findAddresses(userID: string, addressObservable: Observable<Address[]>): Observable<boolean> {
-  return addressObservable.pipe(map((addresses: Address[]) => {
-    return addresses.some((address: Address) => address.user_id === userID);
+export function findDeliveryInfo(userID: string, DeliveryInfoObservable: Observable<DeliveryInfo[]>): Observable<boolean> {
+  return DeliveryInfoObservable.pipe(map((deliveryInfos: DeliveryInfo[]) => {
+    return deliveryInfos.some((deliveryInfo: DeliveryInfo) => deliveryInfo.user_id === userID);
   }));
 }
 
