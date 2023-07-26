@@ -57,20 +57,20 @@
                                     <!-- <a href="#" class="fs-3"><i class="bi bi-pencil-fill color-primary"></i></a> -->
                                 </div>
                                 <hr class="muted-text">
-                                <div class="p-2" *ngIf="(this.accountService.getIsLoggedIn()) && (this.isAddressRegistered)">
+                                <div class="p-2" *ngIf="(this.accountService.getIsLoggedIn()) && (this.isInfoRegistered)">
                                     <div *ngIf="this.accountService.getLoggedUser() | async; let user">
                                         <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
-                                        <div>HRDCD-PHONE-NUMBER</div>
-                                        <div *ngIf="this.filteredAddress | async as address">{{address.address_line_1}}, {{address.city}}, {{address.province}} {{address.zip_code}}</div>
+                                        <div *ngIf="this.filteredInfo | async as info">{{info.number}}</div>
+                                        <div *ngIf="this.filteredInfo | async as info">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</div>
                                     </div>
                                 </div>
-                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isAddressSelected) && (!this.accountService.getIsLoggedIn())">
+                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isInfoSelected) && (!this.accountService.getIsLoggedIn())">
                                     <p class="m-0">Please log in to set your delivery address.</p>
                                 </div>
-                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isAddressSelected) && (this.accountService.getIsLoggedIn())">
+                                <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isInfoSelected) && (this.accountService.getIsLoggedIn())">
                                     <p class="m-0">Please setup your delivery address first.</p>
                                 </div>
-                                <div class="p-3" *ngIf="(this.accountService.getIsLoggedIn()) && (!this.isAddressRegistered)">
+                                <div class="p-3" *ngIf="(this.accountService.getIsLoggedIn()) && (!this.isInfoRegistered)">
                                     <p>Setup your delivery address through the Edit Profile form.</p>
                                 </div>
                                 <div class="p-3" *ngIf="!this.accountService.getIsLoggedIn()">
@@ -251,8 +251,8 @@
                                     <div class="p-2" *ngIf="this.accountService.getIsLoggedIn()">
                                         <div *ngIf="this.accountService.getLoggedUser() | async; let user">
                                             <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
-                                            <div>HRDCD-PHONE-NUMBER</div>
-                                            <div *ngIf="this.filteredAddress | async as address">{{address.address_line_1}}, {{address.city}}, {{address.province}} {{address.zip_code}}</div>
+                                            <div *ngIf="this.filteredInfo | async as info">{{info.number}}</div>
+                                            <div *ngIf="this.filteredInfo | async as info">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</div>
                                         </div>
                                     </div>
                                 </div>

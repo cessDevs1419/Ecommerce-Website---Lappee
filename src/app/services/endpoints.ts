@@ -42,9 +42,9 @@ export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 export const GETReviews: string = api + "api/client/products/reviews/?id=";
 export const POSTComment: string = api + "api/client/products/reviews/store";
 
-//Address Endpoitns
-export const GETAddresses: string = api + "api/client/user-info/address";
-export const POSTAddress: string = api + "api/client/user-info/address/store";
+//Delivery Info Endpoitns
+export const GETDeliveryInfo: string = api + "api/client/user-info/delivery-info";
+export const POSTDeliveryInfo: string = api + "api/client/user-info/delivery-info/store";
 
 //Order Endpoints
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id="

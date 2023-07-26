@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
-import { AddressService } from 'src/app/services/address/address.service';
-import { filterAddresses, findAddresses, formatAddress } from 'src/app/utilities/response-utils';
-import { Address } from 'src/assets/models/address';
+import { DeliveryinfoService } from 'src/app/services/deliveryinfo/deliveryinfo.service';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
+import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { User } from 'src/assets/models/user';
 
 @Component({
@@ -18,29 +18,31 @@ import { User } from 'src/assets/models/user';
 export class ProfileComponent {
   isEditMode: boolean = false;
   user: Observable<User> = this.accountService.getLoggedUser();
-  addresses!: Observable<Address[]>;
-  isAddressRegistered!: boolean
-  filteredAddress!: Observable<Address | null>
+  infos!: Observable<DeliveryInfo[]>;
+  isInfoRegistered!: boolean
+  filteredInfo!: Observable<DeliveryInfo | null>
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
   
   editProfileForm = new FormGroup({
     editProvince: new FormControl('', Validators.required),
     editCity: new FormControl('', Validators.required),
     editAddressLine: new FormControl('', Validators.required),
-    editZipCode: new FormControl('', Validators.required)
+    editZipCode: new FormControl('', Validators.required),
+    editPhoneNumber: new FormControl('', Validators.required)
   });
 
   get editProvince() { return this.editProfileForm.get('editProvince')}
   get editCity() { return this.editProfileForm.get('editCity')}
   get editAddressLine() { return this.editProfileForm.get('editAddressLine')}
   get editZipCode() { return this.editProfileForm.get('editZipCode')}
+  get editPhoneNumber() { return this.editProfileForm.get('editPhoneNumber')}
 
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
   @ViewChild(ToastComponent) toast: ToastComponent;
 
-  constructor(private accountService: AccountsService, private router: Router, private addressService: AddressService) {}
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService) {}
   
 
   ngOnInit(): void {
@@ -48,23 +50,24 @@ export class ProfileComponent {
   }
 
   checkAddress(): void {
-    this.addresses = this.addressService.getAddresses().pipe(map((response: any) => formatAddress(response)));
+    this.infos = this.deliveryinfoService.getDeliveryInfo().pipe(map((response: any) => formatDeliveryInfo(response)));
     this.user.subscribe({
       next: (response: any) => {
-        findAddresses(response.user_id, this.addresses).subscribe({
+        findDeliveryInfo(response.user_id, this.infos).subscribe({
           next: (match: boolean) => {
             if(match) {
               console.log('has matching address')
-              this.isAddressRegistered = true;
-              this.filteredAddress = filterAddresses(response.user_id, this.addresses);
-              this.filteredAddress.subscribe({
-                next: (address: Address | null) => {
-                  if(address){
+              this.isInfoRegistered = true;
+              this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
+              this.filteredInfo.subscribe({
+                next: (info: DeliveryInfo | null) => {
+                  if(info){
                     this.editProfileForm.patchValue({
-                      editProvince: address.city,
-                      editCity: address.province,
-                      editAddressLine: address.address_line_1,
-                      editZipCode: address.zip_code.toString()
+                      editProvince: info.city,
+                      editCity: info.province,
+                      editAddressLine: info.address_line_1,
+                      editZipCode: info.zip_code.toString(),
+                      editPhoneNumber: info.number
                     })
                   }
                 }
@@ -72,7 +75,7 @@ export class ProfileComponent {
             }
             else {
               console.log('no matching address')
-              this.isAddressRegistered = false;
+              this.isInfoRegistered = false;
             }
           },
           error: (err: HttpErrorResponse) => {
@@ -95,13 +98,14 @@ export class ProfileComponent {
       formData.append('city', this.editCity?.value);
       formData.append('province', this.editProvince?.value);
       formData.append('zip_code', this.editZipCode?.value);
+      formData.append('number', this.editPhoneNumber?.value);
 
       console.log(formData);
 
-      this.addressService.postAddress(formData).subscribe({
+      this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
         next: (response: any) => {
           this.toastHeader = "Successful!";
-          this.toastContent = "Your address has been updated.";
+          this.toastContent = "Your delivery information has been updated.";
           this.toast.switchTheme('default');
           this.toast.show();
         },
@@ -114,6 +118,7 @@ export class ProfileComponent {
         },
         complete: () => {
           this.isEditMode = false;
+          this.checkAddress();
         }
       })
     }
