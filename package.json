@@ -23,6 +23,7 @@
     "@canvasjs/stockcharts": "^1.7.13",
     "bootstrap": "^5.3.0",
     "chart.js": "^2.9.4",
+    "jquery": "^3.7.0",
     "ng-gallery": "^8.0.3",
     "ngx-chartjs": "^0.0.1",
     "ngx-cookie-service": "^15.0.0",

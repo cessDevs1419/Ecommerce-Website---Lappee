@@ -60,7 +60,6 @@ export class AdminParentFormComponent {
 		});
 	}
 	
-
     //Toast Functions
     
     triggerRefreshTable(): void {

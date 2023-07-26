@@ -14,11 +14,18 @@
     </div>
     
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button 
+            type="button" 
+            class="btn btn-muted" 
+            data-bs-dismiss="modal"
+            (click)="backForm()"
+        >
+        CANCEL</button>
         <button 
             type="submit" 
             class="btn btn-primary btn-primary-light text-white"
-            >CONFIRM</button>
+        >
+        CONFIRM</button>
     </div>
 </form>
 
@@ -45,7 +52,13 @@
     </div>
     
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button 
+            type="button" 
+            class="btn btn-muted" 
+            data-bs-dismiss="modal"
+            (click)="backForm()"
+        >
+        CANCEL</button>
         <button 
             type="submit" 
             class="btn btn-primary btn-primary-light text-white "
@@ -104,14 +117,23 @@
     </div>
     
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+        <button 
+            type="button" 
+            class="btn btn-muted" 
+            data-bs-dismiss="modal"
+            (click)="backForm()"
+        >
+        CANCEL</button>
+        <button 
+            type="submit" 
+            class="btn btn-primary bg-light-primary text-white"
+        >
+        CONFIRM</button>
     </div>
 </form>
 
 
 <!--EDIT SUB CATEGORY FORM-->
-
 <form *ngIf="formEditSubCategory" [formGroup]="editSubCategoryForm"  (ngSubmit)="onSubCategoryEditSubmit()">
     <div class="modal-body text-center pt-0 pb-0 mb-3">
         <div class="m-auto col-sm-8 mb-3">
@@ -134,7 +156,13 @@
     </div>
     
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button 
+            type="button" 
+            class="btn btn-muted" 
+            data-bs-dismiss="modal"
+            (click)="backForm()"
+        >
+        CANCEL</button>
         <button 
             type="submit" 
             class="btn btn-primary btn-primary-light text-white "

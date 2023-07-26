@@ -12,6 +12,7 @@ import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utiliti
 import { GETCategories } from 'src/app/services/endpoints';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
 import { Router } from '@angular/router';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
     selector: 'app-category-form',
@@ -25,6 +26,7 @@ export class CategoryFormComponent {
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
     @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
 	@Output() CategoryError: EventEmitter<any> = new EventEmitter();
+	@Output() CloseModal: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
 
 
@@ -53,7 +55,7 @@ export class CategoryFormComponent {
     editCategories: string;
     editSubCategories: string;
     
-
+    modal: ModalComponent;
     
     constructor(
         private category_service: CategoriesService,
@@ -126,6 +128,7 @@ export class CategoryFormComponent {
     refreshTableData(): void {
         this.refreshData$.next();
     }
+
     
     //ADD SUB CATEGORY
     get subCategories(): FormArray {
@@ -147,6 +150,10 @@ export class CategoryFormComponent {
             resolve();
             }, 2500); 
         });
+    }
+    
+    backForm(): void{
+        this.router.navigate(['/category-management']);
     }
     
     //Submit Functions
@@ -219,6 +226,8 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.category);
                     this.editCategoryForm.reset();
+                    //await this.asyncTask();
+
 
                 },
                 error: (error: HttpErrorResponse) => {
@@ -234,7 +243,7 @@ export class CategoryFormComponent {
             });
             
             await this.asyncTask();
-            this.router.navigate(['/category-management']);
+            this.router.navigate(['/admin/category-management']);
         }
             
         else if(this.editCategoryForm.invalid){
@@ -260,6 +269,7 @@ export class CategoryFormComponent {
             this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
                 next: (response: any) => { 
                     this.RefreshTable.emit();
+                    this.CloseModal.emit();
                     this.refreshTableData();
                     this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
                     this.deleteCategoryForm.reset();
@@ -370,7 +380,7 @@ export class CategoryFormComponent {
             });
             
             await this.asyncTask();
-            this.router.navigate(['/category-management']);
+            this.router.navigate(['/admin/category-management']);
             
         }
             
@@ -398,6 +408,7 @@ export class CategoryFormComponent {
             next: (response: any) => { 
                 console.log(response)
                 this.RefreshTable.emit();
+                this.CloseModal.emit();
                 this.refreshTableData();
                 this.CategorySuccess.emit("SubCategory  "+this.selectedRowData.name);
                 this.deleteSubCategoryForm.reset();

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ToastComponent } from '../toast/toast.component';
-
+import * as bootstrap from 'bootstrap'; 
 
 @Component({
     selector: 'app-modal',
@@ -13,7 +13,8 @@ import { ToastComponent } from '../toast/toast.component';
 export class ModalComponent {
 	//Delete Item
 	
-	@ViewChild(ToastComponent) toast: ToastComponent
+	@ViewChild(ToastComponent) toast: ToastComponent;
+	@ViewChild('modalRef', { static: true }) modalRef!: ElementRef;
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
 	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
@@ -33,7 +34,18 @@ export class ModalComponent {
     toastHeader: string = "";
     toastTheme: string = "default"; 
     
-    
+
+    // ngAfterViewInit() {
+    //     // Initialize the Bootstrap modal once the view is ready
+    //     const modalElement = this.modalRef.nativeElement;
+    //     this.bsModal = new bootstrap.Modal(modalElement);
+    //   }
+    closeModal(): void {
+        // if (this.bsModal) {
+        //     this.bsModal.hide();
+        // }
+	}
+
 	triggerRefreshTable(): void {
 		this.RefreshTable.emit();
 	}

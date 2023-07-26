@@ -166,148 +166,181 @@
         
         <!--EDIT PRODUCT FORM-->
         <form *ngIf="formEditProduct" [formGroup]="editProductForm"  (ngSubmit)="onProductEditSubmit()">
-            <div  class="modal-body pt-0 pb-0">
-                <input type="hidden" [value]="selectedRowData?.id" >
-                
-                <div class="row">
-                    <div class="col-sm-6 mb-3">
-                        <label for="editproductName" class="form-label">Product Name</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="editproductName"  
-                            name="editproductName"
-                            [value]="selectedRowData?.name"
-                            formControlName="name" 
-                            required
-                        >
-                    </div>
-                    
-                    <div class="col-sm-6 mb-3">
-                        <label for="editproductPrice" class="form-label">Price</label>
-                        <input 
-                            type="number" 
-                            class="form-control" 
-                            id="editproductPrice" 
-                            name="editproductPrice"
-                            [value]="selectedRowData?.price"
-                            formControlName="price" 
-                            required
-                            step="0.01"
-                            [placeholder]="00.00"
-                            #priceInput
-                        >
-                        <p class="text-danger d-flex justify-content-center" *ngIf="editProductForm.get('price')?.value < 1 " class="invalid-text">
-                            Required 2 decimal place.
-                        </p>
-                    </div>
-                </div>  
-                
-                <div class="row">
-                    <div class="col-sm-6 mb-3">    
-                        <label for="editproductCategory" class="form-label">Category</label>
-                        <select 
-                            class="form-select" 
-                            id="editproductCategory"
-                            name="editproductCategory" 
-                            formControlName="category" 
-                            (change)="onCategorySelect($event)"
-                        >
-                            <option *ngFor="let category of (categories | async)" [value]="category.name">{{ category.name }}</option>
-                        </select>
-
-
-                    </div>
-                    
-                    <div class="col-sm-6 mb-3">    
-                        <label for="editproductSubCategory" class="form-label">Sub Category</label>
-                        <select 
-                            class="form-select" 
-                            id="editproductSubCategory" 
-                            name="editproductSubCategory" 
-                            formControlName="subcategory" 
-                            required
+            <div class="row" >
+                <div class="col-lg-6 ">
+                        <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                            <div class="form-title text-start mb-4">
+                                <h1 class="modal-title fs-4 fw-bolder mb-0" >EDIT PRODUCT</h1>
+                                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">PRODUCT CONTROL</div>
+                            </div>
+                            <div class="body pt-0 pb-0">
                             
-                        >
-                            <ng-container 
-                            *ngIf="hideselectedsub"
-                            >
-                                <option   *ngFor="let subCategory of (sub_categories | async)" [selected]="subCategory.id === selectedRowData?.sub_category_id " [hidden]="subCategory.id !== selectedRowData?.sub_category_id ">
-                                    {{ subCategory.id === selectedRowData?.sub_category_id ? subCategory.name  : '' }}
-                                </option>  
-                            </ng-container>
-                        
-                            <option *ngFor="let subCategory of (filteredSubCategories | async)" [value]="subCategory.id" [hidden]="subCategory.id !== subCategory.id">{{ subCategory.name }}</option>
-                        </select>
-
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-6  mb-3">
-                        <label for="editproductQty" class="form-label">Stock</label>
-                        <input 
-                            type="number"   
-                            class="form-control disabled" 
-                            id="editproductQty" 
-                            name="editproductQty"
-                            [value]="selectedRowData?.stock"
-                            [disabled]="true"
-                        >
-                    </div>
-                    <div class="col-sm-6  mb-3">
-                        <label for="editproductQtylimit" class="form-label">Stock Limit</label>
-                        <input 
-                            type="number"  
-                            class="form-control" 
-                            id="editproductQtylimit" 
-                            name="editproductQtylimit"
-                            [value]="selectedRowData?.stock_limit"
-                            formControlName="stock_limit" 
-                            required
-                        >
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="addproductPriceDescription" class="form-label">Product Description</label>
-                    <textarea 
-                        class="form-control" 
-                        id="editproductDescription" 
-                        name="editproductDescription" 
-                        rows="3" 
-                        [value]="selectedRowData?.description"
-                        formControlName="description"
-                        required>
-                    </textarea>
-                </div>
-                
-                <!-- <div>
-                    <button type="button" (click)="selectFileForEditing()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
-                        <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
-                        <i class="bi bi-upload text-dark"></i>
-                        <input class="d-none" type="file" id="editimages" name="images" (change)="handleFileInput($event)" multiple>
-                    </button>
-                    <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
-                        <li *ngFor="let controls of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
-                            <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ controls.value.name }}</p>
-                            <button type="button" class="btn p-0" (click)="removeImage(i)">
-                                <i class="bi bi-x-lg text-dark"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </div> -->
-
-            </div>    
+                                <div class="row">
+                                    <div class="w-100">
+                                        <label for="addproductName" class="form-label">Product Name</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="addproductName" 
+                                            name="addproductName" 
+                                            formControlName="name"
+                                            placeholder="One Love"
+                                            required
+                                        >
             
-            <div class="modal-footer border-0 ">
-                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary bg-light-primary "
-                    #confirmButton
-                    [disabled]="isFormEmpty()"
-                >CONFIRM</button>
+                                    </div>
+                                </div>
+                                            
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">    
+                                        <label for="addproductCategory" class="form-label">Category</label>
+                                        <select 
+                                            class="form-select" 
+                                            id="addproductCategory"
+                                            name="addproductCategory" 
+                                            (change)="onCategorySelect($event)"
+                                            formControlName="category" 
+                                            required
+                                        >
+            
+                                            <option *ngFor="let category of categories | async" [value]=" category.name ">{{ category.name }}</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-sm-6 mb-3">    
+                                        <label for="addproductSubCategory" class="form-label">Sub Category</label>
+                                        <select 
+                                            class="form-select" 
+                                            id="addproductSubCategory" 
+                                            name="addproductSubCategory" 
+                                            formControlName="subcategory" 
+            
+                                        >
+
+                                            <ng-container *ngIf="hideselectedsub">
+                                                <ng-container *ngIf="products | async as products">
+                                                    <ng-container *ngIf="selectedRowData">
+                                                        <ng-container *ngFor="let product of products">
+                                                            <ng-container *ngIf="product.id === selectedRowData">
+                                                                <ng-container *ngFor="let subCategory of sub_categories | async">
+                                                                    <option *ngIf="product.sub_category_id === subCategory.id" [value]="subCategory.id" [selected]="product.sub_category_id === subCategory.id">
+                                                                        {{ subCategory.name }}
+                                                                    </option>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                            <option *ngFor="let subCategory of (filteredSubCategories | async) ?? []" [value]="subCategory.id">{{ subCategory.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="mb-3">
+                                    <label for="addproductDescription" class="form-label">Product Description</label>
+                                    <textarea 
+                                        class="form-control" 
+                                        id="addproductDescription" 
+                                        name="addproductPriceDescription" 
+                                        rows="3" 
+                                        formControlName="description"
+                                        required
+                                    ></textarea>
+                                </div>
+                                
+                                <!-- <div>
+                                    <button type="button" (click)="selectFileForAdding()" class="btn mb-2 w-100 border border-1 d-flex justify-content-between align-items-center">
+                                        <p class="m-0 fw-bold text-dark-emphasis">UPLOAD IMAGE</p>
+                                        <i class="bi bi-upload text-dark"></i>
+                                        <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                    </button>
+                                    <ul class="list-unstyled" *ngIf="product_images.controls.length > 0">
+                                        <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                            <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
+                                            <button type="button" class="btn p-0" (click)="removeImage(i)">
+                                                <i class="bi bi-x-lg text-dark"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    [disabled]="addProductForm.get('stock')?.value < addProductForm.get('stock_limit')?.value || addProductForm.get('variants')?.value"
+                                </div> -->
+                                <div class="modal-footer border-0">
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-primary bg-light-primary"
+                                        
+                                    >ADD PRODUCT</button>
+                                </div>   
+                            </div>
+                        </div>
+                    
+                </div>
+                
+                <div class="col-lg-6 mt-lg-0 mt-4">
+                    <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                        <div class="form-title text-start mb-4">
+                            <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
+                            <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
+                        </div>
+                        
+                        <div class="body pt-0 pb-0">
+                            <div 
+                            class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
+                            *ngIf="variantsList.value.length < 1">
+                                <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
+                            </div>
+                            
+                            <ul class="variants-list list-unstyled" *ngIf="variantsList.length > 0">
+                                <li class="text-decoration-none mt-2 mb-3 " *ngFor="let variant of variantsList.value; let i = index">
+                                    <div class="data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                                        <div class="m-auto row d-flex align-items-center w-100 ">
+                                            <div class="col-sm-2">
+                                                <div class="color-container border rounded-3" [style.background-color]="variant.color">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-10 d-flex align-content-center mt-2 mt-sm-0">
+                                                <div class="data w-100">
+                                                    <div class="row ms-0 m-auto w-100 ">
+                                                        <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                            <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">{{ variant.color_title }}</h1>
+                                                        </div>
+                                                        <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                            <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">[{{ variant.color }}]</h1>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row ms-0 m-auto w-100">
+                                                        <div class="col-sm-5 p-0 text-start d-flex align-items-center">
+                                                            <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
+                                                        </div>
+                                                        <div class="col-sm-7 p-0 text-start d-flex align-items-center">
+                                                            <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button 
+                                            class="btn fw-bold"
+                                            (click)="removeVariants(i)"
+                                        >X
+                                        </button>
+                                    </div>
+                                    
+                                </li>
+                            </ul>
+                            
+                            <div class="modal-footer border-0 mt-4" >
+                                <button type="button" class="btn btn-primary bg-light-primary" (click)="showForms()">
+                                    ADD VARIANT
+                                </button>
+                            </div>  
+        
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
 
@@ -400,15 +433,14 @@
                             <div class="col-sm-6 mb-3">
                                 <label for="addproductColor" class="form-label">Color</label>
                                 <input 
-                                    type="text" 
-                                    class="form-control" 
+                                    type="color" 
+                                    class="form-control form-control-color border w-100" 
                                     id="addproductColor" 
                                     name="addproductColor" 
                                     formControlName="color"
-                                    placeholder="#3C3C3CS"
+                                    placeholder="#XXXXXX"
                                     pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-                                    [class.border]="addVariantForm.get('color')?.valid"
-                                    [class.border-danger]="addVariantForm.get('color')?.invalid"
+                                    [ngClass]="{'border-danger': addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty}"
                                 >
                                 <p *ngIf="addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty">
                                     Color must be in the hex format "#3C3C3C".
@@ -430,7 +462,11 @@
                         </div>
                         
                         <div class="modal-footer border-0 mt-4" >
-                            <button type="submit" class="btn btn-primary bg-light-primary" (click)="addProductVariants()">
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary bg-light-primary" 
+                                (click)="addProductVariants()"
+                            >
                                 ADD VARIANT
                             </button>
                         </div>  
