@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DeliveryInfoList } from 'src/assets/models/deliveryinfo';
-import { GETDeliveryInfo, POSTDeliveryInfo } from '../endpoints';
+import { AddressList } from 'src/assets/models/address';
+import { GETAddresses, POSTAddress } from '../endpoints';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeliveryinfoService {
+export class AddressService {
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -19,11 +19,11 @@ export class DeliveryinfoService {
 
   constructor(private http: HttpClient) { }
 
-  getDeliveryInfo(): Observable<any> {
-    return this.http.get<DeliveryInfoList>(GETDeliveryInfo)
+  getAddresses(): Observable<any> {
+    return this.http.get<AddressList>(GETAddresses)
   }
 
-  postDeliveryInfo(form: FormData): Observable<any> {
-    return this.http.post(POSTDeliveryInfo, form, this.httpOptions);
+  postAddress(form: FormData): Observable<any> {
+    return this.http.post(POSTAddress, form, this.httpOptions);
   }
 }

@@ -51,6 +51,8 @@ input[type=file] {
     display: none;
 }
 
+.img-fluid {
+}
 
 .img-fluid-sm {
     height: 5rem;

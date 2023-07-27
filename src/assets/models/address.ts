@@ -1,16 +1,15 @@
-export interface DeliveryInfoList {
+export interface AddressList {
     success: string,
     message: string,
-    data: DeliveryInfo[]
+    data: Address[]
 }
 
-export interface DeliveryInfo {
+export interface Address {
     user_id: string,
     city: string,
     province: string,
     zip_code: number,
     address_line_1: string,
     address_line_2: string,
-    id: number,
-    number: string
+    id: number
 }
