@@ -129,7 +129,7 @@
                                             <p class="m-0">x{{item.quantity}}</p>
                                         </div>
                                         <div class="col-4 d-flex align-items-center justify-content-end">
-                                            <p class="fw-bold fs-5 m-0">{{ parseFloat(item.price) * item.quantity | currency }}</p>
+                                            <p class="fw-bold fs-5 m-0">{{ Number(item.price) * item.quantity | currency }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-4 d-flex align-items-center justify-content-end">
-                                                <p class="fw-bold fs-5 m-0">{{ parseFloat(item.price) * item.quantity | currency }}</p>
+                                                <p class="fw-bold fs-5 m-0">{{ Number(item.price) * item.quantity | currency }}</p>
                                             </div>
                                         </div>
                                     </div>

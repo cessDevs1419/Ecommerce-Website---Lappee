@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, POSTOrder } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder } from '../endpoints';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,6 +21,10 @@ export class OrderService {
 
   getOrderDetail(): Observable<any> {
     return this.http.get(GETOrderDetail);
+  }
+
+  getOrderDetailByUser(): Observable<any> {
+    return this.http.get(GETOrderDetailByUser);
   }
 
   postOrder(data: FormData): Observable<any> {

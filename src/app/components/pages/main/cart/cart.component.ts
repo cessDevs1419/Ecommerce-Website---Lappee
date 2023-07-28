@@ -20,7 +20,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 })
 export class CartComponent {
 
-  parseFloat = parseFloat;
+  Number = Number;
 
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
@@ -151,7 +151,7 @@ export class CartComponent {
 
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
-      this.subtotal += parseFloat(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
+      this.subtotal += Number(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
     }
     /* else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
@@ -170,7 +170,7 @@ export class CartComponent {
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
-        this.subtotal -= parseInt(this.orderList[i].product.product_variants[variantIndex].price) * this.orderList[i].quantity;
+        this.subtotal -= Number(this.orderList[i].product.product_variants[variantIndex].price) * this.orderList[i].quantity;
         console.log('Match found at index ' + i);
       }
     }

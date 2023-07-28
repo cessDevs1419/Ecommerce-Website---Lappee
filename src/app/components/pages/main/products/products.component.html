@@ -133,7 +133,7 @@
        <div class="review-comment p-3 border-top" *ngFor="let review of this.reviewsList | async">
             <div class="row d-flex flex-row space-between">
                 <div class="col d-flex flex-column">
-                    <app-star-ratings [rating]="parseFloat(review.rating)" class="rating-yellow"></app-star-ratings>
+                    <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow"></app-star-ratings>
                     <div>{{review.email}}</div>
                 </div>
                 <div class="col text-end">

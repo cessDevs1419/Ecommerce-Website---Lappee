@@ -5,7 +5,9 @@ import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
-import { Address, AddressList } from "src/assets/models/address";
+import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
+import { OrderDetail, OrderList } from "src/assets/models/order-details";
+import { AddressList, Address } from "src/assets/models/address";
 
 // Formatting
 
@@ -48,11 +50,13 @@ export function formatCategories(response: CategoryList) : Category[] {
 
 // returns a Product array from a ProductList
 export function formatProducts(response: ProductList): Product[] {
+  console.log(response);
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
     sub_category_id: data.sub_category_id,
     description: data.description,
+    images: data.images,
     product_variants: data.product_variants
   }));
 }
@@ -137,6 +141,14 @@ export function formatAddress(response: AddressList): Address[] {
     address_line_1: data.address_line_1,
     address_line_2: data.address_line_2,
     id: data.id
+  }))
+}
+
+export function formatOrderDetails(response: OrderList): OrderDetail[] {
+  return response.data.map((data: OrderDetail) => ({
+    order_id: data.order_id,
+    ordered_on: data.ordered_on,
+    order_contents: data.order_contents
   }))
 }
 

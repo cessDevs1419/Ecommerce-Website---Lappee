@@ -21,7 +21,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
-  parseFloat = parseFloat;
+  Number = Number;
   isFaved: boolean = false;
   productId!: string;
   products!: Observable<Product[]>;
@@ -86,7 +86,7 @@ export class ProductsComponent {
     this.productMatch.subscribe((product: Product[]) => {
       if(product.length > 0){
         this.currentProduct = product[0];
-        this.selectedPrice = parseFloat(this.currentProduct.product_variants[0].price);
+        this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
 
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);

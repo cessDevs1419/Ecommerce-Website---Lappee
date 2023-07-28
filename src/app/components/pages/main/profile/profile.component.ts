@@ -17,6 +17,7 @@ import { User } from 'src/assets/models/user';
 })
 export class ProfileComponent {
   isEditMode: boolean = false;
+  isSubmitEdit: boolean = false; 
   user: Observable<User> = this.accountService.getLoggedUser();
   addresses!: Observable<Address[]>;
   isAddressRegistered!: boolean
@@ -67,6 +68,9 @@ export class ProfileComponent {
                       editZipCode: address.zip_code.toString()
                     })
                   }
+                  else {
+                    this.isSubmitEdit = false;
+                  }
                 }
               });
             }
@@ -98,10 +102,10 @@ export class ProfileComponent {
 
       console.log(formData);
 
-      this.addressService.postAddress(formData).subscribe({
+      this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
         next: (response: any) => {
           this.toastHeader = "Successful!";
-          this.toastContent = "Your address has been updated.";
+          this.toastContent = "Your delivery information has been updated.";
           this.toast.switchTheme('default');
           this.toast.show();
         },
@@ -114,6 +118,7 @@ export class ProfileComponent {
         },
         complete: () => {
           this.isEditMode = false;
+          this.checkAddress();
         }
       })
     }
