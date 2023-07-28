@@ -44,9 +44,10 @@ export class ProductFormComponent {
     addProductForm: FormGroup;
     addVariantForm: FormGroup;
 	editProductForm: FormGroup;
+	editVariantForm: FormGroup;
 	deleteProductForm: FormGroup;
 	restockProductForm: FormGroup;
-	
+    
 	//Display Categories to Select
 	categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
@@ -57,10 +58,10 @@ export class ProductFormComponent {
 
     selectedSubCategory: null;
     hideselectedsub: boolean = true;
-    variantsList: FormArray;
 	showForm: boolean = false;
     selectedVariants: any[] = [];
     selectedSubCategoryId: string;
+    variantsList: FormArray = this.formBuilder.array([]);
 
     constructor(
 	    private http: HttpClient,
@@ -82,12 +83,21 @@ export class ProductFormComponent {
             category: ['', Validators.required],
             subcategory: ['', Validators.required],
 	        description: [''],
-	        //images: this.formBuilder.array([]),
+	        images: this.formBuilder.array([]),
 
             //Variants
             variants: this.variantsList,
 	    });
 	    
+        this.addVariantForm = this.formBuilder.group({
+            size: ['', Validators.required],
+            stock: ['', Validators.required],
+            stock_limit: ['', Validators.required],
+            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+            color_title: [''],
+        },{ validators: this.stockHigherThanLimitValidator });
+        
 		this.editProductForm = this.formBuilder.group({
             name: [''],
             category: [''],
@@ -99,7 +109,7 @@ export class ProductFormComponent {
             variants: this.variantsList,
 	    });
 	    
-	    this.addVariantForm = this.formBuilder.group({
+        this.editVariantForm = this.formBuilder.group({
             size: ['', Validators.required],
             stock: ['', Validators.required],
             stock_limit: ['', Validators.required],
@@ -107,17 +117,15 @@ export class ProductFormComponent {
             color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
             color_title: [''],
         },{ validators: this.stockHigherThanLimitValidator });
-
-
+        
 	    
         this.deleteProductForm = new FormGroup({
             product_id: new FormControl('', Validators.required)
         });
         
-        // this.restockProductForm = new FormGroup({
-        //     product_name: new FormControl('', Validators.required),
-        //     product_quantity: new FormControl('', Validators.required)
-        // });
+
+        
+        console.log( this.variantsList)
 
     }
 
@@ -126,7 +134,7 @@ export class ProductFormComponent {
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
     	this.sub_categories = this.sub_category_service.getAdminSubcategories().pipe(map((Response: any) => formatAdminSubcategories(Response)));
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
-
+        //this.editVariantForm = this.variantService.editVariants();
 
         this.edit_sub_categories = this.sub_category_service.getAdminSubcategories().pipe(
             map((Response: any) => formatAdminSubcategories(Response)), 
@@ -154,6 +162,10 @@ export class ProductFormComponent {
             });
     
         });
+        
+        const variantFormGroup = this.variantService.editVariants();
+        this.editVariantForm.patchValue(variantFormGroup);
+
 	}
 
     //Validate
@@ -214,21 +226,31 @@ export class ProductFormComponent {
 
     async addProductVariants(): Promise<void> {
         if (this.addVariantForm.valid) {
-            const variantForm = this.addVariantForm.value;
-            const newVariantFormGroup = this.formBuilder.group(variantForm);
-            this.variantsList.push(newVariantFormGroup);
-
-            // Update the 'variants' form control with the current value of variantsList
-            this.addProductForm.get('variants')?.setValue(this.variantsList.value);
-            this.ProductSuccess.emit("Variant Added ");
-
+            const newVariantFormGroup = this.formBuilder.group({
+            size: [this.addVariantForm.get('size')?.value, Validators.required],
+            stock: [this.addVariantForm.get('stock')?.value, Validators.required],
+            stock_limit: [this.addVariantForm.get('stock_limit')?.value, Validators.required],
+            price: [this.addVariantForm.get('price')?.value, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+            color: [this.addVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+            color_title: [this.addVariantForm.get('color_title')?.value],
+        });
+    
+        this.variantService.addVariantToVariantsList(newVariantFormGroup);
+        this.addVariantForm.reset();
+        
+        const successVariants = {
+            head: 'Add Variant',
+            sub: 'Successfully added variants'
+        };
+        
+        this.ProductSuccess.emit(successVariants);
+    
             await this.asyncTask();
             this.router.navigate(['/admin/product-management', 'product', 'add']);
-        }else{
-        
+        } else {
             this.addVariantForm.markAllAsTouched();
             const emptyFields = [];
-
+    
             for (const controlName in this.addVariantForm.controls) {
                 if (this.addVariantForm.controls.hasOwnProperty(controlName)) {
                     const variantControl = this.addVariantForm.controls[controlName];
@@ -251,10 +273,26 @@ export class ProductFormComponent {
                 errorMessage: this.errorMessage,
                 suberrorMessage: emptyFields.join(', ')
             };
-    
+        
             this.ProductError.emit(errorDataforProduct);
         }
-
+    }
+    
+     //Edit Variant
+    async editVariant(value: any): Promise<void>{
+        
+        this.editVariantForm.patchValue({
+            size: value.size,
+            stock: value.stock,
+            stock_limit: value.stock_limit,
+            price: value.price,
+            color: value.color,
+            color_title: value.color_title,
+        });
+        
+        this.variantService.setVariants(this.editVariantForm.value);
+        await this.asyncTask();
+        this.router.navigate(['/admin/product-management', 'variant', 'edit']);
     }
     
     removeVariants(index: number): void {
@@ -262,6 +300,7 @@ export class ProductFormComponent {
             this.variantsList.removeAt(index);
         }
     }
+    
     
     //select category
     onCategorySelect(event: any): void {
@@ -320,6 +359,15 @@ export class ProductFormComponent {
         formData.append('category', this.addProductForm.get('subcategory')?.value);
         formData.append('description', this.addProductForm.get('description')?.value);
         
+        //append image to array
+        const imageFiles = this.addProductForm.get('images')?.value;
+        if (imageFiles) {
+            for (let i = 0; i < imageFiles.length; i++) {
+                formData.append('images', imageFiles[i]);
+            }
+        }
+
+        //append variants to array
         const variantsList = this.addProductForm.get('variants') as FormArray;
         for (let i = 0; i < variantsList.length; i++) {
             const variantFormGroup = variantsList.at(i) as FormGroup;
@@ -336,46 +384,46 @@ export class ProductFormComponent {
             console.log(`${value[0]}, ${value[1]}`);
         }
         
-        if(this.addProductForm.valid){
-            this.product_service.postProduct(formData).subscribe({
-                next: (response: any) => { 
+        // if(this.addProductForm.valid){
+        //     this.product_service.postProduct(formData).subscribe({
+        //         next: (response: any) => { 
                     
-                    this.RefreshTable.emit();
-                    this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-                    this.addProductForm.reset();
-                    this.variantsList.clear();
-                },
-                error: (error: HttpErrorResponse) => {
-                    const errorData = this.errorService.handleError(error);
+        //             this.RefreshTable.emit();
+        //             this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
+        //             this.addProductForm.reset();
+        //             this.variantsList.clear();
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             const errorData = this.errorService.handleError(error);
                     
-                    return throwError(() => error);
-                }
-            });
+        //             return throwError(() => error);
+        //         }
+        //     });
                 
-        } else{
-            this.addProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addProductForm.controls || this.addVariantForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName) || this.addVariantForm.controls.hasOwnProperty(controlName)) {
-                    const productcontrol = this.addProductForm.controls[controlName];
-                    const variantcontrol = this.addProductForm.controls[controlName];
-                    if (productcontrol.errors?.['required'] && productcontrol.invalid || variantcontrol.errors?.['required'] && variantcontrol.invalid) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
+        // } else{
+        //     this.addProductForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addProductForm.controls || this.addVariantForm.controls) {
+        //         if ( this.addProductForm.controls.hasOwnProperty(controlName) || this.addVariantForm.controls.hasOwnProperty(controlName)) {
+        //             const productcontrol = this.addProductForm.controls[controlName];
+        //             const variantcontrol = this.addProductForm.controls[controlName];
+        //             if (productcontrol.errors?.['required'] && productcontrol.invalid || variantcontrol.errors?.['required'] && variantcontrol.invalid) {
+        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                 emptyFields.push(label);
+        //             }
+        //         }
+        //     }
             
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
+        //     const errorDataforProduct = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
 
 
 
 
-            this.ProductError.emit(errorDataforProduct);
-        }
+        //     this.ProductError.emit(errorDataforProduct);
+        // }
         
 
     

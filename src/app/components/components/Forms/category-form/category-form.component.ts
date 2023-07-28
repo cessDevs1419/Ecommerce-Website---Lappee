@@ -167,26 +167,40 @@ export class CategoryFormComponent {
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
+                        sub: response?.message
+                    };
+                    
                     this.RefreshTable.emit();
                     this.refreshTableData();
-                    this.CategorySuccess.emit("Category "+this.addCategoryForm.value.category);
+                    this.CategorySuccess.emit(successMessage);
                     this.addCategoryForm.reset();
 
                 },
                 error: (error: HttpErrorResponse) => {
                     const errorData = this.errorService.handleError(error);
+                    const errors = error?.error?.data?.error?.name[0];
+                    const errorMessage = {
+                        errorMessage: `Invalid Input`,
+                        suberrorMessage: errors
+                    };
+                    
+                    const errorMessageforAuth = {
+                        errorMessage: `Unexpected Error`,
+                        suberrorMessage: `Please Login First`
+                    };
+                    
                     if (errorData.errorMessage === 'Unexpected Error') {
-                        this.CategoryError.emit(errorData);
-                    } else {
+                        this.CategoryError.emit(errorMessageforAuth);
+                    } else if (errorData.errorMessage === 'Invalid input') {
+                        this.CategoryWarn.emit(errorMessage);
+                    }else{
                         this.CategoryWarn.emit(errorData);
                     }
                     return throwError(() => error);
                     
-                    // const customErrorMessages = {
-                    //     errorMessage: 'Custom Error',
-                    //     suberrorMessage: 'This is a custom error message.',
-                    //   };
-                    //   const errorData = this.errorService.handleError(error, customErrorMessages);
+                    
                 }
             });
         
@@ -221,13 +235,19 @@ export class CategoryFormComponent {
 
                 
             this.category_service.patchCategory(formData).subscribe({
-                next: (response: any) => { 
+                next: async(response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
+                        sub: response?.message
+                    };
+                    
                     this.RefreshTable.emit();
                     this.refreshTableData();
-                    this.CategorySuccess.emit("Category  "+this.editCategoryForm.value.category);
+                    this.CategorySuccess.emit(successMessage);
                     this.editCategoryForm.reset();
-                    //await this.asyncTask();
 
+                    await this.asyncTask();
+                    this.router.navigate(['/admin/category-management']);
 
                 },
                 error: (error: HttpErrorResponse) => {
@@ -242,8 +262,7 @@ export class CategoryFormComponent {
 
             });
             
-            await this.asyncTask();
-            this.router.navigate(['/admin/category-management']);
+
         }
             
         else if(this.editCategoryForm.invalid){
@@ -267,11 +286,17 @@ export class CategoryFormComponent {
     
     onCategoryDeleteSubmit(): void {
             this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
-                next: (response: any) => { 
+                next: async(response: any) => { 
+                
+                    const successMessage = {
+                        head: 'Category Delete',
+                        sub: response?.message
+                    };
+                    
                     this.RefreshTable.emit();
                     this.CloseModal.emit();
                     this.refreshTableData();
-                    this.CategorySuccess.emit("Category  "+this.selectedRowData.name);
+                    this.CategorySuccess.emit(successMessage);
                     this.deleteCategoryForm.reset();
                     
                 },
@@ -304,24 +329,45 @@ export class CategoryFormComponent {
 
             this.subcategory_service.postSubcategory(formData).subscribe({
                 next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('sub_categories')?.value,
+                        sub: response?.message
+                    };
+                    
                     this.RefreshTable.emit();
                     this.refreshTableData();
-                    this.CategorySuccess.emit("sub_category "+this.addSubCategoryForm.value.name);
+                    this.CategorySuccess.emit(successMessage);
                     this.editCategoryForm.reset();
                     
                     
                 },
                 error: (error: HttpErrorResponse) => {
-    
                     const errorData = this.errorService.handleError(error);
+                    
+                    const errorMessage = {
+                        errorMessage: `Invalid Input`,
+                        suberrorMessage: 'The data already exist'
+                    };
+                    
+                    const errorMessageforAuth = {
+                        errorMessage: `Unexpected Error`,
+                        suberrorMessage: `Please Login First`
+                    };
+                    const errorMessageforsub = {
+                        errorMessage: `The Sub Category is Required: `,
+                        suberrorMessage: `Add sub category to proceed `
+                    };
+                    
                     if (errorData.errorMessage === 'Unexpected Error') {
-                        this.CategoryError.emit(errorData);
-                    } else if (errorData.errorMessage === 'Unprocessable Entity')  {
-                        const errorData = {
-                            errorMessage: `The Sub Category is Required: `,
-                            suberrorMessage: `Add sub category to proceed `
-                        };
-                        this.CategoryWarn.emit(errorData);
+                    
+                        this.CategoryError.emit(errorMessageforAuth);
+                        
+                    }else if (errorData.errorMessage === 'Unprocessable Entity')  {
+                    
+                        this.CategoryWarn.emit(errorMessageforsub);
+                        
+                    }else if (errorData.errorMessage === 'Invalid input')  {
+                        this.CategoryWarn.emit(errorMessage);
                     } else{
                         this.CategoryWarn.emit(errorData);
                     }
@@ -362,11 +408,19 @@ export class CategoryFormComponent {
             formData.append('name', this.editSubCategoryForm.get('sub_category')?.value);        
                 
             this.subcategory_service.patchSubcategory(formData).subscribe({
-                next: (response: any) => { 
+                next: async (response: any) => { 
+                
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
+                        sub: response?.message
+                    }; 
                     this.RefreshTable.emit();
                     this.refreshTableData();
-                    this.CategorySuccess.emit("SubCategory  "+this.editSubCategoryForm.value.main_category);
+                    this.CategorySuccess.emit(successMessage);
                     this.editSubCategoryForm.reset();
+                    
+                    await this.asyncTask();
+                    this.router.navigate(['/admin/category-management']);
                 },
                 error: (error: HttpErrorResponse) => {
                     const errorData = this.errorService.handleError(error);
@@ -406,11 +460,15 @@ export class CategoryFormComponent {
     onSubCategoryDeleteSubmit(): void {
         this.subcategory_service.deleteSubcategory(this.selectedRowData.id).subscribe({
             next: (response: any) => { 
-                console.log(response)
+            
+                const successMessage = {
+                    head: 'Category Delete',
+                    sub: response?.message
+                };
                 this.RefreshTable.emit();
                 this.CloseModal.emit();
                 this.refreshTableData();
-                this.CategorySuccess.emit("SubCategory  "+this.selectedRowData.name);
+                this.CategorySuccess.emit(successMessage);
                 this.deleteSubCategoryForm.reset();
             },
             error: (error: HttpErrorResponse) => {

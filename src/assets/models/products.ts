@@ -19,7 +19,7 @@ export interface Variant {
     color_title: string,
     size: string,
     quantity: number,
-    limit: number,
+    stock_limit: number,
     price: string
 }
 

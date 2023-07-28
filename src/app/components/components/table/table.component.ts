@@ -131,10 +131,12 @@ export class TableComponent {
 	  this.calculatePagination();
 	}
 	
-	
+
+
 
 	sendRowData(row: any) {
 	    this.rowDataSelected.emit(row);
+
 	}
 	
 	showAddForm(): void{

@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { ToastComponent } from '../toast/toast.component';
 import * as bootstrap from 'bootstrap'; 
 
+
 @Component({
     selector: 'app-modal',
     templateUrl: './modal.component.html',
@@ -15,8 +16,10 @@ export class ModalComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
 	@ViewChild('modalRef', { static: true }) modalRef!: ElementRef;
+	
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
+	@Output() delete: EventEmitter<any> = new EventEmitter();
 	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
 	
 	@Input() modalId!: string;
@@ -30,43 +33,42 @@ export class ModalComponent {
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	
+    private bsModal: bootstrap.Modal;
+
+    backdrop: string = 'true';
 	toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default"; 
     
 
-    // ngAfterViewInit() {
-    //     // Initialize the Bootstrap modal once the view is ready
-    //     const modalElement = this.modalRef.nativeElement;
-    //     this.bsModal = new bootstrap.Modal(modalElement);
-    //   }
-    closeModal(): void {
-        // if (this.bsModal) {
-        //     this.bsModal.hide();
-        // }
-	}
+    
+    ngAfterViewInit() {
+        // Initialize the Bootstrap modal once the view is ready
+    }
+    
+    asyncTask(): Promise<void> {
+        // Simulate an asynchronous task with a delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+            resolve();
+            }, 2500); 
+        });
+    }
+    
+    async closeModal() {
+        await this.asyncTask();
+    
+    }
 
+    
 	triggerRefreshTable(): void {
 		this.RefreshTable.emit();
 	}
-	
-    postSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Added";
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
+
     
-	patchSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Updated";
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-	deleteSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Deleted";
+	deleteSuccessToast(value: any): void {
+        this.toastHeader = value.head;
+        this.toastContent = value.sub;
         this.toast.switchTheme('default');
         this.toast.show();
     }

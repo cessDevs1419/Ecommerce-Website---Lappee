@@ -1,0 +1,715 @@
+[33mcommit c585dd38e8505402cd7e87a4974449977534a72d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 28 02:15:44 2023 +0800
+
+    Revert "Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG"
+    
+    This reverts commit 9df273eebfae350fc4294ecf58214454135ce39a, reversing
+    changes made to 7c73cd4f773db7cd93b68bda9d47d00c9b1697ab.
+
+[33mcommit 9df273eebfae350fc4294ecf58214454135ce39a[m
+Merge: 7c73cd4 3d9ede5
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 26 16:06:59 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 7c73cd4f773db7cd93b68bda9d47d00c9b1697ab[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 26 16:06:55 2023 +0800
+
+    Updated Routes
+
+[33mcommit 3d9ede5387ff3701633734d19a4457e43826a4b5[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 26 14:13:58 2023 +0800
+
+    changed address model to deliveryinfo model
+
+[33mcommit b1b9530df43ff0e7f02a272d0cc0597af27629ac[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 26 10:47:55 2023 +0800
+
+    Sign-in should now redirect to admin properly, route guard also now checks user_type
+
+[33mcommit 323f37d0ecfd39b96377dbd1e5d1e8b35d2e5a17[m
+Merge: 1862529 620bfd0
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 25 15:06:56 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 18625294b05c98f2ca689ec3aadd0ec98d486f46[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 25 15:06:46 2023 +0800
+
+    separated gcash payment and screenshot upload
+
+[33mcommit 620bfd07aa4c23d0d0b2a70b600ac03d289c0f62[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 25 14:40:22 2023 +0800
+
+    Updated Routing
+    
+    Product with Variants and validations also done
+
+[33mcommit 3710d32256943f2035e7f5268cb005c9b4499a72[m
+Merge: 645efa2 5f882a1
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 25 09:30:41 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 5f882a1a7d82caf78612a6835112d02d49504edf[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 25 09:16:24 2023 +0800
+
+    Updated routing for admin dashboard, fixed router-outlet problems, fixed routerlink bug in profile banner
+
+[33mcommit 645efa236ce09b1243a7e3a2c5dda4aa34bf4dd7[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 25 00:46:56 2023 +0800
+
+    Product Product and Variant Add
+
+[33mcommit 2bbe664ac0bdc89ffc2f6e02c2f82f2876e51f44[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Mon Jul 24 20:59:24 2023 +0800
+
+    Updated module
+
+[33mcommit 70bffc90391f914cdef2c67c814724e82a099e2b[m
+Merge: 5d35fea 8de406f
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Mon Jul 24 11:54:59 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 8de406fc5094629a141290c455b0043ac4d5c18a[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon Jul 24 11:45:37 2023 +0800
+
+    Cart page can now post Orders to API
+
+[33mcommit 9cbe5af84175b5aab5685f77fa5b9eb2f012b942[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sun Jul 23 21:39:11 2023 +0800
+
+    Cart now gets address from api, minor fixes to visual bugs
+
+[33mcommit 5d35feafe1d6a96c24f67e4cb9f0baf634fb3f07[m
+Merge: 574cf2c b134d56
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jul 23 21:39:05 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 574cf2ca3b398868227f036f6fb6ca59ca1fe840[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jul 23 21:39:01 2023 +0800
+
+    Update Paged Forms
+
+[33mcommit b134d567a6c48557ddf1d2c1b8d75beae862fa44[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sun Jul 23 16:12:49 2023 +0800
+
+    modified product model, updated toasts to work with mobile, address now uses toasts
+
+[33mcommit 1003511b7cc717c59a88d3bb1b41e4542e0cd198[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 22 20:11:36 2023 +0800
+
+    Changes Commiting for assurance
+
+[33mcommit 8daa36b9af0c32df924b1298d80a7e7336ded503[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 22 16:05:45 2023 +0800
+
+    Profile page now checks for address, can also store address
+
+[33mcommit 45b0898afc1cafacc5b463d92b9cdfc5f72876ea[m
+Merge: 472746e 458c5eb
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 21 21:51:30 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 472746e6d8985a1c046958b1fc415d34a7bb69db[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 21 21:51:24 2023 +0800
+
+    Validations Updated
+    
+    Category
+    post
+    patch
+    delete
+    SubCategory
+    post
+    patch
+    delete
+    Products
+    post
+    patch
+    delete
+    Accounts
+    Ban
+    Unban
+    
+    Validations Also
+
+[33mcommit 458c5eb54c3c3f200802bc71836402a402984a62[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Fri Jul 21 15:59:28 2023 +0800
+
+    Product page now pulls information from API
+
+[33mcommit 4e5aa27da0315b130008522bd3e008081f0d4b9e[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 19 23:15:52 2023 +0800
+
+    sidebar fixed
+    
+    neutral url
+
+[33mcommit 07b44a835e860d9d99f319165c024936f78e135c[m
+Merge: 77c95ba 2c539ec
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 19 22:22:44 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 77c95ba86629a9c4718ae96085a431427c519d90[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 19 22:22:37 2023 +0800
+
+    Updated Validations
+    
+    -Errorhandling Service
+    
+    Products
+    -can now delete products
+
+[33mcommit 2c539ec93044402c6a418cb554218f1ea9d08027[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 19 22:04:55 2023 +0800
+
+    first round of integration with reviews, fixed some visual inconsistencies with design
+
+[33mcommit 83c52cc6dad2c7a57cafbdd533f17df5d3c0a369[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 19 14:22:37 2023 +0800
+
+    Updated Subcategory
+    
+    Category
+    -post
+    -patch
+    -delete
+    Subcategory
+    -patch
+    -delete
+    
+    Accounts
+    -ban
+    -unban
+
+[33mcommit ed728d6c8444b1cd790f0560c65aad16671a384c[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Wed Jul 19 00:35:26 2023 +0800
+
+    BAN and UNBAN Works
+    
+    can now ban and unban accounts
+
+[33mcommit 529402c1f0ba7602668ed0b36ee1e499e678b35a[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 18 23:44:36 2023 +0800
+
+    Banned Button Working
+    
+    Can now Ban
+
+[33mcommit ba1e604c3127fd0abac3d50158f7020344e511e5[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 18 21:57:37 2023 +0800
+
+    Fixed a bug in cart, added name and email for Profile Banner
+
+[33mcommit 14a72677bd7fe2d0d5c24988d312fb1630ac5c61[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 18 16:42:12 2023 +0800
+
+    added Users service, changed Users endpoint
+
+[33mcommit 616e4d367fc4d2d1cfebe75aacb78076f997af52[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 18 13:54:56 2023 +0800
+
+    Added contact us to footer
+
+[33mcommit 5f8002d7dcc076921e2a0aa27e1171d2a36c54b6[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 18 11:05:07 2023 +0800
+
+    Added toast on product page, made cart smaller for mobile, added contact us
+
+[33mcommit f74c565f50de1d2b2987c76f9d978d0bf9aaf339[m
+Merge: dcf613a ff55fba
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 18 00:52:16 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit dcf613a4567f75fab85722c2a310ce3a84a7fd93[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 18 00:51:52 2023 +0800
+
+    insert_update_delete
+    
+    -main_category can now insert update delete
+
+[33mcommit ff55fba416a2126604bb6d2e02503af4cef736cb[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon Jul 17 22:05:14 2023 +0800
+
+    Added order complete for cart page
+
+[33mcommit bd327004f5ad72f947fc719aadc96f9a45f3ba34[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sun Jul 16 15:09:04 2023 +0800
+
+    Cart Page now ready for order endpoint, installed bootstrap node and @types/bootstrap
+
+[33mcommit 3539cb496a707a14f85c92547bf061842bd6d3b1[m
+Merge: 62cfbfb 673e473
+Author: Mark Angelo Dayrit <123303308+mrkdyrit@users.noreply.github.com>
+Date:   Sun Jul 16 10:08:54 2023 +0800
+
+    Merge pull request #1 from CorgiusMinimus/mark
+    
+    Removed README.md
+
+[33mcommit 673e4738bd9ff2061523410004efaed134990464[m
+Author: Mark Angelo Dayrit <123303308+mrkdyrit@users.noreply.github.com>
+Date:   Sun Jul 16 10:08:00 2023 +0800
+
+    Removed README.md
+
+[33mcommit 62cfbfbb53f908199cc970154b10d523eb52dc93[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 15 11:09:21 2023 +0800
+
+    Remade login/logout flow using Observables
+
+[33mcommit ff50774f80c9343d1da72592985c504eb9d8bf4d[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 11 15:16:55 2023 +0800
+
+    Product page now properly supports add-to-cart of items without variants, price is also calculated dynamically at cart page
+
+[33mcommit 6c667c9f2c6ad63f128e6c73f61606a5f6f5c30c[m
+Merge: 6797807 36863ea
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 11 00:39:38 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 6797807c8f18cdc62172078ce79dba6d13f15e91[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jul 11 00:39:32 2023 +0800
+
+    Form Data Ready
+    
+    Category
+    Products
+
+[33mcommit 36863ea77a3a942304a0a0484ad35e10c9edd985[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon Jul 10 15:59:25 2023 +0800
+
+    Product page can now cart products without variant
+
+[33mcommit ba86bb17f83eab3f47cea7c283e3198ee61877d9[m
+Merge: 1aafdef 08bbbf2
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jul 9 15:39:02 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 08bbbf2c74170c9b6dd49ade045eea4343159e31[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 8 14:26:03 2023 +0800
+
+    Products page now semi-functional
+
+[33mcommit 1aafdef970111ab765edea87fb7444c986707e33[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 7 23:54:35 2023 +0800
+
+    Revision of Category from
+    
+    Categories
+    -Add
+    -Edit
+    -Delete
+    
+    Subcategories
+    -revisioning subcategory idea
+
+[33mcommit 008cc57c2af53aa18ad6adcc4ed6f565eb0a2c44[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Fri Jul 7 15:52:43 2023 +0800
+
+    Made AdminCategory model and updated response handling to account for admin-side category requests
+
+[33mcommit 49df08d30b4d09590447fd360d989f96590354f6[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Fri Jul 7 15:04:02 2023 +0800
+
+    Made navbar and profile page reflect the details of the logged-in user
+
+[33mcommit 0931c25cfb6cee79e7b0b1ac8e77e5747a340394[m
+Merge: b78097c 24a47a1
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 7 00:41:33 2023 +0800
+
+    accepted changes
+
+[33mcommit b78097cf21fc454ace3e4c7b2f917447028ba842[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jul 7 00:37:22 2023 +0800
+
+    Add Category And Product FormGroup
+    
+    Already converted to form group
+
+[33mcommit 24a47a130f734fe7b1f169f672c270c20cf2d791[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Jul 6 23:37:20 2023 +0800
+
+    Login is now functional
+
+[33mcommit f02f1f7deee0318ecd234c3279498608361901d9[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Jul 6 13:24:04 2023 +0800
+
+    set { withCredentials: true } for csrf interceptor
+
+[33mcommit bf89359e91f60caf295265dd58ec345019d178e4[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 5 23:57:20 2023 +0800
+
+    Cleaned category calls to lessen requests
+
+[33mcommit 05a5248282170ecdcb93ed20409112bbe8bcfea7[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 5 21:41:39 2023 +0800
+
+    Changed base url for api and added csrf-token support
+
+[33mcommit 943924e7948372d602c136263211f8ca592ba6c7[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 5 14:27:27 2023 +0800
+
+    Merged Subcategory and Category models to reflect JSON resposne change
+
+[33mcommit 7cf8f15c9a4f0a1ab4d74f578f71ff469328a774[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jul 5 13:11:09 2023 +0800
+
+    Commit for Set-Cookie CORS testing
+
+[33mcommit 4228d5fec211e99c3d04fe577106c87a629d7cb9[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Tue Jul 4 15:04:49 2023 +0800
+
+    sign-in and sign-up forms are now functional
+
+[33mcommit 21020ce4295cab46ebc88e094614fce26a6d49a6[m
+Merge: a2ad7cc dadefaa
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon Jul 3 16:33:05 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit a2ad7ccc9a1bed04cd1dd611a80abc3f71457513[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon Jul 3 16:30:09 2023 +0800
+
+    First integration with backend, sign-up form is fully functional with proper callback handling and toast, created csrf service and interceptor
+
+[33mcommit dadefaa4a6f11f8ba72a9ea905734ab15525aea7[m
+Merge: c223962 5e49873
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 21:57:03 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit c2239627b132253a80ae0ab611c201fde89c61d2[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 21:55:14 2023 +0800
+
+    Table strifes
+    
+    Newly Updated already pulled cookies
+
+[33mcommit 2f1315384e85085ff8f5f1366f89a652e4c5c6b6[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 20:17:19 2023 +0800
+
+    For assurance
+    
+    -new update
+
+[33mcommit 5e4987399c5245de144018dead731d74e7e1d5c7[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 16:39:32 2023 +0800
+
+    Install ngx-cookie-service, implement login cookies and route guards, encapsulate isLoggedIn flag
+
+[33mcommit ceb1d91c88fc2d985dc40ffd0810827fe2a4661c[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 15:33:46 2023 +0800
+
+    commiting for assurance
+
+[33mcommit 4a3860e06e1a8e41216a4056e1117e358cab6933[m
+Merge: 4a578d5 1421ae9
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 13:46:20 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 1421ae95207ac81db626cb739f16da933b74b7f6[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 13:39:47 2023 +0800
+
+    Revert "update @angular/cli"
+    
+    This reverts commit f068db0638e7ef4d7eadfc4a7bcdea5c3f5de662.
+
+[33mcommit 8aa03ea6174dca0bc525e2494a2dd274a8e07281[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 13:30:11 2023 +0800
+
+    Revert "update @angular/cdk"
+    
+    This reverts commit 6d77920889a0e6eda76de8c88fa4012a8c7a26bf.
+
+[33mcommit 4a578d5b27b20786dc81879ce7f2a0595e314ad6[m
+Merge: 3925883 6d77920
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sat Jul 1 13:22:10 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit 6d77920889a0e6eda76de8c88fa4012a8c7a26bf[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 13:18:58 2023 +0800
+
+    update @angular/cdk
+
+[33mcommit f068db0638e7ef4d7eadfc4a7bcdea5c3f5de662[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 13:15:34 2023 +0800
+
+    update @angular/cli
+
+[33mcommit ef86f07b23f376783cfa883b6b54da39c14c2083[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Jul 1 13:05:30 2023 +0800
+
+    Responsive update for Profile page
+
+[33mcommit 3925883a08462aaf9356900d137d379ed4da586f[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jun 30 21:45:14 2023 +0800
+
+    Discount and account form
+    
+    added discount form
+    and account ban form
+
+[33mcommit 5e3827b15ee8d8616b335d6815bd554b8f7256b6[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jun 30 19:14:39 2023 +0800
+
+    for assurance
+    
+    category table data
+
+[33mcommit 1545e56bc8a6146ae3576e1ace23d5e2626a2269[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Thu Jun 29 22:11:15 2023 +0800
+
+    Add an Update to Category
+    
+    -adding category
+    -adding multiple sub category
+
+[33mcommit 9cf06bd9f844a6c9789bfecc74b58aa1476bc1f3[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Jun 29 19:48:57 2023 +0800
+
+    Reupload
+
+[33mcommit adbfcd50427eb099129f47f08c8d3a18ffc747aa[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Thu Jun 29 19:32:41 2023 +0800
+
+    new changes
+    
+    just changes
+
+[33mcommit d50ce49c943e84cc4e680ddb9f7d0b03b1ff102d[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Jun 29 19:24:21 2023 +0800
+
+    File restructuring, integrate dashboard and courier
+
+[33mcommit 39e2306901e71420d12b55e637eb92cc98308bfb[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jun 28 00:04:27 2023 +0800
+
+    Profile, Orders, cart fix p2
+
+[33mcommit 04cc7cee002a36b92a889ba6ad69007b9a9d6cca[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jun 28 00:04:00 2023 +0800
+
+    Profile, Orders, cart fix + Admin Dashboard
+
+[33mcommit 014adf7336db4e5aae286e2e864d53aba592e29d[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Tue Jun 27 23:08:47 2023 +0800
+
+    New Changes
+    
+    Admin Side
+    Courier Side
+
+[33mcommit 6f77da4517039530c0717582a21d73542944a89c[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jun 25 21:49:23 2023 +0800
+
+    ReDirect Route
+    
+    redirected route to own outlet specifically for dashboard
+
+[33mcommit 20accbd4cbb1b21c10cc967ea7ec78b7bef512b1[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jun 25 21:27:21 2023 +0800
+
+    New Commited
+    
+    - Overview
+    - Category Setup
+    - Products
+    - Sales
+    - Discounts
+    - Accounts
+    - AssignedParcels
+    - TrackOrders
+    - Courier
+    - StockReports
+
+[33mcommit 76e371c4a09bd1572b961d6e5a8f350530c2404d[m
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Sun Jun 25 17:40:45 2023 +0800
+
+    New Update
+    
+    Finished Table
+    -Overview page done
+    -category done
+    -products done
+
+[33mcommit bd84c92173ad1bf2931770cdffa70663754add3c[m
+Merge: 347b81f cd96153
+Author: Francess Cillo <francess12357@gmail.com>
+Date:   Fri Jun 16 22:52:17 2023 +0800
+
+    Merge branch 'main' of https://github.com/CorgiusMinimus/LappeeNG
+
+[33mcommit cd961539e27d794efb8f4ad2d09a88fa6381203b[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Jun 7 16:52:43 2023 +0800
+
+    Polished cart checkout pages
+
+[33mcommit a0e381f9fe720bd0d20a314cd1809f5dad4b5ca8[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed May 31 14:39:39 2023 +0800
+
+    Dynamic reviews, dynamic cart table, user login flag
+
+[33mcommit 347b81fcf52b0efe50d2ff2c2b279de094d99c95[m
+Author: IronMan0602 <francess12357@gmail.com>
+Date:   Thu May 25 23:15:59 2023 +0800
+
+    New Update (05/25)
+    
+    Pagination
+    Sidebar
+
+[33mcommit 9e10797bbb651d34078f4c8bbe8516e00201810b[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Mon May 8 20:28:07 2023 +0800
+
+    added cart service + page, fixed same component navigation
+
+[33mcommit 0720ffca7798af23cdb6f67e2bd370ea4ab8ad6e[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Fri Apr 28 17:56:32 2023 +0800
+
+    Created endpoint.ts for endpoint constants
+
+[33mcommit 5b515e191b0530e88cf09b1e840572e515a78626[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Apr 26 21:51:13 2023 +0800
+
+    cors policy and csrf wanna make me commit sudoku reeeeeeeee
+
+[33mcommit 3871c1aabd0ff96c59655015bd83200dcb3f3b48[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Apr 26 16:18:04 2023 +0800
+
+    Completed product page
+
+[33mcommit 5c13a63912387af53c5ea8745565f45159b8cd54[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Apr 20 00:12:28 2023 +0800
+
+    update site title to static scope
+
+[33mcommit 44ba435f7f53f4bece849ab2bdf3c401567696a7[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Thu Apr 20 00:03:33 2023 +0800
+
+    file organization rehaul, updated packages, finished product order form
+
+[33mcommit 53990d2f18c31342a8b281203370e389e93ea481[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Wed Apr 12 17:03:57 2023 +0800
+
+    Finished subcategories page, started products page
+
+[33mcommit 9c0a731688336e537c1f35024e84338b48091ff8[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sun Apr 9 16:20:54 2023 +0800
+
+    Implemented product sorting (name, price)
+
+[33mcommit e2e55b796dc3b5bdbb379e7ee009b146480c24cc[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Sat Apr 8 19:11:06 2023 +0800
+
+    Fixed mobile entry, implemented subcategories page + filtering
+
+[33mcommit 32124647afc180e6f7ee8441bd2fb0a133f28b33[m
+Author: CorgiusMinimus <wendellravago@gmail.com>
+Date:   Fri Apr 7 21:10:32 2023 +0800
+
+    first commit

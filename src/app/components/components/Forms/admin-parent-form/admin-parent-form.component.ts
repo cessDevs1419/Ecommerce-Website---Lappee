@@ -66,37 +66,16 @@ export class AdminParentFormComponent {
 		this.RefreshTable.emit();
 	}
 	
-    postSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Added";
+    postSuccessToast(value: any): void {
+        this.toastHeader = value.head;
+        this.toastContent = value.sub;
         this.toast.switchTheme('default');
         this.toast.show();
     }
     
-	patchSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Updated";
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-	deleteSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Deleted";
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-	banSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Banned";
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-	unbanSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully UnBanned";
+	patchSuccessToast(value: any): void {
+        this.toastHeader =  value.head;
+        this.toastContent = value.sub;
         this.toast.switchTheme('default');
         this.toast.show();
     }

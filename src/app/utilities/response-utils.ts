@@ -67,7 +67,7 @@ export function formatProductVariants(response: ProductList): Variant[] {
     color_title: variant.color_title,
     size: variant.size,
     quantity: variant.quantity,
-    limit: variant.limit,
+    stock_limit: variant.stock_limit,
     price: variant.price
   }));
 }

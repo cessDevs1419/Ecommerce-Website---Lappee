@@ -6,18 +6,22 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   providedIn: 'root'
 })
 export class VariantsService {
-  private variants: FormArray;
-
+  private variantsList: FormArray = this.formBuilder.array([]);
+  private variantData: any;
+  
   constructor(private formBuilder: FormBuilder) {
-    this.variants = this.formBuilder.array([]);
   }
 
   getVariants(): FormArray {
-    return this.variants;
+      return this.variantsList;
   }
-
+  
+  editVariants(): FormArray {
+    return this.variantData;
+  }
+  
   setVariants(variants: FormArray): void {
-    this.variants = variants;
+      this.variantData = variants;
   }
 
   createVariantForm(): FormGroup {
@@ -28,6 +32,29 @@ export class VariantsService {
       price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
       color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
       color_title: [''],
-    });
+    }, { validators: this.stockHigherThanLimitValidator });
   }
+  
+  addVariantToVariantsList(variantFormGroup: FormGroup): void {
+      this.variantsList.push(variantFormGroup);
+  }
+  
+  stockHigherThanLimitValidator(control: FormGroup): { [key: string]: boolean } | null {
+      const stockControl = control.get('stock');
+      const stockLimitControl = control.get('stock_limit');
+
+      if (stockControl && stockLimitControl) {
+          const stockValue = stockControl.value;
+          const stockLimitValue = stockLimitControl.value;
+
+          if (stockValue !== null && stockLimitValue !== null && stockValue <= stockLimitValue) {
+              stockControl.setErrors({ stockNotHigherThanLimit: true });
+              return { stockNotHigherThanLimit: true };
+          } else {
+          stockControl.setErrors(null);
+      }
+    }
+
+    return null;
+}
 }
