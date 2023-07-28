@@ -14,3 +14,5 @@ export interface DeliveryInfo {
     id: number,
     number: string
 }
+
+//forreupload
