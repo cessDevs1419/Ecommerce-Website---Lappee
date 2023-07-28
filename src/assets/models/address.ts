@@ -11,5 +11,8 @@ export interface Address {
     zip_code: number,
     address_line_1: string,
     address_line_2: string,
-    id: number
+    id: number,
+    number: string
 }
+
+//forreupload

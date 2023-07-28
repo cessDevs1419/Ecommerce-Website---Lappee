@@ -23,7 +23,8 @@ export class ProfileComponent {
   isAddressRegistered!: boolean
   filteredAddress!: Observable<Address | null>
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
-  
+  // si cess mali ng changes na inaccept yawa moments
+
   editProfileForm = new FormGroup({
     editProvince: new FormControl('', Validators.required),
     editCity: new FormControl('', Validators.required),
