@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { order } from '';
+import { DeliveryInfoList } from 'src/assets/models/deliveryinfo';
 import { GETDeliveryInfo, POSTDeliveryInfo } from '../endpoints';
 import { Observable } from 'rxjs';
 
