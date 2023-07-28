@@ -3,9 +3,8 @@
 </div>
 <div class="container-md mt-5">
     <div class="row">
-        
-        <gallery gallerize [items]="imgArray" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
-        
+        <gallery gallerize *ngIf="this.productMatch | async" id="product-images" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+
         <div *ngFor="let match of productMatch | async"  class="col-lg">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
@@ -17,8 +16,8 @@
                     </div>
                     <div class="d-flex flex-row">
                         <p class="h2 m-0">{{this.selectedPrice | currency}}</p>
-                        <p class="muted-text text-decoration-line-through align-self-start">P799</p>
-                        <div class="px-3 ms-1 discount d-flex align-items-center">-30%</div>
+                        <!-- <p class="muted-text text-decoration-line-through align-self-start">P799</p>
+                        <div class="px-3 ms-1 discount d-flex align-items-center">-30%</div> -->
                     </div>
                 </div>
                 <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button>
