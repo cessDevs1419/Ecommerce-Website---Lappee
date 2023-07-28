@@ -8,7 +8,8 @@ export interface Product {
     id: string,
     name: string,
     sub_category_id: string,
-    description: string
+    description: string,
+    images: string[],
     product_variants: Variant[]
 }
 

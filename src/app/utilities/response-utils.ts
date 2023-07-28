@@ -49,11 +49,13 @@ export function formatCategories(response: CategoryList) : Category[] {
 
 // returns a Product array from a ProductList
 export function formatProducts(response: ProductList): Product[] {
+  console.log(response);
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
     sub_category_id: data.sub_category_id,
     description: data.description,
+    images: data.images,
     product_variants: data.product_variants
   }));
 }
