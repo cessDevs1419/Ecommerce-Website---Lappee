@@ -82,7 +82,7 @@ export class ProductFormComponent {
 	        name: ['', Validators.required],
             category: ['', Validators.required],
             subcategory: ['', Validators.required],
-	        description: [''],
+	        description: ['', Validators.required],
 	        images: this.formBuilder.array([]),
 
             //Variants
@@ -93,7 +93,7 @@ export class ProductFormComponent {
             size: ['', Validators.required],
             stock: ['', Validators.required],
             stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{1,2}$/)]],
             color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
             color_title: [''],
         },{ validators: this.stockHigherThanLimitValidator });
@@ -128,7 +128,6 @@ export class ProductFormComponent {
         console.log( this.variantsList)
 
     }
-
 
 	ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
@@ -194,7 +193,7 @@ export class ProductFormComponent {
             return false;
         }
         const valueString = value.toString();
-        return /^\d+\.\d{2}$/.test(valueString);
+        return /^\d+\.\d{1,2}$/.test(valueString);
     }
     
     isHexColor(color: string | null): boolean { 
@@ -218,7 +217,6 @@ export class ProductFormComponent {
     }
     
     //Add Variant
-
     showForms() {
         this.showForm = true;
         this.router.navigate(['/admin/product-management','variant','add']);
@@ -237,6 +235,7 @@ export class ProductFormComponent {
     
         this.variantService.addVariantToVariantsList(newVariantFormGroup);
         this.addVariantForm.reset();
+        this.addVariantForm.markAsPristine();
         
         const successVariants = {
             head: 'Add Variant',
@@ -245,8 +244,8 @@ export class ProductFormComponent {
         
         this.ProductSuccess.emit(successVariants);
     
-            await this.asyncTask();
-            this.router.navigate(['/admin/product-management', 'product', 'add']);
+            //await this.asyncTask();
+            //this.router.navigate(['/admin/product-management', 'product', 'add']);
         } else {
             this.addVariantForm.markAllAsTouched();
             const emptyFields = [];
@@ -293,6 +292,10 @@ export class ProductFormComponent {
         this.variantService.setVariants(this.editVariantForm.value);
         await this.asyncTask();
         this.router.navigate(['/admin/product-management', 'variant', 'edit']);
+    }
+    
+    exit(): void {
+        this.router.navigate(['/admin/product-management', 'product', 'add']);
     }
     
     removeVariants(index: number): void {
@@ -352,8 +355,6 @@ export class ProductFormComponent {
     //Submit Functions
     async onProductAddSubmit(): Promise<void> {
 
-        await this.addProductVariants();
-
         let formData: any = new FormData();
         formData.append('name', this.addProductForm.get('name')?.value);
         formData.append('category', this.addProductForm.get('subcategory')?.value);
@@ -361,9 +362,13 @@ export class ProductFormComponent {
         
         //append image to array
         const imageFiles = this.addProductForm.get('images')?.value;
+        const imageFileNames: string[] = []; // Create an array to store file names or URLs
+        
         if (imageFiles) {
             for (let i = 0; i < imageFiles.length; i++) {
-                formData.append('images', imageFiles[i]);
+                const file: File = imageFiles[i]; // Get the File object
+                imageFileNames.push(file.name); // Store the file name in the array
+                formData.append(`images[]`, file); // Append the File object to the FormData with square brackets to represent an array
             }
         }
 
@@ -383,47 +388,81 @@ export class ProductFormComponent {
         for (const value of formData.entries()) {
             console.log(`${value[0]}, ${value[1]}`);
         }
+    
+
         
-        // if(this.addProductForm.valid){
-        //     this.product_service.postProduct(formData).subscribe({
-        //         next: (response: any) => { 
+        if(this.addProductForm.valid){
+        
+            this.product_service.postProduct(formData).subscribe({
+                next: (response: any) => { 
                     
-        //             this.RefreshTable.emit();
-        //             this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-        //             this.addProductForm.reset();
-        //             this.variantsList.clear();
-        //         },
-        //         error: (error: HttpErrorResponse) => {
-        //             const errorData = this.errorService.handleError(error);
-                    
-        //             return throwError(() => error);
-        //         }
-        //     });
+                    const productSuccess = {
+                        head: 'Add Product',
+                        sub: response.message
+                    };
                 
-        // } else{
-        //     this.addProductForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.addProductForm.controls || this.addVariantForm.controls) {
-        //         if ( this.addProductForm.controls.hasOwnProperty(controlName) || this.addVariantForm.controls.hasOwnProperty(controlName)) {
-        //             const productcontrol = this.addProductForm.controls[controlName];
-        //             const variantcontrol = this.addProductForm.controls[controlName];
-        //             if (productcontrol.errors?.['required'] && productcontrol.invalid || variantcontrol.errors?.['required'] && variantcontrol.invalid) {
-        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //                 emptyFields.push(label);
-        //             }
-        //         }
-        //     }
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit(productSuccess);
+                    this.addProductForm.reset();
+                    this.variantsList.clear();
+                    this.product_images.clear();
+                },
+                error: (error: HttpErrorResponse) => {
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
+                    
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
+                    
+                        this.ProductWarning.emit(errorDataforProduct);
+                    } else {
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.ProductError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
+                    
+                }
+            });
+
+        } else{
+
+            this.addProductForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.addProductForm.controls) {
+                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+                    const productcontrol = this.addProductForm.controls[controlName];
+                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
+                }
+            }
             
-        //     const errorDataforProduct = {
-        //         errorMessage: this.errorMessage,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
 
-
-
-
-        //     this.ProductError.emit(errorDataforProduct);
-        // }
+            this.ProductError.emit(errorDataforProduct);
+        }
         
 
     

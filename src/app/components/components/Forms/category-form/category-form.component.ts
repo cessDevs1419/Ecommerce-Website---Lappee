@@ -179,27 +179,36 @@ export class CategoryFormComponent {
 
                 },
                 error: (error: HttpErrorResponse) => {
-                    const errorData = this.errorService.handleError(error);
-                    const errors = error?.error?.data?.error?.name[0];
-                    const errorMessage = {
-                        errorMessage: `Invalid Input`,
-                        suberrorMessage: errors
-                    };
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
                     
-                    const errorMessageforAuth = {
-                        errorMessage: `Unexpected Error`,
-                        suberrorMessage: `Please Login First`
-                    };
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
                     
-                    if (errorData.errorMessage === 'Unexpected Error') {
-                        this.CategoryError.emit(errorMessageforAuth);
-                    } else if (errorData.errorMessage === 'Invalid input') {
-                        this.CategoryWarn.emit(errorMessage);
-                    }else{
-                        this.CategoryWarn.emit(errorData);
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
+                    
+                        this.CategoryWarn.emit(errorDataforProduct);
+                    } else {
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.CategoryError.emit(errorDataforProduct);
                     }
                     return throwError(() => error);
-                    
                     
                 }
             });
@@ -342,37 +351,45 @@ export class CategoryFormComponent {
                     
                 },
                 error: (error: HttpErrorResponse) => {
-                    const errorData = this.errorService.handleError(error);
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
                     
-                    const errorMessage = {
-                        errorMessage: `Invalid Input`,
-                        suberrorMessage: 'The data already exist'
-                    };
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
                     
-                    const errorMessageforAuth = {
-                        errorMessage: `Unexpected Error`,
-                        suberrorMessage: `Please Login First`
-                    };
-                    const errorMessageforsub = {
-                        errorMessage: `The Sub Category is Required: `,
-                        suberrorMessage: `Add sub category to proceed `
-                    };
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
                     
-                    if (errorData.errorMessage === 'Unexpected Error') {
+                        console.log(errorDataforProduct)
+                        this.CategoryWarn.emit(errorDataforProduct);
+                    } else if (error.error?.data?.error?.additional){
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'The data is already exist',
+                        };
                     
-                        this.CategoryError.emit(errorMessageforAuth);
-                        
-                    }else if (errorData.errorMessage === 'Unprocessable Entity')  {
+                        console.log(errorDataforProduct)
+                        this.CategoryError.emit(errorDataforProduct);
+                    }else {
                     
-                        this.CategoryWarn.emit(errorMessageforsub);
-                        
-                    }else if (errorData.errorMessage === 'Invalid input')  {
-                        this.CategoryWarn.emit(errorMessage);
-                    } else{
-                        this.CategoryWarn.emit(errorData);
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.CategoryError.emit(errorDataforProduct);
                     }
                     return throwError(() => error);
-    
                 }
             });
         

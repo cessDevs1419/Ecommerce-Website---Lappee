@@ -340,7 +340,7 @@
         </form>
 
         <!--ADD VARIANT FORM-->
-        <form *ngIf="formAddVariant" [formGroup]="addVariantForm" (ngSubmit)="addProductVariants()">
+        <form *ngIf="formAddVariant" [formGroup]="addVariantForm" >
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -458,8 +458,16 @@
                         
                         <div class="modal-footer border-0 mt-4" >
                             <button 
+                                type="button" 
+                                class="btn btn-muted mx-2" 
+                                (click)="exit()"
+                            >
+                                DONE
+                            </button>
+                            <button 
                                 type="submit" 
                                 class="btn btn-primary bg-light-primary" 
+                                (click)="addProductVariants()"
                             >
                                 ADD VARIANT
                             </button>
@@ -574,6 +582,13 @@
                     </div>
                     
                     <div class="modal-footer border-0 mt-4" *ngIf="!showForm">
+                        <button 
+                            type="button" 
+                            class="btn btn-muted mx-2" 
+                            (click)="exit()"
+                        >
+                            DONE
+                        </button>
                         <button type="button" class="btn btn-primary bg-light-primary" (click)="showForms()">
                             EDIT VARIANT
                         </button>
