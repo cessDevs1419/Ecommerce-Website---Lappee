@@ -6,6 +6,7 @@ import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
+import { OrderDetail, OrderList } from "src/assets/models/order-details";
 
 // Formatting
 
@@ -138,6 +139,14 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     address_line_2: data.address_line_2,
     id: data.id,
     number: data.number
+  }))
+}
+
+export function formatOrderDetails(response: OrderList): OrderDetail[] {
+  return response.data.map((data: OrderDetail) => ({
+    order_id: data.order_id,
+    ordered_on: data.ordered_on,
+    order_contents: data.order_contents
   }))
 }
 

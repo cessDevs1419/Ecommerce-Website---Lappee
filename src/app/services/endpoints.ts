@@ -45,7 +45,9 @@ export const POSTComment: string = api + "api/client/products/reviews/store";
 //Delivery Info Endpoitns
 export const GETDeliveryInfo: string = api + "api/client/user-info/delivery-info";
 export const POSTDeliveryInfo: string = api + "api/client/user-info/delivery-info/store";
+export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-info/edit";
 
 //Order Endpoints
-export const GETOrderDetail: string = api + "api/client/orders/details?order_id="
-export const POSTOrder: string = api + "api/client/orders/store"
+export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
+export const GETOrderDetailByUser: string = api + "api/client/orders/user";
+export const POSTOrder: string = api + "api/client/orders/store";

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DeliveryInfoList } from 'src/assets/models/deliveryinfo';
-import { GETDeliveryInfo, POSTDeliveryInfo } from '../endpoints';
+import { GETDeliveryInfo, POSTDeliveryInfo, PATCHDeliveryInfo } from '../endpoints';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,5 +25,9 @@ export class DeliveryinfoService {
 
   postDeliveryInfo(form: FormData): Observable<any> {
     return this.http.post(POSTDeliveryInfo, form, this.httpOptions);
+  }
+
+  patchDeliveryInfo(form: FormData): Observable<any> {
+    return this.http.patch(PATCHDeliveryInfo, form, this.httpOptions);
   }
 }

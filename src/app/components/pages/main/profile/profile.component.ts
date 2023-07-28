@@ -17,6 +17,7 @@ import { User } from 'src/assets/models/user';
 })
 export class ProfileComponent {
   isEditMode: boolean = false;
+  isSubmitEdit: boolean = false; 
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
@@ -62,6 +63,7 @@ export class ProfileComponent {
               this.filteredInfo.subscribe({
                 next: (info: DeliveryInfo | null) => {
                   if(info){
+                    this.isSubmitEdit = true;
                     this.editProfileForm.patchValue({
                       editProvince: info.city,
                       editCity: info.province,
@@ -69,6 +71,9 @@ export class ProfileComponent {
                       editZipCode: info.zip_code.toString(),
                       editPhoneNumber: info.number
                     })
+                  }
+                  else {
+                    this.isSubmitEdit = false;
                   }
                 }
               });
@@ -102,25 +107,49 @@ export class ProfileComponent {
 
       console.log(formData);
 
-      this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
-        next: (response: any) => {
-          this.toastHeader = "Successful!";
-          this.toastContent = "Your delivery information has been updated.";
-          this.toast.switchTheme('default');
-          this.toast.show();
-        },
-        error: (err: HttpErrorResponse) => {
-          console.log(err)
-          this.toastHeader = "Action failed!";
-          this.toastContent = "Please try again in a few moments.";
-          this.toast.switchTheme('negative');
-          this.toast.show();
-        },
-        complete: () => {
-          this.isEditMode = false;
-          this.checkAddress();
-        }
-      })
+      if(!this.isSubmitEdit) {
+        this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
+          next: (response: any) => {
+            this.toastHeader = "Successfully added!";
+            this.toastContent = "Your delivery information has been updated.";
+            this.toast.switchTheme('default');
+            this.toast.show();
+          },
+          error: (err: HttpErrorResponse) => {
+            console.log(err)
+            this.toastHeader = "Action failed!";
+            this.toastContent = "Please try again in a few moments.";
+            this.toast.switchTheme('negative');
+            this.toast.show();
+          },
+          complete: () => {
+            this.isEditMode = false;
+            this.checkAddress();
+          }
+        })
+      }
+      else {
+        this.deliveryinfoService.patchDeliveryInfo(formData).subscribe({
+          next: (response: any) => {
+            this.toastHeader = "Successfully edited!";
+            this.toastContent = "Your delivery information has been updated.";
+            this.toast.switchTheme('default');
+            this.toast.show();
+          },
+          error: (err: HttpErrorResponse) => {
+            console.log(err)
+            this.toastHeader = "Action failed!";
+            this.toastContent = "Please try again in a few moments.";
+            this.toast.switchTheme('negative');
+            this.toast.show();
+          },
+          complete: () => {
+            this.isEditMode = false;
+            this.checkAddress();
+          }
+        })
+      }
+
     }
     else {
       this.editProfileForm.markAllAsTouched();

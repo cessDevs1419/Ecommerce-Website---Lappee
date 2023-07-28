@@ -19,7 +19,7 @@ export class CartItemComponent {
   priceConvert: number;
 
   ngOnInit(): void {
-    this.priceConvert = parseFloat(this.cartItem.price);
+    this.priceConvert = Number(this.cartItem.price);
   }
 
   emit(): void {
