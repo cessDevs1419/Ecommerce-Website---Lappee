@@ -6,7 +6,7 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
-import { GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
+import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
@@ -26,7 +26,7 @@ export class ProductsComponent {
   productId!: string;
   products!: Observable<Product[]>;
   productMatch!: Observable<Product[]>;
-  imgArray!: GalleryItem[];
+  imgArray: GalleryItem[] = [];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
   colorVariants: ColorVariant[] = [];
@@ -51,7 +51,8 @@ export class ProductsComponent {
               private cart: CartService,
               public accountService: AccountsService,
               private reviewService: ReviewsService,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private gallery: Gallery) {}
 
   colorCurrent = {
     name: '',
@@ -88,6 +89,25 @@ export class ProductsComponent {
         this.currentProduct = product[0];
         this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
 
+        const galleryRef = this.gallery.ref('product-images'); 
+        // initialize gallerize
+        product[0].images.forEach((url: string) => {
+          console.log(url);
+          galleryRef.addImage({src: url, thumb: url});
+        });
+
+        console.log(this.imgArray);
+
+        /* this.imgArray = [
+          new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
+          new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
+          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
+          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
+          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'})
+        ] */
+    
+        
+
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
         reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
@@ -113,14 +133,6 @@ export class ProductsComponent {
     });
 
     // initialize gallery
-    this.imgArray = [
-      new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
-      new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
-      new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
-      new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
-      new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'})
-    ]
-
     this.bpObserver.observe(['(min-width: 992px)']).subscribe((res: any) => {
       if(res.matches) {
        this.position = ThumbnailsPosition.Left;
@@ -130,6 +142,7 @@ export class ProductsComponent {
         this.position = ThumbnailsPosition.Bottom;
       }
     });
+    
   }
 
   initVariants(): void {
