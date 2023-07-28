@@ -36,7 +36,7 @@
 
         <!-- order total -->
         <div class="d-flex flex-column mt-3 border-top justify-content-center align-items-end">
-            <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">₱69</span></p>
+            <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">{{ this.calculateOrderPrice(order) | currency}}</span></p>
             <button class="button-primary mt-3 rounded-0">Buy Again</button>
         </div>
         

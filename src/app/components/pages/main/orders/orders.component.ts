@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatOrderDetails } from 'src/app/utilities/response-utils';
-import { OrderDetail, OrderList } from 'src/assets/models/order-details';
+import { OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-details';
 
 @Component({
   selector: 'app-orders',
@@ -17,5 +17,13 @@ export class OrdersComponent {
 
   ngOnInit(): void {
     this.userOrders = this.orderService.getOrderDetailByUser().pipe(map((response: any) => formatOrderDetails(response)));
+  }
+
+  calculateOrderPrice(order: OrderDetail): number {
+    let total: number = 0
+    order.order_contents.forEach((item: OrderContent) => {
+      total += Number(item.sub_price)
+    });
+    return total;
   }
 }
