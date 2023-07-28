@@ -1,10 +1,10 @@
-export interface AddressList {
+export interface DeliveryInfoList {
     success: string,
     message: string,
-    data: Address[]
+    data: DeliveryInfo[]
 }
 
-export interface Address {
+export interface DeliveryInfo {
     user_id: string,
     city: string,
     province: string,
@@ -14,5 +14,3 @@ export interface Address {
     id: number,
     number: string
 }
-
-//forreupload

@@ -14,14 +14,14 @@
             <div class="col fs-4" *ngIf="this.user | async; let user">
                 <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
                 <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
-                <p><span class="text-muted pe-3">Phone Number:</span>0123456789</p>
+                <p *ngIf="this.filteredInfo | async as info"><span class="text-muted pe-3">Phone Number:</span>{{info.number}}</p>
             </div>
-            <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredAddress | async)">
+            <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
                 <p class="text-muted">Setup your address through the 'Edit Profile' button to start ordering.</p>
             </div>
-            <div class="col border-start fs-4 ps-4" *ngIf="this.filteredAddress | async as address">
+            <div class="col border-start fs-4 ps-4" *ngIf="this.filteredInfo | async as info">
                 <p class="text-muted">Address:</p>
-                <p class="m-0">{{address.address_line_1}}, {{address.city}}, {{address.province}} {{address.zip_code}}</p>
+                <p class="m-0">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</p>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="mt-3">
             <form [formGroup]="editProfileForm">
-                <div class="row mb-3">
+                <!-- <div class="row mb-3">
                     <div class="col">
                         <label for="edit-fullname" class="form-label">Full Name</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="edit-fullname" />
@@ -41,23 +41,28 @@
                         <label for="edit-username" class="form-label">Username</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="edit-username" />
                     </div>
-                </div>
+                </div> -->
 
                 <div class="row mb-3">
                     <label for="edit-phonenumber" class="form-label">Phone Number</label>
                     <div class="input-group">
                         <span class="input-group-text rounded-0">PH (+63)</span>
-                        <input type="number" pattern="[0-9]*" class="form-control form-control-lg rounded-0" id="edit-phonenumber" />
+                        <input type="number" pattern="[0-9]*" class="form-control form-control-lg rounded-0" id="edit-phonenumber" formControlName="editPhoneNumber"/>
+                    </div>
+                    <div *ngIf="editPhoneNumber?.invalid && (editPhoneNumber?.dirty || editPhoneNumber?.touched)"> 
+                        <div *ngIf="editPhoneNumber?.errors?.['required']">
+                            <span class="text-danger">This field is required.</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row mb-3">
+                <!-- <div class="row mb-3">
                     <label for="edit-email" class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text rounded-0 bg-gradient-primary"><i class="bi bi-envelope-fill color-white"></i></span>
                         <input type="email" class="form-control form-control-lg rounded-0" id="edit-email" />
                     </div>
-                </div>
+                </div> -->
 
                 <div class="row mb-3">
                     <div class="col">

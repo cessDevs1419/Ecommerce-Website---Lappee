@@ -6,10 +6,10 @@ import { User } from 'src/assets/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Carousel } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
-import { AddressService } from 'src/app/services/address/address.service';
-import { Address } from 'src/assets/models/address';
+import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { Observable, map } from 'rxjs';
-import { filterAddresses, findAddresses, formatAddress } from 'src/app/utilities/response-utils';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -27,13 +27,14 @@ export class CartComponent {
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
-  isAddressSelected: boolean = true;
+  isInfoSelected: boolean = true;
 
-  addresses!: Observable<Address[]>;
-  isAddressRegistered!: boolean
-  filteredAddress!: Observable<Address | null>
+  infos!: Observable<DeliveryInfo[]>;
+  isInfoRegistered!: boolean
+  filteredInfo!: Observable<DeliveryInfo | null>
 
   address!: string;
+  telephone!: string;
   
   cartContents!: CartItem[];
   orderList: CartItem[] = [];
@@ -64,7 +65,7 @@ export class CartComponent {
 
   constructor(private cart: CartService,
               public accountService: AccountsService,
-              private addressService: AddressService,
+              private deliveryInfoService: DeliveryinfoService,
               private orderService: OrderService) {}
 
   ngOnInit() {
@@ -78,32 +79,32 @@ export class CartComponent {
   }
 
   checkAddress() {
-    this.addresses = this.addressService.getAddresses().pipe(map((response: any) => formatAddress(response)));
+    this.infos = this.deliveryInfoService.getDeliveryInfo().pipe(map((response: any) => formatDeliveryInfo(response)));
     this.accountService.checkLoggedIn().subscribe({
       next: (response: any) => {
         if(response) {
           this.accountService.getLoggedUser().subscribe({
             next: (response: any) => {
-              findAddresses(response.user_id, this.addresses).subscribe({
+              findDeliveryInfo(response.user_id, this.infos).subscribe({
                 next: (match: boolean) => {
                   if(match) {
                     console.log('has matching address')
-                    this.isAddressRegistered = true;
-                    this.filteredAddress = filterAddresses(response.user_id, this.addresses);
-                    this.filteredAddress.subscribe({
-                      next: (address: Address | null) => {
-                        if(address){
-                          this.isAddressSelected = true;
+                    this.isInfoRegistered = true;
+                    this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
+                    this.filteredInfo.subscribe({
+                      next: (info: DeliveryInfo | null) => {
+                        if(info){
+                          this.isInfoSelected = true;
                         }
                         else {
-                          this.isAddressSelected = false;
+                          this.isInfoSelected = false;
                         }
                       }
                     });
                   }
                   else {
                     console.log('no matching address')
-                    this.isAddressRegistered = false;
+                    this.isInfoRegistered = false;
                   }
                 },
                 error: (err: HttpErrorResponse) => {
@@ -226,7 +227,7 @@ export class CartComponent {
     if(this.orderPaymentMethod?.valid && this.orderList.length > 0 && this.accountService.getIsLoggedIn()){
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
       this.isItemSelected = true;
-      this.isAddressSelected = true;
+      this.isInfoSelected = true;
       if(this.orderPaymentMethod.value == "gcash"){
         instance.next();
       }
@@ -245,7 +246,7 @@ export class CartComponent {
       }
 
       if(!this.accountService.getIsLoggedIn()){
-        this.isAddressSelected = false;
+        this.isInfoSelected = false;
       }
     }
   }
@@ -264,7 +265,7 @@ export class CartComponent {
 
   order(): void {
     //final checks
-    if(this.orderForm?.valid && this.orderList.length > 0 && this.isAddressSelected){
+    if(this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected){
 
       //post the request here
       for(let order of this.orderList){
@@ -296,10 +297,9 @@ export class CartComponent {
     else {
       console.log("Order Form Valid: " + this.orderForm?.valid);
       console.log("Order List: " + this.orderList.length);
-      console.log("Address Selected: " + this.isAddressSelected);
-      console.log("Total check: " + (this.orderForm?.valid && this.orderList.length > 0 && this.isAddressSelected))
+      console.log("Address Selected: " + this.isInfoSelected);
+      console.log("Total check: " + (this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected))
 
     }
   }
 }
-
