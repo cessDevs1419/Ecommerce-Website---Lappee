@@ -1,0 +1,6 @@
+<div class="d-flex flex-row rating-yellow">
+    <span class="stars rating-yellow" *ngFor="let star of stars; let i = index" (mouseenter)="highlightStar(i)" (click)="rate(i + 1)">
+      <i [ngClass]="isStarHighlighted(i) ? 'bi bi-star-fill' : 'bi bi-star'"></i>
+    </span>
+  </div>
+  

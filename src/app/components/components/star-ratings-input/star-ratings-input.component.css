@@ -1,0 +1,7 @@
+.stars {
+    cursor: pointer;
+}
+
+.bi {
+    transition: color .4s
+}

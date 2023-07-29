@@ -23,6 +23,10 @@ body {
     color: var(--primary);
 }
 
+.rating-yellow {
+    color: #FFC107;
+}
+
 .color-white {
     color: #FFFFFF;
 }

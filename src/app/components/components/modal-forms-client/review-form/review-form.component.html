@@ -1,0 +1,21 @@
+<form>
+    <div class="div w-100 d-flex flex-row pe-3" *ngIf="this.product as item">
+        <div class="me-3">
+            <img src="https://picsum.photos/300/500" class="img-fluid review-img">
+        </div>
+        <div class="w-100">
+            <p class="fw-bold fs-3 m-0">{{item.name}}</p>
+            <p class="m-0 text-muted">Color: {{item.color_title}} | Size: {{item.size}}</p>
+            
+            <hr class="text-muted">
+            <p class="m-0 text-muted">Product Rating</p>
+            <app-star-ratings-input (ratingChanged)="ratingChange($event)" class="fs-2"></app-star-ratings-input>
+
+            <label class="mt-3 text-muted" for="productReview">Product Review</label>
+            <textarea id="productReview" rows="3" class="form-control" placeholder="What do you think of the product?"></textarea>
+
+            <
+        </div>
+        
+    </div>
+</form>

@@ -1,0 +1,14 @@
+<div class="modal fade" id="modal-client" tabindex="-1" #modal>
+    <div class="modal-dialog modal-lg modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-3 fw-bold">{{this.modalTitle}}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" [ngSwitch]="this.mode"> 
+                <app-review-form *ngSwitchCase="'add-review'" [product]="this.product"></app-review-form>
+            </div>
+        </div>
+    </div>
+</div>

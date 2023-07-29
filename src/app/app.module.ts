@@ -62,6 +62,9 @@ import { DiscountFormComponent } from './components/components/Forms/discount-fo
 import { AccountsFormComponent } from './components/components/Forms/accounts-form/accounts-form.component';
 import { AssignParcelsFormComponent } from './components/components/Forms/assign-parcels-form/assign-parcels-form.component';
 import { ContactusComponent } from './components/pages/main/contactus/contactus.component';
+import { ModalClientComponent } from './components/components/modal-client/modal-client.component';
+import { ReviewFormComponent } from './components/components/modal-forms-client/review-form/review-form.component';
+import { StarRatingsInputComponent } from './components/components/star-ratings-input/star-ratings-input.component';
 
 
 @NgModule({
@@ -116,7 +119,10 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
     DiscountFormComponent,
     AccountsFormComponent,
     AssignParcelsFormComponent,
-    ContactusComponent
+    ContactusComponent,
+    ModalClientComponent,
+    ReviewFormComponent,
+    StarRatingsInputComponent
   ],
   imports: [
     BrowserModule,
