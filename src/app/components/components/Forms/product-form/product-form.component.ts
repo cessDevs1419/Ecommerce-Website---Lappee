@@ -93,7 +93,7 @@ export class ProductFormComponent {
             size: ['', Validators.required],
             stock: ['', Validators.required],
             stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{1,2}$/)]],
+            price: [1.01, [Validators.required]], //Validators.pattern(/^\d+\.\d{1,2}$/)  
             color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
             color_title: [''],
         },{ validators: this.stockHigherThanLimitValidator });
@@ -242,6 +242,7 @@ export class ProductFormComponent {
             sub: 'Successfully added variants'
         };
         
+
         this.ProductSuccess.emit(successVariants);
     
             //await this.asyncTask();
@@ -302,6 +303,7 @@ export class ProductFormComponent {
         if (index >= 0 && index < this.variantsList.length) {
             this.variantsList.removeAt(index);
         }
+
     }
     
     
@@ -380,7 +382,7 @@ export class ProductFormComponent {
             formData.append(`variants[${i}][size]`, variant.size);
             formData.append(`variants[${i}][quantity]`, variant.stock);
             formData.append(`variants[${i}][limit]`, variant.stock_limit);
-            formData.append(`variants[${i}][price]`, variant.price);
+            formData.append(`variants[${i}][price]`, variant.price.toFixed(2));
             formData.append(`variants[${i}][color]`, variant.color);
             formData.append(`variants[${i}][color_title]`, variant.color_title);
         }
@@ -391,78 +393,78 @@ export class ProductFormComponent {
     
 
         
-        if(this.addProductForm.valid){
+        // if(this.addProductForm.valid){
         
-            this.product_service.postProduct(formData).subscribe({
-                next: (response: any) => { 
+        //     this.product_service.postProduct(formData).subscribe({
+        //         next: (response: any) => { 
                     
-                    const productSuccess = {
-                        head: 'Add Product',
-                        sub: response.message
-                    };
+        //             const productSuccess = {
+        //                 head: 'Add Product',
+        //                 sub: response.message
+        //             };
                 
-                    this.RefreshTable.emit();
-                    this.ProductSuccess.emit(productSuccess);
-                    this.addProductForm.reset();
-                    this.variantsList.clear();
-                    this.product_images.clear();
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
+        //             this.RefreshTable.emit();
+        //             this.ProductSuccess.emit(productSuccess);
+        //             this.addProductForm.reset();
+        //             this.variantsList.clear();
+        //             this.product_images.clear();
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             if (error.error?.data?.error) {
+        //                 const fieldErrors = error.error.data.error;
+        //                 const errorsArray = [];
                     
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
+        //                 for (const field in fieldErrors) {
+        //                     if (fieldErrors.hasOwnProperty(field)) {
+        //                         const messages = fieldErrors[field];
+        //                         let errorMessage = messages;
+        //                         if (Array.isArray(messages)) {
+        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                         }
+        //                         errorsArray.push(errorMessage);
+        //                     }
+        //                 }
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
-                        };
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: errorsArray,
+        //                 };
                     
-                        this.ProductWarning.emit(errorDataforProduct);
-                    } else {
+        //                 this.ProductWarning.emit(errorDataforProduct);
+        //             } else {
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
-                        };
-                        this.ProductError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: 'Please Try Another One',
+        //                 };
+        //                 this.ProductError.emit(errorDataforProduct);
+        //             }
+        //             return throwError(() => error);
                     
-                }
-            });
+        //         }
+        //     });
 
-        } else{
+        // } else{
 
-            this.addProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addProductForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-                    const productcontrol = this.addProductForm.controls[controlName];
-                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
+        //     this.addProductForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addProductForm.controls) {
+        //         if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+        //             const productcontrol = this.addProductForm.controls[controlName];
+        //             if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                 emptyFields.push(label);
+        //             }
+        //         }
+        //     }
             
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
+        //     const errorDataforProduct = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
 
-            this.ProductError.emit(errorDataforProduct);
-        }
+        //     this.ProductError.emit(errorDataforProduct);
+        // }
         
 
     

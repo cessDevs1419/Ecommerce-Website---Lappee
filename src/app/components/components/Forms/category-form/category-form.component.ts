@@ -361,6 +361,8 @@ export class CategoryFormComponent {
                                 let errorMessage = messages;
                                 if (Array.isArray(messages)) {
                                     errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }else if(field === 'additional'){
+                                    errorMessage = 'The subcategory name is already exist'
                                 }
                                 errorsArray.push(errorMessage);
                             }
@@ -371,7 +373,7 @@ export class CategoryFormComponent {
                             suberrorMessage: errorsArray,
                         };
                     
-                        console.log(errorDataforProduct)
+
                         this.CategoryWarn.emit(errorDataforProduct);
                     } else if (error.error?.data?.error?.additional){
                         const errorDataforProduct = {
@@ -379,7 +381,7 @@ export class CategoryFormComponent {
                             suberrorMessage: 'The data is already exist',
                         };
                     
-                        console.log(errorDataforProduct)
+
                         this.CategoryError.emit(errorDataforProduct);
                     }else {
                     
