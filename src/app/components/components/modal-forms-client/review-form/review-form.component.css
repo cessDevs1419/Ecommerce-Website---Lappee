@@ -1,0 +1,14 @@
+.add-image-button {
+    border: 1px dashed var(--bs-secondary-color);
+    width: 5rem;
+    height: 5rem;
+    cursor: pointer;
+}
+
+.attachment-image {
+    width: 5rem;
+    height: 5rem;
+    cursor: pointer;
+    
+    overflow: hidden;
+}

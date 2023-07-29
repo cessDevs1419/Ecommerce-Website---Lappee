@@ -11,10 +11,24 @@
             <p class="m-0 text-muted">Product Rating</p>
             <app-star-ratings-input (ratingChanged)="ratingChange($event)" class="fs-2"></app-star-ratings-input>
 
-            <label class="mt-3 text-muted" for="productReview">Product Review</label>
-            <textarea id="productReview" rows="3" class="form-control" placeholder="What do you think of the product?"></textarea>
+            <label class="mt-3 text-muted form-label" for="productReview">Product Review</label>
+            <textarea id="productReview" rows="3" class="form-control" placeholder="What do you think of the product?" ></textarea>
 
-            <
+            
+            <p class="text-muted mt-3">Attachments</p>
+            <div class="d-flex justify-content-start">
+                <div class="attachment-image me-3" *ngFor="let img of this.files">  
+                    <img [src]="this.img" class="img-fluid">
+                </div>
+                <div class="">
+                    <label class="form-label d-flex" for="productAttachments">
+                        <div class="add-image-button d-flex justify-content-center align-items-center p-3">
+                            <i class="bi bi-plus-lg text-muted"></i>
+                        </div>
+                    </label>
+                    <input class="form-control d-none" type="file" id="productAttachments" accept="image/png, image/jpeg" (change)="imgUpload($event)" multiple #attachmentUpload />
+                </div>
+            </div>
         </div>
         
     </div>
