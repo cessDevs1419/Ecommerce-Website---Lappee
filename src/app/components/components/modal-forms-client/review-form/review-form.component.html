@@ -1,5 +1,5 @@
-<form>
-    <div class="div w-100 d-flex flex-row pe-3" *ngIf="this.product as item">
+<form [formGroup]="reviewForm" *ngIf="this.product as item">
+    <div class="div w-100 d-flex flex-row pe-3">
         <div class="me-3">
             <img src="https://picsum.photos/300/500" class="img-fluid review-img">
         </div>
@@ -9,13 +9,42 @@
             
             <hr class="text-muted">
             <p class="m-0 text-muted">Product Rating</p>
-            <app-star-ratings-input (ratingChanged)="ratingChange($event)" class="fs-2"></app-star-ratings-input>
+            <div class="d-flex align-items-center">
+                <app-star-ratings-input (ratingChanged)="ratingChange($event)" class="fs-2" formControlName="reviewRating"></app-star-ratings-input>
+                <p class="rating-yellow fw-bold fs-4 ms-3 m-0">{{this.rating}}</p>
+            </div>
 
-            <label class="mt-3 text-muted" for="productReview">Product Review</label>
-            <textarea id="productReview" rows="3" class="form-control" placeholder="What do you think of the product?"></textarea>
+            <label class="mt-3 text-muted form-label" for="productReview">Product Review</label>
+            <textarea id="productReview" rows="3" class="form-control" placeholder="What do you think of the product?" formControlName="reviewContent"></textarea>
+            
+            <div class="mt-1 form-check">
+                <input type="checkbox" class="form-check-input" id="reviewHide" formControlName="reviewAnonymous" />
+                <label for="reviewHide" class="form-check-label">Hide your username on the review</label>
+            </div>
 
-            <
+            
+            
+            <p class="text-muted mt-3">Attachments</p>
+            <div class="d-flex justify-content-start flex-wrap image-grid">
+                <div class="attachment-image" *ngFor="let img of this.files">  
+                    <img [src]="this.img" class="img-fluid">
+                </div>
+                <div class="">
+                    <label class="form-label d-flex" for="productAttachments">
+                        <div class="add-image-button d-flex justify-content-center align-items-center p-3">
+                            <i class="bi bi-plus-lg text-muted"></i>
+                        </div>
+                    </label>
+                    <input class="form-control d-none" type="file" id="productAttachments" accept="image/png, image/jpeg" (change)="imgUpload($event)" multiple #attachmentUpload />
+                </div>
+            </div>
+            <p class="mt-1 m-0 text-danger">Note: Reviews CANNOT be edited after submission.</p>
         </div>
         
+    </div>
+    <hr class="text-muted">
+    <div class="d-flex flex-row justify-content-end">
+        <button class="button-secondary-outline rounded-0 me-3 px-3">Cancel</button>
+        <button class="button-primary rounded-0 px-3" (click)="submitReview()">Submit</button>
     </div>
 </form>

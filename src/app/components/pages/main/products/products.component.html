@@ -124,28 +124,39 @@
             </div>
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-5" >
         <p class="fs-2 p-0 ps-3">Product Reviews</p>
         <p *ngIf="!(this.reviewsList | async)">
-            No reviews found.
+            Loading...
         </p>
-       <div class="review-comment p-3 border-top" *ngFor="let review of this.reviewsList | async">
-            <div class="row d-flex flex-row space-between">
-                <div class="col d-flex flex-column">
-                    <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow"></app-star-ratings>
-                    <div>{{review.email}}</div>
+        <div *ngIf="(this.reviewsList | async) as reviews">
+            <div class="review-comment p-3 border-top" *ngFor="let review of reviews">
+                <div class="row d-flex flex-row space-between">
+                    <div class="col d-flex flex-column">
+                        <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow"></app-star-ratings>
+                        <div class="text-muted">By {{review.email}}</div>
+                    </div>
+                    <div class="col text-end">
+                        <p class="m-0">{{review.reviewed_on}}</p>
+                        <div *ngIf="(this.accountService.getLoggedUser() | async) as user">
+                            <div class="dropdown">
+                                <span class="fs-4 m-0" data-bs-toggle="dropdown" *ngIf="user.user_id == review.user_id"><i class="bi bi-three-dots"></i></span>
+    
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li (click)="deleteReview(review.review_id)"><p class="dropdown-item m-0">Delete Review</p></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col text-end">
-                    {{review.reviewed_on}}
-                </div>
+                <div class="mt-3">{{review.content}}</div>
+                <!-- <div class="mt-3" gallerize="{{review.id}}">
+                    <img *ngFor="let image of review.attachments" class="review-image" [src]="image" [attr.imageSrc]="image">
+                </div> -->
             </div>
-            <div class="mt-3 ps-3">{{review.content}}</div>
-            <!-- <div class="mt-3" gallerize="{{review.id}}">
-                <img *ngFor="let image of review.attachments" class="review-image" [src]="image" [attr.imageSrc]="image">
-            </div> -->
         </div>
 
-        <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
+       <!--  <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
             <form [formGroup]="postComment">
                 <textarea type="text" class="w-100 form-control" rows="4" formControlName="message" placeholder="Leave a feedback and review."></textarea>
                 <div *ngIf="commentMessage?.invalid && (commentMessage?.dirty || commentMessage?.touched)">
@@ -165,7 +176,7 @@
                     </div>
                 </div>
             </form>   
-        </div>
+        </div> -->
     </div>
     <div class="row mt-3">
        <div class="border-bottom fs-2 p-3">You May Also Like</div>

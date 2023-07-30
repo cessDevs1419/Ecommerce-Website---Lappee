@@ -25,7 +25,8 @@ export interface RatingNumber {
 }
 
 export interface Review {
-    id: string,
+    review_id: string,
+    user_id: string,
     email: string,
     rating: string,
     content: string,

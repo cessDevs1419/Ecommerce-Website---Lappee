@@ -15,5 +15,6 @@ export interface OrderContent {
     size: string,
     color_title: string,
     quantity: number,
-    sub_price: string
+    sub_price: string,
+    product_id: string
 }
