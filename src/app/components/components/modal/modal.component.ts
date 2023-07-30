@@ -30,6 +30,7 @@ export class ModalComponent {
 	@Input() modalDeleteCategory!: boolean;
 	@Input() modalDeleteSubCategory!: boolean;
 	@Input() modalDeleteProduct!: boolean; 
+	@Input() modalDeleteVariant!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	
@@ -40,6 +41,7 @@ export class ModalComponent {
     toastHeader: string = "";
     toastTheme: string = "default"; 
     
+    selectedVariant: any;
 
     
     ngAfterViewInit() {

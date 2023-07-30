@@ -86,14 +86,22 @@
                                 </div>
                                 <div class="modal-footer border-0">
                                     <button 
+                                        type="button" 
+                                        class="btn btn-muted mx-2" 
+                                        (click)="back()"
+                                    >
+                                        CANCEL
+                                    </button>
+                                    <button 
                                         type="submit" 
                                         class="btn btn-primary bg-light-primary"
                                         [disabled]="variantsList.length < 1"
-                                    >ADD PRODUCT</button>
+                                        >
+                                        ADD PRODUCT
+                                    </button>
                                 </div>   
                             </div>
                         </div>
-                    
                 </div>
                 
                 <div class="col-lg-6 mt-lg-0 mt-4">
@@ -112,14 +120,14 @@
                             </div>
                             
                             <ul class="variants-list list-unstyled" *ngIf="variantsList.length > 0">
-                                <li class="variant-list-item text-decoration-none mt-2 mb-3 cursor-poi" *ngFor="let variant of variantsList.value; let i = index" (click)="editVariant(variant)">
+                                <li class="variant-list-item text-decoration-none mt-2 mb-3 cursor-poi" *ngFor="let variant of variantsList.value; let i = index" >
                                     <div class="data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
                                         <div class="m-auto row d-flex align-items-center w-100 ">
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-2 me-2">
                                                 <div class="color-container border rounded-3" [style.background-color]="variant.color">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-10 d-flex align-content-center mt-2 mt-sm-0">
+                                            <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
                                                 <div class="data w-100">
                                                     <div class="row ms-0 m-auto w-100 ">
                                                         <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
@@ -130,10 +138,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="row ms-0 m-auto w-100">
-                                                        <div class="col-sm-5 p-0 text-start d-flex align-items-center">
+                                                        <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                             <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
                                                         </div>
-                                                        <div class="col-sm-7 p-0 text-start d-flex align-items-center">
+                                                        <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                             <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
                                                         </div>
                                                     </div>
@@ -151,7 +159,11 @@
                             </ul>
                             
                             <div class="modal-footer border-0 mt-4" >
-                                <button type="button" class="btn btn-primary bg-light-primary" (click)="showForms()">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-primary bg-light-primary" 
+                                    (click)="showForms('add')"
+                                >
                                     ADD VARIANT
                                 </button>
                             </div>  
@@ -244,7 +256,20 @@
                                     <i class="bi bi-upload text-dark"></i>
                                     <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                 </button>
-                                <ul class="list-unstyled w-100" *ngIf="product_images.controls.length > 0">
+                                <ul class="list-unstyled w-100" >
+                                    
+                                    <!--For Default Product Images-->
+                                    <ng-container *ngFor="let product of (products | async)">
+                                        <ng-container *ngIf="product.id === selectedRowData">
+                                                <li *ngFor="let product_image of product.images; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                                    <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ extractFileName(product_image) }}</p>
+                                                    <button type="button" class="btn p-0" (click)="removeImage(i)">
+                                                        <i class="bi bi-x-lg text-dark"></i>
+                                                    </button>
+                                                </li>
+                                        </ng-container>
+                                    </ng-container>
+                                    
                                     <!--For Additional Product Images-->
                                     <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
                                         <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
@@ -256,6 +281,13 @@
                             </div>
                             
                             <div class="modal-footer border-0">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-muted mx-2" 
+                                    (click)="back()"
+                                >
+                                    CANCEL
+                                </button>
                                 <button 
                                     type="submit" 
                                     class="btn btn-primary bg-light-primary"
@@ -287,14 +319,14 @@
                                 
                                     <ul class="variants-list list-unstyled" *ngIf="products.product_variants.length > 0">
                                         <!--Default Product Variants--->
-                                        <li class="variant-list-item text-decoration-none mt-2 mb-3 " *ngFor="let variant of products.product_variants; let i = index" (click)="editVariant(variant)">
-                                            <div class="data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                                        <li class="variant-list-item text-decoration-none mt-2 mb-3 " *ngFor="let variant of products.product_variants; let i = index" >
+                                            <div class="data-container d-flex align-items-center w-100 p-2 rounded rounded-3 border border-2">
                                                 <div class="m-auto row d-flex align-items-center w-100 ">
-                                                    <div class="col-sm-2">
+                                                    <div class="col-sm-2 me-2">
                                                         <div class="color-container border rounded-3" [style.background-color]="variant.color">
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-10 d-flex align-content-center mt-2 mt-sm-0">
+                                                    <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
                                                         <div class="data w-100">
                                                             <div class="row ms-0 m-auto w-100 ">
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
@@ -305,21 +337,35 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row ms-0 m-auto w-100">
-                                                                <div class="col-sm-5 p-0 text-start d-flex align-items-center">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                                     <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
                                                                 </div>
-                                                                <div class="col-sm-7 p-0 text-start d-flex align-items-center">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                                     <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button 
-                                                    class="btn fw-bold"
-                                                    (click)="removeVariants(i)"
-                                                >X
-                                                </button>
+                                                <div class="actions d-flex">
+                                                    <button 
+                                                        (click)="editVariant(variant)"
+                                                        type="button" 
+                                                        class=" btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                    >
+                                                        <i class="bi bi-pencil-square fs-5"></i>
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteVariants"
+                                                        (click)="selectVariant(variant, i)"
+                                                    >
+                                                        <i class="bi bi-trash fs-5"></i>
+                                                    </button>
+                                                </div>
+
                                             </div>
                                             
                                         </li>
@@ -327,11 +373,11 @@
                                         <li class="variant-list-item text-decoration-none mt-2 mb-3 cursor-poi" *ngFor="let variant of variantsList.value; let i = index" (click)="editVariant(variant)">
                                             <div class="data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
                                                 <div class="m-auto row d-flex align-items-center w-100 ">
-                                                    <div class="col-sm-2">
+                                                    <div class="col-sm-2 me-2">
                                                         <div class="color-container border rounded-3" [style.background-color]="variant.color">
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-10 d-flex align-content-center mt-2 mt-sm-0">
+                                                    <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
                                                         <div class="data w-100">
                                                             <div class="row ms-0 m-auto w-100 ">
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
@@ -342,21 +388,35 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row ms-0 m-auto w-100">
-                                                                <div class="col-sm-5 p-0 text-start d-flex align-items-center">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                                     <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
                                                                 </div>
-                                                                <div class="col-sm-7 p-0 text-start d-flex align-items-center">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
                                                                     <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button 
-                                                    class="btn fw-bold"
-                                                    (click)="removeVariants(i)"
-                                                >X
-                                                </button>
+
+                                                <div class="actions d-flex">
+                                                    <button 
+                                                        (click)="editVariant(variant)"
+                                                        type="button" 
+                                                        class=" btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                    >
+                                                        <i class="bi bi-pencil-square fs-5"></i>
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteVariants"
+                                                        (click)="selectVariant(variant, i)"
+                                                    >
+                                                        <i class="bi bi-trash fs-5"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             
                                         </li>
@@ -366,7 +426,11 @@
 
                             
                             <div class="modal-footer border-0 mt-4" >
-                                <button type="button" class="btn btn-primary bg-light-primary" (click)="showForms()">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-primary bg-light-primary" 
+                                    (click)="showForms('edit')"
+                                >
                                     ADD VARIANT
                                 </button>
                             </div>  
@@ -496,10 +560,20 @@
                         </div>
                         
                         <div class="modal-footer border-0 mt-4" >
+                            <button  
+                                type="button" 
+                                class="btn btn-muted mx-2" 
+                                *ngIf="variantsList.length === 0"
+                                (click)="back()"
+                            >
+                                CANCEL
+                            </button>
+                            
                             <button 
                                 type="button" 
                                 class="btn btn-muted mx-2" 
-                                (click)="exit()"
+                                *ngIf="variantsList.length > 0"
+                                (click)="back()"
                             >
                                 DONE
                             </button>
@@ -517,7 +591,158 @@
                 </div>
             </div>
         </form>
-
+        
+        <!--ADDITIONAL VARIANT FORM-->
+        <form *ngIf="formAdditionalVariant" [formGroup]="addVariantForm" >
+            <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                <div class="form-title text-start mb-4">
+                    <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
+                </div>
+                
+                <div class="body pt-0 pb-0">
+                    <div class="form-body pt-0 pb-0 " >
+                    
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductSize" class="form-label">Size</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="addproductSize" 
+                                    name="addproductSize" 
+                                    formControlName="size"
+                                    placeholder="sizes"
+                                    required
+                                >
+        
+                            </div>
+                            
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantPrice" class="form-label">Price</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantPrice" 
+                                    name="addvariantPrice" 
+                                    [value]="1"
+                                    formControlName="price"
+                                    required
+                                    step="0.01"
+                                
+                                    [placeholder]="01.01"
+                                    (click)="addVariantForm.get('price')?.setValue(null)"
+                                >
+                                <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
+                                    price must be 2 decimal places, 00.00
+                                    [class.border]="isDecimal(addVariantForm.get('price')?.value)"
+                                    [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
+                                </p> -->
+                            </div>
+        
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantQty" class="form-label">Stock</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantQty" 
+                                    name="addvariantQty" 
+                                    formControlName="stock"
+                                    placeholder="300"
+                                    required
+                                    [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                    [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                >
+                                <p *ngIf="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value">
+                                    stock should be higher than limit
+                                </p>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantQtyLimit" class="form-label">Stock Limit</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantQtyLimit" 
+                                    name="addvariantQtyLimit" 
+                                    formControlName="stock_limit"
+                                    placeholder="30"
+                                    required
+                                    [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                    [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                >
+        
+                            </div>
+        
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductColor" class="form-label">Color</label>
+                                <input 
+                                    type="color" 
+                                    class="form-control form-control-color border w-100" 
+                                    id="addproductColor" 
+                                    name="addproductColor" 
+                                    formControlName="color"
+                                    placeholder="#XXXXXX"
+                                    pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                                    [ngClass]="{'border-danger': addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty}"
+                                >
+                                <p *ngIf="addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty">
+                                    Color must be in the hex format "#3C3C3C".
+                                </p>
+                            </div>
+                            
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductColorTitle" class="form-label">Color Title</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="addproductColorTitle" 
+                                    name="addproductColorTitle" 
+                                    formControlName="color_title"
+                                    placeholder="color name"
+                                >
+                            </div>
+        
+                        </div>
+                        
+                        <div class="modal-footer border-0 mt-4" >
+                            <button  
+                                type="button" 
+                                class="btn btn-muted mx-2" 
+                                *ngIf="variantsList.length === 0"
+                                (click)="back()"
+                            >
+                                CANCEL
+                            </button>
+                            
+                            <button 
+                                type="button" 
+                                class="btn btn-muted mx-2" 
+                                *ngIf="variantsList.length > 0"
+                                (click)="back()"
+                            >
+                                DONE
+                            </button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary bg-light-primary" 
+                                (click)="addProductVariants()"
+                            >
+                                ADD VARIANT
+                            </button>
+                        </div>  
+                    </div>
+        
+                    <!-- *ngIf="variantsList.length > 0 && !showForm" -->
+                </div>
+            </div>
+        </form>
+        
         <!--EDIT VARIANT FORM-->
         <form *ngIf="formEditVariant" [formGroup]="editVariantForm">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
@@ -621,10 +846,20 @@
                     </div>
                     
                     <div class="modal-footer border-0 mt-4" >
+                        <button  
+                            type="button" 
+                            class="btn btn-muted mx-2" 
+                            *ngIf="variantsList.length === 0"
+                            (click)="back()"
+                        >
+                            CANCEL
+                        </button>
+                        
                         <button 
                             type="button" 
                             class="btn btn-muted mx-2" 
-                            (click)="exit()"
+                            *ngIf="variantsList.length > 0"
+                            (click)="back()"
                         >
                             DONE
                         </button>
@@ -645,8 +880,21 @@
         <form *ngIf="formDeleteProduct" [formGroup]="deleteProductForm"  (ngSubmit)="onProductDeleteSubmit()">
             <div class="modal-body text-center pt-0 pb-0">
                 <input type="hidden" [value]="selectedRowData?.id" formControlName="product_id">
-                <p class="fs-5 fw-bold mb-1">Are you sure to delete this Product?</p>
+                <p class="fs-5 fw-bold mb-1">Are you sure you want to delete this product?</p>
                 <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+            </div>
+            
+            <div class="modal-footer border-0 ">
+                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+            </div>
+        </form>
+        
+        <!--DELETE VARIANT FORM-->
+        <form *ngIf="formDeleteVariant" [formGroup]="deleteVariantForm"  >
+            <div class="modal-body text-center pt-0 pb-0">
+                <p class="fs-5 fw-bold mb-1">Are you sure you want to delete this variant?</p>
+                <h1 class="text-primary fs-4 fw-bolder">{{selectedDeleteVariant?.color_title}}, {{selectedDeleteVariant?.size}}</h1>
             </div>
             
             <div class="modal-footer border-0 ">

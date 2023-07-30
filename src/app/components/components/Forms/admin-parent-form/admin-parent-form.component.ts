@@ -27,6 +27,7 @@ export class AdminParentFormComponent {
 	EditProduct: boolean;
 	
 	AddVariant: boolean;
+	AdditionalVariant: boolean;
 	EditVariant: boolean;
 	
     toastContent: string = "";
@@ -54,6 +55,7 @@ export class AdminParentFormComponent {
 
             this.AddVariant = page === 'variant' && action === 'add';
 			this.EditVariant = page === 'variant' && action === 'edit';
+			this.AdditionalVariant = page === 'variant' && action === 'additional';
 
 			this.selectedRowData = id
 

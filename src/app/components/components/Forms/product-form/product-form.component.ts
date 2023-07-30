@@ -10,10 +10,17 @@ import { formatAdminCategories, formatAdminSubcategories, formatProducts} from '
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsDataService} from 'src/app/services/forms/forms-data.service';
 import { VariantsService } from 'src/app/services/variants/variants.service';
 import { Product } from 'src/assets/models/products';
+import { Location } from '@angular/common';
+
+export interface DeleteVariantParams {
+    variantId: string;
+    index: any;
+}
+
 @Component({
     selector: 'app-product-form',
     templateUrl: './product-form.component.html',
@@ -28,7 +35,7 @@ export class ProductFormComponent {
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
     @Output() CloseModal: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
-    //@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
+    @Output() DeleteData: EventEmitter<DeleteVariantParams> = new EventEmitter();
 
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
@@ -37,15 +44,19 @@ export class ProductFormComponent {
     @Input() formAddProduct!: boolean;
     @Input() formEditProduct!: boolean;
     @Input() formAddVariant!: boolean;
+    @Input() formAdditionalVariant!: boolean;
     @Input() formEditVariant!: boolean;
     @Input() formDeleteProduct!: boolean;
+    @Input() formDeleteVariant!: boolean;
     @Input() formRestockProduct!: boolean;
+    
 
     addProductForm: FormGroup;
     addVariantForm: FormGroup;
 	editProductForm: FormGroup;
 	editVariantForm: FormGroup;
 	deleteProductForm: FormGroup;
+	deleteVariantForm: FormGroup;
 	restockProductForm: FormGroup;
     
 	//Display Categories to Select
@@ -62,6 +73,7 @@ export class ProductFormComponent {
     selectedVariants: any[] = [];
     selectedSubCategoryId: string;
     variantsList: FormArray = this.formBuilder.array([]);
+    selectedDeleteVariant: any ;
 
     constructor(
 	    private http: HttpClient,
@@ -72,7 +84,8 @@ export class ProductFormComponent {
 	    private formBuilder: FormBuilder,
 	    private router: Router,
 	    private formDataService: FormsDataService,
-	    private variantService: VariantsService
+	    private variantService: VariantsService,
+	    private location: Location
     ) 
     {
         this.variantsList = this.variantService.getVariants();
@@ -123,9 +136,13 @@ export class ProductFormComponent {
             product_id: new FormControl('', Validators.required)
         });
         
+        this.deleteVariantForm = new FormGroup({
+            variant_id: new FormControl('', Validators.required)
+        });
+        
 
         
-        console.log( this.variantsList)
+    
 
     }
 
@@ -164,7 +181,7 @@ export class ProductFormComponent {
         
         const variantFormGroup = this.variantService.editVariants();
         this.editVariantForm.patchValue(variantFormGroup);
-
+        
 	}
 
     //Validate
@@ -217,10 +234,25 @@ export class ProductFormComponent {
     }
     
     //Add Variant
-    showForms() {
-        this.showForm = true;
-        this.router.navigate(['/admin/product-management','variant','add']);
+    showForms(value: any) {
+        switch(value){
+            case 'edit' : 
+                this.showForm = true;
+                this.router.navigate(['/admin/product-management','variant','additional']);
+            break
+            
+            default :
+                this.showForm = true;
+                this.router.navigate(['/admin/product-management','variant','add']);
+            break
+        }
+        
     }
+    
+    back() {
+        this.location.back();
+    }
+    
 
     async addProductVariants(): Promise<void> {
         if (this.addVariantForm.valid) {
@@ -295,8 +327,12 @@ export class ProductFormComponent {
         this.router.navigate(['/admin/product-management', 'variant', 'edit']);
     }
     
-    exit(): void {
+    toAddPage(): void {
         this.router.navigate(['/admin/product-management', 'product', 'add']);
+    }
+    
+    toEditPage(): void {
+        this.router.navigate(['/admin/product-management', 'product', 'edit']);
     }
     
     removeVariants(index: number): void {
@@ -306,6 +342,13 @@ export class ProductFormComponent {
 
     }
     
+    //Delete Variant
+    selectVariant(value: any, index: any){
+        
+        this.selectedDeleteVariant = value
+        console.log(this.selectedDeleteVariant, index)
+        //this.removeVariants(index)
+    }
     
     //select category
     onCategorySelect(event: any): void {
@@ -351,6 +394,11 @@ export class ProductFormComponent {
     
     removeImage(index: number) {
         this.product_images.removeAt(index);
+    }
+    
+    extractFileName(url: string): string {
+        const parts = url.split('/'); 
+        return parts[parts.length - 1]; 
     }
     
     
