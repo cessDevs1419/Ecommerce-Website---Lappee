@@ -3,7 +3,7 @@ import { ReviewList, Review } from 'src/assets/models/reviews';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 /* import { formatReviews } from 'src/app/utilities/response-utils'; */
-import { GETReviews, POSTReviews } from '../endpoints';
+import { DELETEReviews, GETReviews, POSTReviews } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -28,4 +28,15 @@ export class ReviewsService {
   public postReview(data: FormData): Observable<any> {
     return this.http.post(POSTReviews, data, this.httpOptions);
   }
+
+  public deleteReview(data: FormData): Observable<any> {
+    return this.http.delete(DELETEReviews, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: data }
+  )}
 }

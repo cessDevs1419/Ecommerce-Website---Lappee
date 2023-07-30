@@ -88,17 +88,21 @@ export function formatReviews(response: ReviewList): Observable<ReviewItem> {
   return of(format)
 }
 
-export function formatReviewsDetails(response: any): Review[] {
+export function formatReviewsDetails(response: any): Review[] | false {
   let reviewList = response.data.reviews;
   console.log(reviewList);
+  if(!reviewList || reviewList.length == 0){
+    return false
+  }
+
   return reviewList.map((review: Review) => ({
-    id: review.id,
+    review_id: review.review_id,
+    user_id: review.user_id,
     email: review.email,
     rating: review.rating,
     content: review.content,
     reviewed_on: review.reviewed_on
   }))
-  
 }
 
 export function formatCsrfToken(response: any): string {

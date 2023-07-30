@@ -39,7 +39,7 @@ export class ProductsComponent {
   toastTheme: string = "default"; 
   
   reviews!: Observable<ReviewItem>;
-  reviewsList!: Observable<Review[]>
+  reviewsList!: Observable<Review[] | false>
 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
@@ -282,5 +282,23 @@ export class ProductsComponent {
     else if(this.postComment.invalid){
       this.postComment.markAllAsTouched();
     }
+  }
+
+  deleteReview(id: string){
+    console.log(id);
+    let formData = new FormData;
+    formData.append('product_id', this.currentProduct.id);
+    formData.append('review_id', id)
+
+    console.log(formData);
+
+    this.reviewService.deleteReview(formData).subscribe({
+      next: (response: any) => {
+        console.log('success');
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
+      }
+    })
   }
 }
