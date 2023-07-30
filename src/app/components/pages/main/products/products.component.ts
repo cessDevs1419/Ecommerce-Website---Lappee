@@ -261,7 +261,7 @@ export class ProductsComponent {
 
     if(this.postComment.valid){
       console.log(this.postComment.value);
-      this.reviewService.postComment(formData).subscribe({
+      this.reviewService.postReview(formData).subscribe({
         next: (response: any) => {
           this.toastHeader = "Successful!";
           this.toastContent = "Your review has been added.";

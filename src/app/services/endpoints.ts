@@ -40,7 +40,7 @@ export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/?id=";
-export const POSTComment: string = api + "api/client/products/reviews/store";
+export const POSTReviews: string = api + "api/client/products/reviews/store";
 
 //Delivery Info Endpoitns
 export const GETDeliveryInfo: string = api + "api/client/user-info/delivery-info";

@@ -12,3 +12,7 @@
     
     overflow: hidden;
 }
+
+.image-grid {
+    gap: 1rem;
+}

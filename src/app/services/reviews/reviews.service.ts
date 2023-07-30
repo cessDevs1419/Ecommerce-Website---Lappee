@@ -3,7 +3,7 @@ import { ReviewList, Review } from 'src/assets/models/reviews';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 /* import { formatReviews } from 'src/app/utilities/response-utils'; */
-import { GETReviews, POSTComment } from '../endpoints';
+import { GETReviews, POSTReviews } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class ReviewsService {
     return this.http.get<ReviewList>(GETReviews + id);
   }
 
-  public postComment(data: FormData): Observable<any> {
-    return this.http.post(POSTComment, data, this.httpOptions);
+  public postReview(data: FormData): Observable<any> {
+    return this.http.post(POSTReviews, data, this.httpOptions);
   }
 }
