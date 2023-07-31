@@ -1,8 +1,9 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderContent } from 'src/assets/models/order-details';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastComponent } from '../../toast/toast.component';
 
 @Component({
   selector: 'app-review-form',
@@ -11,9 +12,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ReviewFormComponent {
   @Input() product: OrderContent;
+  @Output() activateToast = new EventEmitter<string[]>();
+  @Output() dismiss = new EventEmitter();
+
   @ViewChild('attachmentUpload') imgInput: ElementRef;
   rating: number = 0;
-  files: string[] = [];
+  files: File[] = [];
+  images: File[] = [];
 
   reviewForm = new FormGroup({
     reviewRating: new FormControl(0, Validators.required),
@@ -36,10 +41,16 @@ export class ReviewFormComponent {
   imgUpload(event: any): void{
     let img: File = event.target.files[event.target.files.length - 1];
     let reader = new FileReader();
+    this.files.push(img);
     reader.onload = (e: any) => {
-      this.files.push(e.target.result);
+      this.images.push(e.target.result);
     }
     reader.readAsDataURL(img);
+  }
+
+  dismissModal(): void {
+    console.log('dismiss from form');
+    this.dismiss.emit();
   }
 
   submitReview(): void {
@@ -49,16 +60,26 @@ export class ReviewFormComponent {
       formData.append('product_id', this.product.product_id);
       formData.append('rating', this.reviewRating?.value);
       formData.append('content', this.reviewContent?.value);
-      formData.append('hide_my_email', this.reviewAnonymous?.value ? 0 : 1);
+      formData.append('hide_my_email', this.reviewAnonymous?.value ? 1 : 0);
+
+      if(this.files){
+        this.files.forEach((file, index) => {
+          formData.append('images[]', file);
+          console.log(file);
+        });
+      }
+
 
       console.log(formData);
 
       this.reviewsService.postReview(formData).subscribe({
         next: (response: any) => {
           console.log('success');
+          this.activateToast.emit(['Successfully added!', 'Your review has been added.', 'default']);
         },
         error: (err: HttpErrorResponse) => {
           console.log(err);
+          this.activateToast.emit(['Action failed!', 'Please try again in a few moments.', 'negative']);
         }});
       }
     else {

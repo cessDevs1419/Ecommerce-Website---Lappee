@@ -101,7 +101,8 @@ export function formatReviewsDetails(response: any): Review[] | false {
     email: review.email,
     rating: review.rating,
     content: review.content,
-    reviewed_on: review.reviewed_on
+    reviewed_on: review.reviewed_on,
+    images: review.images
   }))
 }
 

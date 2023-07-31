@@ -99,9 +99,21 @@ gallery-image {
 }
 
 .review-image {
-    width: 6rem;
+    width: 10rem;
     height: auto;
-    padding: 0 1rem;
+}
+
+.attachment-gallery {
+    gap: 1rem;
+}
+
+.dropdown-menu-end-fix {
+    right:0;
+    left: auto;
+}
+
+.dropdown-item {
+    cursor: pointer;
 }
 
 @media screen and (min-width: 992px) {
