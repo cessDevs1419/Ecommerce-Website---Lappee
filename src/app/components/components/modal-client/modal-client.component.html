@@ -1,5 +1,9 @@
+
 <div class="modal fade" id="modal-client" tabindex="-1" #modal>
-    <div class="modal-dialog modal-lg modal-fullscreen-sm-down">
+    <div class="position-fixed vh-100 pe-none z-3 toast-container-parent m-5">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
+    <div class="modal-dialog modal-lg modal-fullscreen-sm-down modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <p class="modal-title fs-3 fw-bold">{{this.modalTitle}}</p>
@@ -7,7 +11,7 @@
             </div>
 
             <div class="modal-body" [ngSwitch]="this.mode"> 
-                <app-review-form *ngSwitchCase="'add-review'" [product]="this.product"></app-review-form>
+                <app-review-form *ngSwitchCase="'add-review'" [product]="this.product" (activateToast)="activateToast($event)" (dismiss)="dismiss()"></app-review-form>
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { OrderContent } from 'src/assets/models/order-details';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-modal-client',
@@ -13,10 +14,18 @@ export class ModalClientComponent {
   @Input() mode: string = "";
   modalTitle!: string;
 
+  toastTheme!: string;
+  toastHeader!: string;
+  toastContent!: string;
+  @ViewChild(ToastComponent) toast: ToastComponent;
+
+  modalEl: bootstrap.Modal;
+
   // review resources
   product!: OrderContent;
 
   ngOnInit(): void {
+    
    /*  switch (this.mode) {
       case "add-review":
         
@@ -25,6 +34,10 @@ export class ModalClientComponent {
       default:
         break;
     } */
+  }
+
+  ngAfterViewInit(): void {
+    this.modalEl = new bootstrap.Modal(this.modal.nativeElement);
   }
 
   addReview(item: OrderContent): void {
@@ -36,8 +49,19 @@ export class ModalClientComponent {
   }
 
   show(): void {
-    const modalShow = new bootstrap.Modal(this.modal.nativeElement);
-    modalShow.show();
+    this.modalEl.show();
+  }
+
+  dismiss(): void {
+    console.log('dismiss from modal');
+    this.modalEl.hide();
+  }
+
+  activateToast(data: string[]): void {
+    this.toastHeader = data[0];
+    this.toastContent = data[1];
+    this.toast.switchTheme(data[2]);
+    this.toast.show()
   }
  
 }

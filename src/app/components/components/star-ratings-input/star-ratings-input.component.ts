@@ -16,6 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class StarRatingsInputComponent implements ControlValueAccessor {
   private onChange: any = () => {};
   private onTouch: any = () => {};
+  private isClicked = false; // New variable to track click mode
 
   writeValue(obj: any): void {
     this.highlightedStar = obj;

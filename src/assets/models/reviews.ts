@@ -30,5 +30,6 @@ export interface Review {
     email: string,
     rating: string,
     content: string,
-    reviewed_on: string
+    reviewed_on: string,
+    images: string[]
 }

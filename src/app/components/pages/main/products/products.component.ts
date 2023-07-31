@@ -294,10 +294,20 @@ export class ProductsComponent {
 
     this.reviewService.deleteReview(formData).subscribe({
       next: (response: any) => {
-        console.log('success');
+        this.toastHeader = "Successful!";
+        this.toastContent = "Your review has been deleted.";
+        this.toast.switchTheme('default');
+        this.toast.show();
+
+        let reviewData = this.reviewService.getReviews(this.currentProduct.id);
+        reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
+        this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        this.toastHeader = "Error!";
+        this.toastContent = "Please try again in a few moments.";
+        this.toast.switchTheme('negative');
+        this.toast.show();
       }
     })
   }

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { Observable, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatOrderDetails } from 'src/app/utilities/response-utils';
@@ -17,6 +18,7 @@ export class OrdersComponent {
   mode: string;
   userOrders!: Observable<OrderDetail[]>;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
+
 
   constructor(private orderService: OrderService,
               private cartService: CartService) {}

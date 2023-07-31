@@ -52,3 +52,8 @@ export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-in
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
 export const GETOrderDetailByUser: string = api + "api/client/orders/user";
 export const POSTOrder: string = api + "api/client/orders/store";
+
+//Inquiry Endpoints
+export const GETInquiry: string = api + "api/admin/inquiry";
+export const GETInquiryById: string = api + "api/admin/inquiry/view/";
+export const POSTInquiry: string = api + "api/client/inquiry/store"
