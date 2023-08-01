@@ -107,18 +107,32 @@
                     (RefreshTable)="triggerRefreshTable()"
                 >
                 </app-product-form>
+                
+                <app-product-form
+                    *ngIf="EditDatabaseVariant"
+                    [formEditDatabaseVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="patchSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
+                
+                <app-product-form
+                    *ngIf="EditAdditionalVariant"
+                    [formEditAdditionalVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="patchSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
     </div>
     
-    <app-modal
-        modalId="deleteVariants"
-        modalTitle="DELETE VARIANT"
-        modalSubTitle="VARIANT CONTROL"
-    
-        [modalDeleteVariant]="true"
-        
-        [selectedRowData]="selectedRowData"
-    ></app-modal>
 </div>
+
 
 
 

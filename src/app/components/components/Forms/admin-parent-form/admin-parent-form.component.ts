@@ -29,6 +29,8 @@ export class AdminParentFormComponent {
 	AddVariant: boolean;
 	AdditionalVariant: boolean;
 	EditVariant: boolean;
+	EditAdditionalVariant: boolean;
+	EditDatabaseVariant: boolean;
 	
     toastContent: string = "";
     toastHeader: string = "";
@@ -56,9 +58,10 @@ export class AdminParentFormComponent {
             this.AddVariant = page === 'variant' && action === 'add';
 			this.EditVariant = page === 'variant' && action === 'edit';
 			this.AdditionalVariant = page === 'variant' && action === 'additional';
-
+			this.EditDatabaseVariant = page === 'variant' && action === 'edit/';
+			this.EditAdditionalVariant = page === 'variant' && action === 'edit/additional';
 			this.selectedRowData = id
-
+			
 		});
 	}
 	

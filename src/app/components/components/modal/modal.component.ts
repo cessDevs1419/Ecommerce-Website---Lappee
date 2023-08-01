@@ -16,6 +16,7 @@ export class ModalComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
 	@ViewChild('modalRef', { static: true }) modalRef!: ElementRef;
+
 	
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
@@ -39,13 +40,11 @@ export class ModalComponent {
     backdrop: string = 'true';
 	toastContent: string = "";
     toastHeader: string = "";
-    toastTheme: string = "default"; 
+    toastTheme: string = "default";  
     
-    selectedVariant: any;
 
-    
-    ngAfterViewInit() {
-        // Initialize the Bootstrap modal once the view is ready
+    onRowDataSelected(rowData: any) {
+        console.log('nagana', rowData)
     }
     
     asyncTask(): Promise<void> {
@@ -65,6 +64,7 @@ export class ModalComponent {
     
 	triggerRefreshTable(): void {
 		this.RefreshTable.emit();
+        console.log('nagana')
 	}
 
     

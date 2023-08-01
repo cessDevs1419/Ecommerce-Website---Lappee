@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductsService {
 
+  private newData: any;
   constructor(private http: HttpClient) { }
   
   httpOptions = {
@@ -25,6 +26,14 @@ export class ProductsService {
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
   
+  getNewProducts(){
+    return this.newData
+  }
+  setProducts(prod: Observable<any>): void {
+    this.newData = prod;
+    console.log('service', this.newData )
+  }
+
   public getAdminProducts(): Observable<ProductList> {
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');

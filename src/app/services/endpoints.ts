@@ -26,6 +26,10 @@ export const POSTProductsAdmin: string = api + "api/admin/products/store";
 export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
+//Variant Admin Endpoints
+export const PATCHVariantsAdmin: string = api + "api/admin/products/variants/edit";
+export const DELETEVariantsAdmin: string = api + "api/admin/products/variants/delete";
+
 //Account Endpoints
 export const POSTLogin: string = api + "auth/login";
 export const POSTRegister: string = api + "auth/register";

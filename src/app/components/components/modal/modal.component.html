@@ -52,19 +52,6 @@
                 >
                 </app-product-form> 
                 
-                <app-product-form
-                    *ngIf="modalDeleteVariant"
-                    [formDeleteVariant]="true"
-                    (DeleteData)="selectedVariant"
-                    [selectedRowData]="selectedVariant"
-                    (ProductSuccess)="deleteSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                    (CloseModal)="closeModal()"
-                >
-                </app-product-form> 
-                
                 <app-accounts-form
                     *ngIf="modalBanAccounts"
                     [formBanAccount]="true"

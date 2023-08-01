@@ -1,5 +1,9 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Variant } from 'src/assets/models/products';
+import { DELETEVariantsAdmin, PATCHVariantsAdmin } from '../endpoints';
 
 
 @Injectable({
@@ -7,22 +11,62 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class VariantsService {
   private variantsList: FormArray = this.formBuilder.array([]);
+  private editedvariantsList: FormArray = this.formBuilder.array([]);
   private variantData: any;
+  private databasevariantsList: any;
+  private additionalvariantsList: any;
+  private index: number;
   
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private http: HttpClient,
+    private formBuilder: FormBuilder) {
   }
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true'
+      //galing kay dell
+    })
+  };
+  
   getVariants(): FormArray {
       return this.variantsList;
+  }
+  
+  getEditedVariants(): FormArray {
+    return this.editedvariantsList;
+  }
+
+  
+  getIndex(){
+    return this.index
   }
   
   editVariants(): FormArray {
     return this.variantData;
   }
-  
-  setVariants(variants: FormArray): void {
-      this.variantData = variants;
+  editDatabaseVariants(): FormArray {
+    return this.databasevariantsList;
+}
+  editAdditionalVariants(): FormArray {
+    return this.additionalvariantsList;
   }
+
+  setVariants(variants: FormArray, index: number): void {
+      this.variantData = variants;
+      this.index = index
+  }
+  
+  setAdditionalVariants(variants: FormArray, index: number): void {
+    this.additionalvariantsList = variants;
+    this.index = index
+}
+  setDatabaseVariants(variants: FormArray, index: number): void {
+    this.databasevariantsList = variants;
+    this.index = index
+}
 
   createVariantForm(): FormGroup {
     return this.formBuilder.group({
@@ -37,6 +81,9 @@ export class VariantsService {
   
   addVariantToVariantsList(variantFormGroup: FormGroup): void {
       this.variantsList.push(variantFormGroup);
+  }
+  editVariantToVariantsList(variantFormGroup: FormGroup): void {
+    this.editedvariantsList.push(variantFormGroup);
   }
   
   stockHigherThanLimitValidator(control: FormGroup): { [key: string]: boolean } | null {
@@ -56,5 +103,26 @@ export class VariantsService {
     }
 
     return null;
-}
+  }
+  
+
+  patchProduct(data: FormData): Observable<any> {
+    return this.http.patch<Variant>(PATCHVariantsAdmin, data, this.httpOptions);
+  } 
+  
+
+  deleteVariants(prodId: number): Observable<any> {
+    return this.http.delete(DELETEVariantsAdmin, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+          id: prodId
+        }
+    })
+  }
+  
 }
