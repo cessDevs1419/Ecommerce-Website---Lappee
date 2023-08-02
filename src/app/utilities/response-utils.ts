@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
-import { Product, ProductList, Variant } from "src/assets/models/products";
+import { Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -209,14 +209,32 @@ export function productSortByName(productObservable: Observable<Product[]>, mode
 export function productSortByPrice(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
   if (mode == "ascending"){
     return productObservable.pipe(map((prods: Product[]) => {
-      return prods.sort((a: any, b: any) => a.price - b.price);
+      return prods.sort((a: any, b: any) => a.product_variants[0].price - b.product_variants[0].price);
     }));
   }
   if (mode == "descending"){
     return productObservable.pipe(map((prods: Product[]) => {
-      return prods.sort((a: any, b: any) => b.price - a.price);
+      return prods.sort((a: any, b: any) => b.product_variants[0].price - a.product_variants[0].price);
     }));
   }
   
   return productObservable;
+}
+
+export function orderSortByDate(orders: Observable<OrderDetail[]>, mode: string): Observable<OrderDetail[]> {
+  if (mode == "ascending"){
+    console.log('asc');
+    return orders.pipe(map((order: OrderDetail[]) => {
+      return order.sort((a: any, b: any) => Date.parse(a.ordered_on) - Date.parse(b.ordered_on));
+    }));
+  }
+  if (mode == "descending"){
+    console.log('desc');
+    return orders.pipe(map((order: OrderDetail[]) => {
+      console.log(order.sort((a: any, b: any) => Date.parse(b.ordered_on) - Date.parse(a.ordered_on)));
+      return order.sort((a: any, b: any) => Date.parse(b.ordered_on) - Date.parse(a.ordered_on));
+    }));
+  }
+
+  return orders;
 }

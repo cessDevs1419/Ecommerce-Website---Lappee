@@ -232,7 +232,7 @@ export class CartComponent {
         instance.next();
       }
       else {
-        instance.to(2);
+        instance.to(3);
       }
     }
     else {

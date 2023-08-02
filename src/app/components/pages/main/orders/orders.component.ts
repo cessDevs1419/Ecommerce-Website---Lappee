@@ -5,7 +5,7 @@ import { ModalClientComponent } from 'src/app/components/components/modal-client
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatOrderDetails } from 'src/app/utilities/response-utils';
+import { formatOrderDetails, orderSortByDate } from 'src/app/utilities/response-utils';
 import { OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-details';
 
 @Component({
@@ -16,6 +16,7 @@ import { OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-de
 export class OrdersComponent {
   Number = Number;
   mode: string;
+  orders: Observable<OrderDetail[]>;
   userOrders!: Observable<OrderDetail[]>;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
 
@@ -24,7 +25,8 @@ export class OrdersComponent {
               private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.userOrders = this.orderService.getOrderDetailByUser().pipe(map((response: any) => formatOrderDetails(response)));
+    this.orders = this.orderService.getOrderDetailByUser().pipe(map((response: any) => formatOrderDetails(response)));
+    this.userOrders = orderSortByDate(this.orders, 'descending');
   }
 
   calculateOrderPrice(order: OrderDetail): number {

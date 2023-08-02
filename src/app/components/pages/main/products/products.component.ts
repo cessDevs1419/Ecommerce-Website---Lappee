@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
 import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
@@ -52,7 +52,8 @@ export class ProductsComponent {
               public accountService: AccountsService,
               private reviewService: ReviewsService,
               private cdr: ChangeDetectorRef,
-              private gallery: Gallery) {}
+              private gallery: Gallery,
+              private router: Router) {}
 
   colorCurrent = {
     name: '',
@@ -199,7 +200,7 @@ export class ProductsComponent {
     console.log(this.productSize?.value);
   }
 
-  addToCart(): void {
+  addToCart(): boolean {
     let variantId = "";
     let details = "";
     if(!this.hasVariant){
@@ -221,14 +222,18 @@ export class ProductsComponent {
         this.toastContent = "The item has been added to your cart.";
         this.toast.switchTheme('default');
         this.toast.show();
+
+        return true;
       }
   
       else {
         console.log(this.productToCart.value)
         console.log("invalid order");
         this.productToCart.markAllAsTouched();
+        return false;
       }
     }
+    return false;
 
     // add to cart without variant
     /* else {
@@ -242,6 +247,10 @@ export class ProductsComponent {
     if(this.productToCart.valid){
       console.log(this.productToCart.value);
       console.warn('order submitted');
+      if(this.addToCart()){
+        this.router.navigate(['/cart']);
+      };
+      
     }
 
     else if(this.productToCart.invalid){

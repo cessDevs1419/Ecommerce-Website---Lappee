@@ -1,9 +1,9 @@
 <div *ngFor="let product of products | async | searchFilter: searchString" class="col-6 col-lg-4 col-xl-3 mb-3">
     <a [routerLink]="['/products', product.id]" class="text-reset text-decoration-none">
         <div class="card product-card h-100">
-            <div>
-                <span class="card-image-overlay px-2 py-1 mt-3">- 69%</span>
-                <img src="https://picsum.photos/250/350" class="card-img-top">
+            <div class="card-img-container d-flex align-items-center" [ngStyle]=" product.images[0] ? { 'background-image': 'url(' + product.images[0] + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
+                <!-- <span class="card-image-overlay px-2 py-1 mt-3">- 69%</span> -->
+                <!-- <img [src]="product.images[0] ? product.images[0] : 'https://picsum.photos/700'"> -->
             </div>
             <div class="card-body d-flex flex-column justify-content-between">
                 <div class="card-title fs-5">{{product.name}}</div>
