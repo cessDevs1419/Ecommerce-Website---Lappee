@@ -65,6 +65,7 @@ import { ContactusComponent } from './components/pages/main/contactus/contactus.
 import { ModalClientComponent } from './components/components/modal-client/modal-client.component';
 import { ReviewFormComponent } from './components/components/modal-forms-client/review-form/review-form.component';
 import { StarRatingsInputComponent } from './components/components/star-ratings-input/star-ratings-input.component';
+import { SearchComponent } from './components/pages/main/search/search.component';
 
 
 @NgModule({
@@ -122,7 +123,8 @@ import { StarRatingsInputComponent } from './components/components/star-ratings-
     ContactusComponent,
     ModalClientComponent,
     ReviewFormComponent,
-    StarRatingsInputComponent
+    StarRatingsInputComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -144,6 +146,7 @@ import { StarRatingsInputComponent } from './components/components/star-ratings-
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
       {path: 'contactus', component: ContactusComponent},
+      {path: 'search/:searchTerm', component: SearchComponent},
 
       //admin
       {
