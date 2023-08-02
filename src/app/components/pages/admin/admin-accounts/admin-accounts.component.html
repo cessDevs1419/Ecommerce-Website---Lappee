@@ -2,6 +2,9 @@
     <app-table
         tableTitle="REGISTERED USERS"
         subTitle="VALUED CUSTOMERS"
+        [tableHead]="true"
+        tableContainerClass="p-4"
+        [paginate]="true"
         
         [tableTools]="true"
         [searchBar]="true"
@@ -19,6 +22,7 @@
 
     <app-modal
         modalId="ban"
+        modalClass="modal-md"
         [modalTitle]="modalTitle"
         modalSubTitle="ACCOUNT MANAGEMENT"
         (RefreshTable)="refreshTableData()"

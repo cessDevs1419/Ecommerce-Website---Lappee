@@ -26,9 +26,11 @@ export class TableComponent {
 	//Table Title 
 	@Input() tableTitle: string;
 	@Input() subTitle: string;
+	@Input() tableHead!: boolean;
 	
 	//enable table header tools
 	@Input() tableTools!: boolean;
+	@Input() paginate!: boolean;
 	@Input() searchBar!: boolean;
 	@Input() Btntools!: boolean;
 	
@@ -59,6 +61,7 @@ export class TableComponent {
 	@Input() InputpageSize!: any[];
 	
 	//addClass to evey table element
+	@Input() tableContainerClass: string;
 	@Input() searchBarclass: string;
 	@Input() addBtnclass: string;
 	@Input() addSubBtnclass: string;

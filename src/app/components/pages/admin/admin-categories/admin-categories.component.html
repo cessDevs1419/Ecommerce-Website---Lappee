@@ -4,6 +4,9 @@
             <app-table
                 tableTitle="MAIN CATEGORIES"
                 subTitle="MANAGEMENT"
+                [tableHead]="true"
+                tableContainerClass="p-4"
+                [paginate]="true"
                 
                 [tableTools]="true"
                 [searchBar]="false"
@@ -30,6 +33,10 @@
             <app-table
                 tableTitle="SUB CATEGORIES"
                 subTitle="MANAGEMENT"
+                [tableHead]="true"
+                tableContainerClass="p-4"
+                [paginate]="true"
+                
                 [searchBar]="false"
                 [tableTools]="true"
                 [Btntools]="true"
@@ -59,7 +66,7 @@
         modalId="delete"
         modalTitle="DELETE CATEGORY"
         modalSubTitle="CATEGORY MANAGEMENT"
-    
+        modalClass="modal-md"
     
         [modalDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
@@ -72,7 +79,8 @@
         modalId="deleteSub"
         modalTitle="DELETE SUB CATEGORY"
         modalSubTitle="CATEGORY MANAGEMENT"
-    
+        modalClass="modal-md"
+        
         [modalDeleteSubCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"

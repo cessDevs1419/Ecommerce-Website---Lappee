@@ -6,7 +6,7 @@ import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
-import { OrderDetail, OrderList } from "src/assets/models/order-details";
+import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
 
 // Formatting
 
@@ -147,6 +147,52 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     id: data.id,
     number: data.number
   }))
+}
+
+export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
+  return response.data.map((data: AdminOrder) => ({
+    id: data.id,
+    user_id: data.user_id,
+    status: data.status,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    paid: data.paid,
+    tracking_no: data.tracking_no,
+    packed_date: data.packed_date,
+    shipped_date: data.shipped_date,
+    delivered_date: data.delivered_date,
+    total_price: data.total_price,
+    address_line_1: data.address_line_1,
+    address_line_2: data.address_line_2,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code
+  }))
+}
+
+export function formatAdminOrderDetail(response: AdminOrderDetailList): AdminOrderDetail {
+  let data = response.data;
+  let format: AdminOrderDetail = {
+    order_id: data.order_id,
+    user_id: data.user_id,
+    status: data.status,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    paid: data.paid,
+    tracking_no: data.tracking_no,
+    packed_date: data.packed_date,
+    shipped_date: data.shipped_date,
+    delivered_date: data.delivered_date,
+    total_price: data.total_price,
+    address_line_1: data.address_line_1,
+    address_line_2: data.address_line_2,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code,
+    order_contents: data.order_contents
+  }
+
+  return format
 }
 
 export function formatOrderDetails(response: OrderList): OrderDetail[] {

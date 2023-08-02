@@ -64,6 +64,9 @@
     <app-table
         tableTitle="PRODUCT LIST"
         subTitle="MANAGEMENT"
+        [tableHead]="true"
+        tableContainerClass="p-4"
+        [paginate]="true"
         
         [tableTools]="true"
         [searchBar]="true"
@@ -96,7 +99,8 @@
     modalId="delete"
     modalTitle="DELETE PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
-
+    modalClass="modal-md"
+    
     [modalDeleteProduct]="true"
     (RefreshTable)="refreshTableData()"
     [selectedRowData]="selectedRowData"

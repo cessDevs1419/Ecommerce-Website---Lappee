@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DELETEProductsAdmin, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  private newData: any;
-  constructor(private http: HttpClient) { }
+  private newData: Observable<Product[]>;
+  private productsSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(of([]));
+  constructor(private http: HttpClient) {
+    this.productsSubject.next(this.newData);
+  }
   
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,17 +24,19 @@ export class ProductsService {
     })
   };
   
+
   getProducts(){
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
   
-  getNewProducts(){
-    return this.newData
+  getNewProducts(): Observable<any> {
+    return this.productsSubject.asObservable().pipe(shareReplay(1));
   }
+
   setProducts(prod: Observable<any>): void {
     this.newData = prod;
-    console.log('service', this.newData )
+    this.productsSubject.next(this.newData);
   }
 
   public getAdminProducts(): Observable<ProductList> {
@@ -61,5 +66,21 @@ export class ProductsService {
           id: prodId
         }
     })
+  }
+  
+  removeDefaultVariantsOnEdit(value: string): void {
+    if (!this.newData) {
+      this.newData = of([]);
+    }
+
+    this.newData = this.newData.pipe(
+      map(products => {
+        return products.map((product: Product) => ({
+          ...product,
+          product_variants: product.product_variants.filter((variant: Variant) => value !== variant.variant_id)
+        }));
+      })
+    );
+    this.productsSubject.next(this.newData);
   }
 }

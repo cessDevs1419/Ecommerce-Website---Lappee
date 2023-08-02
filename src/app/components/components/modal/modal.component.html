@@ -4,8 +4,8 @@
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content">
+    <div class="modal-dialog  modal-dialog-centered  {{modalClass}}" >
+        <div class="modal-content ">
             <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
                 <div class="modal-title text-start">
                     <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
@@ -71,7 +71,18 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                </div> 
+                <div class="container m-auto overflow-y-auto" *ngIf="modalViewOrders">
+                    <app-table
+                        [tableHead]="false"
+                        tableContainerClass="p-0"
+                        [tableHeader]="['ITEM ID', 'ITEM NAME', 'QUANTITY', 'PRICE']"
+                        [tableRows]="['order_id']"
+                        [tableData]="ordersDetails"
+                    ></app-table>
+
+                </div>
+        </div> 
+
     </div>
 </div>
 

@@ -53,6 +53,11 @@ export const POSTDeliveryInfo: string = api + "api/client/user-info/delivery-inf
 export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-info/edit";
 
 //Order Endpoints
+//Admin
+export const GETOrder: string = api + "api/admin/products/orders";
+export const GETAdminOrderDetail: string = api + "api/admin/products/orders/details?order_id=";
+
+//Client
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
 export const GETOrderDetailByUser: string = api + "api/client/orders/user";
 export const POSTOrder: string = api + "api/client/orders/store";

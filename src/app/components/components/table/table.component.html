@@ -1,7 +1,7 @@
 
-<div class="table-container bg-white rounded-4 p-4 ">
+<div class="table-container bg-white rounded-4 {{tableContainerClass}}">
 
-    <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 ">
+    <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 " *ngIf="tableHead">
         <div class="row w-100 mx-0 ">
             <div class="col-lg-6 px-0">
                 <div class="table-title text-start">
@@ -138,7 +138,8 @@
                                 *ngIf="viewBtn"
                                 type="button" 
                                 class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#view"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#view"
                             >
                                 <i class="bi bi-eye fs-5"></i>
                             </button>
@@ -164,7 +165,7 @@
     </div>
 
 
-    <nav class="align-items-center row">
+    <nav class="align-items-center row" *ngIf="paginate">
     
         <div class="col-lg-6 d-flex">
             <label for="pageSize" class="mx-2 text-nowrap">Items per page:</label>

@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, map, of, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, combineLatest, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
 
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
@@ -58,23 +58,26 @@ export class ProductFormComponent {
 	deleteVariantForm: FormGroup;
 	restockProductForm: FormGroup;
     
-	//Display Categories to Select
+	
 	categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     edit_sub_categories!: Observable<AdminSubcategory[]>;
 	filteredSubCategories!: Observable<AdminSubcategory[]>;
     products!: Observable<Product[]>;
     products_sub!: Observable<Product[]>;
-
+    
+    variantsList: FormArray = this.formBuilder.array([]);
+    placeVariantTolist: any[] = [];
+    editedvariantsList: FormArray = this.formBuilder.array([]);
+    variantId: FormArray = this.formBuilder.array([]);
+    selectedDeleteVariant: Variant | undefined;
+    
     selectedSubCategory: null;
     hideselectedsub: boolean = true;
 	showForm: boolean = false;
     selectedVariants: any[] = [];
     selectedSubCategoryId: string;
-    variantsList: FormArray = this.formBuilder.array([]);
-    editedvariantsList: FormArray = this.formBuilder.array([]);
-    selectedDeleteVariant: Variant | undefined;
-    variantId: FormArray = this.formBuilder.array([]);
+    
     index: number;
     done: boolean;
     cancel: boolean = true; 
@@ -92,13 +95,11 @@ export class ProductFormComponent {
 	    private location: Location
     ) 
     {
-        this.products = this.product_service.getNewProducts();
-        this.selectedDeleteVariant = undefined;
-        this.variantId = this.formBuilder.array([]);
-        this.variantsList = this.variantService.getVariants();
-        this.editedvariantsList = this.variantService.getEditedVariants();
-        this.addVariantForm = this.variantService.createVariantForm();
-
+        //get variants
+        this.variantsList = this.variantService.getVariants()
+        //patch Variants to Form
+        
+        //products
 	    this.addProductForm = this.formBuilder.group({
 	        name: ['', Validators.required],
             category: ['', Validators.required],
@@ -110,15 +111,6 @@ export class ProductFormComponent {
             variants: this.variantsList,
 	    });
 	    
-        this.addVariantForm = this.formBuilder.group({
-            size: ['', Validators.required],
-            stock: ['', Validators.required],
-            stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required]], //Validators.pattern(/^\d+\.\d{1,2}$/)  
-            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-            color_title: [''],
-        },{ validators: this.stockHigherThanLimitValidator });
-        
 		this.editProductForm = this.formBuilder.group({
             name: [''],
             category: [''],
@@ -130,28 +122,29 @@ export class ProductFormComponent {
             variants: this.variantsList,
 	    });
 	    
-        this.editVariantForm = this.formBuilder.group({
-            size: ['', Validators.required],
-            stock: ['', Validators.required],
-            stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
-            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-            color_title: [''],
-        },{ validators: this.stockHigherThanLimitValidator });
-        
-        this.editDatabaseVariantForm = this.formBuilder.group({
-            variant_id: ['', Validators.required],
-            size: ['', Validators.required],
-            stock: ['', Validators.required],
-            stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
-            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-            color_title: [''],
-        },{ validators: this.stockHigherThanLimitValidator });
-	    
         this.deleteProductForm = new FormGroup({
             product_id: new FormControl('', Validators.required)
         });
+        
+        //variants
+        this.addVariantForm = this.formBuilder.group({
+            size: ['', Validators.required],
+            stock: ['', Validators.required],
+            stock_limit: ['', Validators.required],
+            price: [1.01, [Validators.required]], //Validators.pattern(/^\d+\.\d{1,2}$/)  
+            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+            color_title: ['', Validators.required],
+        },{ validators: this.stockHigherThanLimitValidator });
+        
+        this.editVariantForm = this.formBuilder.group({
+            variant_id: [''],
+            size: ['', Validators.required],
+            stock: ['', Validators.required],
+            stock_limit: ['', Validators.required],
+            price: [1.01, [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+            color_title: [''],
+        },{ validators: this.stockHigherThanLimitValidator });
         
         this.deleteVariantForm = new FormGroup({
             variant_id: new FormControl('', Validators.required)
@@ -172,6 +165,7 @@ export class ProductFormComponent {
                 return adminSubcategories.filter(subCategory => subCategory.id === selectedSubCategoryId);
             })
         );
+        
         const savedFormData = this.formDataService.getFormData();
         if (savedFormData) {
             this.addProductForm.patchValue(savedFormData);
@@ -193,15 +187,15 @@ export class ProductFormComponent {
         });
         
         
-        this.index = this.variantService.getIndex();
-        const variantFormGroup = this.variantService.editVariants();
-        const additionalvariantFormGroup = this.variantService.editAdditionalVariants();
-        const databaseVariantFormGroup = this.variantService.editDatabaseVariants();
-        this.editVariantForm.patchValue(variantFormGroup);
-        this.editVariantForm.patchValue(additionalvariantFormGroup);
-        this.editDatabaseVariantForm.patchValue(databaseVariantFormGroup);
+        const editVariantData = this.variantService.getVariantFromEditForm();
+
+        if (editVariantData) {
+            this.editVariantForm = editVariantData.form;
+            this.index = editVariantData.index;
+        }
         
-        
+        const selectedRowData = this.selectedRowData;
+        this.products
 	}
 
     //Validate
@@ -225,14 +219,6 @@ export class ProductFormComponent {
         return null;
     }
     
-    // isDecimal(value: number): boolean {
-    //     if (value === null) {
-    //         return false;
-    //     }
-    //     const valueString = value.toString();
-    //     return /^\d+\.\d{1,2}$/.test(valueString);
-    // }
-    
     isHexColor(color: string | null): boolean { 
         if (!color) return false;
         const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
@@ -253,7 +239,7 @@ export class ProductFormComponent {
         });
     }
     
-    //Add Variant
+    //Add Variant tools
     showForms(value: any) {
         switch(value){
             case 'edit' : 
@@ -271,10 +257,6 @@ export class ProductFormComponent {
     
     back() {
         this.location.back();
-        this.addProductForm.reset();
-        this.editProductForm.reset();
-        this.variantsList.clear();
-        this.editedvariantsList.clear();
     }
     
     cancelthis() {
@@ -297,67 +279,13 @@ export class ProductFormComponent {
         this.router.navigate(['/admin/product-management', 'product', 'edit']);
     }
 
-    async addProductVariants(): Promise<void> {
-        if (this.addVariantForm.valid) {
-            const newVariantFormGroup = this.formBuilder.group({
-                size: [this.addVariantForm.get('size')?.value, Validators.required],
-                stock: [this.addVariantForm.get('stock')?.value, Validators.required],
-                stock_limit: [this.addVariantForm.get('stock_limit')?.value, Validators.required],
-                price: [this.addVariantForm.get('price')?.value, Validators.required],
-                color: [this.addVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-                color_title: [this.addVariantForm.get('color_title')?.value],
-            });
-    
-            this.variantService.addVariantToVariantsList(newVariantFormGroup);
-            this.addVariantForm.reset();
-            this.addVariantForm.markAsPristine();
-            
-            const successVariants = {
-                head: 'Add Variant',
-                sub: 'Successfully added variants'
-            };
-            
-    
-            this.ProductSuccess.emit(successVariants);
-    
-            //await this.asyncTask();
-            //this.router.navigate(['/admin/product-management', 'product', 'add']);
-        } else {
-            this.addVariantForm.markAllAsTouched();
-            const emptyFields = [];
-    
-            for (const controlName in this.addVariantForm.controls) {
-                if (this.addVariantForm.controls.hasOwnProperty(controlName)) {
-                    const variantControl = this.addVariantForm.controls[controlName];
-                    if (variantControl.invalid) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        if (variantControl.errors?.['required']) {
-                            emptyFields.push(label + ' is required');
-                        }
-                        if (variantControl.errors?.['pattern']) {
-                            emptyFields.push(label + ' must be in the correct format');
-                        }
-                        if (variantControl.errors?.['stockNotHigherThanLimit']) {
-                            emptyFields.push('Stock should be higher than the Limit');
-                        }
-                    }
-                }
-            }
-    
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
-        
-            this.ProductError.emit(errorDataforProduct);
-        }
-    }
     
     //Place Variant to EditForm
     async editVariant(value: any, index: any): Promise<void>{
         
         this.index = index
         this.editVariantForm.patchValue({
+            variant_id: value.variant_id,
             size: value.size,
             stock: value.stock,
             stock_limit: value.stock_limit,
@@ -366,48 +294,12 @@ export class ProductFormComponent {
             color_title: value.color_title,
         });
         
-        this.variantService.setVariants(this.editVariantForm.value, this.index);
+        console.log(this.editVariantForm)
+        this.variantService.setVariantToEditForm(this.editVariantForm, index);
+        
         await this.asyncTask();
         this.router.navigate(['/admin/product-management', 'variant', 'edit']);
     }
-    
-    async editAdditionalVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        this.editVariantForm.patchValue({
-            variant_id: value.variant_id,
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-        
-        this.variantService.setAdditionalVariants(this.editVariantForm.value, this.index);
-        await this.asyncTask();
-        this.router.navigate(['/admin/product-management', 'variant', 'edit/additional']);
-    }
-    
-    async editDatabaseVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        this.editDatabaseVariantForm.patchValue({
-            variant_id: value.variant_id,
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-
-        this.variantService.setDatabaseVariants(this.editDatabaseVariantForm.value, this.index);
-        await this.asyncTask();
-        this.router.navigate(['/admin/product-management', 'variant', 'edit/', value.variant_id]);
-    }
-    
-
     
     //Delete Variant
     selectVariant(variant: Variant , index: number) {
@@ -456,19 +348,6 @@ export class ProductFormComponent {
                 }));
             })
         );
-    }
-    
-    removeDefaultVariantsOnEdit(value: string): void {
-
-        this.products = this.products.pipe(
-            map(products => {
-                return products.map(product => ({
-                ...product,
-                product_variants: product.product_variants.filter(variant => value !== variant.variant_id)
-                }));
-            })
-        );
-
     }
 
     
@@ -525,6 +404,8 @@ export class ProductFormComponent {
     
     
     //Submit Functions
+    
+    //submit products
     async onProductAddSubmit(): Promise<void> {
 
         let formData: any = new FormData();
@@ -555,11 +436,12 @@ export class ProductFormComponent {
             formData.append(`variants[${i}][color]`, variant.color);
             formData.append(`variants[${i}][color_title]`, variant.color_title);
         }
-
+        
         for (const value of formData.entries()) {
             console.log(`${value[0]}, ${value[1]}`);
         }
-    
+        console.log(variantsList)
+        
 
         
         if(this.addProductForm.valid){
@@ -642,7 +524,7 @@ export class ProductFormComponent {
     }
     
     async onProductEditSubmit(): Promise<void> {
-        await this.addProductVariants();
+        await this.onaddProductVariants();
 
         let formData: any = new FormData();
         formData.append('id', this.selectedRowData);
@@ -711,6 +593,92 @@ export class ProductFormComponent {
         this.router.navigate(['/admin/product-management']);
     }
     
+    onProductDeleteSubmit(): void {
+        this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
+            next: (response: any) => { 
+                console.log(response)
+                this.RefreshTable.emit();
+                this.CloseModal.emit();
+                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
+                this.deleteProductForm.reset();
+            },
+            error: (error: HttpErrorResponse) => {
+                const errorData = this.errorService.handleError(error);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.ProductError.emit(errorData);
+                } 
+                else if (errorData.errorMessage === 'Invalid Input') {
+                    const customErrorMessages = {
+                        errorMessage: 'Invalid Request',
+                        suberrorMessage: 'Product have variants',
+                    };
+                    this.ProductError.emit(customErrorMessages);
+                } 
+                else {
+                    this.ProductWarning.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+        
+    }
+
+    //submit variants
+    async onaddProductVariants(): Promise<void> {
+        if (this.addVariantForm.valid) {
+            const newVariantFormGroup = this.formBuilder.group({
+                size: [this.addVariantForm.get('size')?.value, Validators.required],
+                stock: [this.addVariantForm.get('stock')?.value, Validators.required],
+                stock_limit: [this.addVariantForm.get('stock_limit')?.value, Validators.required],
+                price: [this.addVariantForm.get('price')?.value, Validators.required],
+                color: [this.addVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+                color_title: [this.addVariantForm.get('color_title')?.value],
+            });
+    
+            this.variantService.addVariantToVariantsList(newVariantFormGroup);
+            this.addVariantForm.reset();
+            this.addVariantForm.markAsPristine();
+            
+            const successVariants = {
+                head: 'Add Variant',
+                sub: 'Successfully added variants'
+            };
+
+            this.ProductSuccess.emit(successVariants);
+    
+            //await this.asyncTask();
+            //this.router.navigate(['/admin/product-management', 'product', 'add']);
+        } else {
+            this.addVariantForm.markAllAsTouched();
+            const emptyFields = [];
+    
+            for (const controlName in this.addVariantForm.controls) {
+                if (this.addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const variantControl = this.addVariantForm.controls[controlName];
+                    if (variantControl.invalid) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        if (variantControl.errors?.['required']) {
+                            emptyFields.push(label + ' is required');
+                        }
+                        if (variantControl.errors?.['pattern']) {
+                            emptyFields.push(label + ' must be in the correct format');
+                        }
+                        if (variantControl.errors?.['stockNotHigherThanLimit']) {
+                            emptyFields.push('Stock should be higher than the Limit');
+                        }
+                    }
+                }
+            }
+    
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+        
+            this.ProductError.emit(errorDataforProduct);
+        }
+    }
+    
     async onVariantEditSubmit(){
         if(this.editVariantForm.valid){
             const editedVariant = {
@@ -758,204 +726,53 @@ export class ProductFormComponent {
         
     }
     
-    async onAdditionalVariantEditSubmit(){
-        if(this.editVariantForm.valid){
-            const editedVariant = {
-                size: this.editVariantForm.get('size')?.value,
-                price: this.editVariantForm.get('price')?.value,
-                stock: this.editVariantForm.get('stock')?.value,
-                stock_limit: this.editVariantForm.get('stock_limit')?.value,
-                color: this.editVariantForm.get('color')?.value,
-                color_title: this.editVariantForm.get('color_title')?.value,
-            };
-            
-            const index = this.index;
-            if (index !== undefined && index >= 0 && index < this.variantsList.length) {
-                this.variantsList.at(index).patchValue(editedVariant);
-            }
-            const productSuccess = {
-                head: 'Edit Variant',
-                sub: 'Successfully edited variant'
-            };
-            
-            this.ProductSuccess.emit(productSuccess);
-            
-            await this.asyncTask();
-            this.location.back();
-        }else{
-            this.editVariantForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.editVariantForm.controls) {
-                if ( this.editVariantForm.controls.hasOwnProperty(controlName)) {
-                    const productcontrol = this.editVariantForm.controls[controlName];
-                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
-            
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
 
-            this.ProductError.emit(errorDataforProduct);
-        }
-    }
     
-    async onDatabaseVariantEditSubmit() {
-        // if(this.editVariantForm.valid){
-        //     const editedVariant = {
-        //         size: this.editVariantForm.get('size')?.value,
-        //         price: this.editVariantForm.get('price')?.value,
-        //         stock: this.editVariantForm.get('stock')?.value,
-        //         stock_limit: this.editVariantForm.get('stock_limit')?.value,
-        //         color: this.editVariantForm.get('color')?.value,
-        //         color_title: this.editVariantForm.get('color_title')?.value,
-        //     };
+    // onProductRestockSubmit(): void {
+        
+    //     if(this.restockProductForm.valid){
+    //         const formData = this.restockProductForm.value;
+    //         console.log(this.restockProductForm.value);
+    //         this.ProductSuccess.emit(this.productSuccessMessage +this.restockProductForm.value.product_name);
+    //         this.restockProductForm.reset();
             
-            
-        //     console.log(editedVariant)
-        //     console.log(this.variantsList, this.index)
-            
-        //     const index = this.index;
-        //     if (index !== undefined && index >= 0 && index < this.variantsList.length) {
-        //         this.variantsList.at(index).patchValue(editedVariant);
-        //     }
-        //     const productSuccess = {
-        //         head: 'Edit Variant',
-        //         sub: 'Successfully edited variant'
-        //     };
-            
-        //     this.ProductSuccess.emit(productSuccess);
-            
-        //     await this.asyncTask();
-        //     this.router.navigate(['/admin/product-management', 'product', 'edit/']);
-        // }else{
-        //     this.editVariantForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.editVariantForm.controls) {
-        //         if ( this.editVariantForm.controls.hasOwnProperty(controlName)) {
-        //             const productcontrol = this.editVariantForm.controls[controlName];
-        //             if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
-        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //                 emptyFields.push(label);
-        //             }
-        //         }
-        //     }
-            
-        //     const errorDataforProduct = {
-        //         errorMessage: this.errorMessage,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
+    //         // let formData: any = new FormData();
+    //         // formData.append('name', this.restockProductForm.get('product_name')?.value);
+    //         // formData.append('stock', this.restockProductForm.get('product_quantity')?.value);
+    //         // formData.append('stock-limit', this.restockProductForm.get('product_quantity_limit')?.value);
 
-        //     this.ProductError.emit(errorDataforProduct);
-        // }
-        
-        const newVariantFormGroup = this.formBuilder.group({
-            variant_id: [this.selectedRowData],
-            size: [this.editDatabaseVariantForm.get('size')?.value, Validators.required],
-            stock: [this.editDatabaseVariantForm.get('stock')?.value, Validators.required],
-            stock_limit: [this.editDatabaseVariantForm.get('stock_limit')?.value, Validators.required],
-            price: [this.editDatabaseVariantForm.get('price')?.value, Validators.required],
-            color: [this.editDatabaseVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-            color_title: [this.editDatabaseVariantForm.get('color_title')?.value],
-        });
-        
-        this.variantService.editVariantToVariantsList(newVariantFormGroup);
-        this.editDatabaseVariantForm.reset();
-        this.editDatabaseVariantForm.markAsPristine();
-        
-        this.removeDefaultVariantsOnEdit(this.selectedRowData);
-        console.log(this.selectedRowData)
-        const productSuccess = {
-            head: 'Edit Variant',
-            sub: 'Successfully edited variant'
-        };
-        
-        this.ProductSuccess.emit(productSuccess);
-        
-        await this.asyncTask();
-        this.location.back();
-
-    }
-    
-    onProductDeleteSubmit(): void {
-        this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
-            next: (response: any) => { 
-                console.log(response)
-                this.RefreshTable.emit();
-                this.CloseModal.emit();
-                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
-                this.deleteProductForm.reset();
-            },
-            error: (error: HttpErrorResponse) => {
-                const errorData = this.errorService.handleError(error);
-                if (errorData.errorMessage === 'Unexpected Error') {
-                    this.ProductError.emit(errorData);
-                } 
-                else if (errorData.errorMessage === 'Invalid Input') {
-                    const customErrorMessages = {
-                        errorMessage: 'Invalid Request',
-                        suberrorMessage: 'Product have variants',
-                    };
-                    this.ProductError.emit(customErrorMessages);
-                } 
-                else {
-                    this.ProductWarning.emit(errorData);
-                }
-                return throwError(() => error); 
-            }
-        });
-        
-    }
-    
-    onProductRestockSubmit(): void {
-        
-        if(this.restockProductForm.valid){
-            const formData = this.restockProductForm.value;
-            console.log(this.restockProductForm.value);
-            this.ProductSuccess.emit(this.productSuccessMessage +this.restockProductForm.value.product_name);
-            this.restockProductForm.reset();
+    //         // for(const value of formData.entries()){
+    //         //     console.log(`${value[0]}, ${value[1]}`);
+    //         // }
             
-            // let formData: any = new FormData();
-            // formData.append('name', this.restockProductForm.get('product_name')?.value);
-            // formData.append('stock', this.restockProductForm.get('product_quantity')?.value);
-            // formData.append('stock-limit', this.restockProductForm.get('product_quantity_limit')?.value);
+    //         // this.product_service.postProduct(formData).subscribe({
+    //         //     next: (response: any) => { 
+    //         //         console.log(response);
+    //         //         this.ProductSuccess.emit("Product "+this.restockProductForm.value.product_name);
+    //         //         this.restockProductForm.reset();
+    //         //     },
+    //         //     error: (error: HttpErrorResponse) => {
+    //         //         return throwError(() => error)
+    //         //     }
+    //         // });
+        
+    //     }else{
+    //         this.restockProductForm.markAllAsTouched();
+    //         const emptyFields = [];
+    //         for (const controlName in this.restockProductForm.controls) {
+    //             if (this.restockProductForm.controls.hasOwnProperty(controlName) && this.restockProductForm.controls[controlName].errors?.['required']) {
+    //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+    //                 emptyFields.push(label);
+    //             }
+    //         }
 
-            // for(const value of formData.entries()){
-            //     console.log(`${value[0]}, ${value[1]}`);
-            // }
-            
-            // this.product_service.postProduct(formData).subscribe({
-            //     next: (response: any) => { 
-            //         console.log(response);
-            //         this.ProductSuccess.emit("Product "+this.restockProductForm.value.product_name);
-            //         this.restockProductForm.reset();
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         return throwError(() => error)
-            //     }
-            // });
-        
-        }else{
-            this.restockProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.restockProductForm.controls) {
-                if (this.restockProductForm.controls.hasOwnProperty(controlName) && this.restockProductForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
-                }
-            }
-
-            const errorData = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
-            this.ProductError.emit(errorData);
-        }
+    //         const errorData = {
+    //             errorMessage: this.errorMessage,
+    //             suberrorMessage: emptyFields.join(', ')
+    //         };
+    //         this.ProductError.emit(errorData);
+    //     }
         
         
-    }
+    // }
 }

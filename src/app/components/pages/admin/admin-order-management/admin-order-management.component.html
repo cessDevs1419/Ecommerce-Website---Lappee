@@ -2,11 +2,33 @@
     <app-table
         tableTitle="TRACK ORDERS"
         subTitle="STATUS AND TRACK ORDER LIST"
+        [tableHead]="true"
+        tableContainerClass="p-4"
+        [paginate]="true"
         
         [tableTools]="true"
         [searchBar]="true"
-
-        [tableHeader]="['ORDER ID','COURIER','TRACKING NO', 'DATE TO DELIVER', 'STATUS', 'ACTION']"
+        [tableAction]="true"
+        [editBtn]="true"
+        [viewBtn]="true"
+        
+        [tableHeader]="['ORDER ID', 'PLACED ON', 'STATUS']"
+        [tableRows]="['id', 'created_at', 'status' ]"
+        [tableData]="orders"
+        (rowDataSelected)="onRowDataSelected($event)"
         
     ></app-table>
 </div>
+
+
+
+<app-modal
+    modalId="view"
+    modalTitle="ORDER DETAILS"
+    modalSubTitle="ADDITIONAL PARCEL INFORMATION"
+    modalClass="modal-dialog-scrollable modal-lg "
+        
+    [modalViewOrders]="true"
+    (RefreshTable)="refreshTableData()"
+    [selectedRowData]="selectedRowData"
+></app-modal>

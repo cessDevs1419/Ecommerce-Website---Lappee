@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, GETOrderDetailByUser, POSTOrder } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder } from '../endpoints';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,7 +18,18 @@ export class OrderService {
   };
   
   constructor(private http: HttpClient) { }
+  
+  getAdminOrders(): Observable<any> {
+    return this.http.get(GETOrder);
+  }
+  
+  getAdminOrderDetail(orderId: string): Observable<any> {
+    return this.http.get(GETAdminOrderDetail+ orderId);
+    
+  }
 
+
+  
   getOrderDetail(): Observable<any> {
     return this.http.get(GETOrderDetail);
   }
