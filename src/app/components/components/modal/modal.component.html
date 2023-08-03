@@ -1,4 +1,4 @@
-<div class="modal fade" id={{modalId}}  tabindex="-1" >
+<div class="modal fade" id={{modalId}}  tabindex="-1" #modalRef>
     
     <div class="position-relative w-100 mt-3">
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
@@ -71,7 +71,17 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                
+                <div class="container m-auto overflow-y-auto" *ngIf="modalData">
+                    <app-table
+                        [tableHead]="false"
+                        [paginate]="false"
+                        tableContainerClass="p-0"
+                        [tableHeader]="['ITEM ID', 'QUANTITY', 'PRICE']"
+                        [tableRows]="['product_id', 'quantity', 'sub_price']"
+                        [tableData]="modalData"
+                        >
+                    </app-table>
+                </div>
         </div> 
 
     </div>

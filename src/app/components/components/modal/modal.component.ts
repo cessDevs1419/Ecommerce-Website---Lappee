@@ -23,7 +23,7 @@ export class ModalComponent {
 	//Delete Item
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
-	@ViewChild('modalRef', { static: true }) modalRef!: ElementRef;
+	@ViewChild('modalRef') modalRef!: ElementRef;
 
 
     
@@ -86,7 +86,6 @@ export class ModalComponent {
     
     async closeModal() {
         await this.asyncTask();
-    
     }
 
 	triggerRefreshTable(): void {

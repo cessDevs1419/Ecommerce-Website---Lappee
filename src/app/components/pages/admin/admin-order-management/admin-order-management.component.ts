@@ -55,6 +55,3 @@ export class AdminOrderManagementComponent {
 
     }
 }
-// @ViewChild('modalRef') modalRef!: ElementRef;
-// let modal = new bootstrap.Modal(this.modalRef.nativeElement);
-//  modal.show()

@@ -22,7 +22,7 @@
 
 
 
-<!-- <app-modal
+<app-modal
     modalId="view"
     modalTitle="ORDER DETAILS"
     modalSubTitle="ADDITIONAL PARCEL INFORMATION"
@@ -32,40 +32,8 @@
     (RefreshTable)="refreshTableData()"
     [selectedRowData]="selectedRowData"
     [modalData]="ordersContents$"
-></app-modal> -->
+></app-modal>
 
 
 
 
-<div class="modal fade" id="view"  tabindex="-1" >
-    
-    
-    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
-        <div class="modal-content ">
-            <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
-                <div class="modal-title text-start">
-                    <h1 class="modal-title fs-4 fw-bolder" >ORDER DETAILS</h1>
-                    <div class="modal-sub-title text-dark-emphasis fs-6">ADDITIONAL PARCEL INFORMATION</div>
-                </div>
-                
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            
-            </div>
-            <hr class="divider m-0 mb-3">
-            
-            <div class="container m-auto overflow-y-auto" >
-                <app-table
-                    [tableHead]="false"
-                    [paginate]="false"
-                    tableContainerClass="p-0"
-                    [tableHeader]="['ITEM ID', 'QUANTITY', 'PRICE']"
-                    [tableRows]="['product_id', 'quantity', 'sub_price']"
-                    [tableData]="ordersContents$" 
-                    >
-                </app-table>
-            </div>
-
-        </div> 
-
-    </div>
-</div>
