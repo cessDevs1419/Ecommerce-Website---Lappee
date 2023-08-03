@@ -12,5 +12,5 @@
         </p>
     </td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.price}}</td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{this.cartItem.quantity}}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'" class="td-quantity">{{this.cartItem.quantity}}</td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td>

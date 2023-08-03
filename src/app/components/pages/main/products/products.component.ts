@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
-import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition } from 'ng-gallery';
+import { Gallery, GalleryItem, GalleryRef, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
@@ -41,6 +41,10 @@ export class ProductsComponent {
   reviews!: Observable<ReviewItem>;
   reviewsList!: Observable<Review[]>
 
+  navsubscription: any;
+
+  galleryRef: GalleryRef = this.gallery.ref('product-images');
+
   @ViewChild(ToastComponent) toast: ToastComponent;
 
   constructor(private fb: FormBuilder, 
@@ -53,7 +57,8 @@ export class ProductsComponent {
               private reviewService: ReviewsService,
               private cdr: ChangeDetectorRef,
               private gallery: Gallery,
-              private router: Router) {}
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {}
 
   colorCurrent = {
     name: '',
@@ -80,21 +85,48 @@ export class ProductsComponent {
   //get commentShowUser() { return this.postComment.get('showUser') }
 
   ngOnInit() {
+    
+    // initialize product
+    // moved to constructor to allow for reloading
+    //this.initProducts();
+
+    this.navsubscription = this.activatedRoute.params.subscribe(params => {
+      
+      this.colorVariants = [];
+      this.initProducts();
+    })
+
+    // initialize gallery
+    this.bpObserver.observe(['(min-width: 992px)']).subscribe((res: any) => {
+      if(res.matches) {
+       this.position = ThumbnailsPosition.Left;
+      }
+
+      else {
+        this.position = ThumbnailsPosition.Bottom;
+      }
+    });
+    
+  }
+
+  initProducts(): void {
+    this.galleryRef.reset();
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.productMatch = filterProductsById(this.productId, this.products);
     
+   
+
     // get local array copy of product observable
     this.productMatch.subscribe((product: Product[]) => {
       if(product.length > 0){
         this.currentProduct = product[0];
         this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
-
-        const galleryRef = this.gallery.ref('product-images'); 
+        
         // initialize gallerize
         product[0].images.forEach((url: string) => {
           console.log(url);
-          galleryRef.addImage({src: url, thumb: url});
+          this.galleryRef.addImage({src: url, thumb: url});
         });
 
         console.log(this.imgArray);
@@ -132,19 +164,8 @@ export class ProductsComponent {
 
       this.cdr.detectChanges();
     });
-
-    // initialize gallery
-    this.bpObserver.observe(['(min-width: 992px)']).subscribe((res: any) => {
-      if(res.matches) {
-       this.position = ThumbnailsPosition.Left;
-      }
-
-      else {
-        this.position = ThumbnailsPosition.Bottom;
-      }
-    });
-    
   }
+  
 
   initVariants(): void {
     for(let variantColor of this.currentProduct.product_variants){
@@ -213,7 +234,7 @@ export class ProductsComponent {
           }
         }
         
-        details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
+        details = "Color: " + this.colorCurrent.name + " | Size: " + this.sizeCurrent;
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString(), this.currentProduct.images[0]);
         console.warn('added to cart');

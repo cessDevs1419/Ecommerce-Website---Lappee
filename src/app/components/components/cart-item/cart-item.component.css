@@ -11,3 +11,7 @@ td {
     padding: .5rem 0 .5rem .5rem;
     vertical-align: middle;
 }
+
+.td-quantity {
+    text-align: center;
+}
