@@ -5,7 +5,6 @@ import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrderDetail, formatProducts } from 'src/app/utilities/response-utils';
-import { error } from 'jquery';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';

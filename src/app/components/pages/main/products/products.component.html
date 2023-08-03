@@ -130,31 +130,40 @@
             Loading...
         </p>
         <div *ngIf="(this.reviewsList | async) as reviews">
-            <div class="review-comment p-3 border-top" *ngFor="let review of reviews">
-                <div class="row d-flex flex-row space-between">
-                    <div class="col d-flex flex-column">
-                        <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow"></app-star-ratings>
-                        <div class="text-muted">By {{review.email}}</div>
-                    </div>
-                    <div class="col text-end">
-                        <p class="m-0">{{review.reviewed_on}}</p>
-                        <div *ngIf="(this.accountService.getLoggedUser() | async) as user">
-                            <div class="dropdown">
-                                <span class="fs-4 m-0" data-bs-toggle="dropdown" *ngIf="user.user_id == review.user_id"><i class="bi bi-three-dots"></i></span>
-    
-                                <ul class="dropdown-menu dropdown-menu-end-fix">
-                                    <li (click)="deleteReview(review.review_id)"><p class="dropdown-item m-0">Delete Review</p></li>
-                                </ul>
+            <div *ngIf="reviews.length >= 1">
+                <div class="review-comment p-3 border-top" *ngFor="let review of reviews">
+                    <div class="row d-flex flex-row space-between">
+                        <div class="col d-flex flex-column">
+                            <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow"></app-star-ratings>
+                            <div class="text-muted">By {{review.email}}</div>
+                        </div>
+                        <div class="col text-end">
+                            <p class="m-0 mb-1">{{review.reviewed_on}}</p>
+                            <div *ngIf="(this.accountService.getLoggedUser() | async) as user">
+                                <p class="m-0 fs-6 trash-icon" *ngIf="user.user_id == review.user_id" data-bs-toggle="tooltip" data-bs-title="Delete Review" (click)="deleteReview(review.review_id)"><i class="bi bi-trash me-2"></i>Delete Review</p>
+                                <!-- <div class="dropdown">
+                                    <span class="fs-4 m-0" data-bs-toggle="dropdown" *ngIf="user.user_id == review.user_id"><i class="bi bi-three-dots"></i></span>
+        
+                                    <ul class="dropdown-menu dropdown-menu-end-fix">
+                                        <li (click)="deleteReview(review.review_id)"><p class="dropdown-item m-0">Delete Review</p></li>
+                                    </ul>
+                                </div> -->
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mt-3">{{review.content}}</div>
-                <div class="mt-3 attachment-gallery d-flex flex-wrap" gallerize="{{review.review_id}}">
-                    <img *ngFor="let image of review.images" class="review-image" [src]="image" [attr.imageSrc]="image">
+                    <div class="mt-3">{{review.content}}</div>
+                    <div class="mt-3 attachment-gallery d-flex flex-wrap" gallerize="{{review.review_id}}">
+                        <img *ngFor="let image of review.images" class="review-image" [src]="image" [attr.imageSrc]="image">
+                    </div>
                 </div>
             </div>
+            <div *ngIf="reviews.length === 0">
+                <p>
+                    There are currently no reviews for this item.
+                </p>
+            </div>
         </div>
+        
 
        <!--  <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
             <form [formGroup]="postComment">
