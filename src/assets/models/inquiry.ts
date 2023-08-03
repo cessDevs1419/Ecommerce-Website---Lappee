@@ -1,7 +1,7 @@
 export interface InquiryList {
   success: string,
   message: string,
-  data: Inquiry,
+  data: Inquiry[],
 }
 
 export interface Inquiry {
@@ -12,4 +12,10 @@ export interface Inquiry {
   created_at: string,
   updated_at: string,
   is_read: boolean
+}
+
+export interface InquiryContentList {
+  success: string,
+  message: string,
+  data: Inquiry
 }
