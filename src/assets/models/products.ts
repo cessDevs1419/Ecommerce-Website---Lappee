@@ -29,7 +29,8 @@ export interface CartItem {
     variant: string,
     variant_details: string,
     quantity: number
-    price: string
+    price: string,
+    image_url: string,
 }
 
 export interface ColorVariant {

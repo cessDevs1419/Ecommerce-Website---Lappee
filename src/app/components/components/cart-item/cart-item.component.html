@@ -4,7 +4,7 @@
             <input class="form-check-input" type="checkbox" value="true" (change)="emit()">
         </div>
     </td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'"><img class="cart-item-img" src="https://picsum.photos/720/1080"></td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'"><img class="cart-item-img" [src]="this.cartItem.image_url"></td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
         <p class="fw-bold m-0">{{this.cartItem.product.name}}</p> 
         <p *ngIf="this.cartItem.variant">

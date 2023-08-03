@@ -215,7 +215,7 @@ export class ProductsComponent {
         
         details = "Color: " + this.colorCurrent.name + ", Size: " + this.sizeCurrent;
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString());
+        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString(), this.currentProduct.images[0]);
         console.warn('added to cart');
 
         this.toastHeader = "Successful!";
@@ -243,7 +243,7 @@ export class ProductsComponent {
     } */
   }
 
-  onSubmit(): void {
+  orderNow(): void {
     if(this.productToCart.valid){
       console.log(this.productToCart.value);
       console.warn('order submitted');

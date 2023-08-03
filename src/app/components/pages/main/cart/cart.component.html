@@ -216,7 +216,7 @@
                 <div class="carousel-item">
                     
                         <div class="row">
-                            <p class="fs-2 fw-bold m-0 table-group p-3">Order Summary ( {{orderList.length}} item/s )</p>
+                            <p class="fs-2 fw-bold m-0 table-group p-3 ms-3">Order Summary ( {{orderList.length}} {{orderList.length > 1 ? "items" : "item"}} )</p>
                             <div class="col-md-8">
                                 <div class="p-3 pb-1 table-group mt-3">
                                     <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{orderList.length}} )</p>
@@ -226,7 +226,7 @@
                                         <div class="row d-flex flex-row justify-content-between mt-3" *ngFor="let item of orderList">
                                             <div class="col-8 text-start d-flex flex-row align-items-center">
                                                 <div>
-                                                    <img src="https://picsum.photos/500" class="img-fluid-sm">
+                                                    <img [src]="item.image_url" class="img-fluid-sm">
                                                 </div>
                                                 <div class="ms-3">
                                                     <p class="fw-bold fs-5 m-0">{{item.product.name}}</p>

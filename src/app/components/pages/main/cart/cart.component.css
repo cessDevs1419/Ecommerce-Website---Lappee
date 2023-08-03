@@ -43,15 +43,8 @@ label {
     cursor: pointer;
 }
 
-label:has( ~ input){
-    background-color: red;
-}
-
 input[type=file] {
     display: none;
-}
-
-.img-fluid {
 }
 
 .img-fluid-sm {

@@ -10,14 +10,15 @@ export class CartService {
 
   constructor() { }
 
-  addToCart(product: Product, variant: string, variant_details: string, quantity: number, price: string): void {
+  addToCart(product: Product, variant: string, variant_details: string, quantity: number, price: string, imgurl: string): void {
     let duplicate = -1;
     let cartItem: CartItem = {
       product: product,
       variant: variant,
       variant_details: variant_details,
       quantity: quantity,
-      price: price
+      price: price,
+      image_url: imgurl
     }
     // check for duplicates if items is not null
     if(this.items.length != 0){
@@ -34,23 +35,8 @@ export class CartService {
           console.log('false, no duplicates')
         }
       })
-
-      /* for(let i = 0; i <= this.items.length; i++){
-        console.log("Checking: " + cartItem.product + " " + cartItem.variant + " | " + this.items[i].product + " " + this.items[i].variant);
-
-        if((this.items[i]) && (this.items[i].product === product) && (this.items[i].variant === variant)){
-          console.log(" true, duplicate")
-          duplicate = i;
-          break;
-        }
-
-        else {
-          console.log('no duplicates');
-        }
-      } */
     }
     
-    // no duplicates
     if(duplicate == -1){
       this.items.push(cartItem);
     }
