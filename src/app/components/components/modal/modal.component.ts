@@ -2,9 +2,13 @@ import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, View
 import { ToastComponent } from '../toast/toast.component';
 import * as bootstrap from 'bootstrap'; 
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
-import { AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
+import { AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatAdminOrderDetail } from 'src/app/utilities/response-utils';
+import { formatAdminOrderDetail, formatProducts } from 'src/app/utilities/response-utils';
+import { error } from 'jquery';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Product } from 'src/assets/models/products';
+import { ProductsService } from 'src/app/services/products/products.service';
 
 
 @Component({
@@ -21,8 +25,7 @@ export class ModalComponent {
 	@ViewChild(ToastComponent) toast: ToastComponent;
 	@ViewChild('modalRef', { static: true }) modalRef!: ElementRef;
 
-	ordersDetails!: Observable<AdminOrderDetail>;
-    orderContents!:Observable<AdminOrderContent>;
+
     
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
@@ -42,6 +45,7 @@ export class ModalComponent {
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
+	@Input() modalData!: Observable<any>;
 	
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
@@ -54,42 +58,21 @@ export class ModalComponent {
 
 	private refreshData$ = new Subject<void>();
 
+
     
     constructor(
 		private service: OrderService,
+		private product_service: ProductsService
 	) {
 	
 	}
 
-
+	ngOnInit(): void{
+	    if(this.modalData){
+            console.log(this.modalData)
+	    }
+	}
 	
-    ngOnChanges(): void {
-        if (this.selectedRowData) {
-            this.loadData();
-            
-        }
-    }
-    
-    private loadData() {
-        // this.ordersDetails = this.refreshData$.pipe(
-        //     startWith(undefined), 
-        //     switchMap(() => this.service.getAdminOrderDetail(this.selectedRowData.id)),
-        //     map((Response: any) => formatAdminOrderDetail(Response))
-        // );
-        
-        this.ordersDetails = this.service.getAdminOrderDetail(this.selectedRowData.id).pipe(
-            switchMap((response: any) => {
-                const formattedData = formatAdminOrderDetail(response);
-                return of(formattedData); 
-            }),
-            tap((formattedData: any) => {
-                // Perform additional actions or computations based on formattedData
-                console.log(formattedData); // Example: Log the formatted data
-            })
-        );
-        
-        console.log(this.ordersDetails)
-    }
     
     
     asyncTask(): Promise<void> {

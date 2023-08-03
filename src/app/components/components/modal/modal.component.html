@@ -71,16 +71,7 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                <div class="container m-auto overflow-y-auto" *ngIf="modalViewOrders">
-                    <app-table
-                        [tableHead]="false"
-                        tableContainerClass="p-0"
-                        [tableHeader]="['ITEM ID', 'ITEM NAME', 'QUANTITY', 'PRICE']"
-                        [tableRows]="['order_id']"
-                        [tableData]="ordersDetails"
-                    ></app-table>
-
-                </div>
+                
         </div> 
 
     </div>

@@ -167,29 +167,26 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
   }))
 }
 
-export function formatAdminOrderDetail(response: AdminOrderDetailList): AdminOrderDetail {
-  let data = response.data;
-  let format: AdminOrderDetail = {
-    order_id: data.order_id,
-    user_id: data.user_id,
-    status: data.status,
-    created_at: data.created_at,
-    updated_at: data.updated_at,
-    paid: data.paid,
-    tracking_no: data.tracking_no,
-    packed_date: data.packed_date,
-    shipped_date: data.shipped_date,
-    delivered_date: data.delivered_date,
-    total_price: data.total_price,
-    address_line_1: data.address_line_1,
-    address_line_2: data.address_line_2,
-    city: data.city,
-    province: data.province,
-    zip_code: data.zip_code,
-    order_contents: data.order_contents
-  }
-
-  return format
+export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDetail {
+  return {
+      order_id: data.data.order_id,
+      user_id: data.data.user_id,
+      status: data.data.status,
+      created_at: data.data.created_at,
+      updated_at: data.data.updated_at,
+      paid: data.data.paid,
+      tracking_no: data.data.tracking_no,
+      packed_date: data.data.packed_date,
+      shipped_date: data.data.shipped_date,
+      delivered_date: data.data.delivered_date,
+      total_price: data.data.total_price,
+      address_line_1: data.data.address_line_1,
+      address_line_2: data.data.address_line_2,
+      city: data.data.city,
+      province: data.data.province,
+      zip_code: data.data.zip_code,
+      order_contents: data.data.order_contents
+  };
 }
 
 export function formatOrderDetails(response: OrderList): OrderDetail[] {
