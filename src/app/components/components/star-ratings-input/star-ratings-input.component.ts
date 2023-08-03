@@ -36,7 +36,7 @@ export class StarRatingsInputComponent implements ControlValueAccessor {
   highlightedStar: number | null = null;
 
   isStarHighlighted(index: number): boolean {
-    return this.highlightedStar !== null && index <= this.highlightedStar;
+    return this.highlightedStar !== null && index < this.highlightedStar;
   }
 
   highlightStar(index: number): void {
@@ -48,4 +48,5 @@ export class StarRatingsInputComponent implements ControlValueAccessor {
     this.onChange(rating);
     this.onTouch();
   }
+
 }

@@ -4,6 +4,7 @@ import { OrderContent } from 'src/assets/models/order-details';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from '../../toast/toast.component';
+import { StarRatingsInputComponent } from '../../star-ratings-input/star-ratings-input.component';
 
 @Component({
   selector: 'app-review-form',
@@ -15,6 +16,7 @@ export class ReviewFormComponent {
   @Output() activateToast = new EventEmitter<string[]>();
   @Output() dismiss = new EventEmitter();
 
+  @ViewChild(StarRatingsInputComponent) stars: StarRatingsInputComponent;
   @ViewChild('attachmentUpload') imgInput: ElementRef;
   rating: number = 0;
   files: File[] = [];
@@ -49,6 +51,12 @@ export class ReviewFormComponent {
   }
 
   dismissModal(): void {
+    this.reviewForm.reset();
+    this.files = [];
+    this.images = [];
+    this.imgInput.nativeElement.value = "";
+    this.rating = 0;
+
     console.log('dismiss from form');
     this.dismiss.emit();
   }
@@ -76,6 +84,10 @@ export class ReviewFormComponent {
         next: (response: any) => {
           console.log('success');
           this.activateToast.emit(['Successfully added!', 'Your review has been added.', 'default']);
+          this.reviewForm.reset();
+          setTimeout(() => {
+            this.dismissModal();
+          }, 500)
         },
         error: (err: HttpErrorResponse) => {
           console.log(err);

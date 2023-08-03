@@ -1,4 +1,4 @@
-<form class="flex-grow-1" action="" name="search">
+<form class="flex-grow-1" [formGroup]="searchForm">
     <div class="d-flex flex-row align-items-center" id="navSearch">
         <div class="input-group">
             <input 
@@ -7,9 +7,9 @@
                 placeholder="Type to start searching now..." 
                 id="navSearchBar"
                 name="navSearchBar"
-                [(ngModel)]="searchString"
+                formControlName="searchTerm"
             />
-            <button class="gradientButton search-button" type="submit"><i class="bi bi-search"></i></button>
+            <button class="gradientButton search-button" (click)="search()"><i class="bi bi-search"></i></button>
         </div>
     </div>
 </form>

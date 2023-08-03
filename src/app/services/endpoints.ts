@@ -43,7 +43,7 @@ export const POSTBanUsers: string = api + "api/admin/account/bans/ban";
 export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 
 //Reviews Endpoints
-export const GETReviews: string = api + "api/client/products/reviews/?id=";
+export const GETReviews: string = api + "api/client/products/reviews/";
 export const POSTReviews: string = api + "api/client/products/reviews/store";
 export const DELETEReviews: string = api + "api/client/products/reviews/delete"
 
@@ -65,4 +65,7 @@ export const POSTOrder: string = api + "api/client/orders/store";
 //Inquiry Endpoints
 export const GETInquiry: string = api + "api/admin/inquiry";
 export const GETInquiryById: string = api + "api/admin/inquiry/view/";
-export const POSTInquiry: string = api + "api/client/inquiry/store"
+export const POSTInquiry: string = api + "api/client/inquiry/store";
+
+// Search Endpoints
+export const GETSearchResults: string = api + "api/client/products/search/";

@@ -88,12 +88,9 @@ export function formatReviews(response: ReviewList): Observable<ReviewItem> {
   return of(format)
 }
 
-export function formatReviewsDetails(response: any): Review[] | false {
+export function formatReviewsDetails(response: any): Review[] {
   let reviewList = response.data.reviews;
   console.log(reviewList);
-  if(!reviewList || reviewList.length == 0){
-    return false
-  }
 
   return reviewList.map((review: Review) => ({
     review_id: review.review_id,

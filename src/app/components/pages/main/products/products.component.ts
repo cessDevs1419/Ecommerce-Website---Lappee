@@ -39,7 +39,7 @@ export class ProductsComponent {
   toastTheme: string = "default"; 
   
   reviews!: Observable<ReviewItem>;
-  reviewsList!: Observable<Review[] | false>
+  reviewsList!: Observable<Review[]>
 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
