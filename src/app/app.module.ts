@@ -66,6 +66,7 @@ import { ModalClientComponent } from './components/components/modal-client/modal
 import { ReviewFormComponent } from './components/components/modal-forms-client/review-form/review-form.component';
 import { StarRatingsInputComponent } from './components/components/star-ratings-input/star-ratings-input.component';
 import { SearchComponent } from './components/pages/main/search/search.component';
+import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/admin-inquiry.component';
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import { SearchComponent } from './components/pages/main/search/search.component
     ModalClientComponent,
     ReviewFormComponent,
     StarRatingsInputComponent,
-    SearchComponent
+    SearchComponent,
+    AdminInquiryComponent
   ],
   imports: [
     BrowserModule,
@@ -168,6 +170,11 @@ import { SearchComponent } from './components/pages/main/search/search.component
           {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
+
+          {
+            path: 'inquiry',
+            component: AdminInquiryComponent
+          }
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

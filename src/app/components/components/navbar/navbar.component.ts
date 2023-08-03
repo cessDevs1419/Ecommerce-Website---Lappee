@@ -25,6 +25,7 @@ export class NavbarComponent {
 
   @Input() searchString: any;
   
+  Number = Number;
   categories!: Observable<Category[]>;
   subcategories!: Observable<Subcategory[]>;
   @ViewChildren('categoryItems') categoryItems!: QueryList<ElementRef>;

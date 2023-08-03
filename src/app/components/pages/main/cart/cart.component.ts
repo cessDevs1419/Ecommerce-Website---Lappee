@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { CartItem, Order } from 'src/assets/models/products';
+import { CartItem, Order, Variant } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { User } from 'src/assets/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -121,8 +121,27 @@ export class CartComponent {
     });
   }
 
-  matchProduct(sender: any, operation: string): void {
-   
+  matchOrderListToCart(index: number): number {
+    let matchindex =-1;
+    let orderlistvariant = this.orderList[index].variant;
+    let orderlistitem = this.orderList[index].product.id;
+    this.cartContents.forEach((item: CartItem, index: number) => {
+      //find same product id
+      if(orderlistitem === item.product.id){
+        console.log("Found match: " + orderlistitem + " | " + item.product.id);
+        let cartItemIndex = index;
+
+        item.product.product_variants.forEach((variant: Variant, index: number) => {
+          if(orderlistvariant === variant.variant_id){
+            console.log("Found matching variant: " + orderlistvariant + " | " + variant.variant_id);
+            matchindex = cartItemIndex;
+            console.log("Cart index is [" + matchindex +"]")
+            return;
+          }
+        })
+      }
+    })
+    return matchindex;
   }
 
   matchIndexAndVariant(index: number): number {
@@ -287,6 +306,14 @@ export class CartComponent {
           this.orderId = response.data.order_id;
           const instance = new bootstrap.Carousel(this.carousel.nativeElement);
           instance.next();
+
+          //remove ordered items
+          this.orderList.forEach((item: CartItem ,index: number) => {
+            let itemMatch = this.matchOrderListToCart(index);
+            if(itemMatch > -1) {
+              this.cartContents.splice(itemMatch, 1);
+            }
+          })
         },
         error: (err: HttpErrorResponse) => {
           console.log(err)
