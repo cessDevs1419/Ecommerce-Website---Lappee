@@ -125,7 +125,8 @@ import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/ad
     ModalClientComponent,
     ReviewFormComponent,
     StarRatingsInputComponent,
-    SearchComponent
+    SearchComponent,
+    AdminInquiryComponent
   ],
   imports: [
     BrowserModule,
