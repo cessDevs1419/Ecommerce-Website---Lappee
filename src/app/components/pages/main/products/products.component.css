@@ -116,6 +116,15 @@ gallery-image {
     cursor: pointer;
 }
 
+.trash-icon {
+    cursor: pointer;
+    transition: color .4s;
+}
+
+.trash-icon:hover {
+    color: var(--bs-danger);
+}
+
 @media screen and (min-width: 992px) {
     .rating-details {
         margin-top: 0;

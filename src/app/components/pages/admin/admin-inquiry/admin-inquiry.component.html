@@ -1,3 +1,49 @@
 <div class="container-md h-auto p-2">
-  <p>Ytest!</p>
+  <app-table
+    tableTitle="INQUIRIES"
+    subTitle="MESSAGE FROM CUSTOMERS"
+
+    [tableHead]="true"
+    tableContainerClass="p-4"
+    [paginate]="true"
+    
+    [tableTools]="true"
+    [searchBar]="true"
+    [tableAction]="true"
+    [viewBtn]="true"
+
+    [tableHeader]="['NAME', 'EMAIL', 'SENT ON']"
+    [tableRows]="['name', 'email', 'created_at']"
+    [tableData]="inquiries"
+    [tableAction]="true"
+
+    [viewBtn]="true"
+
+    (rowDataSelected)="getRowData($event)"
+
+  ></app-table>
+</div>
+
+
+<div class="modal fade" id="view"  tabindex="-1">
+  <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
+      <div class="modal-content ">
+          <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+              <div class="modal-title text-start">
+                  <h1 class="modal-title fs-4 fw-bolder" >INQUIRY #{{ inquiryContent.id | uppercase }}</h1>
+                  <div class="modal-sub-title text-dark-emphasis fs-6">FROM {{ inquiryContent.email | uppercase }}</div>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <hr class="divider m-0 mb-3">
+          <div class="modal-body">
+            <p>
+              {{ inquiryContent.message }}
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div> 
+  </div>
 </div>

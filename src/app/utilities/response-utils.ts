@@ -7,6 +7,8 @@ import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
+import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
+import { formatDate } from "@angular/common";
 
 // Formatting
 
@@ -195,6 +197,30 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     ordered_on: data.ordered_on,
     order_contents: data.order_contents
   }))
+}
+
+export function formatInquiries(response: InquiryList): Inquiry[] {
+  return response.data.map((data: Inquiry) => ({
+    id: data.id,
+    email: data.email,
+    name: data.email,
+    message: data.message,
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: data.updated_at,
+    is_read: data.is_read,
+  }));
+}
+
+export function formatInquiryContent(response: InquiryContentList): Inquiry {
+  return {
+    id: response.data.id,
+    email: response.data.email,
+    name: response.data.email,
+    message: response.data.message,
+    created_at: formatDate(response.data.created_at, 'medium', 'en_PH'),
+    updated_at: response.data.updated_at,
+    is_read: response.data.is_read,
+  };
 }
 
 // Filtering
