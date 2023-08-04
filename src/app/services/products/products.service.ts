@@ -72,19 +72,5 @@ export class ProductsService {
     })
   }
   
-  removeDefaultVariantsOnEdit(value: string): void {
-    if (!this.newData) {
-      this.newData = of([]);
-    }
 
-    this.newData = this.newData.pipe(
-      map(products => {
-        return products.map((product: Product) => ({
-          ...product,
-          product_variants: product.product_variants.filter((variant: Variant) => value !== variant.variant_id)
-        }));
-      })
-    );
-    this.productsSubject.next(this.newData);
-  }
 }

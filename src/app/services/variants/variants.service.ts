@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, of } from 'rxjs';
 import { Product, Variant } from 'src/assets/models/products';
-import { DELETEVariantsAdmin, PATCHVariantsAdmin } from '../endpoints';
+import { DELETEVariantsAdmin, PATCHVariantsAdmin, POSTVariantsAdmin } from '../endpoints';
 import { ProductsService } from '../products/products.service';
 import { formatProducts } from 'src/app/utilities/response-utils';
 
@@ -189,6 +189,28 @@ export class VariantsService {
 		}
 	}
 	
+
+	//Database Request
+	postVariants(data: FormData): Observable<any> {
+		return this.http.post<Product>(POSTVariantsAdmin, data, this.httpOptions);
+	} 
 	
+	
+	patchVariants(data: FormData): Observable<any> {
+		return this.http.patch<Product>(PATCHVariantsAdmin, data, this.httpOptions);
+	} 
+	
+	
+	deleteVariants(varId: string): Observable<any> {
+		return this.http.delete(DELETEVariantsAdmin, {
+		    headers: new HttpHeaders({
+				'Accept': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Credentials': 'true'
+		    }),
+		    responseType: 'json',
+		    body: varId
+		})
+	}
 
 }

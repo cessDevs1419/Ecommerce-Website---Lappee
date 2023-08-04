@@ -124,12 +124,12 @@ export class ProductFormComponent {
 	    
 		this.editProductForm = this.formBuilder.group({
             name: [''],
-            category: [''],
             subcategory: [''],
 	        description: [''],
 	        //images: this.formBuilder.array([]),
 
             //Variants
+            variants: this.EditFormvariantsList,
             additional_variants: this.AdditionvariantsList,
             edited_variants: this.EditedvariantsList,
             deleted_variants: this.DeletedvariantsList
@@ -191,9 +191,11 @@ export class ProductFormComponent {
         this.products.subscribe((products: any[]) => { 
             const name = products.find(products => products.id === this.selectedRowData)?.name || 'error';
             const description = products.find(products => products.id === this.selectedRowData)?.description || 'error';
-    
+            const sub_category_id = products.find(products => products.id === this.selectedRowData)?.sub_category_id || 'error';
+            
             this.editProductForm.patchValue({
                 name: name ? name : null,
+                subcategory: sub_category_id ? sub_category_id: null,
                 description: description ? description : null,
             });
     
@@ -574,112 +576,262 @@ export class ProductFormComponent {
     async onProductEditSubmit(): Promise<void> {
         
         //edit product
-        let editProducts: any = new FormData();
-        editProducts.append('id', this.selectedRowData);
-        editProducts.append('name', this.editProductForm.get('name')?.value);
-        editProducts.append('category', this.editProductForm.get('subcategory')?.value);
-        editProducts.append('description', this.editProductForm.get('description')?.value);
+        this.route.paramMap.subscribe(async (params) => {
+            const prod_id = params.get('id');
+            
+            let editProducts: any = new FormData();
+            editProducts.append('id', prod_id);
+            editProducts.append('name', this.editProductForm.get('name')?.value);
+            editProducts.append('category', this.editProductForm.get('subcategory')?.value);
+            editProducts.append('description', this.editProductForm.get('description')?.value);
+            
+            const variantsList = this.editProductForm.get('variants') as FormArray;
+            for (let i = 0; i < variantsList.length; i++) {
+                const variantFormGroup = variantsList.at(i) as FormGroup;
+                const variant = variantFormGroup.value;
+                editProducts.append(`size`, variant.size);
+                editProducts.append(`quantity`, variant.stock);
+                editProducts.append(`limit`, variant.stock_limit);
+                editProducts.append(`price`, variant.price);
+                editProducts.append(`color`, variant.color);
+                editProducts.append(`color_title`, variant.color_title);
+            }
+        
+            this.product_service.patchProduct(editProducts).subscribe({
+                    next: (response: any) => { 
+                        
+                        this.RefreshTable.emit();
+                        this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
+                        this.addProductForm.reset();
+                        this.variantsList.clear();
+                    },
+                    error: (error: HttpErrorResponse) => {
+                        const errorData = this.errorService.handleError(error);
+                        
+                        return throwError(() => error);
+                    }
+            });
+            
+            console.log('edit products')
+            for (const value of editProducts.entries()) {
+                console.log(`${value[0]}, ${value[1]}`);
+            }
+        });
         
 
         //Additional variants
-        let AdditionalVariants: any = new FormData();
-        const additionalvariantsList = this.editProductForm.get('additional_variants') as FormArray;
-        for (let i = 0; i < additionalvariantsList.length; i++) {
-            const variantFormGroup = additionalvariantsList.at(i) as FormGroup;
-            const variant = variantFormGroup.value;
-            AdditionalVariants.append(`variants[${i}][product_id]`, variant.product_id);
-            AdditionalVariants.append(`variants[${i}][size]`, variant.size);
-            AdditionalVariants.append(`variants[${i}][quantity]`, variant.stock);
-            AdditionalVariants.append(`variants[${i}][limit]`, variant.stock_limit);
-            AdditionalVariants.append(`variants[${i}][price]`, variant.price);
-            AdditionalVariants.append(`variants[${i}][color]`, variant.color);
-            AdditionalVariants.append(`variants[${i}][color_title]`, variant.color_title);
-        }
+            // let AdditionalVariants: any = new FormData();
+            // const additionalvariantsList = this.editProductForm.get('additional_variants') as FormArray;
+            // for (let i = 0; i < additionalvariantsList.length; i++) {
+            //     const variantFormGroup = additionalvariantsList.at(i) as FormGroup;
+            //     const variant = variantFormGroup.value;
+            //     // AdditionalVariants.append(`variants[${i}][product_id]`, variant.product_id);
+            //     // AdditionalVariants.append(`variants[${i}][size]`, variant.size);
+            //     // AdditionalVariants.append(`variants[${i}][quantity]`, variant.stock);
+            //     // AdditionalVariants.append(`variants[${i}][limit]`, variant.stock_limit);
+            //     // AdditionalVariants.append(`variants[${i}][price]`, variant.price);
+            //     // AdditionalVariants.append(`variants[${i}][color]`, variant.color);
+            //     // AdditionalVariants.append(`variants[${i}][color_title]`, variant.color_title);
+            //     AdditionalVariants.append(`product_id`, variant.product_id);
+            //     AdditionalVariants.append(`size`, variant.size);
+            //     AdditionalVariants.append(`quantity`, variant.stock);
+            //     AdditionalVariants.append(`limit`, variant.stock_limit);
+            //     AdditionalVariants.append(`price`, variant.price);
+            //     AdditionalVariants.append(`color`, variant.color);
+            //     AdditionalVariants.append(`color_title`, variant.color_title);
+            // }
+            
+            // this.variantService.postVariants(AdditionalVariants).subscribe({
+            //             next: (response: any) => { 
+            //                     const productSuccess = {
+            //                         head: 'Edit Variant',
+            //                         sub: response.message
+            //                     };
+            //                     this.RefreshTable.emit();
+            //                     this.ProductSuccess.emit(productSuccess);
+            //                 },
+            //             error: (error: HttpErrorResponse) => {
+            //                     const errorData = this.errorService.handleError(error);
+            //                     if (error.error?.data?.error) {
+            //                         const fieldErrors = error.error.data.error;
+            //                         const errorsArray = [];
+                                
+            //                         for (const field in fieldErrors) {
+            //                             if (fieldErrors.hasOwnProperty(field)) {
+            //                                 const messages = fieldErrors[field];
+            //                                 let errorMessage = messages;
+            //                                 if (Array.isArray(messages)) {
+            //                                     errorMessage = messages.join(' '); // Concatenate error messages into a single string
+            //                                 }
+            //                                 errorsArray.push(errorMessage);
+            //                             }
+            //                         }
+                                
+            //                         const errorDataforProduct = {
+            //                             errorMessage: 'Error Invalid Inputs',
+            //                             suberrorMessage: errorsArray,
+            //                         };
+                                
+            //                         this.ProductWarning.emit(errorDataforProduct);
+            //                     } else {
+                                
+            //                         const errorDataforProduct = {
+            //                             errorMessage: 'Error Invalid Inputs',
+            //                             suberrorMessage: 'Please Try Another One',
+            //                         };
+            //                         this.ProductError.emit(errorDataforProduct);
+            //                     }
+            //                     return throwError(() => error);
+                                
+            //                 }
+            // });
         
         //Edited variants
-        let EditedVariants: any = new FormData();
-        const editedvariantsList = this.editProductForm.get('edited_variants') as FormArray;
-        for (let i = 0; i < editedvariantsList.length; i++) {
-            const variantFormGroup = editedvariantsList.at(i) as FormGroup;
-            const variant = variantFormGroup.value;
-            EditedVariants.append(`variants[${i}][variant_id]`, variant.variant_id);
-            EditedVariants.append(`variants[${i}][product_id]`, variant.product_id);
-            EditedVariants.append(`variants[${i}][size]`, variant.size);
-            EditedVariants.append(`variants[${i}][quantity]`, variant.stock);
-            EditedVariants.append(`variants[${i}][limit]`, variant.stock_limit);
-            EditedVariants.append(`variants[${i}][price]`, variant.price);
-            EditedVariants.append(`variants[${i}][color]`, variant.color);
-            EditedVariants.append(`variants[${i}][color_title]`, variant.color_title);
-        }
+            // let EditedVariants: any = new FormData();
+            // const editedvariantsList = this.editProductForm.get('edited_variants') as FormArray;
+            // for (let i = 0; i < editedvariantsList.length; i++) {
+            //     const variantFormGroup = editedvariantsList.at(i) as FormGroup;
+            //     const variant = variantFormGroup.value;
+            //     // EditedVariants.append(`variants[${i}][variant_id]`, variant.variant_id);
+            //     // EditedVariants.append(`variants[${i}][product_id]`, variant.product_id);
+            //     // EditedVariants.append(`variants[${i}][size]`, variant.size);
+            //     // EditedVariants.append(`variants[${i}][quantity]`, variant.stock);
+            //     // EditedVariants.append(`variants[${i}][limit]`, variant.stock_limit);
+            //     // EditedVariants.append(`variants[${i}][price]`, variant.price);
+            //     // EditedVariants.append(`variants[${i}][color]`, variant.color);
+            //     // EditedVariants.append(`variants[${i}][color_title]`, variant.color_title);
+            //     EditedVariants.append(`id`, variant.variant_id);
+            //     EditedVariants.append(`size`, variant.size);
+            //     EditedVariants.append(`quantity`, variant.stock);
+            //     EditedVariants.append(`limit`, variant.stock_limit);
+            //     EditedVariants.append(`price`, variant.price);
+            //     EditedVariants.append(`color`, variant.color);
+            //     EditedVariants.append(`color_title`, variant.color_title);
+            // }
+            
+            // this.variantService.patchVariants(EditedVariants).subscribe({
+            // next: (response: any) => { 
+            //                 const productSuccess = {
+            //                     head: 'Edit Variant',
+            //                     sub: response.message
+            //                 };
+            //                 this.RefreshTable.emit();
+            //                 this.ProductSuccess.emit(productSuccess);
+            //             },
+            //             error: (error: HttpErrorResponse) => {
+            //                 const errorData = this.errorService.handleError(error);
+            //                 if (error.error?.data?.error) {
+            //                     const fieldErrors = error.error.data.error;
+            //                     const errorsArray = [];
+                            
+            //                     for (const field in fieldErrors) {
+            //                         if (fieldErrors.hasOwnProperty(field)) {
+            //                             const messages = fieldErrors[field];
+            //                             let errorMessage = messages;
+            //                             if (Array.isArray(messages)) {
+            //                                 errorMessage = messages.join(' '); // Concatenate error messages into a single string
+            //                             }
+            //                             errorsArray.push(errorMessage);
+            //                         }
+            //                     }
+                            
+            //                     const errorDataforProduct = {
+            //                         errorMessage: 'Error Invalid Inputs',
+            //                         suberrorMessage: errorsArray,
+            //                     };
+                            
+            //                     this.ProductWarning.emit(errorDataforProduct);
+            //                 } else {
+                            
+            //                     const errorDataforProduct = {
+            //                         errorMessage: 'Error Invalid Inputs',
+            //                         suberrorMessage: 'Please Try Another One',
+            //                     };
+            //                     this.ProductError.emit(errorDataforProduct);
+            //                 }
+            //                 return throwError(() => error);
+                            
+            //             }
+            // });
         
-        //deleted variants
-        let DeletedVariants: any = new FormData();
-        const deletedvariantsList = this.editProductForm.get('deleted_variants') as FormArray;
-        for (let i = 0; i < deletedvariantsList.length; i++) {
-            const variantFormGroup = deletedvariantsList.at(i) as FormGroup;
-            const variant = variantFormGroup.value;
-            DeletedVariants.append(`variants[${i}][variant_id]`, variant);
-        }
+        //Deleted variants
+            // let DeletedVariants: any = new FormData();
+            // const deletedvariantsList = this.editProductForm.get('deleted_variants') as FormArray;
+            // for (let i = 0; i < deletedvariantsList.length; i++) {
+            //     const variantFormGroup = deletedvariantsList.at(i) as FormGroup;
+            //     const variant = variantFormGroup.value.toString()
+            //     DeletedVariants.append(`id`, variant);
+            // }
+            
+            // this.variantService.deleteVariants(DeletedVariants).subscribe({
+            //     next: (response: any) => { 
+            //         const productSuccess = {
+            //             head: 'Delete Variant',
+            //             sub: response.message
+            //         };
+            //         this.RefreshTable.emit();
+            //         this.ProductSuccess.emit(productSuccess);
+            //     },
+            //     error: (error: HttpErrorResponse) => {
+            //         const errorData = this.errorService.handleError(error);
+            //         if (error.error?.data?.error) {
+            //             const fieldErrors = error.error.data.error;
+            //             const errorsArray = [];
+                    
+            //             for (const field in fieldErrors) {
+            //                 if (fieldErrors.hasOwnProperty(field)) {
+            //                     const messages = fieldErrors[field];
+            //                     let errorMessage = messages;
+            //                     if (Array.isArray(messages)) {
+            //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
+            //                     }
+            //                     errorsArray.push(errorMessage);
+            //                 }
+            //             }
+                    
+            //             const errorDataforProduct = {
+            //                 errorMessage: 'Error Invalid Inputs',
+            //                 suberrorMessage: errorsArray,
+            //             };
+                    
+            //             this.ProductWarning.emit(errorDataforProduct);
+            //         } else {
+                    
+            //             const errorDataforProduct = {
+            //                 errorMessage: 'Error Invalid Inputs',
+            //                 suberrorMessage: 'Please Try Another One',
+            //             };
+            //             this.ProductError.emit(errorDataforProduct);
+            //         }
+            //         return throwError(() => error);
+                    
+            //     }
+            // });
+        
+
+
         
         //output
-        console.log('edit products')
-        for (const value of editProducts.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-        console.log('__add another variants__')
-        for (const value of AdditionalVariants.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-        console.log('__edited variants__')
-        for (const value of EditedVariants.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-        console.log('__deleted variants__')
-        for (const value of DeletedVariants.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-        
-        // if(this.addProductForm.valid){
-        //     this.product_service.postProduct(formData).subscribe({
-        //         next: (response: any) => { 
-                    
-        //             this.RefreshTable.emit();
-        //             this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-        //             this.addProductForm.reset();
-        //             this.variantsList.clear();
-        //         },
-        //         error: (error: HttpErrorResponse) => {
-        //             const errorData = this.errorService.handleError(error);
-                    
-        //             return throwError(() => error);
-        //         }
-        //     });
-                
-        // } else{
-        //     this.addProductForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.addProductForm.controls || this.addVariantForm.controls) {
-        //         if ( this.addProductForm.controls.hasOwnProperty(controlName) || this.addVariantForm.controls.hasOwnProperty(controlName)) {
-        //             const productcontrol = this.addProductForm.controls[controlName];
-        //             const variantcontrol = this.addProductForm.controls[controlName];
-        //             if (productcontrol.errors?.['required'] && productcontrol.invalid || variantcontrol.errors?.['required'] && variantcontrol.invalid) {
-        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //                 emptyFields.push(label);
-        //             }
-        //         }
-        //     }
-            
-        //     const errorDataforProduct = {
-        //         errorMessage: this.errorMessage,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
-
-
-
-
-        //     this.ProductError.emit(errorDataforProduct);
+        // console.log('edit products')
+        // for (const value of editProducts.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
+        // }
+        // console.log('__add another variants__')
+        // for (const value of AdditionalVariants.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
         // }
         
+        // console.log('__edited variants__')
+        // for (const value of EditedVariants.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
+        // }
+        
+        // console.log('__deleted variants__')
+        // for (const value of DeletedVariants.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
+        // }
+
+
         // await this.asyncTask();
         // this.router.navigate(['/admin/product-management']);
         
@@ -688,28 +840,46 @@ export class ProductFormComponent {
     onProductDeleteSubmit(): void {
         this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
             next: (response: any) => { 
-                console.log(response)
+                const productSuccess = {
+                    head: 'Delete Product',
+                    sub: response.message
+                };
                 this.RefreshTable.emit();
-                this.CloseModal.emit();
-                this.ProductSuccess.emit("Product  "+this.selectedRowData.name);
-                this.deleteProductForm.reset();
+                this.ProductSuccess.emit(productSuccess);
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);
-                if (errorData.errorMessage === 'Unexpected Error') {
-                    this.ProductError.emit(errorData);
-                } 
-                else if (errorData.errorMessage === 'Invalid Input') {
-                    const customErrorMessages = {
-                        errorMessage: 'Invalid Request',
-                        suberrorMessage: 'Product have variants',
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: errorsArray,
                     };
-                    this.ProductError.emit(customErrorMessages);
-                } 
-                else {
-                    this.ProductWarning.emit(errorData);
+                
+                    this.ProductWarning.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: 'Please Try Another One',
+                    };
+                    this.ProductError.emit(errorDataforProduct);
                 }
-                return throwError(() => error); 
+                return throwError(() => error);
+                
             }
         });
         

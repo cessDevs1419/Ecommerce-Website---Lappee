@@ -28,6 +28,7 @@ export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Variant Admin Endpoints
+export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";
 export const PATCHVariantsAdmin: string = api + "api/admin/products/variants/edit";
 export const DELETEVariantsAdmin: string = api + "api/admin/products/variants/delete";
 
