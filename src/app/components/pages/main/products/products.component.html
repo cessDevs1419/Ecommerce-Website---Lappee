@@ -3,9 +3,9 @@
 </div>
 <div class="container-md mt-5">
     <div class="row">
-        <gallery gallerize *ngIf="this.productMatch | async" id="product-images" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+        <gallery gallerize *ngIf="this.product| async" id="product-images" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
 
-        <div *ngFor="let match of productMatch | async"  class="col-lg">
+        <div *ngFor="let match of product | async"  class="col-lg">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
                     <h3>{{match.name}}</h3>

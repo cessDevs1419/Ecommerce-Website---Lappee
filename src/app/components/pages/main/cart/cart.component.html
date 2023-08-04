@@ -60,8 +60,8 @@
                                 <div class="p-2" *ngIf="(this.accountService.getIsLoggedIn()) && (this.isInfoRegistered)">
                                     <div *ngIf="this.accountService.getLoggedUser() | async; let user">
                                         <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
-                                        <div *ngIf="this.filteredInfo | async as info">{{info.number}}</div>
-                                        <div *ngIf="this.filteredInfo | async as info">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</div>
+                                        <div *ngIf="this.filteredInfo | async as info">{{info[0].number}}</div>
+                                        <div *ngIf="this.filteredInfo | async as info">{{info[0].address_line_1}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</div>
                                     </div>
                                 </div>
                                 <div class="bg-danger-subtle text-danger p-3 my-2" *ngIf="(!this.isInfoSelected) && (!this.accountService.getIsLoggedIn())">
@@ -251,8 +251,8 @@
                                     <div class="p-2" *ngIf="this.accountService.getIsLoggedIn()">
                                         <div *ngIf="this.accountService.getLoggedUser() | async; let user">
                                             <div class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</div>
-                                            <div *ngIf="this.filteredInfo | async as info">{{info.number}}</div>
-                                            <div *ngIf="this.filteredInfo | async as info">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</div>
+                                            <div *ngIf="this.filteredInfo | async as info">{{info[0].number}}</div>
+                                            <div *ngIf="this.filteredInfo | async as info">{{info[0].address_line_1}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</div>
                                         </div>
                                     </div>
                                 </div>

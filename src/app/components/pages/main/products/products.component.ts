@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
@@ -24,8 +24,7 @@ export class ProductsComponent {
   Number = Number;
   isFaved: boolean = false;
   productId!: string;
-  products!: Observable<Product[]>;
-  productMatch!: Observable<Product[]>;
+  product!: Observable<Product[]>;
   imgArray: GalleryItem[] = [];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
@@ -87,11 +86,8 @@ export class ProductsComponent {
   ngOnInit() {
     
     // initialize product
-    // moved to constructor to allow for reloading
-    //this.initProducts();
 
     this.navsubscription = this.activatedRoute.params.subscribe(params => {
-      
       this.colorVariants = [];
       this.initProducts();
     })
@@ -109,37 +105,29 @@ export class ProductsComponent {
     
   }
 
+  ngOnChanges(): void {
+    this.initProducts();
+  }
+
   initProducts(): void {
-    this.galleryRef.reset();
-    this.productId = String(this.route.snapshot.paramMap.get('productId'));
-    this.products = this.productsService.getProducts().pipe(map((response: any) => formatProducts(response)));
-    this.productMatch = filterProductsById(this.productId, this.products);
     
-   
+    this.productId = String(this.route.snapshot.paramMap.get('productId'));
+    this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProducts(response)));
 
     // get local array copy of product observable
-    this.productMatch.subscribe((product: Product[]) => {
+    this.product.subscribe((product: Product[]) => {
       if(product.length > 0){
         this.currentProduct = product[0];
         this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
         
         // initialize gallerize
+        this.galleryRef.reset();
         product[0].images.forEach((url: string) => {
           console.log(url);
           this.galleryRef.addImage({src: url, thumb: url});
         });
 
         console.log(this.imgArray);
-
-        /* this.imgArray = [
-          new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
-          new ImageItem({src: 'https://picsum.photos/720/1080', thumb: 'https://picsum.photos/720/1080'}),
-          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
-          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'}),
-          new ImageItem({src: 'https://picsum.photos/400/500', thumb: 'https://picsum.photos/400/500'})
-        ] */
-    
-        
 
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);

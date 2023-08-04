@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
@@ -21,7 +21,7 @@ export class ProfileComponent {
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
-  filteredInfo!: Observable<DeliveryInfo | null>
+  filteredInfo!: Observable<DeliveryInfo[]>
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
   
   editProfileForm = new FormGroup({
@@ -61,15 +61,15 @@ export class ProfileComponent {
               this.isInfoRegistered = true;
               this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
               this.filteredInfo.subscribe({
-                next: (info: DeliveryInfo | null) => {
+                next: (info: DeliveryInfo[]) => {
                   if(info){
                     this.isSubmitEdit = true;
                     this.editProfileForm.patchValue({
-                      editProvince: info.city,
-                      editCity: info.province,
-                      editAddressLine: info.address_line_1,
-                      editZipCode: info.zip_code.toString(),
-                      editPhoneNumber: info.number
+                      editProvince: info[0].city,
+                      editCity: info[0].province,
+                      editAddressLine: info[0].address_line_1,
+                      editZipCode: info[0].zip_code.toString(),
+                      editPhoneNumber: info[0].number
                     })
                   }
                   else {
@@ -79,6 +79,7 @@ export class ProfileComponent {
               });
             }
             else {
+              this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
               console.log('no matching address')
               this.isInfoRegistered = false;
             }

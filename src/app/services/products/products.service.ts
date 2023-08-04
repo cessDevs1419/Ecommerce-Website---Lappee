@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETProductDetails, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 
 @Injectable({
@@ -25,9 +25,13 @@ export class ProductsService {
   };
   
 
-  getProducts(){
+  getProducts(): Observable<any>{
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
+
+  getProductDetails(id: string): Observable<any> {
+    return this.http.get(GETProductDetails + id);
   }
   
   getNewProducts(): Observable<any> {

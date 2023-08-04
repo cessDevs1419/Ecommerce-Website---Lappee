@@ -31,7 +31,7 @@ export class CartComponent {
 
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
-  filteredInfo!: Observable<DeliveryInfo | null>
+  filteredInfo!: Observable<DeliveryInfo[]>
 
   address!: string;
   telephone!: string;
@@ -92,7 +92,7 @@ export class CartComponent {
                     this.isInfoRegistered = true;
                     this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
                     this.filteredInfo.subscribe({
-                      next: (info: DeliveryInfo | null) => {
+                      next: (info: DeliveryInfo[]) => {
                         if(info){
                           this.isInfoSelected = true;
                         }

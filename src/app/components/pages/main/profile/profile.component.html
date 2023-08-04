@@ -14,14 +14,29 @@
             <div class="col fs-4" *ngIf="this.user | async; let user">
                 <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
                 <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
-                <p *ngIf="this.filteredInfo | async as info"><span class="text-muted pe-3">Phone Number:</span>{{info.number}}</p>
+                <div *ngIf="!(this.filteredInfo | async)">
+                    <span class="text-muted pe-3">Phone Number:</span>Loading...
+                </div>
+                <div *ngIf="this.filteredInfo | async as info">
+                    <p *ngIf="info.length === 0">
+                        <span class="text-muted pe-3">Phone Number:</span>Not Set
+                    </p>
+                    <p *ngIf="info.length > 0">
+                        <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
+                    </p>
+                </div>
             </div>
             <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
-                <p class="text-muted">Setup your address through the 'Edit Profile' button to start ordering.</p>
+                <p class="text-muted">Loading...</p>
             </div>
-            <div class="col border-start fs-4 ps-4" *ngIf="this.filteredInfo | async as info">
-                <p class="text-muted">Address:</p>
-                <p class="m-0">{{info.address_line_1}}, {{info.city}}, {{info.province}} {{info.zip_code}}</p>
+            <div class="col border-start fs-4 ps-4" *ngIf="(this.filteredInfo | async) as info">
+                <div *ngIf="info.length === 0">
+                    Setup your address through the edit profile form.
+                </div>
+                <div *ngIf="info.length > 0">
+                    <p class="text-muted">Address:</p>
+                    <p class="m-0">{{info[0].address_line_1}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</p>
+                </div>
             </div>
         </div>
     </div>

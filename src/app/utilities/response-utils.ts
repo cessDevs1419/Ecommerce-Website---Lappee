@@ -243,10 +243,12 @@ export function filterProductsById(productID: string, productObservable: Observa
   }));
 }
 
-export function filterDeliveryInfo(userID: string, DeliveryInfoObservable: Observable<DeliveryInfo[]>): Observable<DeliveryInfo | null> {
-  return DeliveryInfoObservable.pipe(map((entry: DeliveryInfo[]) => {
-    return entry.find((DeliveryInfo: DeliveryInfo) => DeliveryInfo.user_id === userID) || null;
-  }));
+export function filterDeliveryInfo(userID: string, DeliveryInfoObservable: Observable<DeliveryInfo[]>): Observable<DeliveryInfo[]> {
+  return DeliveryInfoObservable.pipe(
+    map((entry: DeliveryInfo[]) => {
+      return entry.filter((deliveryInfo: DeliveryInfo) => deliveryInfo.user_id === userID);
+    })
+  );
 }
 
 export function findDeliveryInfo(userID: string, DeliveryInfoObservable: Observable<DeliveryInfo[]>): Observable<boolean> {
