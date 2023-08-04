@@ -4,53 +4,61 @@
     <app-profile-banner></app-profile-banner>
     
     <div class="row mt-3">
-        <form class="m-0 p-0">
+        <form class="m-0 p-0" [formGroup]="searchForm">
             <div class="input-group">
                 <span class="input-group-text bg-gradient-primary rounded-0"><i class="bi bi-search fs-3 color-white"></i></span>
-                <input type="text" class="form-control form-control-lg rounded-0" id="search-orders" placeholder="Search by Seller Name, Order ID or Product Name..." />
+                <input type="text" class="form-control form-control-lg rounded-0" id="search-orders" placeholder="Search by Order ID or Product Name..." formControlName="searchTerm" (input)="searchOrder()"/>
             </div>
         </form>
     </div>
 
-    <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of this.userOrders | async">
-        <!-- order title -->
-        <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
-            <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
-            <p class="m-0 text-muted">{{order.ordered_on | date:'medium'}}</p>
-        </div>
-        <!-- one row per item -->
-        <div class="row mt-3 pe-0">
-                <div class="row my-4 pe-0" *ngFor="let item of order.order_contents">
-                    <div class="col d-flex flex-row justify-content-between">
-                        <div class="d-flex flex-row">
-                            <div>
-                                <img src="https://picsum.photos/200" class="img-fluid order-item-img">
-                            </div>
-                            <div class="d-flex flex-column ms-3">
-                                <p class="color-primary fs-4 m-0 fw-bold">{{ item.name }}</p>
-                                <p class="text-muted m-0">Color: {{item.color_title}}, Size: {{item.size}}</p>
-                                <p class="m-0">x{{item.quantity}}</p>
-                            </div>
-                        </div>
-                        <div class="col d-flex flex-column align-items-end justify-content-center pe-3" >
-                            <p class="m-0 color-primary fs-4 fw-bold">{{item.sub_price | currency}}</p><br>
-                            <p class="m-0 text-muted" *ngIf="item.quantity > 1">@ {{ Number(item.sub_price) / item.quantity | currency}} each</p>
-                        </div>
-                    </div>
-                    <div class="col-2 border-start d-flex flex-column justify-content-center align-items-center">
-                        <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
-                        <button class="button-secondary-outline mt-3 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
-                    </div>
-                </div>
-        </div>
-
-        <!-- order total -->
-        <div class="d-flex flex-column mt-3 border-top justify-content-center align-items-end">
-            <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">{{ this.calculateOrderPrice(order) | currency}}</span></p>
-            
-        </div>
-        
+    <div *ngIf="isLoading && !doneLoading">
+        Loading data...
     </div>
 
+    <div *ngIf="this.searchResults && !isLoading">
+        <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of this.searchResults">
+            
+            <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
+                <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
+                <p class="m-0 text-muted">{{order.ordered_on | date:'medium'}}</p>
+            </div>
+            
+            <div class="row mt-3 pe-0">
+                    <div class="row my-4 pe-0" *ngFor="let item of order.order_contents">
+                        <div class="col d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row">
+                                <div>
+                                    <img src="https://picsum.photos/200" class="img-fluid order-item-img">
+                                </div>
+                                <div class="d-flex flex-column ms-3">
+                                    <p class="color-primary fs-4 m-0 fw-bold">{{ item.name }}</p>
+                                    <p class="text-muted m-0">Color: {{item.color_title}}, Size: {{item.size}}</p>
+                                    <p class="m-0">x{{item.quantity}}</p>
+                                </div>
+                            </div>
+                            <div class="col d-flex flex-column align-items-end justify-content-center pe-3" >
+                                <p class="m-0 color-primary fs-4 fw-bold">{{item.sub_price | currency}}</p><br>
+                                <p class="m-0 text-muted" *ngIf="item.quantity > 1">@ {{ Number(item.sub_price) / item.quantity | currency}} each</p>
+                            </div>
+                        </div>
+                        <div class="col-2 border-start d-flex flex-column justify-content-center align-items-center">
+                            <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
+                            <button class="button-secondary-outline mt-3 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
+                        </div>
+                    </div>
+            </div>
+            
+            <div class="d-flex flex-column mt-3 border-top justify-content-center align-items-end">
+                <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">{{ this.calculateOrderPrice(order) | currency}}</span></p>    
+            </div>
+        </div>
+    </div>
 
+    <div *ngIf="searchResults.length === 0 && !isLoading">
+        <div class="d-flex align-items-center justify-content-center mt-3 flex-column">
+            <p class="fs-2 m-0 text-muted mb-1"><i class="bi bi-emoji-frown-fill"></i></p>
+            <p class="text-muted">No results.</p>
+        </div>
+    </div>
 </div>
