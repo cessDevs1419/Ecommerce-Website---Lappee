@@ -1,3 +1,7 @@
 .order-item-img {
     width: 7rem;
 }
+
+.container, .row {
+    border: 1px solid red;
+}
