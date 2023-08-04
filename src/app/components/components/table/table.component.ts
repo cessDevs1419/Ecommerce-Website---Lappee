@@ -50,6 +50,7 @@ export class TableComponent {
 	@Input() deleteBtn!: boolean;
 	@Input() deleteSubBtn!: boolean;
 	@Input() viewBtn!: boolean;
+	@Input() viewBtn2!: boolean;
 	@Input() banBtn!: boolean;
 	@Input() bannedStatus: { [userId: number]: boolean } = {};
 	
@@ -87,31 +88,36 @@ export class TableComponent {
 
 	
 	applySearchFilter(): void {
-	    this.currentPage = 1;
-	    this.calculatePagination();
+		this.currentPage = 1;
+		this.calculatePagination();
 	}
-
+	
 	calculatePagination(): void {
 		if (this.tableData) {
-		    this.displayedItems$ = this.tableData.pipe(
+			this.displayedItems$ = this.tableData.pipe(
 				map((data: any[]) => {
-			        let filteredData = data;
-					    if (this.searchFilter) {
-							const searchTerm = this.searchFilter.toLowerCase();
-							filteredData = data.filter(item =>
-						    item.property.toLowerCase().includes(searchTerm)
-						);
-						}
-				this.totalItems = filteredData.length;
-				this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-				const startIndex = (this.currentPage - 1) * this.pageSize;
-				const endIndex = startIndex + this.pageSize;
-				return filteredData.slice(startIndex, endIndex);
-			}),
-			startWith([]) // Start with an empty array to clear the table when the search input is removed
-		);
+					let filteredData = data;
+	
+					if (this.searchFilter && this.searchFilter.trim() !== '') {
+						const searchTerm = this.searchFilter.toLowerCase();
+						filteredData = data.filter(item => {
+							// Combine values from all columns for search
+							const combinedValues = this.tableRows.map(row => item[row]).join(' ').toLowerCase();
+							return combinedValues.includes(searchTerm);
+						});
+					}
+	
+					this.totalItems = filteredData.length;
+					this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+					const startIndex = (this.currentPage - 1) * this.pageSize;
+					const endIndex = startIndex + this.pageSize;
+					return filteredData.slice(startIndex, endIndex);
+				}),
+				startWith([]) // Start with an empty array to clear the table when the search input is removed
+			);
 		}
 	}
+	
 
 	goToPreviousPage(): void {
 	  if (this.currentPage > 1) {

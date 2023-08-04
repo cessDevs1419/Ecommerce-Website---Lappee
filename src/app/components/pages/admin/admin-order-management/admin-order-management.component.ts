@@ -43,6 +43,7 @@ export class AdminOrderManagementComponent {
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
         
+
         this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
             next: (response: any) => {
                 const data = formatAdminOrderDetail(response);

@@ -34,6 +34,9 @@ export class ModalComponent {
 	@Input() modalId!: string;
     @Input() modalTitle!: string;
 	@Input() modalSubTitle!: string;
+    @Input() modalTitleClass!: string;
+	@Input() modalSubTitleClass!: string;
+    @Input() modalinfoTitle!: any;
 	@Input() modalClass!: string;
 	
 	@Input() selectedRowData: any;
@@ -45,6 +48,7 @@ export class ModalComponent {
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
 	@Input() modalData!: Observable<any>;
+	@Input() modalSubData!: Observable<any>;
 	
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();

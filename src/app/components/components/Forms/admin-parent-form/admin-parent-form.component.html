@@ -8,11 +8,13 @@
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="container p-0">
+    <div class="container p-0 ">
                 
             <!--categories-->
                 <app-category-form 
                     *ngIf="AddCategory"
+                    formTitle="ADD CATEGORY"
+                    formsubTitle="CATEGORY CONTROL"
                     [formAddCategory]="true"
                     (CategorySuccess)="postSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
@@ -22,6 +24,8 @@
             
                 <app-category-form 
                     *ngIf="EditCategory"
+                    formTitle="EDIT CATEGORY"
+                    formsubTitle="CATEGORY CONTROL"
                     [formEditCategory]="true"
                     [selectedRowData]="selectedRowData"
                     (CategorySuccess)="patchSuccessToast($event)"
@@ -33,7 +37,8 @@
             <!--sub category -->
                 <app-category-form 
                     *ngIf="AddSubCategory"
-                    
+                    formTitle="ADD SUB CATEGORY"
+                    formsubTitle="CATEGORY CONTROL"
                     [formAddSubCategory]="true"
                     (CategorySuccess)="postSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
@@ -43,7 +48,8 @@
                 
                 <app-category-form 
                     *ngIf="EditSubCategory"
-                    
+                    formTitle="EDIT SUB CATEGORY"
+                    formsubTitle="CATEGORY CONTROL"
                     [formEditSubCategory]="true"
                     [selectedRowData]="selectedRowData"
                     (CategorySuccess)="patchSuccessToast($event)"

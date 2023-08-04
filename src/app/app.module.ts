@@ -168,6 +168,7 @@ import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/ad
           {path: 'stocks-management', component: AdminStocksManagementComponent},
           {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action/:id', component: AdminParentFormComponent},
+          {path: 'product-management/:page/:action/:var_id/:connector/:prod_id', component: AdminParentFormComponent},
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
 

@@ -4,18 +4,28 @@
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="modal-dialog  modal-dialog-centered  {{modalClass}}" >
-        <div class="modal-content ">
-            <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
-                <div class="modal-title text-start">
-                    <h1 class="modal-title fs-4 fw-bolder" >{{modalTitle}}</h1>
-                    <div class="modal-sub-title text-dark-emphasis fs-6">{{modalSubTitle}}</div>
-                </div>
+    <div class="modal-dialog  modal-dialog-centered rounded-0 {{modalClass}}" >
+        <div class="modal-content rounded-0 p-2">
+
+            <div class="modal-title-container mb-0 container">
+                <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
+                    <div class="modal-title text-start">
+                        <h1 class="modal-title fs-4 fw-bolder lh-1 {{modalTitleClass}}">{{modalTitle}}</h1>
+                        <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
+                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="selectedRowData?.address_line_1 || selectedRowData?.address_line_2">
+                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                        </div>
+                    </div>  
+                    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            
+                </div>
+                <hr class="divider m-0 mb-3">
             </div>
-            <hr class="divider m-0 mb-3">
+            
             
                 <app-category-form 
                     *ngIf="modalDeleteCategory"
@@ -71,16 +81,29 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                <div class="container m-auto overflow-y-auto" *ngIf="modalData">
-                    <app-table
-                        [tableHead]="false"
-                        [paginate]="false"
-                        tableContainerClass="p-0"
-                        [tableHeader]="['ITEM ID', 'QUANTITY', 'PRICE']"
-                        [tableRows]="['product_id', 'quantity', 'sub_price']"
-                        [tableData]="modalData"
-                        >
-                    </app-table>
+                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalData">
+                    <h1 class="form-title fs-4 fw-bolder mb-4" >Order Summarry</h1>
+                    <ul class="list-unstyled" *ngFor="let item of modalSubData | async">
+                        <li class="text-decoration-none row">
+                            <div class="col-sm-8 text-start">
+                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate">{{item.product_id}}</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">variant</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">x{{item.quantity}}</p>
+                            </div>
+                            <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
+                                <h1 class="product_price fs-4 fw-bolder" >₱{{item.sub_price}}</h1>
+                            </div>
+                        </li>
+                    </ul>
+                    <hr class="divider mb-4">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="fs-5 fw-bold">Subtotal</h3>
+                        </div>
+                        <div class="col-sm-6 d-flex justify-content-end align-content-center">
+                            <h1 class="form-title fs-2 fw-bolder mb-4" >₱{{selectedRowData?.total_price}}</h1>
+                        </div>
+                    </div>
                 </div>
         </div> 
 

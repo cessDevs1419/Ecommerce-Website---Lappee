@@ -16,7 +16,6 @@
         [tableRows]="['id', 'created_at', 'status' ]"
         [tableData]="orders"
         (rowDataSelected)="onRowDataSelected($event)"
-        
     ></app-table>
 </div>
 
@@ -24,14 +23,17 @@
 
 <app-modal
     modalId="view"
-    modalTitle="ORDER DETAILS"
-    modalSubTitle="ADDITIONAL PARCEL INFORMATION"
-    modalClass="modal-dialog-scrollable modal-lg "
+    modalTitle="Customer Information"
+    modalTitleClass="mb-3"
+    modalSubTitle="{{selectedRowData?.user_id}}"
+    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalClass="modal-dialog-scrollable modal-md "
         
     [modalViewOrders]="true"
     (RefreshTable)="refreshTableData()"
     [selectedRowData]="selectedRowData"
-    [modalData]="ordersContents$"
+    [modalData]="orders"
+    [modalSubData]="ordersContents$"
 ></app-modal>
 
 

@@ -13,7 +13,7 @@ import { GETCategories } from 'src/app/services/endpoints';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../../modal/modal.component';
-
+import { Location } from '@angular/common';
 @Component({
     selector: 'app-category-form',
     templateUrl: './category-form.component.html',
@@ -33,6 +33,8 @@ export class CategoryFormComponent {
     @Input() formAddCategory!: boolean;
     @Input() formEditCategory!: boolean;
     @Input() formDeleteCategory!: boolean;
+    @Input() formTitle!: string;
+    @Input() formsubTitle!: string;
     
     @Input() formAddSubCategory!: boolean;
     @Input() formEditSubCategory!: boolean;
@@ -63,7 +65,8 @@ export class CategoryFormComponent {
         private formBuilder: FormBuilder,
         private errorService: ErrorHandlingService,
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private location: Location
     ) 
     {
         this.addCategoryForm = new FormGroup({
@@ -129,7 +132,9 @@ export class CategoryFormComponent {
         this.refreshData$.next();
     }
 
-    
+    cancel(): void{
+        this.location.back();
+    }
     //ADD SUB CATEGORY
     get subCategories(): FormArray {
         return this.addSubCategoryForm.get('sub_categories') as FormArray;
