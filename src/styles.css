@@ -91,6 +91,7 @@ body {
     border-radius: 5px;
     border: hidden;
     background: var(--primary);
+    border: 1px solid var(--primary);
     color: #FFFFFF;
     display: inline-flex;
     justify-content: center;

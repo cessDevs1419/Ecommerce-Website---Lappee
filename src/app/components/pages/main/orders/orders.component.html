@@ -1,9 +1,9 @@
 
-<div class="container-md mt-5">
+<div class="container-lg mt-5">
     <app-modal-client [mode]="this.mode"></app-modal-client>
     <app-profile-banner></app-profile-banner>
     
-    <div class="row mt-3">
+    <div class="row mt-3 mx-3 mx-md-0">
         <form class="m-0 p-0" [formGroup]="searchForm">
             <div class="input-group">
                 <span class="input-group-text bg-gradient-primary rounded-0"><i class="bi bi-search fs-3 color-white"></i></span>
@@ -24,10 +24,10 @@
                 <p class="m-0 text-muted">{{order.ordered_on | date:'medium'}}</p>
             </div>
             
-            <div class="row mt-3 pe-0">
-                    <div class="row my-4 pe-0" *ngFor="let item of order.order_contents">
-                        <div class="col d-flex flex-row justify-content-between">
-                            <div class="d-flex flex-row">
+            <div class="w-100 mt-3">
+                    <div class="w-100 my-4 d-flex flex-column flex-md-row justify-content-between" *ngFor="let item of order.order_contents">
+                        <div class="col-md d-flex flex-row justify-content-between mb-3 mb-md-0 ">
+                            <div class="d-flex flex-row align-items-center">
                                 <div>
                                     <img src="https://picsum.photos/200" class="img-fluid order-item-img">
                                 </div>
@@ -42,14 +42,14 @@
                                 <p class="m-0 text-muted" *ngIf="item.quantity > 1">@ {{ Number(item.sub_price) / item.quantity | currency}} each</p>
                             </div>
                         </div>
-                        <div class="col-2 border-start d-flex flex-column justify-content-center align-items-center">
+                        <div class="col-md-3 ps-0 ps-md-3 pb-3 pb-md-0 border-md-start border-bottom d-flex flex-md-column flex-row justify-content-center align-items-center">
                             <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
-                            <button class="button-secondary-outline mt-3 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
+                            <button class="button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                         </div>
                     </div>
             </div>
             
-            <div class="d-flex flex-column mt-3 border-top justify-content-center align-items-end">
+            <div class="d-flex flex-column border-top justify-content-center align-items-end">
                 <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">{{ this.calculateOrderPrice(order) | currency}}</span></p>    
             </div>
         </div>
