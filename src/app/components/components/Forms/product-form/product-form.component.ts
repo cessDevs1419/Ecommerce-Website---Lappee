@@ -535,7 +535,7 @@ export class ProductFormComponent {
     }
     
     async onProductEditSubmit(): Promise<void> {
-        await this.onaddProductVariants();
+        
 
         let formData: any = new FormData();
         formData.append('id', this.selectedRowData);
@@ -559,6 +559,10 @@ export class ProductFormComponent {
         for (const value of formData.entries()) {
             console.log(`${value[0]}, ${value[1]}`);
         }
+        
+        console.log(this.variantService.getAdditionVariant())
+        console.log(this.variantService.getEditedVariant())
+        console.log(this.variantService.getDeletedVariant())
         
         // if(this.addProductForm.valid){
         //     this.product_service.postProduct(formData).subscribe({
@@ -601,8 +605,9 @@ export class ProductFormComponent {
         //     this.ProductError.emit(errorDataforProduct);
         // }
         
-        await this.asyncTask();
-        this.router.navigate(['/admin/product-management']);
+        // await this.asyncTask();
+        // this.router.navigate(['/admin/product-management']);
+        
     }
     
     onProductDeleteSubmit(): void {
