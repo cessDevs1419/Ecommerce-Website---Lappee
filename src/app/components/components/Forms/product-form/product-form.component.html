@@ -316,6 +316,7 @@
                                 <button 
                                     type="submit" 
                                     class="btn btn-primary bg-light-primary"
+                                    [disabled]="EditFormvariantsList.length < 1 || isFormEmpty()"
                                 >EDIT PRODUCT</button>
                             </div>   
                         </div>
@@ -384,6 +385,58 @@
                                                         (click)="selectVariant(variant, i)"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#removeVariants"
+                                                    >
+                                                        <i class="bi bi-trash fs-5"></i>
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+                                            
+                                        </li>
+                                        <!--Additional Product Variants--->
+                                        <li class="variant-list-item text-decoration-none mt-2 mb-3 " *ngFor="let variant of AdditionvariantsList.value let i = index" >
+                                            <div class="data-container d-flex align-items-center w-100 p-2 rounded rounded-3 border border-2">
+                                                <div class="m-auto row d-flex align-items-center w-100 ">
+                                                    <div class="col-sm-2 me-2">
+                                                        <div class="color-container border rounded-3" [style.background-color]="variant.color">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                                        <div class="data w-100">
+                                                            <div class="row ms-0 m-auto w-100 ">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">{{ variant.color_title }}</h1>
+                                                                </div>
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">[{{ variant.color }}]</h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row ms-0 m-auto w-100">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                    <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
+                                                                </div>
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                    <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="actions d-flex">
+                                                    <button 
+                                                        (click)=" editAdditionalVariant(variant, i)"
+                                                        type="button" 
+                                                        class=" btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                    >
+                                                        <i class="bi bi-pencil-square fs-5"></i>
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                        (click)="selectVariant(variant, i)"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#removeAdditionalVariants"
                                                     >
                                                         <i class="bi bi-trash fs-5"></i>
                                                     </button>
@@ -552,7 +605,7 @@
                                 type="button" 
                                 class="btn btn-muted mx-2" 
                                 *ngIf="variantsList.length === 0"
-                                (click)="toAddPage()"
+                                (click)="toAddPageFromAddProduct()"
                             >
                                 CANCEL
                             </button>
@@ -561,7 +614,7 @@
                                 type="button" 
                                 class="btn btn-muted mx-2" 
                                 *ngIf="variantsList.length > 0"
-                                (click)="toAddPage()"
+                                (click)="toAddPageFromAddProduct()"
                             >
                                 DONE
                             </button>
@@ -582,7 +635,7 @@
         
         
         <!--ADDITIONAL VARIANT FORM-->
-        <form *ngIf="formAdditionalVariant" [formGroup]="addVariantForm" (ngSubmit)="onadditionalProductVariants()">
+        <form *ngIf="formAdditionalVariant" [formGroup]="addVariantForm">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -708,9 +761,20 @@
                             >
                                 CANCEL
                             </button>
+                            
                             <button 
-                                type="submit" 
+                                type="button" 
+                                class="btn btn-muted mx-2" 
+                                *ngIf="AdditionvariantsList.length > 0"
+                                (click)="toAddPage()"
+                            >
+                                DONE
+                            </button>
+                        
+                            <button 
+                                type="button" 
                                 class="btn btn-primary bg-light-primary" 
+                                (click)="onadditionalProductVariants()"
                             >
                                 ADD VARIANT
                             </button>
@@ -724,6 +788,129 @@
         
         <!--EDIT VARIANT FORM FROM ADD PRODUCT-->
         <form *ngIf="formEditVariant" [formGroup]="editVariantForm" (ngSubmit)="onVariantEditSubmit()">
+            <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                <div class="form-title text-start mb-4">
+                    <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
+                </div>
+                
+                <div class="body pt-0 pb-0">
+                    <div class="form-body pt-0 pb-0 " >
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductSize" class="form-label">Size</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="addproductSize" 
+                                    name="addproductSize" 
+                                    formControlName="size"
+                                    placeholder="sm/md/lg/xl"
+                                    required
+                                >
+    
+                            </div>
+                            
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantPrice" class="form-label">Price</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantPrice" 
+                                    name="addvariantPrice" 
+                                    [value]="1"
+                                    formControlName="price"
+                                    required
+                                    step="0.01"
+                                    [placeholder]="00.00"
+                                >
+                            </div>
+    
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantQty" class="form-label">Stock</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantQty" 
+                                    name="addvariantQty" 
+                                    formControlName="stock"
+                                    placeholder="300"
+                                    required
+                                >
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label for="addvariantQtyLimit" class="form-label">Stock Limit</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="addvariantQtyLimit" 
+                                    name="addvariantQtyLimit" 
+                                    formControlName="stock_limit"
+                                    placeholder="30"
+                                    required
+                                >
+    
+                            </div>
+    
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductColor" class="form-label">Color</label>
+                                <input 
+                                    type="color" 
+                                    class="form-control form-control-color w-100" 
+                                    id="addproductColor" 
+                                    name="addproductColor" 
+                                    formControlName="color"
+                                    placeholder="#3C3C3CS"
+                                    required
+                                >
+                            </div>
+                            
+                            <div class="col-sm-6 mb-3">
+                                <label for="addproductColorTitle" class="form-label">Color Title</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="addproductColorTitle" 
+                                    name="addproductColorTitle" 
+                                    formControlName="color_title"
+                                    placeholder="color name"
+                                    required
+                                >
+                            </div>
+    
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="modal-footer border-0 mt-4" >
+                        <button  
+                            type="button" 
+                            class="btn btn-muted mx-2" 
+                            (click)=" cancelthis()"
+                        >
+                            CANCEL
+                        </button>
+                        
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary bg-light-primary" 
+                        >
+                            EDIT VARIANT
+                        </button>
+                    </div>  
+
+                </div>
+            </div>
+        </form>
+        
+        <!--EDIT ADDITIONAL VARIANT PRODUCT-->
+        <form *ngIf="formEditAdditionalVariant" [formGroup]="editVariantForm" (ngSubmit)="onAdditionalVariantEditSubmit()">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -1003,7 +1190,42 @@
                 </div>
             </div>
         </div>
-
+        
+        <!--DELETE ADITIONAL VARIANT FORM -->
+        <div class="modal fade" id="removeAdditionalVariants"  tabindex="-1" #modalRef>
+            <div class="modal-dialog modal-md modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+                        <div class="modal-title text-start">
+                            <h1 class="modal-title fs-4 fw-bolder" >DELETE VARIANT</h1>
+                            <div class="modal-sub-title text-dark-emphasis fs-6">VARIANT CONTROL</div>
+                        </div>
+                        
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                    </div>
+                    <hr class="divider m-0 mb-3">
+                    
+                    <form   >
+                        <div class="modal-body text-center pt-0 pb-0">
+                            <p class="fs-5 fw-bold mb-1">Are you sure you want to remove this variant?</p>
+                            <h1 class="text-primary fs-4 fw-bolder" *ngIf="this.selectedDeleteVariant">{{this.selectedDeleteVariant.color_title}}, {{this.selectedDeleteVariant.size}}</h1>
+                        </div>
+                        
+                        <div class="modal-footer border-0 ">
+                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary bg-light-primary "
+                                (click)="removeAdditionalVariants()"
+                            >
+                                CONFIRM
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         
 
         
