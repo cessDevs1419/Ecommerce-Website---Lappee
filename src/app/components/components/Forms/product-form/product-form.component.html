@@ -246,11 +246,13 @@
                                         formControlName="subcategory" 
         
                                     >
-                                        <ng-container *ngFor="let products of (products | async)">
-                                            <ng-container *ngIf="products.id === selectedRowData">
-                                                <ng-container *ngFor="let subcategory of (sub_categories | async)">
-                                                    <ng-container *ngIf="products.sub_category_id === subcategory.id" >
-                                                        <option [selected]="subcategory.id" [hidden]="subcategory.id !== products.sub_category_id">{{subcategory.name}}</option>
+                                        <ng-container *ngIf="hideselectedsub" >
+                                            <ng-container *ngFor="let products of (products | async)" >
+                                                <ng-container *ngIf="products.id === selectedRowData">
+                                                    <ng-container *ngFor="let subcategory of (sub_categories | async)">
+                                                        <ng-container *ngIf="products.sub_category_id === subcategory.id" >
+                                                            <option [selected]="subcategory.id" [hidden]="subcategory.id !== products.sub_category_id">{{subcategory.name}}</option>
+                                                        </ng-container>
                                                     </ng-container>
                                                 </ng-container>
                                             </ng-container>
