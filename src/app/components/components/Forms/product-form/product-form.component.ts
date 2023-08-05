@@ -85,6 +85,7 @@ export class ProductFormComponent {
     selectedVariants: any[] = [];
     selectedSubCategoryId: string;
     
+    
     index: number;
     variant_id: string;
     done: boolean;
@@ -124,6 +125,7 @@ export class ProductFormComponent {
 	    
 		this.editProductForm = this.formBuilder.group({
             name: [''],
+            category: [''],
             subcategory: [''],
 	        description: [''],
 	        //images: this.formBuilder.array([]),
@@ -584,26 +586,15 @@ export class ProductFormComponent {
             editProducts.append('name', this.editProductForm.get('name')?.value);
             editProducts.append('category', this.editProductForm.get('subcategory')?.value);
             editProducts.append('description', this.editProductForm.get('description')?.value);
-            
-            const variantsList = this.editProductForm.get('variants') as FormArray;
-            for (let i = 0; i < variantsList.length; i++) {
-                const variantFormGroup = variantsList.at(i) as FormGroup;
-                const variant = variantFormGroup.value;
-                editProducts.append(`size`, variant.size);
-                editProducts.append(`quantity`, variant.stock);
-                editProducts.append(`limit`, variant.stock_limit);
-                editProducts.append(`price`, variant.price);
-                editProducts.append(`color`, variant.color);
-                editProducts.append(`color_title`, variant.color_title);
-            }
         
             this.product_service.patchProduct(editProducts).subscribe({
                     next: (response: any) => { 
-                        
+                        const productSuccess = {
+                            head: 'Edit Product',
+                            sub: response.message
+                        };
                         this.RefreshTable.emit();
-                        this.ProductSuccess.emit("Product "+this.addProductForm.value.name);
-                        this.addProductForm.reset();
-                        this.variantsList.clear();
+                        this.ProductSuccess.emit(productSuccess);
                     },
                     error: (error: HttpErrorResponse) => {
                         const errorData = this.errorService.handleError(error);
@@ -620,193 +611,193 @@ export class ProductFormComponent {
         
 
         //Additional variants
-            // let AdditionalVariants: any = new FormData();
-            // const additionalvariantsList = this.editProductForm.get('additional_variants') as FormArray;
-            // for (let i = 0; i < additionalvariantsList.length; i++) {
-            //     const variantFormGroup = additionalvariantsList.at(i) as FormGroup;
-            //     const variant = variantFormGroup.value;
-            //     // AdditionalVariants.append(`variants[${i}][product_id]`, variant.product_id);
-            //     // AdditionalVariants.append(`variants[${i}][size]`, variant.size);
-            //     // AdditionalVariants.append(`variants[${i}][quantity]`, variant.stock);
-            //     // AdditionalVariants.append(`variants[${i}][limit]`, variant.stock_limit);
-            //     // AdditionalVariants.append(`variants[${i}][price]`, variant.price);
-            //     // AdditionalVariants.append(`variants[${i}][color]`, variant.color);
-            //     // AdditionalVariants.append(`variants[${i}][color_title]`, variant.color_title);
-            //     AdditionalVariants.append(`product_id`, variant.product_id);
-            //     AdditionalVariants.append(`size`, variant.size);
-            //     AdditionalVariants.append(`quantity`, variant.stock);
-            //     AdditionalVariants.append(`limit`, variant.stock_limit);
-            //     AdditionalVariants.append(`price`, variant.price);
-            //     AdditionalVariants.append(`color`, variant.color);
-            //     AdditionalVariants.append(`color_title`, variant.color_title);
-            // }
+            let AdditionalVariants: any = new FormData();
+            const additionalvariantsList = this.editProductForm.get('additional_variants') as FormArray;
+            for (let i = 0; i < additionalvariantsList.length; i++) {
+                const variantFormGroup = additionalvariantsList.at(i) as FormGroup;
+                const variant = variantFormGroup.value;
+                // AdditionalVariants.append(`variants[${i}][product_id]`, variant.product_id);
+                // AdditionalVariants.append(`variants[${i}][size]`, variant.size);
+                // AdditionalVariants.append(`variants[${i}][quantity]`, variant.stock);
+                // AdditionalVariants.append(`variants[${i}][limit]`, variant.stock_limit);
+                // AdditionalVariants.append(`variants[${i}][price]`, variant.price);
+                // AdditionalVariants.append(`variants[${i}][color]`, variant.color);
+                // AdditionalVariants.append(`variants[${i}][color_title]`, variant.color_title);
+                AdditionalVariants.append(`product_id`, variant.product_id);
+                AdditionalVariants.append(`size`, variant.size);
+                AdditionalVariants.append(`quantity`, variant.stock);
+                AdditionalVariants.append(`limit`, variant.stock_limit);
+                AdditionalVariants.append(`price`, variant.price);
+                AdditionalVariants.append(`color`, variant.color);
+                AdditionalVariants.append(`color_title`, variant.color_title);
+            }
             
-            // this.variantService.postVariants(AdditionalVariants).subscribe({
-            //             next: (response: any) => { 
-            //                     const productSuccess = {
-            //                         head: 'Edit Variant',
-            //                         sub: response.message
-            //                     };
-            //                     this.RefreshTable.emit();
-            //                     this.ProductSuccess.emit(productSuccess);
-            //                 },
-            //             error: (error: HttpErrorResponse) => {
-            //                     const errorData = this.errorService.handleError(error);
-            //                     if (error.error?.data?.error) {
-            //                         const fieldErrors = error.error.data.error;
-            //                         const errorsArray = [];
+            this.variantService.postVariants(AdditionalVariants).subscribe({
+                        next: (response: any) => { 
+                                const productSuccess = {
+                                    head: 'Edit Variant',
+                                    sub: response.message
+                                };
+                                this.RefreshTable.emit();
+                                this.ProductSuccess.emit(productSuccess);
+                            },
+                        error: (error: HttpErrorResponse) => {
+                                const errorData = this.errorService.handleError(error);
+                                if (error.error?.data?.error) {
+                                    const fieldErrors = error.error.data.error;
+                                    const errorsArray = [];
                                 
-            //                         for (const field in fieldErrors) {
-            //                             if (fieldErrors.hasOwnProperty(field)) {
-            //                                 const messages = fieldErrors[field];
-            //                                 let errorMessage = messages;
-            //                                 if (Array.isArray(messages)) {
-            //                                     errorMessage = messages.join(' '); // Concatenate error messages into a single string
-            //                                 }
-            //                                 errorsArray.push(errorMessage);
-            //                             }
-            //                         }
+                                    for (const field in fieldErrors) {
+                                        if (fieldErrors.hasOwnProperty(field)) {
+                                            const messages = fieldErrors[field];
+                                            let errorMessage = messages;
+                                            if (Array.isArray(messages)) {
+                                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                            }
+                                            errorsArray.push(errorMessage);
+                                        }
+                                    }
                                 
-            //                         const errorDataforProduct = {
-            //                             errorMessage: 'Error Invalid Inputs',
-            //                             suberrorMessage: errorsArray,
-            //                         };
+                                    const errorDataforProduct = {
+                                        errorMessage: 'Error Invalid Inputs',
+                                        suberrorMessage: errorsArray,
+                                    };
                                 
-            //                         this.ProductWarning.emit(errorDataforProduct);
-            //                     } else {
+                                    this.ProductWarning.emit(errorDataforProduct);
+                                } else {
                                 
-            //                         const errorDataforProduct = {
-            //                             errorMessage: 'Error Invalid Inputs',
-            //                             suberrorMessage: 'Please Try Another One',
-            //                         };
-            //                         this.ProductError.emit(errorDataforProduct);
-            //                     }
-            //                     return throwError(() => error);
+                                    const errorDataforProduct = {
+                                        errorMessage: 'Error Invalid Inputs',
+                                        suberrorMessage: 'Please Try Another One',
+                                    };
+                                    this.ProductError.emit(errorDataforProduct);
+                                }
+                                return throwError(() => error);
                                 
-            //                 }
-            // });
+                            }
+            });
         
         //Edited variants
-            // let EditedVariants: any = new FormData();
-            // const editedvariantsList = this.editProductForm.get('edited_variants') as FormArray;
-            // for (let i = 0; i < editedvariantsList.length; i++) {
-            //     const variantFormGroup = editedvariantsList.at(i) as FormGroup;
-            //     const variant = variantFormGroup.value;
-            //     // EditedVariants.append(`variants[${i}][variant_id]`, variant.variant_id);
-            //     // EditedVariants.append(`variants[${i}][product_id]`, variant.product_id);
-            //     // EditedVariants.append(`variants[${i}][size]`, variant.size);
-            //     // EditedVariants.append(`variants[${i}][quantity]`, variant.stock);
-            //     // EditedVariants.append(`variants[${i}][limit]`, variant.stock_limit);
-            //     // EditedVariants.append(`variants[${i}][price]`, variant.price);
-            //     // EditedVariants.append(`variants[${i}][color]`, variant.color);
-            //     // EditedVariants.append(`variants[${i}][color_title]`, variant.color_title);
-            //     EditedVariants.append(`id`, variant.variant_id);
-            //     EditedVariants.append(`size`, variant.size);
-            //     EditedVariants.append(`quantity`, variant.stock);
-            //     EditedVariants.append(`limit`, variant.stock_limit);
-            //     EditedVariants.append(`price`, variant.price);
-            //     EditedVariants.append(`color`, variant.color);
-            //     EditedVariants.append(`color_title`, variant.color_title);
-            // }
+            let EditedVariants: any = new FormData();
+            const editedvariantsList = this.editProductForm.get('edited_variants') as FormArray;
+            for (let i = 0; i < editedvariantsList.length; i++) {
+                const variantFormGroup = editedvariantsList.at(i) as FormGroup;
+                const variant = variantFormGroup.value;
+                // EditedVariants.append(`variants[${i}][variant_id]`, variant.variant_id);
+                // EditedVariants.append(`variants[${i}][product_id]`, variant.product_id);
+                // EditedVariants.append(`variants[${i}][size]`, variant.size);
+                // EditedVariants.append(`variants[${i}][quantity]`, variant.stock);
+                // EditedVariants.append(`variants[${i}][limit]`, variant.stock_limit);
+                // EditedVariants.append(`variants[${i}][price]`, variant.price);
+                // EditedVariants.append(`variants[${i}][color]`, variant.color);
+                // EditedVariants.append(`variants[${i}][color_title]`, variant.color_title);
+                EditedVariants.append(`id`, variant.variant_id);
+                EditedVariants.append(`size`, variant.size);
+                EditedVariants.append(`quantity`, variant.stock);
+                EditedVariants.append(`limit`, variant.stock_limit);
+                EditedVariants.append(`price`, variant.price);
+                EditedVariants.append(`color`, variant.color);
+                EditedVariants.append(`color_title`, variant.color_title);
+            }
             
-            // this.variantService.patchVariants(EditedVariants).subscribe({
-            // next: (response: any) => { 
-            //                 const productSuccess = {
-            //                     head: 'Edit Variant',
-            //                     sub: response.message
-            //                 };
-            //                 this.RefreshTable.emit();
-            //                 this.ProductSuccess.emit(productSuccess);
-            //             },
-            //             error: (error: HttpErrorResponse) => {
-            //                 const errorData = this.errorService.handleError(error);
-            //                 if (error.error?.data?.error) {
-            //                     const fieldErrors = error.error.data.error;
-            //                     const errorsArray = [];
+            this.variantService.patchVariants(EditedVariants).subscribe({
+            next: (response: any) => { 
+                            const productSuccess = {
+                                head: 'Edit Variant',
+                                sub: response.message
+                            };
+                            this.RefreshTable.emit();
+                            this.ProductSuccess.emit(productSuccess);
+                        },
+                        error: (error: HttpErrorResponse) => {
+                            const errorData = this.errorService.handleError(error);
+                            if (error.error?.data?.error) {
+                                const fieldErrors = error.error.data.error;
+                                const errorsArray = [];
                             
-            //                     for (const field in fieldErrors) {
-            //                         if (fieldErrors.hasOwnProperty(field)) {
-            //                             const messages = fieldErrors[field];
-            //                             let errorMessage = messages;
-            //                             if (Array.isArray(messages)) {
-            //                                 errorMessage = messages.join(' '); // Concatenate error messages into a single string
-            //                             }
-            //                             errorsArray.push(errorMessage);
-            //                         }
-            //                     }
+                                for (const field in fieldErrors) {
+                                    if (fieldErrors.hasOwnProperty(field)) {
+                                        const messages = fieldErrors[field];
+                                        let errorMessage = messages;
+                                        if (Array.isArray(messages)) {
+                                            errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                        }
+                                        errorsArray.push(errorMessage);
+                                    }
+                                }
                             
-            //                     const errorDataforProduct = {
-            //                         errorMessage: 'Error Invalid Inputs',
-            //                         suberrorMessage: errorsArray,
-            //                     };
+                                const errorDataforProduct = {
+                                    errorMessage: 'Error Invalid Inputs',
+                                    suberrorMessage: errorsArray,
+                                };
                             
-            //                     this.ProductWarning.emit(errorDataforProduct);
-            //                 } else {
+                                this.ProductWarning.emit(errorDataforProduct);
+                            } else {
                             
-            //                     const errorDataforProduct = {
-            //                         errorMessage: 'Error Invalid Inputs',
-            //                         suberrorMessage: 'Please Try Another One',
-            //                     };
-            //                     this.ProductError.emit(errorDataforProduct);
-            //                 }
-            //                 return throwError(() => error);
+                                const errorDataforProduct = {
+                                    errorMessage: 'Error Invalid Inputs',
+                                    suberrorMessage: 'Please Try Another One',
+                                };
+                                this.ProductError.emit(errorDataforProduct);
+                            }
+                            return throwError(() => error);
                             
-            //             }
-            // });
+                        }
+            });
         
         //Deleted variants
-            // let DeletedVariants: any = new FormData();
-            // const deletedvariantsList = this.editProductForm.get('deleted_variants') as FormArray;
-            // for (let i = 0; i < deletedvariantsList.length; i++) {
-            //     const variantFormGroup = deletedvariantsList.at(i) as FormGroup;
-            //     const variant = variantFormGroup.value.toString()
-            //     DeletedVariants.append(`id`, variant);
-            // }
+            let DeletedVariants: any = new FormData();
+            const deletedvariantsList = this.editProductForm.get('deleted_variants') as FormArray;
+            for (let i = 0; i < deletedvariantsList.length; i++) {
+                const variantFormGroup = deletedvariantsList.at(i) as FormGroup;
+                const variant = variantFormGroup.value.toString()
+                DeletedVariants.append(`id`, variant);
+            }
             
-            // this.variantService.deleteVariants(DeletedVariants).subscribe({
-            //     next: (response: any) => { 
-            //         const productSuccess = {
-            //             head: 'Delete Variant',
-            //             sub: response.message
-            //         };
-            //         this.RefreshTable.emit();
-            //         this.ProductSuccess.emit(productSuccess);
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         const errorData = this.errorService.handleError(error);
-            //         if (error.error?.data?.error) {
-            //             const fieldErrors = error.error.data.error;
-            //             const errorsArray = [];
+            this.variantService.deleteVariants(DeletedVariants).subscribe({
+                next: (response: any) => { 
+                    const productSuccess = {
+                        head: 'Delete Variant',
+                        sub: response.message
+                    };
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit(productSuccess);
+                },
+                error: (error: HttpErrorResponse) => {
+                    const errorData = this.errorService.handleError(error);
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
                     
-            //             for (const field in fieldErrors) {
-            //                 if (fieldErrors.hasOwnProperty(field)) {
-            //                     const messages = fieldErrors[field];
-            //                     let errorMessage = messages;
-            //                     if (Array.isArray(messages)) {
-            //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
-            //                     }
-            //                     errorsArray.push(errorMessage);
-            //                 }
-            //             }
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
                     
-            //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: errorsArray,
-            //             };
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
                     
-            //             this.ProductWarning.emit(errorDataforProduct);
-            //         } else {
+                        this.ProductWarning.emit(errorDataforProduct);
+                    } else {
                     
-            //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: 'Please Try Another One',
-            //             };
-            //             this.ProductError.emit(errorDataforProduct);
-            //         }
-            //         return throwError(() => error);
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.ProductError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
                     
-            //     }
-            // });
+                }
+            });
         
 
 
