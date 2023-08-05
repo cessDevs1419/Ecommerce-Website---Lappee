@@ -68,7 +68,8 @@ export class ProductsComponent {
 
   productToCart: FormGroup = this.fb.group({
     color: ['', Validators.required],
-    size: ['', Validators.required]
+    size: ['', Validators.required],
+    quantity: [1, Validators.required]
   });
 
   postComment: FormGroup = this.fb.group({
@@ -76,9 +77,11 @@ export class ProductsComponent {
   });
 
   selectedColorSizes: string[] = [];
+  maxStock: number = 0;
 
   get productColor() { return this.productToCart.get('color') }
   get productSize() { return this.productToCart.get('size') }
+  get productQuantity() { return this.productToCart.get('quantity') }
 
   get commentMessage() { return this.postComment.get('message') }
   //get commentShowUser() { return this.postComment.get('showUser') }
@@ -206,6 +209,7 @@ export class ProductsComponent {
     this.selectedPrice = Number(selectedVariant?.price);
     this.productSize?.setValue(size);
     this.selectedVariantId = selectedVariant?.variant_id ? selectedVariant.variant_id : "";
+    this.maxStock = selectedVariant?.stock ? selectedVariant.stock : 0;
     console.log(this.productSize?.value);
   }
 
@@ -224,7 +228,7 @@ export class ProductsComponent {
         
         details = "Color: " + this.colorCurrent.name + " | Size: " + this.sizeCurrent;
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, 1, this.selectedPrice.toString(), this.currentProduct.images[0]);
+        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images[0]);
         console.warn('added to cart');
 
         this.toastHeader = "Successful!";

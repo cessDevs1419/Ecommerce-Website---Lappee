@@ -9,7 +9,7 @@
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
                     <h3>{{match.name}}</h3>
-                    <p>{{match.id}}</p>
+                    <p>ID: {{match.id}}</p>
                     <div class="d-flex flex-row justify-content-start rating-yellow"  *ngIf="this.reviews | async as review">
                         <app-star-ratings [rating]="review.rating"></app-star-ratings>
                         <p class="ms-1">{{review.count.total}} total review/s</p>
@@ -46,31 +46,42 @@
                                     <span class="text-danger">This field is required.</span>
                                 </div>
                             </div>                        
-                            
                             <div class="d-inline-flex mt-0 pt-0 justify-content-start">
                                 <div *ngFor="let color of colorVariants" class="select-container me-3">
                                     <input type="radio" class="color-select" [value]="color.name" (click)="changeColor(color.name)" formControlName="color" name="color" id={{color.name}} />
                                     <label class="color-select-round" for={{color.name}} [style.background-color]="color.color"></label>
                                 </div>  
                             </div>
-    
-                            <p class="fs-4 fw-bold mb-0 mt-3">Sizes: {{sizeCurrent}}</p>
-                            <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
-                                <div *ngIf="productColor?.errors?.['required']">
-                                    <span class="text-danger">This field is required.</span>
+                            
+                            <div *ngIf="selectedColorSizes.length > 0">
+                                <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Sizes:</span> {{sizeCurrent}}</p>
+                                <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
+                                    <div *ngIf="productSize?.errors?.['required']">
+                                        <span class="text-danger">This field is required.</span>
+                                    </div>
+                                </div>
+                                <div class="d-inline-flex mt-0 pt-0 justify-content-start">
+                                    <div *ngFor="let size of selectedColorSizes" class="select-container me-3">
+                                        <input type="radio" class="size-select" value={{size}} (click)="changeSize(size)" formControlName="size" name="size" id={{size}} />
+                                        <label class="size-select-box justify-content-center align-items-center" for={{size}}>{{size}}</label>
+                                    </div>  
                                 </div>
                             </div>
-                            <div class="d-inline-flex mt-0 pt-0 justify-content-start">
-                                <div *ngFor="let size of selectedColorSizes" class="select-container me-3">
-                                    <input type="radio" class="size-select" value={{size}} (click)="changeSize(size)" formControlName="size" name="size" id={{size}} />
-                                    <label class="size-select-box justify-content-center align-items-center" for={{size}}>{{size}}</label>
-                                </div>  
+                            
+                            <div *ngIf="this.maxStock > 0">
+                                <p class="fs-4 mb-0 mt-3 mb-3"><span class="fw-bold">Quantity:</span></p>
+                                <div *ngIf="productQuantity?.invalid && (productQuantity?.dirty || productQuantity?.touched)">
+                                    <div *ngIf="productQuantity?.errors?.['required']">
+                                        <span class="text-danger">This field is required.</span>
+                                    </div>
+                                </div>
+                                <app-quantity-input formControlName="quantity" [max]="this.maxStock"></app-quantity-input>
                             </div>
 
                         </div>
 
-                        <div class="product-border-bottom mt-3">
-                            <i *ngIf="!this.hasVariant">Choose a color to see its available sizes.</i>
+                        <div class="product-border-bottom mt-3 pb-3">
+                            <i *ngIf="!this.hasVariant">Choose a color to see its available sizes, choose a size to see how many are in stock.</i>
                         </div>
 
                         <div class="mt-3 row">

@@ -67,6 +67,7 @@ import { ReviewFormComponent } from './components/components/modal-forms-client/
 import { StarRatingsInputComponent } from './components/components/star-ratings-input/star-ratings-input.component';
 import { SearchComponent } from './components/pages/main/search/search.component';
 import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/admin-inquiry.component';
+import { QuantityInputComponent } from './components/components/quantity-input/quantity-input.component';
 
 
 @NgModule({
@@ -126,7 +127,8 @@ import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/ad
     ReviewFormComponent,
     StarRatingsInputComponent,
     SearchComponent,
-    AdminInquiryComponent
+    AdminInquiryComponent,
+    QuantityInputComponent
   ],
   imports: [
     BrowserModule,
