@@ -9,7 +9,7 @@ import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
-import { AboutUsTosList, AboutUsTosSection } from "src/assets/models/sitedetails";
+import { AboutUsTosList, AboutUsTosSection, Banner, BannersList } from "src/assets/models/sitedetails";
 
 // Formatting
 
@@ -232,6 +232,14 @@ export function formatAboutUsTos(response: AboutUsTosList): AboutUsTosSection[] 
     order: data.order,
     created_at: data.created_at,
     updated_at: data.updated_at
+  }))
+}
+
+export function formatBanners(response: BannersList): Banner[] {
+  return response.data.map((data: Banner) => ({
+    id: data.id,
+    label: data.label,
+    path: data.path
   }))
 }
 
