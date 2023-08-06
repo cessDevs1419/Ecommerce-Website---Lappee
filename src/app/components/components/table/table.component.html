@@ -146,6 +146,7 @@
                                 <i class="bi bi-trash fs-5"></i>
                             </button>
                             
+                            <!--VIEW BTN-->
                             <button
                                 (click)="sendRowData(item)"
                                 *ngIf="viewBtn"
@@ -166,6 +167,7 @@
                                 <i class="bi bi-eye fs-5"></i>
                             </button>
                             
+                            <!--BAN BTN-->
                             <button
                                 (click)="sendRowData(item)"
                                 *ngIf="banBtn"
@@ -176,7 +178,35 @@
                                 <i class="bi bi-hammer fs-5"></i>
                             </button>
                         
-                        
+                            <!--SHIPPED STATUS BTN-->
+                            <button
+                                (click)="sendRowData(item)"
+                                *ngIf="item.status === paymentStatus"
+                                type="button"
+                                class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#confirm"
+                            >
+                                <i class="bi bi-check-lg fs-5"></i>
+                            </button>
+                            <button
+                                (click)="sendRowData(item)"
+                                *ngIf="item.status === shipStatus"
+                                type="button"
+                                class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#ship"
+                            >
+                                <i class="bi bi-box-seam fs-5"></i>
+                            </button>
+                            
+                            <button
+                                (click)="sendRowData(item)"
+                                *ngIf="item.status === deliverStatus"
+                                type="button"
+                                class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#deliver"
+                            >
+                                <i class="bi bi-truck fs-5"></i>
+                            </button>
 
 
                         </td>

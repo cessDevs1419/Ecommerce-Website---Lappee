@@ -12,7 +12,7 @@
                     <div class="modal-title text-start">
                         <h1 class="modal-title fs-4 fw-bolder lh-1 {{modalTitleClass}}">{{modalTitle}}</h1>
                         <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
-                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="selectedRowData?.address_line_1 || selectedRowData?.address_line_2">
+                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="allowAnotherSub">
                             <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
                             <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
                             <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
@@ -104,6 +104,41 @@
                             <h1 class="form-title fs-2 fw-bolder mb-4" >₱{{selectedRowData?.total_price}}</h1>
                         </div>
                     </div>
+                </div>
+                
+                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalConfirm">
+                    <form class="w-100" (ngSubmit)="confirmPayment()" >
+                        <img src="" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" alt="Confirm Payment" srcset="">
+                        <div class="modal-footer border-0 ">
+                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary bg-light-primary "
+                                
+                            >
+                                CONFIRM
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalShip">
+                    <form  (ngSubmit)="shipPackage()" >
+                        <div class="modal-body text-center pt-0 pb-0">
+                            <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as ship?</p>
+                            <h1 class="text-primary fs-4 fw-bolder" >{{selectedRowData?.name}}</h1>
+                        </div>
+                        
+                        <div class="modal-footer border-0 justify-content-center">
+                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary bg-light-primary "
+
+                            >
+                                CONFIRM
+                            </button>
+                        </div>
+                    </form>
                 </div>
         </div> 
 

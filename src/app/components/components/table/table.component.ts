@@ -52,6 +52,7 @@ export class TableComponent {
 	@Input() viewBtn!: boolean;
 	@Input() viewBtn2!: boolean;
 	@Input() banBtn!: boolean;
+	
 	@Input() bannedStatus: { [userId: number]: boolean } = {};
 	
 	//table Data
@@ -72,6 +73,9 @@ export class TableComponent {
 	@Input() viewBtnclass: string;
 	@Input() banBtnclass: string;
 	
+	@Input() paymentStatus!: number;
+	@Input() shipStatus!: number;
+	@Input() deliverStatus!: number;
 	
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];

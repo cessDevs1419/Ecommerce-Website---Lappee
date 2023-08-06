@@ -30,6 +30,9 @@ export class ModalComponent {
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
 	@Output() delete: EventEmitter<any> = new EventEmitter();
 	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
+	@Output() confirm: EventEmitter<any> = new EventEmitter();
+    @Output() ship: EventEmitter<any> = new EventEmitter();
+	@Output() deliver: EventEmitter<any> = new EventEmitter();
 	
 	@Input() modalId!: string;
     @Input() modalTitle!: string;
@@ -47,6 +50,10 @@ export class ModalComponent {
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
+	@Input() allowAnotherSub!: boolean;
+    @Input() modalConfirm!: boolean;  
+	@Input() modalShip!: boolean; 
+	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
 	
@@ -76,7 +83,17 @@ export class ModalComponent {
 	    }
 	}
 	
+    confirmPayment(){
+        this.confirm.emit()
+    }
     
+    shipPackage(){
+        this.ship.emit()
+    }
+    
+    deliverPackage(){
+        this.deliver.emit()
+    }
     
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay

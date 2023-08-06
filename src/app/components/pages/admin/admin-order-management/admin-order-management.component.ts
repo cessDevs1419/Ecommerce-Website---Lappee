@@ -19,7 +19,12 @@ export class AdminOrderManagementComponent {
     orders!: Observable<AdminOrder[]>;
 	ordersDetails!: Observable<AdminOrderDetail>;
     ordersContents$: Observable<AdminOrderContent[]>;
+
     
+    paymentStatus: number = 100;
+	shipStatus: number ;
+	deliverStatus: number;
+	
 	private refreshData$ = new Subject<void>();
     selectedRowData!: any;
     
@@ -34,6 +39,7 @@ export class AdminOrderManagementComponent {
             switchMap(() => this.service.getAdminOrders()),
             map((Response: any) => formatAdminOrder(Response))
         );
+        
 	}
 
     refreshTableData(): void {
@@ -55,4 +61,29 @@ export class AdminOrderManagementComponent {
         }); 
 
     }
+    
+    confirmPayment(){
+        this.shipStatus = 175;
+    }
+        
+    shipPackage(){
+        this.deliverStatus = 200;
+    }
+    
+        
+    deliverPackage(){
+    
+    }
+    
+    // switch(this.shipStatus){
+	// 	case 'confirm':
+	// 		this.confirmBtn = true
+	// 	break
+	// 	case 'ship':
+	// 		this.shipBtn = true
+	// 	break
+	// 	case 'deliver':
+	// 		this.deliverBtn = true
+	// 	break
+	// }
 }
