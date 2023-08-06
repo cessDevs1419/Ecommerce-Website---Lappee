@@ -107,7 +107,20 @@
                     Inquiry
                 </a>
             </li>
+            
+            <li routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0 dropdown">
+                <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
+                <a routerLinkActive="text-white dropdown-toggle" class="nav-link text-dark text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                    Manage Contents
+                </a>
 
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/admin/site-settings">Site Settings</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>      
+            </li>
 
             <!-- <li [routerLink]="'stocks-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>

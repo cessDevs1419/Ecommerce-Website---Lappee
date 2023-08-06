@@ -78,3 +78,5 @@ export const GETTos: string = api + "api/client/content-management/sections/tos"
 export const GETAboutUs: string = api + "api/client/content-management/sections/about-us";
 export const GETSiteDetails: string = api + "api/client/content-management/view-details";
 export const GETBanners: string = api + "api/client/content-management/banners";
+export const POSTUploadSiteLogo: string = api + "api/admin/site-settings/site-logo/upload";
+export const PATCHEditSiteName: string = api + "api/admin/site-settings/site-name/edit";

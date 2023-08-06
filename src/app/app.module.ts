@@ -70,6 +70,7 @@ import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/ad
 import { QuantityInputComponent } from './components/components/quantity-input/quantity-input.component';
 import { AboutUsComponent } from './components/pages/main/about-us/about-us.component';
 import { TosComponent } from './components/pages/main/tos/tos.component';
+import { AdminSiteSettingsComponent } from './components/pages/admin/admin-site-settings/admin-site-settings.component';
 
 
 @NgModule({
@@ -132,7 +133,8 @@ import { TosComponent } from './components/pages/main/tos/tos.component';
     AdminInquiryComponent,
     QuantityInputComponent,
     AboutUsComponent,
-    TosComponent
+    TosComponent,
+    AdminSiteSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -179,11 +181,9 @@ import { TosComponent } from './components/pages/main/tos/tos.component';
           {path: 'product-management/:page/:action/:var_id/:connector/:prod_id', component: AdminParentFormComponent},
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
-
-          {
-            path: 'inquiry',
-            component: AdminInquiryComponent
-          }
+          {path: 'inquiry', component: AdminInquiryComponent},
+          {path: 'site-settings', component: AdminSiteSettingsComponent},
+          {path: 'site-settings/:action', component: AdminSiteSettingsComponent},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

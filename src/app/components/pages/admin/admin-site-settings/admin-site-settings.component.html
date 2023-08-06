@@ -1,0 +1,134 @@
+<div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
+  <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+</div>
+
+<div *ngIf="!showAddForm">
+  <div class="container-md m-auto h-auto p-2 pb-4" >
+    <div class="row mb-5 row-cols-1 row-cols-lg-2 gy-5">
+      <div class="col col-lg-4">
+        <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
+          <h1 class="fw-bold fs-4 mb-0">EDIT WEBSITE LOGO</h1>
+          <h3 class="fw-bold fs-6 mt-0 sub-title">CONTENT MANAGEMENT</h3>
+  
+          <form (ngSubmit)="editSiteLogo()">
+            <div class="row row-cols-1 gy-3">
+              <div class="col d-flex justify-content-center">
+                <div>
+                  <div class="logo-container">
+                    <div class="logo-holder position-absolute overflow-hidden">
+                      <img src="{{url}}" class="img-fluid">
+                    </div>
+                    <div class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
+                      <i class="bi bi-upload fs-5"></i>
+                    </div>
+
+                    <input type="file" name="" id="logoUpload" class="d-none" accept="image/png,image/jpeg" (change)="onFileChanged($event)" >
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="col d-flex justify-content-center">
+                    <button type="reset" class="btn btn-muted me-3" (click)="cancelEditSiteLogo()">Cancel</button>
+                    <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col col-lg-4 d-flex align-items-end">
+        <div class="w-100">
+          <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
+            <h1 class="fw-bold fs-4 mb-0">EDIT WEBSITE NAME</h1>
+            <h3 class="fw-bold fs-6 mt-0 sub-title">CONTENT MANAGEMENT</h3>
+  
+            <form (ngSubmit)="editSiteName()" [formGroup]="siteNameForm">
+              <div class="row row-cols-1 gy-3 mt-3">
+                <div class="col">
+                  <input type="text" name="" id="" class="form-control" formControlName="siteName">
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="col d-flex justify-content-center">
+                      <button type="reset" class="btn btn-muted me-3">Cancel</button>
+                      <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <app-table
+      tableTitle="WEBSITE BANNERS"
+      subTitle="CONTENT MANAGEMENT"
+      
+      [tableHead]="true"
+      tableContainerClass="p-4"
+      [paginate]="true"
+
+      [tableHeader]="['BANNER LABEL']"
+      [tableRows]="['label']"
+      [tableAction]="true"
+      [Btntools]="true"
+      [tableTools]="true"
+      [tableData]="banners"
+      
+      [viewBtn]="true"
+      [addBtn]="true"
+      addbtnName="ADD BANNER"
+      [addBtnclass]="size"
+      
+      (rowDataSelected)="getBannerData($event)"
+      (ShowAddForm)="addBanner()">
+    </app-table>
+  </div>
+  
+  <div class="modal fade" id="view"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
+        <div class="modal-content ">
+            <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title text-start">
+                    <h1 class="modal-title fs-4 fw-bolder" >BANNER {{ selectedBanner.label | uppercase }}</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <hr class="divider m-0 mb-3">
+            <div class="modal-body">
+              <img src="{{ selectedBanner.path }}" alt="{{ selectedBanner.label | uppercase }}" srcset="" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div> 
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showAddForm">
+  <div class="container-md m-auto h-auto p-2 pb-4">
+    <div class="d-flex">
+      <div class="content-form p-4 rounded-4">
+        <h1 class="fw-bold fs-4 mb-0">ADD BANNER</h1>
+        <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
+
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label mb-1">Banner Label*</label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="row">
+          <div class="col d-flex justify-content-end">
+            <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
+            <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

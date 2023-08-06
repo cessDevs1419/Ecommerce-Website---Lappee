@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETSiteDetails } from '../endpoints';
+import { GETSiteDetails, PATCHEditSiteName, POSTUploadSiteLogo } from '../endpoints';
 import { Observable, map, of } from 'rxjs';
 import { formatSiteDetails } from 'src/app/utilities/response-utils';
 import { SiteDetails } from 'src/assets/models/sitedetails';
@@ -9,6 +9,14 @@ import { SiteDetails } from 'src/assets/models/sitedetails';
   providedIn: 'root'
 })
 export class SiteDetailsService {
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true'
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -39,6 +47,16 @@ export class SiteDetailsService {
     return data.pipe(
       map((response: SiteDetails) => { this.siteTitle = of(response.site_name.site_name); return response.site_name.site_name })
     )
+  }
+
+  uploadSiteLogo(data: FormData): Observable<any>
+  {
+    return this.http.post<any>(POSTUploadSiteLogo, data);
+  }
+
+  editSiteTitle(data: FormData): Observable<any>
+  {
+    return this.http.patch<any>(PATCHEditSiteName, data);
   }
 
   ngOnInit(): void {
