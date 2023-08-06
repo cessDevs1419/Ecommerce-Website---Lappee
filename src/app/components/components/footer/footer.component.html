@@ -4,5 +4,5 @@
         <a class="me-3" [routerLink]="['contactus']">Contact Us</a>
         <a [routerLink]="['about-us']">About Us</a>
     </div>
-    <p class="text-center">{{siteTitle}} 2023. All rights reserved.</p>
+    <p class="text-center" *ngIf="this.siteTitle | async as details">{{details.site_name.site_name}} 2023. All rights reserved.</p>
 </div>

@@ -24,3 +24,18 @@ export interface Banner {
     label: string,
     path: string
 }
+
+export interface SiteDetailsList {
+    success: string,
+    message: string,
+    data: SiteDetails
+}
+
+export interface SiteDetails {
+    site_name: SiteName
+}
+
+export interface SiteName {
+    id: string,
+    site_name: string
+}

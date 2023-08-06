@@ -146,17 +146,17 @@ import { TosComponent } from './components/pages/main/tos/tos.component';
     RouterModule.forRoot([
       
       //client
-      {path: 'home', component: HomeComponent},
-      {path: 'account', component: AccountComponent, canActivate: [authGuard]},
+      {path: 'home', component: HomeComponent, title: 'Home'},
+      {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'products/:productId', component: ProductsComponent},
-      {path: 'cart', component: CartComponent},
-      {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-      {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
-      {path: 'contactus', component: ContactusComponent},
-      {path: 'search/:searchTerm', component: SearchComponent},
-      {path: 'about-us', component: AboutUsComponent},
-      {path: 'tos', component: TosComponent},
+      {path: 'cart', component: CartComponent, title: 'Cart'},
+      {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
+      {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
+      {path: 'contactus', component: ContactusComponent, title: 'Contact Us'},
+      {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
+      {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
+      {path: 'tos', component: TosComponent, title: 'Terms of Service'},
 
       //admin
       {
