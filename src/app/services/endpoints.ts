@@ -71,3 +71,9 @@ export const POSTInquiry: string = api + "api/client/inquiry/store";
 
 // Search Endpoints
 export const GETSearchResults: string = api + "api/client/products/search/";
+
+// Site Details Endpoints
+export const GETTos: string = api + "api/client/content-management/sections/tos";
+export const GETAboutUs: string = api + "api/client/content-management/sections/about-us";
+export const GETSiteDetails: string = api + "api/client/content-management/view-details";
+export const GETBanners: string = api + "api/client/content-management/banners";

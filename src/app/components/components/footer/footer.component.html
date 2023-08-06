@@ -1,7 +1,8 @@
 <hr *ngIf="!this.isAdminDashboard">
 <div class="container-md my-3 d-flex flex-column align-items-center" *ngIf="!this.isAdminDashboard">
-    <div>
-        <a [routerLink]="['contactus']">Contact Us</a>
+    <div class="d-flex justify-content-center">
+        <a class="me-3" [routerLink]="['contactus']">Contact Us</a>
+        <a [routerLink]="['about-us']">About Us</a>
     </div>
-    <p class="text-center">{{siteTitle}} 2022. All rights reserved.</p>
+    <p class="text-center">{{siteTitle}} 2023. All rights reserved.</p>
 </div>

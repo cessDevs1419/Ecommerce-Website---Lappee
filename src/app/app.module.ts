@@ -68,6 +68,8 @@ import { StarRatingsInputComponent } from './components/components/star-ratings-
 import { SearchComponent } from './components/pages/main/search/search.component';
 import { AdminInquiryComponent } from './components/pages/admin/admin-inquiry/admin-inquiry.component';
 import { QuantityInputComponent } from './components/components/quantity-input/quantity-input.component';
+import { AboutUsComponent } from './components/pages/main/about-us/about-us.component';
+import { TosComponent } from './components/pages/main/tos/tos.component';
 
 
 @NgModule({
@@ -128,7 +130,9 @@ import { QuantityInputComponent } from './components/components/quantity-input/q
     StarRatingsInputComponent,
     SearchComponent,
     AdminInquiryComponent,
-    QuantityInputComponent
+    QuantityInputComponent,
+    AboutUsComponent,
+    TosComponent
   ],
   imports: [
     BrowserModule,
@@ -151,6 +155,8 @@ import { QuantityInputComponent } from './components/components/quantity-input/q
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard]},
       {path: 'contactus', component: ContactusComponent},
       {path: 'search/:searchTerm', component: SearchComponent},
+      {path: 'about-us', component: AboutUsComponent},
+      {path: 'tos', component: TosComponent},
 
       //admin
       {

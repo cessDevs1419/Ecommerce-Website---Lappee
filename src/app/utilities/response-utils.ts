@@ -9,6 +9,7 @@ import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
+import { AboutUsTosList, AboutUsTosSection } from "src/assets/models/sitedetails";
 
 // Formatting
 
@@ -221,6 +222,17 @@ export function formatInquiryContent(response: InquiryContentList): Inquiry {
     updated_at: response.data.updated_at,
     is_read: response.data.is_read,
   };
+}
+
+export function formatAboutUsTos(response: AboutUsTosList): AboutUsTosSection[] {
+  return response.data.map((data: AboutUsTosSection) => ({
+    id: data.id,
+    title: data.title,
+    content: data.content,
+    order: data.order,
+    created_at: data.created_at,
+    updated_at: data.updated_at
+  }))
 }
 
 // Filtering

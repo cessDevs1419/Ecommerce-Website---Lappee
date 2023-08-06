@@ -101,16 +101,15 @@
         </div>
         <hr class="mb-4">
         <div class="mb-4">
-            <p>By proceeding to sign up, I acknowledge that I have read and consented to Lappee’s <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>, which sets out how Lappee collects, uses and discloses my personal data, and the rights that I have under applicable law.
-            </p>
+            <p>By proceeding to sign up, I acknowledge that I have read and consented to Lappee’s <a [routerLink]="['/tos']">Terms of Use</a>, which sets out how Lappee collects, uses and discloses my personal data, and the rights that I have under applicable law.</p>
             
             <div class="form-check">
                 <input type="checkbox" class="form-check-input mr-2 check-outline" value="" id="checkAgreeTermsAndPolicies" formControlName="signUpAcceptTerms">
-                <label for="checkAgreeTermsAndPolicies" class="form-check-label">I agree with the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></label>
+                <label for="checkAgreeTermsAndPolicies" class="form-check-label">I agree with the <a [routerLink]="['/tos']">Terms of Use.</a></label>
             </div>
             <div *ngIf="signUpAcceptTerms?.invalid && (signUpAcceptTerms?.dirty || signUpAcceptTerms?.touched)"> 
                 <div *ngIf="signUpAcceptTerms?.errors?.['requiredTrue']">
-                    <span class="text-danger">Please accept the Terms of Use and Privacy Policy.</span>
+                    <span class="text-danger">Please accept the Terms of Use.</span>
                 </div>
             </div>
         </div>

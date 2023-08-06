@@ -196,6 +196,10 @@ input[type=text], input[type=password], input[type=email], textarea {
     z-index: 1;
 }
 
+.whitespace-prewrap {
+    white-space: pre-wrap;
+}
+
 @media screen and (min-width: 768px){
     /* lock entry form toggling at 768px and UP*/
     .entry-form {

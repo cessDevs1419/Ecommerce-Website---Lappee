@@ -1,0 +1,10 @@
+<div class="container-md mt-5 d-flex justify-content-center">
+    <div class="tos-section p-5 bg-light-gray">
+        <p class="fs-3 mulish-black body-text">ABOUT US</p>
+
+        <div *ngFor="let section of sections | async">
+            <p class="fw-bold fs-4 m-0">{{ section.title }}</p>
+            <p class="whitespace-prewrap">{{section.content}}</p>
+        </div>
+    </div>
+</div>
