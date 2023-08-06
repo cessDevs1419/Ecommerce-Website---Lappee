@@ -1,7 +1,7 @@
 
         <!--ADD PRODUCT FORM-->
         <form *ngIf="formAddProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
-            <div class="row" >
+            <div class="row px-0 w-100 m-auto" >
                 <div class="col-lg-6 ">
                         <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                             <div class="form-title text-start mb-4">
@@ -89,7 +89,7 @@
                                         type="button" 
                                         class="btn btn-muted mx-2" 
                                         *ngIf="cancel"
-                                        (click)="toProductPage()"
+                                        (click)="cancelAction('add-prod-to-prod-management')"
                                     >
                                         CANCEL
                                     </button>
@@ -98,7 +98,7 @@
                                         type="button" 
                                         class="btn btn-muted mx-2" 
                                         *ngIf="done"
-                                        (click)="toProductPage()"
+                                        (click)="doneAction('add-prod-to-prod-management')"
                                     >
                                         DONE
                                     </button>
@@ -199,7 +199,7 @@
         
         <!--EDIT PRODUCT FORM-->
         <form *ngIf="formEditProduct" [formGroup]="editProductForm"  (ngSubmit)="onProductEditSubmit()">
-            <div class="row" >
+            <div class="row px-0 w-100 m-auto" >
                 <div class="col-lg-6 ">
                     <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                         <div class="form-title text-start mb-4">
@@ -309,7 +309,7 @@
                                 <button 
                                     type="button" 
                                     class="btn btn-muted mx-2" 
-                                    (click)="toProductPage()"
+                                    (click)="cancelAction('edit-prod-to-prod-management')"
                                 >
                                     CANCEL
                                 </button>
@@ -324,7 +324,7 @@
                 
                 </div>
             
-                <div class="col-lg-6 mt-lg-0 mt-4">
+                <div class="col-lg-6 mt-lg-0 mt-4 ">
                     <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                         <div class="form-title text-start mb-4">
                             <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -480,10 +480,8 @@
             </div>
         </form>
 
-
-
         <!--ADD VARIANT FORM-->
-        <form *ngIf="formAddVariant" [formGroup]="addVariantForm"  (ngSubmit)="onaddProductVariants()">
+        <form class="row px-2 w-100 m-auto" *ngIf="formAddVariant" [formGroup]="addVariantForm"  (ngSubmit)="onaddProductVariants()">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -604,8 +602,8 @@
                             <button  
                                 type="button" 
                                 class="btn btn-muted mx-2" 
-                                *ngIf="variantsList.length === 0"
-                                (click)="toAddPageFromAddProduct()"
+                                *ngIf="cancel"
+                                (click)="cancelAction('add-var-to-add-prod')"
                             >
                                 CANCEL
                             </button>
@@ -613,8 +611,8 @@
                             <button 
                                 type="button" 
                                 class="btn btn-muted mx-2" 
-                                *ngIf="variantsList.length > 0"
-                                (click)="toAddPageFromAddProduct()"
+                                *ngIf="done"
+                                (click)="doneAction('add-var-to-add-prod')"
                             >
                                 DONE
                             </button>
@@ -633,9 +631,8 @@
             </div>
         </form>
         
-        
         <!--ADDITIONAL VARIANT FORM-->
-        <form *ngIf="formAdditionalVariant" [formGroup]="addVariantForm">
+        <form class="row px-2 w-100 m-auto" *ngIf="formAdditionalVariant" [formGroup]="addVariantForm">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -756,8 +753,8 @@
                             <button  
                                 type="button" 
                                 class="btn btn-muted mx-2" 
-                                *ngIf="AdditionvariantsList.length === 0"
-                                (click)="cancelthis()"
+                                *ngIf="cancel"
+                                (click)="cancelAction('add-var-to-edit-prod')"
                             >
                                 CANCEL
                             </button>
@@ -765,8 +762,8 @@
                             <button 
                                 type="button" 
                                 class="btn btn-muted mx-2" 
-                                *ngIf="AdditionvariantsList.length > 0"
-                                (click)="toAddPage()"
+                                *ngIf="done"
+                                (click)="doneAction('add-var-to-edit-prod')"
                             >
                                 DONE
                             </button>
@@ -787,7 +784,7 @@
         </form>
         
         <!--EDIT VARIANT FORM FROM ADD PRODUCT-->
-        <form *ngIf="formEditVariant" [formGroup]="editVariantForm" (ngSubmit)="onVariantEditSubmit()">
+        <form class="row px-2 w-100 m-auto" *ngIf="formEditVariant" [formGroup]="editVariantForm" (ngSubmit)="onVariantEditSubmit()">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -892,7 +889,7 @@
                         <button  
                             type="button" 
                             class="btn btn-muted mx-2" 
-                            (click)=" cancelthis()"
+                            (click)="cancelAction('edit-var-to-add-prod')"
                         >
                             CANCEL
                         </button>
@@ -910,7 +907,7 @@
         </form>
         
         <!--EDIT ADDITIONAL VARIANT PRODUCT-->
-        <form *ngIf="formEditAdditionalVariant" [formGroup]="editVariantForm" (ngSubmit)="onAdditionalVariantEditSubmit()">
+        <form class="row px-2 w-100 m-auto" *ngIf="formEditAdditionalVariant" [formGroup]="editVariantForm" (ngSubmit)="onAdditionalVariantEditSubmit()">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >VARIANT LIST</h1>
@@ -1015,7 +1012,7 @@
                         <button  
                             type="button" 
                             class="btn btn-muted mx-2" 
-                            (click)=" cancelthis()"
+                            (click)="cancelAction('add-var-to-edit-prod')"
                         >
                             CANCEL
                         </button>
@@ -1033,7 +1030,7 @@
         </form>
 
         <!--EDIT VARIANT FORM FROM DATABASE PRODUCT-->
-        <form *ngIf="formEditDatabaseVariant" [formGroup]="editVariantForm" (ngSubmit)="onDatabaseVariantEditSubmit()">
+        <form class="row px-3 w-100 m-auto" *ngIf="formEditDatabaseVariant" [formGroup]="editVariantForm" (ngSubmit)="onDatabaseVariantEditSubmit()">
             <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
                 <div class="form-title text-start mb-4">
                     <h1 class="modal-title fs-4 fw-bolder" >EDIT VARIANT</h1>
@@ -1138,7 +1135,7 @@
                         <button  
                             type="button" 
                             class="btn btn-muted mx-2" 
-                            (click)="canceledit()"
+                            (click)="cancelAction('edit-var-to-edit-prod')"
                         >
                             CANCEL
                         </button>
@@ -1227,29 +1224,3 @@
             </div>
         </div>
         
-
-        
-        
-    
-        <!--RESTOCK PRODUCT FORM-->
-        <!-- <form *ngIf="formRestockProduct" [formGroup]="restockProductForm"  (ngSubmit)="onProductRestockSubmit()">
-            
-            <div class="modal-body pt-0 pb-0">
-                <input type="hidden" [value]="selectedRowData?.id">
-                <div class="row">
-                    <div class="col-sm-6 mb-3">
-                        <label for="addproductName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="addproductName" formControlName="product_name">
-                    </div>
-                    <div class="col-sm-6  mb-3">
-                        <label for="addproductQty" class="form-label">Quantity</label>
-                        <input type="number"  class="form-control" id="addproductQty" formControlName="product_quantity">
-                    </div>
-                </div>  
-            </div>
-            
-            <div class="modal-footer border-0 ">
-                <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
-            </div>
-        </form> -->

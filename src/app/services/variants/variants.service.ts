@@ -21,6 +21,8 @@ export class VariantsService {
 	private EditedvariantsList: FormArray = this.formBuilder.array([]);
 	private variantId: FormArray = this.formBuilder.array([]);
 	private id: any;
+
+	
 	
 	constructor(
 	    private http: HttpClient,
@@ -161,10 +163,22 @@ export class VariantsService {
 		this.AdditionvariantsList.push(variantFormGroup);
 	}
 	
-	editfromDatabaseVariant(form: FormGroup, index: number) {
+	async editfromDatabaseVariant(form: FormGroup, index: number) {
 		if (index !== undefined && index >= 0 && index < this.DatabaseVariantList.length) {
 			this.DatabaseVariantList.at(index).patchValue(form.value);
+		}
+		
+		const editedIndex = this.EditedvariantsList.controls.findIndex(control =>
+			control.value.variant_id === form.value.variant_id
+		);
+		
+		if (editedIndex !== -1) {
+			this.EditedvariantsList.removeAt(editedIndex);
 			this.EditedvariantsList.push(form);
+
+		} else {
+			this.EditedvariantsList.push(form);
+
 		}
 		
 	}
