@@ -52,7 +52,6 @@ export function formatCategories(response: CategoryList) : Category[] {
 
 // returns a Product array from a ProductList
 export function formatProducts(response: ProductList): Product[] {
-  console.log(response);
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
@@ -80,7 +79,6 @@ export function formatProductVariants(response: ProductList): Variant[] {
 
 // returns Review array from ReviewList
 export function formatReviews(response: ReviewList): Observable<ReviewItem> {
-  console.log(response);
   let data = response.data;
   let format: ReviewItem = {
     product_id: data.product_id,
@@ -93,7 +91,6 @@ export function formatReviews(response: ReviewList): Observable<ReviewItem> {
 
 export function formatReviewsDetails(response: any): Review[] {
   let reviewList = response.data.reviews;
-  console.log(reviewList);
 
   return reviewList.map((review: Review) => ({
     review_id: review.review_id,
@@ -317,15 +314,12 @@ export function productSortByPrice(productObservable: Observable<Product[]>, mod
 
 export function orderSortByDate(orders: Observable<OrderDetail[]>, mode: string): Observable<OrderDetail[]> {
   if (mode == "ascending"){
-    console.log('asc');
     return orders.pipe(map((order: OrderDetail[]) => {
       return order.sort((a: any, b: any) => Date.parse(a.ordered_on) - Date.parse(b.ordered_on));
     }));
   }
   if (mode == "descending"){
-    console.log('desc');
     return orders.pipe(map((order: OrderDetail[]) => {
-      console.log(order.sort((a: any, b: any) => Date.parse(b.ordered_on) - Date.parse(a.ordered_on)));
       return order.sort((a: any, b: any) => Date.parse(b.ordered_on) - Date.parse(a.ordered_on));
     }));
   }

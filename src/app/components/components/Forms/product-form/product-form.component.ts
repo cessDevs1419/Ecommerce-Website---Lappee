@@ -324,19 +324,31 @@ export class ProductFormComponent {
     }
     
     //Add Variant tools
-    showForms(value: any) {
+    showForms(action: any) {
+        console.log('show forms triggered')
+        let value = action;
         this.route.paramMap.subscribe((params) => {
 		    const id = params.get('id');
+            console.log("param map: " + id);
+            console.log("showFormvalue: " + value)
 		    
             switch(value){
                 case 'edit' : 
+                    console.log('add form trigger')
                     this.showForm = true;
                     this.router.navigate(['/admin/product-management','variant','additional/to',id]);
                 break
+
+                case 'add':
+                    console.log('add form trigger')
+                    this.showForm = true;
+                    value = '';
+                    this.router.navigate(['/admin/product-management','variant','add']);
+                    break;
                 
                 default :
-                    this.showForm = true;
-                    this.router.navigate(['/admin/product-management','variant','add']);
+                    console.log('nigger easter egg');
+                    
                 break
             }
         });
@@ -387,6 +399,7 @@ export class ProductFormComponent {
     }
     
     doneAction(page: string){
+        console.log(page);
         switch(page){
             case 'add-prod-to-prod-management':
                 this.router.navigate(['/admin/product-management']);

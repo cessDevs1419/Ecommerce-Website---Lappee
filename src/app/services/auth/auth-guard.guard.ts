@@ -9,10 +9,6 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
     const accountService = inject(AccountsService);
     const router = inject(Router);
     let loginState$ = accountService.checkLoggedIn();
-  
-    console.log(route.url.toString() === 'account');
-    console.log("Logged In? " + accountService.checkLoggedIn());
-    console.log(route.url.toString());
 
     return loginState$.pipe(
       switchMap((loginState: any) => {

@@ -55,6 +55,7 @@ export class AdminProductsComponent {
 	}
 	
     showEditForm(): void{
+        
         this.router.navigate(['/admin/product-management','product','edit',this.selectedRowData.id]);
 	}
 	

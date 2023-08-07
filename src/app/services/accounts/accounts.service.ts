@@ -76,10 +76,10 @@ export class AccountsService {
     ); */
     return this.getUser().pipe(
       map((response: User) => {
-        console.log(response);
+        //console.log(response);
         this.loggedUser = this.bindUser(response);
         
-        console.log(this.user);
+        //console.log(this.user);
         this.isLoggedIn = true;
         return true;
       }),
