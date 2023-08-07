@@ -18,7 +18,9 @@
     
     <div id="navbarSearchBg" class="d-none d-md-flex">
         <div class="container-md d-flex flex-row justify-content-start align-items-center" id="searchDiv">
-            <a title="Home" [routerLink]="['/']"><img src="./assets/logo.svg" class="img-fluid"></a>
+            <a title="Home" [routerLink]="['/']" *ngIf="siteLogo | async as logo">
+                <img [src]="logo.site_logo" class="img-fluid navbar-logo">
+            </a>
             
             <app-searchbar class="flex-grow-1" searchString="searchString"></app-searchbar>
             
@@ -57,7 +59,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid d-inline d-md-none mx-3"></a>
+            <a title="Home" [routerLink]="['/']" *ngIf="siteLogo | async as logo"><img [src]="logo.site_logo" class="img-fluid d-inline d-md-none mx-3 navbar-logo"></a>
             
             <a class="btn text-reset text-decoration-none d-md-none align-self-end" [routerLink]="['cart']">
                 <i class="bi bi-cart fs-1 position-relative">

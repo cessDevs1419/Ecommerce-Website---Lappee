@@ -67,6 +67,10 @@
     border-radius: 50%;
 }
 
+.navbar-logo {
+    max-height: 60px;
+}
+
 /* disable modalBackground on mobile */
 @media screen and (max-width: 768px) {
     #modalBackground {
@@ -75,5 +79,9 @@
 
     #navbarInfoBg {
         display: none !important;
+    }
+
+    .navbar-logo {
+        max-height: 40px;
     }
 }

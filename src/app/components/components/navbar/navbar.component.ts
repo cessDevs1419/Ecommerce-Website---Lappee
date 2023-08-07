@@ -10,9 +10,11 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { CsrfService } from 'src/app/services/csrf/csrf.service';
-import { formatCategories, formatSubcategories } from 'src/app/utilities/response-utils';
+import { formatCategories, formatSiteLogo, formatSubcategories } from 'src/app/utilities/response-utils';
 import { User } from 'src/assets/models/user';
 import { LocationStrategy } from '@angular/common';
+import { SiteLogo } from 'src/assets/models/sitedetails';
+import { SiteDetailsService } from 'src/app/services/site-details/site-details.service';
 
 
 @Component({
@@ -36,6 +38,8 @@ export class NavbarComponent {
   loginState$: Observable<boolean>;
   currentUser: Observable<User> = this.accountService.getLoggedUser();
   isAdminDashboard: boolean = false;
+
+  siteLogo: Observable<SiteLogo>;
   
   // 3/23/2023 - use Renderer2 to handle clicks
   constructor(private CategoriesService: CategoriesService, 
@@ -46,7 +50,8 @@ export class NavbarComponent {
               public accountService: AccountsService,
               private router: Router,
               private csrfService: CsrfService,
-              private url: LocationStrategy) {
+              private url: LocationStrategy,
+              private siteDetailsService: SiteDetailsService) {
       this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
@@ -78,6 +83,7 @@ export class NavbarComponent {
       this.isAdminDashboard = true;
     } */
 
+    this.siteLogo = this.siteDetailsService.getSiteLogo().pipe(map((response: any) => formatSiteLogo(response)));
     this.updateAdminDashboardFlag();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
