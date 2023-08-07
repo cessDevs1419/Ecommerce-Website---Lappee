@@ -9,7 +9,7 @@ import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
-import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList } from "src/assets/models/sitedetails";
+import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
 
 // Formatting
 
@@ -243,6 +243,12 @@ export function formatBanners(response: BannersList): Banner[] {
 export function formatSiteDetails(response: SiteDetailsList): SiteDetails {
   return {
     site_name: response.data.site_name
+  }
+}
+
+export function formatSiteLogo(response: SiteLogoList): SiteLogo {
+  return {
+    site_logo: response.data.site_logo
   }
 }
 

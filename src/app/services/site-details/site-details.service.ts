@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DELETEBanner, GETSiteDetails, PATCHEditSiteName, POSTUploadBanner, POSTUploadSiteLogo } from '../endpoints';
+import { DELETEBanner, GETSiteDetails, GETSiteLogo, PATCHEditSiteName, POSTUploadBanner, POSTUploadSiteLogo } from '../endpoints';
 import { Observable, map, of } from 'rxjs';
 import { formatSiteDetails } from 'src/app/utilities/response-utils';
 import { SiteDetails } from 'src/assets/models/sitedetails';
@@ -22,12 +22,20 @@ export class SiteDetailsService {
 
   public siteTitle: Observable<string>;
   private siteDetailsCache: Observable<any>;
+  private siteLogoCache: Observable<any>
 
   getSiteDetails(): Observable<any> {
     if(!this.siteDetailsCache){
       this.siteDetailsCache = this.http.get(GETSiteDetails);
     }
     return this.siteDetailsCache;
+  }
+
+  getSiteLogo(): Observable<any> {
+    if(!this.siteLogoCache){
+      this.siteLogoCache = this.http.get(GETSiteLogo);
+    }
+    return this.siteLogoCache;
   }
 
   getTitle(): Observable<string> {

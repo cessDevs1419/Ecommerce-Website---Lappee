@@ -39,3 +39,13 @@ export interface SiteName {
     id: string,
     site_name: string
 }
+
+export interface SiteLogoList {
+    success: string,
+    message: string,
+    data: SiteLogo
+}
+
+export interface SiteLogo {
+    site_logo: string
+}
