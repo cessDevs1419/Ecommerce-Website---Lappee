@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import { Banner } from 'src/assets/models/sitedetails';
 import { OnInit } from '@angular/core';
 import { BannersService } from 'src/app/services/banners/banners.service';
@@ -33,16 +33,28 @@ export class AdminSiteSettingsComponent {
   imagePath: any;
   url:any;
 
+  // Banner to be uploaded
+  bannerFile: any;
+  bannerUrl: any;
+
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
-  // Site Name Form Data
+  // Site Name Form
   siteNameForm = this.fb.group({
     siteName: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]]
   });
   
+  // Upload banner form
+  addBannerForm = this.fb.group({
+    bannerLabel: ['', [Validators.required, Validators.pattern('^[a-zA-Z_ \d]*$')]],
+    bannerImage: ['', [Validators.required]],
+  });
+
+  private refreshData$ = new Subject<void>();
+
   constructor(
     private bannerService: BannersService, 
     private route: ActivatedRoute,
@@ -65,10 +77,12 @@ export class AdminSiteSettingsComponent {
       } else {
         this.showAddForm = false;
       }
-    });
-
-    console.log(this.showAddForm);  
+    }); 
   }
+
+  refreshTableData(): void {
+    this.refreshData$.next();
+}
 
   editSiteLogo()
   {
@@ -90,8 +104,6 @@ export class AdminSiteSettingsComponent {
           this.toast.show();
         }
       });
-
-      console.log(uploadFormData);
     } else {
       this.toastHeader = "No Image Upload!";
       this.toastContent = "Please select a logo before uploading.";
@@ -109,7 +121,6 @@ export class AdminSiteSettingsComponent {
   editSiteName()
   {
     if(this.siteNameForm.valid) {
-      console.log(this.siteNameForm.get('siteName')?.value);
 
       let formData: any = new FormData();
       formData.append('name', this.siteNameForm.get('siteName')?.value);
@@ -128,8 +139,6 @@ export class AdminSiteSettingsComponent {
           this.toastContent = "Failed to update site name.";
           this.toast.switchTheme('negative');
           this.toast.show();
-
-          console.log(error);
         }
       });
     } else {
@@ -152,6 +161,9 @@ export class AdminSiteSettingsComponent {
 
   hideAddBanner()
   {
+    this.bannerFile = null;
+    this.bannerUrl = null;
+
     this.showAddForm = false;
     this.router.navigate(['/admin/site-settings']);
   }
@@ -170,7 +182,6 @@ export class AdminSiteSettingsComponent {
 
     const mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-        console.log("Only images are supported.");
         return;
     }
 
@@ -180,5 +191,103 @@ export class AdminSiteSettingsComponent {
     reader.onload = (_event) => { 
         this.url = reader.result; 
     }
+  }
+
+  onBannerFileChanged(event: any) {
+    const files = event.target.files;
+    if (files.length === 0)
+        return;
+
+    const mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+        return;
+    }
+
+    const reader = new FileReader();
+    this.bannerFile = files[0];
+    reader.readAsDataURL(files[0]); 
+    reader.onload = (_event) => { 
+        this.bannerUrl = reader.result; 
+    }
+  }
+
+  showBannerFileDialog()
+  {
+    let logoUploadInput: HTMLElement = document.getElementById('bannerUpload') as HTMLElement;
+
+    logoUploadInput.click();
+  }
+
+  uploadBanner()
+  {
+    if(this.addBannerForm.valid) {
+      let formData: any = new FormData();
+      
+      formData.append('label', this.addBannerForm.get('bannerLabel')?.value);
+      formData.append('file', this.bannerFile);
+
+      console.log(formData);
+
+      this.siteDetailsService.uploadBanner(formData).subscribe({
+        next: (response: any) => {
+          this.toastHeader = "Successfully uploaded banner!";
+          this.toastContent = "You have added a banner.";
+          this.toast.switchTheme('default');
+          this.toast.show();
+
+          this.resetBannerForm();
+
+          this.addBannerForm.reset();
+
+          console.log(response);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastHeader = "Failed to upload banner!";
+          this.toastContent = "Cannot add banner.";
+          this.toast.switchTheme('negative');
+          this.toast.show();
+
+          console.log(error);
+        }
+      });
+
+    } else {
+      this.toastHeader = "Invalid Banner!";
+      this.toastContent = "Please enter a valid image and/or label.";
+      this.toast.switchTheme('warn');
+      this.toast.show();
+    }
+  }
+
+  resetBannerForm()
+  {
+    this.bannerFile = null;
+    this.bannerUrl = null;
+  }
+
+  deleteBanner()
+  {
+    let formData: any = new FormData();
+
+    formData.append('id', this.selectedBanner.id);
+    
+    this.siteDetailsService.deleteBanner(formData).subscribe({
+      next: (response: any) => {
+        this.toastHeader = "Successfully removed banner!";
+        this.toastContent = "You have deleted a banner.";
+        this.toast.switchTheme('default');
+        this.toast.show();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastHeader = "Failed to remove banner!";
+        this.toastContent = "Cannot delete banner.";
+        this.toast.switchTheme('negative');
+        this.toast.show();
+
+        console.log(error);
+      }
+    })
+
+    this.refreshData$.next();
   }
 }

@@ -82,3 +82,5 @@ export const GETSiteDetails: string = api + "api/client/content-management/view-
 export const GETBanners: string = api + "api/client/content-management/banners";
 export const POSTUploadSiteLogo: string = api + "api/admin/site-settings/site-logo/upload";
 export const PATCHEditSiteName: string = api + "api/admin/site-settings/site-name/edit";
+export const POSTUploadBanner: string = api + "api/admin/site-settings/banners/store";
+export const DELETEBanner: string = api + "api/admin/site-settings/banners/delete";

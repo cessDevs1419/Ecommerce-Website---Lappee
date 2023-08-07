@@ -15,12 +15,11 @@
               <div class="col d-flex justify-content-center">
                 <div>
                   <div class="logo-container">
-                    <div class="logo-holder position-absolute overflow-hidden">
-                      <img src="{{url}}" class="img-fluid">
+                    <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
                     </div>
-                    <div class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
+                    <label for="logoUpload" class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
                       <i class="bi bi-upload fs-5"></i>
-                    </div>
+                    </label>
 
                     <input type="file" name="" id="logoUpload" class="d-none" accept="image/png,image/jpeg" (change)="onFileChanged($event)" >
                   </div>
@@ -83,6 +82,7 @@
       [addBtn]="true"
       addbtnName="ADD BANNER"
       [addBtnclass]="size"
+      [deleteBtn]="true"
       
       (rowDataSelected)="getBannerData($event)"
       (ShowAddForm)="addBanner()">
@@ -109,6 +109,31 @@
         </div> 
     </div>
   </div>
+
+  <div class="modal fade" id="delete"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
+      <form (ngSubmit)="deleteBanner()">
+        <div class="modal-content ">
+          <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+              <div class="modal-title text-start">
+                  <h1 class="modal-title fs-4 fw-bolder" >DELETE BANNER {{ selectedBanner.label | uppercase }}</h1>
+                  <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <hr class="divider m-0 mb-3">
+          <div class="modal-body">
+            <p class="fs-5 fw-bold mb-1 text-center">Are you sure you want to delete this banner?</p>
+            <img src="{{ selectedBanner.path }}" alt="{{ selectedBanner.label | uppercase }}" srcset="" class="img-fluid">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+            <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+          </div>
+      </div> 
+      </form>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="showAddForm">
@@ -118,16 +143,38 @@
         <h1 class="fw-bold fs-4 mb-0">ADD BANNER</h1>
         <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
 
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label mb-1">Banner Label*</label>
-          <input type="text" class="form-control">
-        </div>
-        <div class="row">
-          <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
-            <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+        <form [formGroup]="addBannerForm" (ngSubmit)="uploadBanner()">
+          <div class="row row-cols-1 gy-3">
+            <div class="col">
+              <label for="bannerLabel" class="form-label mb-1">Banner Label*</label>
+                <input type="text" class="form-control" id="bannerLabel" formControlName="bannerLabel">
+            </div>
+            <div class="col">
+              <label class="form-label mb-1">Banner Image*</label>
+              <label 
+              for="bannerUpload" 
+              [ngClass]="bannerUrl ? 'd-none' : 'd-flex'" 
+              class="upload-banner justify-content-center align-items-center border border-3" 
+              (click)="showBannerFileDialog()">
+                <i class="bi bi-plus-lg display-1"></i>
+              </label>
+  
+              <div 
+                [ngStyle]=" bannerUrl ? { 'background-image': 'url(' + bannerUrl + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}"
+                class="banner-preview d-flex justify-content-end align-items-start"
+                [ngClass]="bannerUrl ? 'd-flex' : 'd-none'" >
+                <button type="button" class="d-flex justify-content-center align-items-center me-2 mt-2" (click)="resetBannerForm()">
+                  <i class="bi bi-x fs-4"></i>
+                </button>
+              </div>
+            </div>
+            <input type="file" formControlName="bannerImage" id="bannerUpload" class="d-none" accept="image/png,image/jpeg" (change)="onBannerFileChanged($event)" >
+            <div class="col d-flex justify-content-end">
+              <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
+              <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
