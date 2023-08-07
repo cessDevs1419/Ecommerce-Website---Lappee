@@ -76,7 +76,7 @@ export class TableComponent {
 	@Input() paymentStatus!: number;
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
-	
+	@Input() orderBtn: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
 	pageSize: number = this.pageSizeOptions[0];
@@ -85,6 +85,7 @@ export class TableComponent {
 	displayedItems$: Observable<any[]>;
 
 	searchFilter: string = '';
+
 
 	ngOnInit() {
 	    this.calculatePagination();

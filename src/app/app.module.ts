@@ -71,6 +71,7 @@ import { QuantityInputComponent } from './components/components/quantity-input/q
 import { AboutUsComponent } from './components/pages/main/about-us/about-us.component';
 import { TosComponent } from './components/pages/main/tos/tos.component';
 import { AdminSiteSettingsComponent } from './components/pages/admin/admin-site-settings/admin-site-settings.component';
+import { OrdersFormComponent } from './components/components/Forms/orders-form/orders-form/orders-form.component';
 
 
 @NgModule({
@@ -135,6 +136,7 @@ import { AdminSiteSettingsComponent } from './components/pages/admin/admin-site-
     AboutUsComponent,
     TosComponent,
     AdminSiteSettingsComponent,
+    OrdersFormComponent,
   ],
   imports: [
     BrowserModule,

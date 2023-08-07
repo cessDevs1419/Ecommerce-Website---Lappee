@@ -106,40 +106,30 @@
                     </div>
                 </div>
                 
-                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalConfirm">
-                    <form class="w-100" (ngSubmit)="confirmPayment()" >
-                        <img src="" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" alt="Confirm Payment" srcset="">
-                        <div class="modal-footer border-0 ">
-                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                            <button 
-                                type="submit" 
-                                class="btn btn-primary bg-light-primary "
-                                
-                            >
-                                CONFIRM
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalShip">
-                    <form  (ngSubmit)="shipPackage()" >
-                        <div class="modal-body text-center pt-0 pb-0">
-                            <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as ship?</p>
-                            <h1 class="text-primary fs-4 fw-bolder" >{{selectedRowData?.name}}</h1>
-                        </div>
-                        
-                        <div class="modal-footer border-0 justify-content-center">
-                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-                            <button 
-                                type="submit" 
-                                class="btn btn-primary bg-light-primary "
-
-                            >
-                                CONFIRM
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                <app-orders-form
+                    *ngIf="modalConfirm"
+                    [formConfirm]="true"
+                    (confirm)="confirmPayment()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                >
+                
+                </app-orders-form>
+                
+                <app-orders-form
+                    *ngIf="modalShip"
+                    [formShip]="true"
+                    (ship)="confirmPayment()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                >
+                
+                </app-orders-form>
+                
         </div> 
 
     </div>

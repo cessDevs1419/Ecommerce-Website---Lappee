@@ -497,24 +497,34 @@ export class ProductFormComponent {
             this.EditedvariantsList.removeAt(index);
         }
         
-        if(this.EditFormvariantsList.length > 1){
-            this.variantService.deletefromDatabaseVariant(this.selectedDeleteVariant?.variant_id, index)
-            this.EditedvariantsList.removeAt(index)
+        this.variantService.deletefromDatabaseVariant(this.selectedDeleteVariant?.variant_id, index)
+        this.EditedvariantsList.removeAt(index)
+        
+        const productSuccess = {
+            head: 'Delete Variant',
+            sub: 'Successfully removed variant'
+        };
+        
+        this.ProductSuccess.emit(productSuccess);
+        
+        // if(this.EditFormvariantsList.length > 1){
+        //     this.variantService.deletefromDatabaseVariant(this.selectedDeleteVariant?.variant_id, index)
+        //     this.EditedvariantsList.removeAt(index)
             
-            const productSuccess = {
-                head: 'Delete Variant',
-                sub: 'Successfully removed variant'
-            };
+        //     const productSuccess = {
+        //         head: 'Delete Variant',
+        //         sub: 'Successfully removed variant'
+        //     };
             
-            this.ProductSuccess.emit(productSuccess);
-        }else{
-            const ProductError = {
-                errorMessage: 'Invalid Request',
-                suberrorMessage: 'there would be no variants'
-            };
+        //     this.ProductSuccess.emit(productSuccess);
+        // }else{
+        //     const ProductError = {
+        //         errorMessage: 'Invalid Request',
+        //         suberrorMessage: 'there would be no variants'
+        //     };
             
-            this.ProductWarning.emit(ProductError);
-        }
+        //     this.ProductWarning.emit(ProductError);
+        // }
         
     }
     

@@ -48,7 +48,6 @@ export class AdminOrderManagementComponent {
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
-        
 
         this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
             next: (response: any) => {
@@ -75,15 +74,4 @@ export class AdminOrderManagementComponent {
     
     }
     
-    // switch(this.shipStatus){
-	// 	case 'confirm':
-	// 		this.confirmBtn = true
-	// 	break
-	// 	case 'ship':
-	// 		this.shipBtn = true
-	// 	break
-	// 	case 'deliver':
-	// 		this.deliverBtn = true
-	// 	break
-	// }
 }

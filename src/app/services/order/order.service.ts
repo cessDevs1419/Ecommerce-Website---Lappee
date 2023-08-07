@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus } from '../endpoints';
 import { Observable } from 'rxjs';
+import { Order } from 'src/assets/models/products';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,17 @@ export class OrderService {
     
   }
 
-
+  patchPack(data: FormData): Observable<any> {
+    return this.http.patch<Order>(PATCHPackStatus, data, this.httpOptions);
+  } 
+  
+  patchShip(data: FormData): Observable<any> {
+    return this.http.patch<Order>(PATCHShipStatus, data, this.httpOptions);
+  } 
+  
+  patchDeliver(data: FormData): Observable<any> {
+    return this.http.patch<Order>(PATCHDeliverStatus, data, this.httpOptions);
+  } 
   
   getOrderDetail(): Observable<any> {
     return this.http.get(GETOrderDetail);
@@ -41,4 +52,6 @@ export class OrderService {
   postOrder(data: FormData): Observable<any> {
     return this.http.post(POSTOrder, data, this.httpOptions);
   }
+  
+  
 }

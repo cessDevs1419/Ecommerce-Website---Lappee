@@ -78,8 +78,8 @@ export class ModalComponent {
 	}
 
 	ngOnInit(): void{
-	    if(this.modalData){
-            console.log(this.modalData)
+	    if(this.selectedRowData){
+            console.log(this.selectedRowData)
 	    }
 	}
 	
@@ -110,7 +110,6 @@ export class ModalComponent {
 
 	triggerRefreshTable(): void {
 		this.RefreshTable.emit();
-        console.log('nagana')
 	}
 
     

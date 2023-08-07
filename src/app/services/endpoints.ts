@@ -58,7 +58,9 @@ export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-in
 //Admin
 export const GETOrder: string = api + "api/admin/products/orders";
 export const GETAdminOrderDetail: string = api + "api/admin/products/orders/details?order_id=";
-
+export const PATCHPackStatus: string = api + "api/admin/products/orders/pack"
+export const PATCHShipStatus: string = api + "api/admin/products/orders/ship"
+export const PATCHDeliverStatus: string = api + "api/admin/products/orders/deliver"
 
 //Client
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
