@@ -359,45 +359,45 @@ export class ProductFormComponent {
     }
     
     cancelAction(page: string){
-        switch (page) {
-            case 'add-prod-to-prod-management':
-                this.navigateToProductManagement();
-                this.addProductForm.reset();
-                this.variantsList.clear();
-            break;
-            case 'add-var-to-add-prod':
-                this.navigateToProductAdd('add');
-                this.addVariantForm.reset();
-            break;
-            case 'edit-var-to-add-prod':
-                this.navigateToProductAdd('add');
-            break;
-            case 'edit-prod-to-prod-management':
-                this.navigateToProductManagement();
-                this.editProductForm.reset();
-                this.editVariantForm.reset();
-                this.EditedvariantsList.clear();
-                this.AdditionvariantsList.clear();
-                this.DeletedvariantsList.clear();
-            break;
-            case 'add-var-to-edit-prod':
-                this.route.paramMap.subscribe(async (params) => {
-                    const prod_id = params.get('id');
-                    this.navigateToProductEdit(prod_id);
-                    this.addVariantForm.reset();
-                });
-            break;
-            case 'edit-var-to-edit-prod':
-                this.route.paramMap.subscribe(async (params) => {
-                    const prod_id = params.get('prod_id');
-                    this.navigateToProductEdit(prod_id);
-                    this.editVariantForm.reset();
-                });
-            break;
-            default:
-                this.navigateToProductManagement();
-                break;
-        }
+        // switch (page) {
+        //     case 'add-prod-to-prod-management':
+        //         this.navigateToProductManagement();
+        //         this.addProductForm.reset();
+        //         this.variantsList.clear();
+        //     break;
+        //     case 'add-var-to-add-prod':
+        //         this.navigateToProductAdd('add');
+        //         this.addVariantForm.reset();
+        //     break;
+        //     case 'edit-var-to-add-prod':
+        //         this.navigateToProductAdd('add');
+        //     break;
+        //     case 'edit-prod-to-prod-management':
+        //         this.navigateToProductManagement();
+        //         this.editProductForm.reset();
+        //         this.editVariantForm.reset();
+        //         this.EditedvariantsList.clear();
+        //         this.AdditionvariantsList.clear();
+        //         this.DeletedvariantsList.clear();
+        //     break;
+        //     case 'add-var-to-edit-prod':
+        //         this.route.paramMap.subscribe(async (params) => {
+        //             const prod_id = params.get('id');
+        //             this.navigateToProductEdit(prod_id);
+        //             this.addVariantForm.reset();
+        //         });
+        //     break;
+        //     case 'edit-var-to-edit-prod':
+        //         this.route.paramMap.subscribe(async (params) => {
+        //             const prod_id = params.get('prod_id');
+        //             this.navigateToProductEdit(prod_id);
+        //             this.editVariantForm.reset();
+        //         });
+        //     break;
+        //     default:
+        //         this.navigateToProductManagement();
+        //         break;
+        // }
     }
     
     async doneAction(page: string) {

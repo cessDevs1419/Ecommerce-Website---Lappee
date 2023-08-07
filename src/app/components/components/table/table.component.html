@@ -96,8 +96,8 @@
     
                 <ng-container *ngIf="(displayedItems$ | async ) as displayedItems">
                     <tr *ngFor="let item of displayedItems">
-                        <td class="text-center pt-3 text-nowrap text-truncate" *ngFor="let row of tableRows" >
-                                {{ item[row] }}
+                        <td class=" pt-3 text-nowrap max-text text-truncate overflow-hidden" *ngFor="let row of tableRows" >
+                                {{ item[row] }} adwwwwwwwwwwwwww wwwwwwwwwwww wwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwww wwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwww
                         </td>
                         <!--Enable this table Actions-->
                         <td *ngIf="tableAction"
@@ -241,7 +241,7 @@
                 </tr>
             </thead>
             <tr *ngFor="let item of (tableData | async | searchFilter: searchString)" >
-                <td class="text-center pt-3 text-nowrap  text-truncate" *ngFor="let row of tableRows">
+                <td class="text-center pt-3 text-nowrap max-text text-truncate overflow-hidden" *ngFor="let row of tableRows">
                     {{ item[row] }}
                 </td>
                 

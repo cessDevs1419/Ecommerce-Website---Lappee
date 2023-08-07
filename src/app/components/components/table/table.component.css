@@ -19,3 +19,6 @@ table th:last-child{
     border-radius:0 8px 8px 0;
 }
 
+.max-text{
+    max-width: 10rem;
+}
