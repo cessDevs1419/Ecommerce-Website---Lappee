@@ -54,6 +54,7 @@ export class TableComponent {
 	@Input() banBtn!: boolean;
 	
 	@Input() bannedStatus: { [userId: number]: boolean } = {};
+	@Input() deliveredStatus: { [status: number]: boolean } = {};
 	
 	//table Data
 	@Input() tableHeader!: any[];
@@ -77,6 +78,8 @@ export class TableComponent {
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
 	@Input() orderBtn: boolean;
+	@Input() setFirstUpper!: boolean;
+	
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
 	pageSize: number = this.pageSizeOptions[0];

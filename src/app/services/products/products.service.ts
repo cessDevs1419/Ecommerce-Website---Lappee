@@ -3,15 +3,20 @@ import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DELETEProductsAdmin, GETProductDetails, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
+	private imageList: FormArray = this.formBuilder.array([]);
   private newData: Observable<Product[]>;
   private productsSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(of([]));
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private formBuilder: FormBuilder,
+  
+  ) {
     this.productsSubject.next(this.newData);
   }
   
@@ -25,6 +30,18 @@ export class ProductsService {
   };
   
 
+
+	getImageList(): FormArray {
+    return this.imageList;
+  }
+  
+  addImageToList(fileControl: FormControl): void {
+    this.imageList.push(fileControl);
+}
+  removeImg(index: number){
+    this.imageList.removeAt(index)
+  }
+  
   getProducts(): Observable<any>{
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');

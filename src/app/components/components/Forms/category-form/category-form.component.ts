@@ -58,6 +58,8 @@ export class CategoryFormComponent {
     editSubCategories: string;
     
     modal: ModalComponent;
+    done: boolean;
+    cancel: boolean = true;
     
     constructor(
         private category_service: CategoriesService,
@@ -132,7 +134,12 @@ export class CategoryFormComponent {
         this.refreshData$.next();
     }
 
-    cancel(): void{
+    hitcancel(): void{
+        this.location.back();
+        this.addCategoryForm.reset();
+        this.addSubCategoryForm.reset();
+    }
+    hitdone(): void{
         this.location.back();
     }
     //ADD SUB CATEGORY
@@ -181,7 +188,8 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
                     this.addCategoryForm.reset();
-
+                    this.done = true
+                    this.cancel = false
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {
@@ -259,7 +267,9 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
                     this.editCategoryForm.reset();
-
+                    this.done = true
+                    this.cancel = false
+                    
                     await this.asyncTask();
                     this.router.navigate(['/admin/category-management']);
 
@@ -308,11 +318,13 @@ export class CategoryFormComponent {
                     };
                     
                     this.RefreshTable.emit();
-                    this.CloseModal.emit();
+                    
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
                     this.deleteCategoryForm.reset();
                     
+                    await this.asyncTask();
+                    this.CloseModal.emit();
                 },
                 error: (error: HttpErrorResponse) => {
                     const customErrorMessages = {
@@ -351,8 +363,9 @@ export class CategoryFormComponent {
                     this.RefreshTable.emit();
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
-                    this.editCategoryForm.reset();
-                    
+                    this.addSubCategoryForm.reset();
+                    this.done = true
+                    this.cancel = false
                     
                 },
                 error: (error: HttpErrorResponse) => {
@@ -443,6 +456,8 @@ export class CategoryFormComponent {
                     this.CategorySuccess.emit(successMessage);
                     this.editSubCategoryForm.reset();
                     
+                    this.done = true
+                    this.cancel = false
                     await this.asyncTask();
                     this.router.navigate(['/admin/category-management']);
                 },
@@ -483,17 +498,21 @@ export class CategoryFormComponent {
     
     onSubCategoryDeleteSubmit(): void {
         this.subcategory_service.deleteSubcategory(this.selectedRowData.id).subscribe({
-            next: (response: any) => { 
+            next: async(response: any) => { 
             
                 const successMessage = {
                     head: 'Category Delete',
                     sub: response?.message
                 };
                 this.RefreshTable.emit();
-                this.CloseModal.emit();
+                
                 this.refreshTableData();
                 this.CategorySuccess.emit(successMessage);
-                this.deleteSubCategoryForm.reset();
+                
+                await this.asyncTask();
+                this.CloseModal.emit();
+                
+                
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);

@@ -23,7 +23,7 @@ export class ModalComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
 	@ViewChild('modalRef') modalRef!: ElementRef;
-
+    @ViewChild('dismiss') dismiss: ElementRef;
 
     
 	@Output() success: EventEmitter<any> = new EventEmitter();
@@ -74,15 +74,17 @@ export class ModalComponent {
 		private service: OrderService,
 		private product_service: ProductsService
 	) {
-	
+	    
 	}
 
 	ngOnInit(): void{
-	    if(this.selectedRowData){
-            console.log(this.selectedRowData)
-	    }
+
 	}
 	
+    refreshTableData(): void {
+        this.RefreshTable.emit();
+    }
+    
     confirmPayment(){
         this.confirm.emit()
     }
@@ -105,7 +107,7 @@ export class ModalComponent {
     }
     
     async closeModal() {
-        await this.asyncTask();
+        this.dismiss.nativeElement.click();
     }
 
 	triggerRefreshTable(): void {

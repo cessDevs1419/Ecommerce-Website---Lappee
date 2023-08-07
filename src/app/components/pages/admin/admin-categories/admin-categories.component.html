@@ -1,6 +1,6 @@
 <div class="container-md m-auto h-auto p-2 text-center" >
     <div class="row">
-        <div class="col-xl-6  p-2">
+        <div class="col-xl-6 p-2">
             <app-table
                 tableTitle="MAIN CATEGORIES"
                 subTitle="MANAGEMENT"
@@ -19,8 +19,8 @@
                 [editBtn]="true"
                 [deleteBtn]="true"
                 
-                [tableHeader]="['CATEGORY ID','CATEGORY NAME']"
-                [tableRows]="['id','name']"
+                [tableHeader]="['CATEGORY NAME']"
+                [tableRows]="['name']"
                 [tableData]="categories"
                 
                 (rowDataSelected)="onRowDataSelected($event)"
@@ -48,8 +48,8 @@
                 [editSubBtn]="true"
                 [deleteSubBtn]="true"
                 
-                [tableHeader]="['CATEGORY ID','CATEGORY NAME','MAIN CATEGORY']"
-                [tableRows]="['id','name', 'main_category']"
+                [tableHeader]="['CATEGORY NAME','MAIN CATEGORY']"
+                [tableRows]="['name', 'main_category']"
                 [tableData]="sub_categories "
                 
                 (rowDataSelected)="onRowDataSelected($event)"

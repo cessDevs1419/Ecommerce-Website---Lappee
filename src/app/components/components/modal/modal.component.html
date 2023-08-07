@@ -20,12 +20,11 @@
                         </div>
                     </div>  
                     
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                 
                 </div>
                 <hr class="divider m-0 mb-3">
             </div>
-            
             
                 <app-category-form 
                     *ngIf="modalDeleteCategory"
@@ -109,11 +108,11 @@
                 <app-orders-form
                     *ngIf="modalConfirm"
                     [formConfirm]="true"
-                    (confirm)="confirmPayment()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
                     (OrderWarning)="WarningToast($event)"
                     [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
                 >
                 
                 </app-orders-form>
@@ -121,15 +120,26 @@
                 <app-orders-form
                     *ngIf="modalShip"
                     [formShip]="true"
-                    (ship)="confirmPayment()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
                     (OrderWarning)="WarningToast($event)"
                     [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
                 >
                 
                 </app-orders-form>
                 
+                <app-orders-form
+                    *ngIf="modalDeliver"
+                    [formDelivered]="true"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                >
+                
+                </app-orders-form>
         </div> 
 
     </div>

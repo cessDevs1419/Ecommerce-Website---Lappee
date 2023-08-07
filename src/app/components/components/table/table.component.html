@@ -1,5 +1,5 @@
 
-<div class="table-container bg-white rounded-4 {{tableContainerClass}}">
+<div class="table-container bg-white rounded-4 box container-shadow-subtle {{tableContainerClass}}">
 
     <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 " *ngIf="tableHead">
         <div class="row w-100 mx-0 ">
@@ -96,8 +96,8 @@
     
                 <ng-container *ngIf="(displayedItems$ | async ) as displayedItems">
                     <tr *ngFor="let item of displayedItems">
-                        <td class="text-center pt-3 text-nowrap" *ngFor="let row of tableRows">
-                            {{ item[row] }}
+                        <td class="text-center pt-3 text-nowrap text-truncate" *ngFor="let row of tableRows" >
+                                {{ item[row] }}
                         </td>
                         <!--Enable this table Actions-->
                         <td *ngIf="tableAction"
@@ -208,10 +208,19 @@
                                 >
                                     <i class="bi bi-truck fs-5"></i>
                                 </button>
+                                
+                                <button
+                                    (click)="sendRowData(item)"
+                                    *ngIf="item.status === 200"
+                                    type="button"
+                                    class="btn btn-primary bg-primary text-white border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                    data-bs-toggle="modal" data-bs-target="#deliver"
+                                >
+                                    <i class="bi bi-truck fs-5"></i>
+                                </button>
+                                
                             </ng-container>
                             
-
-
                         </td>
                     </tr>
                 </ng-container>
@@ -232,7 +241,7 @@
                 </tr>
             </thead>
             <tr *ngFor="let item of (tableData | async | searchFilter: searchString)" >
-                <td class="text-center pt-3 text-nowrap" *ngFor="let row of tableRows">
+                <td class="text-center pt-3 text-nowrap  text-truncate" *ngFor="let row of tableRows">
                     {{ item[row] }}
                 </td>
                 
@@ -322,7 +331,7 @@
     </div>
 
 
-    <nav class="align-items-center row" *ngIf="paginate">
+    <nav class="align-items-center row mt-2" *ngIf="paginate">
     
         <div class="col-lg-6 d-flex">
             <label for="pageSize" class="mx-2 text-nowrap">Items per page:</label>
@@ -331,8 +340,8 @@
             </select>
         </div>
         <div class="col-lg-6 d-flex justify-content-start justify-content-lg-end">
-            <ul class="pagination d-flex align-items-center mt-3 mx-2">
-                <li class="page-item">
+            <ul class="pagination d-flex flex-wrap align-items-center mt-3 mx-2">
+                <li class="page-item ">
                     <button  class="page-link bg-white" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
                 </li>
                 <li class="page-item"><a class="page-link text-nowrap">Page {{ currentPage }} of {{ totalPages }}</a></li>

@@ -22,8 +22,8 @@ export class AdminOrderManagementComponent {
 
     
     paymentStatus: number = 100;
-	shipStatus: number ;
-	deliverStatus: number;
+	shipStatus: number = 150;
+	deliverStatus: number = 175; 
 	
 	private refreshData$ = new Subject<void>();
     selectedRowData!: any;
@@ -60,15 +60,6 @@ export class AdminOrderManagementComponent {
         }); 
 
     }
-    
-    confirmPayment(){
-        this.shipStatus = 175;
-    }
-        
-    shipPackage(){
-        this.deliverStatus = 200;
-    }
-    
         
     deliverPackage(){
     
