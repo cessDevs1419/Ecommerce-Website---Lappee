@@ -313,7 +313,6 @@ export class ProductFormComponent {
     
     
     removeImage(index: number) {
-        this.imageList.removeAt(index);
         this.product_service.removeImg(index);
     }
     
@@ -371,8 +370,7 @@ export class ProductFormComponent {
                 this.addVariantForm.reset();
             break;
             case 'edit-var-to-add-prod':
-                this.navigateToProductAdd('edit');
-                this.editVariantForm.reset();
+                this.navigateToProductAdd('add');
             break;
             case 'edit-prod-to-prod-management':
                 this.navigateToProductManagement();
@@ -411,7 +409,7 @@ export class ProductFormComponent {
                 this.navigateToProductAdd('add');
                 break;
             case 'edit-var-to-add-prod':
-                this.navigateToProductAdd('edit');
+                this.navigateToProductAdd('add');
                 break;
             case 'add-var-to-edit-prod':
                 const prodId = await this.getParam('id');
