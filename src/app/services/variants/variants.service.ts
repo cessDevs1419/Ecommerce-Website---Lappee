@@ -13,6 +13,7 @@ import { formatProducts } from 'src/app/utilities/response-utils';
 
 export class VariantsService {
 	private index: number;
+
 	private variantsList: FormArray = this.formBuilder.array([]);
 	private editVariantData: { form: FormGroup, index: number } | null = null;
 	private products: Observable<Product[]>;
@@ -55,7 +56,6 @@ export class VariantsService {
 
     addVariantToVariantsList(variantFormGroup: FormGroup): void {
         this.variantsList.push(variantFormGroup);
-        console.log(this.variantsList)
     }
     
     //GET SET EDIT VARIANTS UPON ADD PRODUCT

@@ -15,6 +15,7 @@ export class AccountsFormComponent {
 	@Output() BanError: EventEmitter<any> = new EventEmitter();
 	@Output() BanWarn: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
+    @Output() CloseModal: EventEmitter<void> = new EventEmitter();
     
     @Input() selectedRowData: any;
     @Input() formBanAccount!: boolean;
@@ -41,6 +42,15 @@ export class AccountsFormComponent {
         });
     }
     
+    asyncTask(): Promise<void> {
+        // Simulate an asynchronous task with a delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+            resolve();
+            }, 1500); 
+        });
+    }
+    
     onAccountBanSubmit(): void {
 
         let formData: any = new FormData();
@@ -48,11 +58,12 @@ export class AccountsFormComponent {
         formData.append('reason', this.banAccountForm.get('account_reason')?.value);
         
         this.userService.banUsers(formData).subscribe({
-            next: (response: any) => { 
+            next: async (response: any) => { 
                 console.log(response)
                 this.RefreshTable.emit();
                 this.BanSuccess.emit(this.BanSuccessMessage + this.selectedRowData.fname);
                 this.banAccountForm.reset();
+
             },
             error: (error: HttpErrorResponse) => {
                 const customErrorMessages = {
@@ -75,11 +86,12 @@ export class AccountsFormComponent {
     
     onAccountUnBanSubmit(): void {
         this.userService.unbanUsers(this.selectedRowData.user_id).subscribe({
-            next: (response: any) => { 
-                console.log(response)
+            next: async (response: any) => { 
+
                 this.RefreshTable.emit();
                 this.BanSuccess.emit(this.BanSuccessMessage+this.selectedRowData.fname);
                 this.unbanAccountForm.reset();
+                
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);

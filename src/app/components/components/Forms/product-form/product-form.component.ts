@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, first, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
 
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
@@ -28,7 +28,8 @@ export class ProductFormComponent {
     @ViewChild('priceInput', { static: false }) priceInputRef!: ElementRef<HTMLInputElement>;
     @ViewChild('openModalBtn') openModalBtn!: ElementRef;
     @ViewChild('modalRef') modalRef!: ElementRef;
-    
+    @ViewChild('dismiss') dismiss: ElementRef;
+
 	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
@@ -68,6 +69,7 @@ export class ProductFormComponent {
     products!: Observable<Product[]>;
     products_sub!: Observable<Product[]>;
     
+    imageList: FormArray = this.formBuilder.array([]);
     variantsList: FormArray = this.formBuilder.array([]);
     //Database Variant place here if there's edit place here too also additional variant
     EditFormvariantsList: FormArray = this.formBuilder.array([]); 
@@ -107,18 +109,20 @@ export class ProductFormComponent {
     ) 
     {
         //get variants
+        this.imageList = this.product_service.getImageList()
         this.variantsList = this.variantService.getVariants()
         this.EditFormvariantsList = this.variantService.getDatabaseVariant();
         this.AdditionvariantsList = this.variantService.getAdditionVariant();
         this.EditedvariantsList = this.variantService.getEditedVariant();
         this.DeletedvariantsList = this.variantService.getDeletedVariant();
         //products
+        
 	    this.addProductForm = this.formBuilder.group({
 	        name: ['', Validators.required],
             category: ['', Validators.required],
             subcategory: ['', Validators.required],
 	        description: ['', Validators.required],
-	        images: this.formBuilder.array([]),
+	        images: this.imageList,
 
             //Variants
             variants: this.variantsList,
@@ -211,9 +215,6 @@ export class ProductFormComponent {
             this.editVariantForm = editVariantData.form;
             this.index = editVariantData.index;
         }
-        // const sameProductVariants = this.AdditionvariantsList.controls.filter(
-        //     control => control.get('product_id')?.value === this.id
-        // );
         
         this.route.paramMap.subscribe((params) => {
 			const page = params.get('page');
@@ -258,10 +259,10 @@ export class ProductFormComponent {
     }
     
     isFormEmpty(): boolean {
-        const formValues = this.editProductForm.value;
-        return Object.values(formValues).every(value => !value);
+        return this.editProductForm.pristine || Object.values(this.editProductForm.value).every(value => !value);
     }
     
+
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
         return new Promise((resolve) => {
@@ -290,14 +291,10 @@ export class ProductFormComponent {
     }
 
 	//Get Image Value to Array
-    get product_images(): FormArray {
-        return this.addProductForm.get('images') as FormArray;
-    }
     
     selectFileForAdding() {
         const addInput = document.getElementById('addimages');
         addInput?.click();
-
     }
     
     selectFileForEditing() {
@@ -308,14 +305,15 @@ export class ProductFormComponent {
     handleFileInput(event: any) {
         const files = event.target.files;
         for (let i = 0; i < files.length; i++) {
-	        const file = files[i];
-	        const fileControl = this.formBuilder.control(file);
-	        this.product_images.push(fileControl);
+            const file = files[i];
+            const fileControl = this.formBuilder.control(file);
+            this.product_service.addImageToList(fileControl);
         }
     }
     
+    
     removeImage(index: number) {
-        this.product_images.removeAt(index);
+        this.product_service.removeImg(index);
     }
     
     extractFileName(url: string): string {
@@ -324,112 +322,112 @@ export class ProductFormComponent {
     }
     
     //Add Variant tools
-    showForms(action: any) {
-        console.log('show forms triggered')
-        let value = action;
+    showForms(value: any) {
         this.route.paramMap.subscribe((params) => {
 		    const id = params.get('id');
-            console.log("param map: " + id);
-            console.log("showFormvalue: " + value)
 		    
             switch(value){
                 case 'edit' : 
-                    console.log('add form trigger')
                     this.showForm = true;
                     this.router.navigate(['/admin/product-management','variant','additional/to',id]);
                 break
-
-                case 'add':
-                    console.log('add form trigger')
-                    this.showForm = true;
-                    value = '';
-                    this.router.navigate(['/admin/product-management','variant','add']);
-                    break;
                 
                 default :
-                    console.log('nigger easter egg');
-                    
+                    this.showForm = true;
+                    this.router.navigate(['/admin/product-management','variant','add']);
                 break
             }
         });
     }
+    
+    //route
+    navigateToProductManagement() {
+        this.router.navigate(['/admin/product-management']);
+    }
+    
+    navigateToProductAdd(mode: 'add' | 'edit') {
+        const route = mode === 'add' ? ['/admin/product-management', 'product', 'add'] : ['/admin/product-management', 'product', 'edit'];
+        this.router.navigate(route);
+    }
+    
+    navigateToProductEdit(prod_id: any) {
+        this.router.navigate(['/admin/product-management', 'product', 'edit', prod_id]);
+    }
+    
+    async getParam(paramName: string): Promise<string | null> {
+        return this.route.paramMap.pipe(first()).toPromise().then(params => params?.get(paramName) || null);
+    }
+    
     cancelAction(page: string){
-        switch(page){
+        switch (page) {
             case 'add-prod-to-prod-management':
-                this.router.navigate(['/admin/product-management']);
+                this.navigateToProductManagement();
                 this.addProductForm.reset();
                 this.variantsList.clear();
-                break
+            break;
             case 'add-var-to-add-prod':
-                this.router.navigate(['/admin/product-management', 'product', 'add']);
+                this.navigateToProductAdd('add');
                 this.addVariantForm.reset();
-                break
+            break;
             case 'edit-var-to-add-prod':
-                this.router.navigate(['/admin/product-management', 'product', 'add']);
-                this.editVariantForm.reset();
-                break
+                this.navigateToProductAdd('add');
+            break;
             case 'edit-prod-to-prod-management':
-                this.router.navigate(['/admin/product-management']);
+                this.navigateToProductManagement();
                 this.editProductForm.reset();
                 this.editVariantForm.reset();
                 this.EditedvariantsList.clear();
                 this.AdditionvariantsList.clear();
                 this.DeletedvariantsList.clear();
-                break
+            break;
             case 'add-var-to-edit-prod':
                 this.route.paramMap.subscribe(async (params) => {
                     const prod_id = params.get('id');
-                    this.router.navigate(['/admin/product-management', 'product', 'edit', prod_id]);
+                    this.navigateToProductEdit(prod_id);
                     this.addVariantForm.reset();
                 });
-                
-                break
+            break;
             case 'edit-var-to-edit-prod':
                 this.route.paramMap.subscribe(async (params) => {
                     const prod_id = params.get('prod_id');
-                    this.router.navigate(['/admin/product-management', 'product', 'edit', prod_id]);
+                    this.navigateToProductEdit(prod_id);
                     this.editVariantForm.reset();
                 });
-                break
+            break;
             default:
-                this.router.navigate(['/admin/product-management']);
-            break
-            
+                this.navigateToProductManagement();
+                break;
         }
     }
     
-    doneAction(page: string){
-        console.log(page);
-        switch(page){
+    async doneAction(page: string) {
+        switch (page) {
             case 'add-prod-to-prod-management':
-                this.router.navigate(['/admin/product-management']);
-                break
+                this.navigateToProductManagement();
+                break;
             case 'add-var-to-add-prod':
-                this.router.navigate(['/admin/product-management', 'product', 'add']);
-                break
+                this.navigateToProductAdd('add');
+                break;
             case 'edit-var-to-add-prod':
-                this.router.navigate(['/admin/product-management', 'product', 'add']);
-                break
+                this.navigateToProductAdd('add');
+                break;
             case 'add-var-to-edit-prod':
-                this.route.paramMap.subscribe(async (params) => {
-                    const prod_id = params.get('id');
-                    this.router.navigate(['/admin/product-management', 'product', 'edit', prod_id]);
-                });
-                break
-                
+                const prodId = await this.getParam('id');
+                this.navigateToProductEdit(prodId);
+                break;
             case 'edit-var-to-edit-prod':
-                this.route.paramMap.subscribe(async (params) => {
-                    const prod_id = params.get('prod_id');
-                    this.router.navigate(['/admin/product-management', 'product', 'edit', prod_id]);
-                });
-                break
+                const editProdId = await this.getParam('prod_id');
+                this.navigateToProductEdit(editProdId);
+                break;
             default:
-                this.router.navigate(['/admin/product-management']);
-            break
-            
+                this.navigateToProductManagement();
+                break;
         }
     }
     
+    async closeModal() {
+        this.dismiss.nativeElement.click();
+    }
     
     //Place Variant to EditForm
     async editVariant(value: any, index: any): Promise<void>{
@@ -503,7 +501,7 @@ export class ProductFormComponent {
     }
     
     //remove variants from array this works only for adding new variant
-    removeVariants(): void {
+    async removeVariants() {
         const index = this.index
         if (index >= 0 && index < this.variantsList.length) {
             this.variantsList.removeAt(index);
@@ -520,24 +518,8 @@ export class ProductFormComponent {
         
         this.ProductSuccess.emit(productSuccess);
         
-        // if(this.EditFormvariantsList.length > 1){
-        //     this.variantService.deletefromDatabaseVariant(this.selectedDeleteVariant?.variant_id, index)
-        //     this.EditedvariantsList.removeAt(index)
-            
-        //     const productSuccess = {
-        //         head: 'Delete Variant',
-        //         sub: 'Successfully removed variant'
-        //     };
-            
-        //     this.ProductSuccess.emit(productSuccess);
-        // }else{
-        //     const ProductError = {
-        //         errorMessage: 'Invalid Request',
-        //         suberrorMessage: 'there would be no variants'
-        //     };
-            
-        //     this.ProductWarning.emit(ProductError);
-        // }
+        await this.asyncTask();
+        this.closeModal()
         
     }
     
@@ -593,17 +575,20 @@ export class ProductFormComponent {
         this.ProductSuccess.emit(productSuccess);
     }
     
-    handleError(error: HttpErrorResponse, errorMessage: string = 'Error Invalid Inputs'): Observable<never> {
+    handleError(error: HttpErrorResponse): Observable<never> {
+        const errorMessage = 'Error Invalid Inputs'
+        
         if (error.error?.data?.error) {
             const fieldErrors = error.error.data.error;
             const errorsArray = [];
+            
             
             for (const field in fieldErrors) {
                 if (fieldErrors.hasOwnProperty(field)) {
                     const messages = fieldErrors[field];
                     let errorMessage = messages;
                     if (Array.isArray(messages)) {
-                        errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                        errorMessage = messages.join(' '); 
                 }
                     errorsArray.push(errorMessage);
                 }
@@ -615,6 +600,7 @@ export class ProductFormComponent {
             };
         
             this.ProductWarning.emit(errorDataforProduct);
+            
         } else {
             const errorDataforProduct = {
                 errorMessage: errorMessage,
@@ -679,7 +665,7 @@ export class ProductFormComponent {
                     this.ProductSuccess.emit(productSuccess);
                     this.addProductForm.reset();
                     this.variantsList.clear();
-                    this.product_images.clear();
+                    this.imageList.clear();
                     this.done = true;
                     this.cancel = false;
                 },
@@ -814,11 +800,6 @@ export class ProductFormComponent {
                 DeletedVariants.append(`id`, variant);
             }
             
-            console.log('__deleted variants__')
-            for (const value of DeletedVariants.entries()) {
-                console.log(`${value[0]}, ${value[1]}`);
-            }
-            
             const observables = [];
 
             if (this.editProductForm.dirty) {
@@ -838,13 +819,17 @@ export class ProductFormComponent {
             }
         
             if (observables.length === 0) {
-                console.log('No operations to perform');
+                const errorDataforProduct = {
+                    errorMessage: 'Edit Product',
+                    suberrorMessage: 'Nothing change',
+                };
+                this.ProductWarning.emit(errorDataforProduct);
                 return;
             }
             
             //need to work
             forkJoin(observables).subscribe({
-                next: ([editProductResponse, addVariantResponse, editVariantResponse, deleteVariantResponse]) => {
+                next: async ([editProductResponse, addVariantResponse, editVariantResponse, deleteVariantResponse]) => {
                     console.log("Inside next callback");
                     console.log("editProductResponse:", editProductResponse);
                     console.log("addVariantResponse:", addVariantResponse);
@@ -864,30 +849,39 @@ export class ProductFormComponent {
                             message: `${editProductResponse.message} ${addVariantResponse.message} ${editVariantResponse.message} ${deleteVariantResponse.message}`
                         };
                         this.handleResponse(combinedResponse);
-                        console.log(combinedResponse)
+                        await this.asyncTask();
+                        this.doneAction('');
                         
                     } else if (editProductResponse) {
                         this.handleResponse(editProductResponse);
-                        console.log(editProductResponse.message)
+                        await this.asyncTask();
+                        this.doneAction('');
 
                     } else if (addVariantResponse) {
                         this.handleResponse(addVariantResponse);
-                        console.log(addVariantResponse.message)
+                        await this.asyncTask();
+                        this.doneAction('');
+                        
                     } else if (editVariantResponse) {
                         this.handleResponse(editVariantResponse);
-                        console.log(editVariantResponse.message)
+                        await this.asyncTask();
+                        this.doneAction('');
+                        
                     } else if (deleteVariantResponse) {
                         this.handleResponse(deleteVariantResponse);
-                        console.log(deleteVariantResponse.message)
+                        await this.asyncTask();
+                        this.doneAction('');
+                        
                     }else{
                         console.log('nothing change')
                     }
                     
-                    this.doneAction('edit-var-to-edit-prod');
+
+
                 },
                 error: (error: HttpErrorResponse) => {
                     this.handleError(error);
-                    console.error("Error:", error);
+                    console.error("Error:", error);   
                 }
             });
 
@@ -898,13 +892,16 @@ export class ProductFormComponent {
     
     onProductDeleteSubmit(): void {
         this.product_service.deleteProduct(this.selectedRowData.id).subscribe({
-            next: (response: any) => { 
+            next: async (response: any) => { 
                 const productSuccess = {
                     head: 'Delete Product',
                     sub: response.message
                 };
                 this.RefreshTable.emit();
                 this.ProductSuccess.emit(productSuccess);
+                
+                await this.asyncTask();
+                this.closeModal()
             },
             error: (error: HttpErrorResponse) => {
                 const errorData = this.errorService.handleError(error);
@@ -955,19 +952,34 @@ export class ProductFormComponent {
                 color: [this.addVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
                 color_title: [this.addVariantForm.get('color_title')?.value],
             });
-    
-            this.variantService.addVariantToVariantsList(newVariantFormGroup);
-            this.addVariantForm.reset();
-            this.addVariantForm.markAsPristine();
-            this.done = true
-            this.cancel = false
             
-            const successVariants = {
-                head: 'Add Variant',
-                sub: 'Successfully added variants'
-            };
+                const newVariantFormValue = newVariantFormGroup.value;
+                if (
+                    this.variantsList.controls.some((control) =>
+                        this.isDuplicateVariant(control.value, newVariantFormValue)
+                    ) 
+                ) {
+                    const errorDataforProduct = {
+                        errorMessage: 'Add Another Variant',
+                        suberrorMessage: 'The data already exists',
+                    };
+                    this.ProductWarning.emit(errorDataforProduct);
+                }
+                else{
+                    this.variantService.addVariantToVariantsList(newVariantFormGroup);
+                    this.addVariantForm.reset();
+                    this.addVariantForm.markAsPristine();
+                    this.done = true
+                    this.cancel = false
+                    
+                    const successVariants = {
+                        head: 'Add Variant',
+                        sub: 'Successfully added variants'
+                    };
+        
+                    this.ProductSuccess.emit(successVariants);
+                }
 
-            this.ProductSuccess.emit(successVariants);
             
         } else {
             this.addVariantForm.markAllAsTouched();
@@ -1091,7 +1103,7 @@ export class ProductFormComponent {
             const id = params.get('id');
 
             if(this.editVariantForm.valid){
-                const editedVariant = {
+                const editedVariant = this.formBuilder.group({
                     variant_id: id,
                     size: this.editVariantForm.get('size')?.value,
                     price: this.editVariantForm.get('price')?.value,
@@ -1099,20 +1111,35 @@ export class ProductFormComponent {
                     stock_limit: this.editVariantForm.get('stock_limit')?.value,
                     color: this.editVariantForm.get('color')?.value,
                     color_title: this.editVariantForm.get('color_title')?.value,
-                };
+                });
                 
-                const index = this.index;
-                if (index !== undefined && index >= 0 && index < this.variantsList.length) {
-                    this.variantsList.at(index).patchValue(editedVariant);
+                const newVariantFormValue = editedVariant.value;
+                
+                if (
+                    this.variantsList.controls.some((control) =>
+                        this.isDuplicateVariant(control.value, newVariantFormValue)
+                    ) 
+                ) {
+                    const errorDataforProduct = {
+                        errorMessage: 'Add Another Variant',
+                        suberrorMessage: 'The data already exists',
+                    };
+                    this.ProductWarning.emit(errorDataforProduct);
+                }else{
+                    const index = this.index;
+                    if (index !== undefined && index >= 0 && index < this.variantsList.length) {
+                        this.variantsList.at(index).patchValue(editedVariant);
+                        
+                    }
+                    const productSuccess = {
+                        head: 'Edit Variant',
+                        sub: 'Successfully edited variant'
+                    };
                     
+                    this.ProductSuccess.emit(productSuccess);
+                    this.doneAction('edit-var-to-add-prod');
                 }
-                const productSuccess = {
-                    head: 'Edit Variant',
-                    sub: 'Successfully edited variant'
-                };
                 
-                this.ProductSuccess.emit(productSuccess);
-                this.doneAction('edit-var-to-add-prod');
             }else{
                 this.editVariantForm.markAllAsTouched();
                 const emptyFields = [];
@@ -1143,7 +1170,7 @@ export class ProductFormComponent {
             const id = params.get('id');
 
             if(this.editVariantForm.valid){
-                const editedVariant = {
+                const editedVariant = this.formBuilder.group({
                     variant_id: id,
                     size: this.editVariantForm.get('size')?.value,
                     price: this.editVariantForm.get('price')?.value,
@@ -1151,21 +1178,37 @@ export class ProductFormComponent {
                     stock_limit: this.editVariantForm.get('stock_limit')?.value,
                     color: this.editVariantForm.get('color')?.value,
                     color_title: this.editVariantForm.get('color_title')?.value,
-                };
+                });
                 
-                const index = this.index;
-                if (index !== undefined && index >= 0 && index < this.AdditionvariantsList.length) {
-                    this.AdditionvariantsList.at(index).patchValue(editedVariant);
+                const newVariantFormValue = editedVariant.value;
+                
+                if (
+                    this.EditFormvariantsList.controls.some((control) =>
+                        this.isDuplicateVariant(control.value, newVariantFormValue)
+                    ) ||
+                    this.AdditionvariantsList.controls.some((control) =>
+                        this.isDuplicateVariant(control.value, newVariantFormValue)
+                    ) 
+                ) {
+                    const errorDataforProduct = {
+                        errorMessage: 'Add Another Variant',
+                        suberrorMessage: 'The data already exists',
+                    };
+                    this.ProductWarning.emit(errorDataforProduct);
+                } else{
+                    const index = this.index;
+                    if (index !== undefined && index >= 0 && index < this.AdditionvariantsList.length) {
+                        this.AdditionvariantsList.at(index).patchValue(editedVariant);
+                        
+                    }
+                    const productSuccess = {
+                        head: 'Edit Variant',
+                        sub: 'Successfully edited variant'
+                    };
                     
+                    this.doneAction('edit-var-to-edit-prod');
+                    this.ProductSuccess.emit(productSuccess);
                 }
-                const productSuccess = {
-                    head: 'Edit Variant',
-                    sub: 'Successfully edited variant'
-                };
-                
-                this.doneAction('edit-var-to-edit-prod');
-                this.ProductSuccess.emit(productSuccess);
-
                 
             }else{
                 this.editVariantForm.markAllAsTouched();
@@ -1235,12 +1278,9 @@ export class ProductFormComponent {
                 if (editedIndex !== -1) {
                     this.EditedvariantsList.removeAt(editedIndex);
                     this.variantService.editfromDatabaseVariant(editedVariant, index);
-                    console.log('inedit');
-                    console.log(this.EditedvariantsList);
+
                 } else {
                     this.variantService.editfromDatabaseVariant(editedVariant, index);
-                    console.log('pinush');
-                    console.log(this.EditedvariantsList);
                 }
                 
                 this.doneAction('edit-var-to-edit-prod');

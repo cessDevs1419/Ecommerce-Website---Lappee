@@ -21,11 +21,15 @@ export class SidebarComponent {
   @Input() courier!: boolean;
   
   constructor(private router: Router) {}
-
+  subMenu: boolean = false;
   
   ngOnInit(): void {
 
     
+  }
+
+  showSubmenu(){
+    this.subMenu = !this?.subMenu
   }
   
 }

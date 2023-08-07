@@ -74,13 +74,15 @@
                                         <i class="bi bi-upload text-dark"></i>
                                         <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                     </button>
-                                    <ul class="list-unstyled w-100" *ngIf="product_images.controls.length > 0">
-                                        <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                    <ul class="list-unstyled w-100" *ngIf="imageList.controls.length > 0">
+                                    
+                                        <li *ngFor="let control of this.imageList.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
                                             <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
                                             <button type="button" class="btn p-0" (click)="removeImage(i)">
                                                 <i class="bi bi-x-lg text-dark"></i>
                                             </button>
                                         </li>
+                                        
                                     </ul>
 
                                 </div>
@@ -296,7 +298,7 @@
                                     </ng-container>
                                     
                                     <!--For Additional Product Images-->
-                                    <li *ngFor="let control of product_images.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
+                                    <li *ngFor="let control of imageList.controls; let i = index" class="btn mb-2 w-100 border d-flex justify-content-between align-items-center text-start">
                                         <p class="m-0 fw-bold text-dark-emphasis text-break me-2">{{ control.value.name }}</p>
                                         <button type="button" class="btn p-0" (click)="removeImage(i)">
                                             <i class="bi bi-x-lg text-dark"></i>
@@ -316,8 +318,9 @@
                                 <button 
                                     type="submit" 
                                     class="btn btn-primary bg-light-primary"
-                                    [disabled]=" isFormEmpty()"
+
                                 >EDIT PRODUCT</button>
+                                <!-- [disabled]="isFormEmpty() || AdditionvariantsList.length === 0 || EditedvariantsList.length === 0 || DeletedvariantsList.length === 0" -->
                             </div>   
                         </div>
                     </div>
@@ -1162,7 +1165,7 @@
                             <div class="modal-sub-title text-dark-emphasis fs-6">VARIANT CONTROL</div>
                         </div>
                         
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                     
                     </div>
                     <hr class="divider m-0 mb-3">
@@ -1174,7 +1177,7 @@
                         </div>
                         
                         <div class="modal-footer border-0 ">
-                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+                            <button type="button" class="btn btn-muted" data-bs-dismiss="modal" >CANCEL</button>
                             <button 
                                 type="submit" 
                                 class="btn btn-primary bg-light-primary "
@@ -1198,7 +1201,7 @@
                             <div class="modal-sub-title text-dark-emphasis fs-6">VARIANT CONTROL</div>
                         </div>
                         
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                     
                     </div>
                     <hr class="divider m-0 mb-3">

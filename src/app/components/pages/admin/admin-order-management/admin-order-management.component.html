@@ -15,7 +15,7 @@
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
-        
+        [setFirstUpper]="true"
         [tableHeader]="['ORDER ID', 'PLACED ON', 'STATUS']"
         [tableRows]="['id', 'created_at', 'status' ]"
         [tableData]="orders"
@@ -46,11 +46,11 @@
     modalTitleClass="mb-0"
     modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
+    modalClass="modal-dialog modal-md "
         
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
-    (confirm)="confirmPayment()"
+
     [selectedRowData]="selectedRowData"
 
 ></app-modal>
@@ -66,7 +66,7 @@
         
     [modalShip]="true"
     (RefreshTable)="refreshTableData()"
-    (ship)="shipPackage()"
+
     [selectedRowData]="selectedRowData"
 
 ></app-modal>
@@ -74,10 +74,10 @@
 
 <app-modal
     modalId="deliver"
-    modalTitle="Customer Information"
-    modalTitleClass="mb-3"
-    modalSubTitle="{{selectedRowData?.user_id}}"
-    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalTitle="CONFIRM PAYMENT"
+    modalTitleClass="mb-0"
+    modalSubTitle="STATUS UPDATE"
+    modalSubTitleClass="mt-0 fw-bold"
     modalClass="modal-dialog-scrollable modal-md "
         
     [modalDeliver]="true"

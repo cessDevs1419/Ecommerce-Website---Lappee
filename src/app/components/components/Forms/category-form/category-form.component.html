@@ -25,11 +25,20 @@
             
             <div class="modal-footer border-0 justify-content-center mb-4">
                 <button 
+                    *ngIf="cancel"
                     type="button" 
                     class="btn btn-muted mx-1" 
-                    (click)="cancel()"
+                    (click)="hitcancel()"
                 >
                 CANCEL</button>
+                
+                <button 
+                    *ngIf="done"
+                    type="button" 
+                    class="btn btn-muted mx-1" 
+                    (click)="hitdone()"
+                >
+                DONE</button>
                 <button 
                     type="submit" 
                     class="btn btn-primary btn-primary-light text-white mx-1"
@@ -72,12 +81,20 @@
             
             <div class="modal-footer border-0 justify-content-center">
                 <button 
+                    *ngIf="cancel"
                     type="button" 
                     class="btn btn-muted mx-1" 
-                    data-bs-dismiss="modal"
-                    (click)="cancel()"
+                    (click)="hitcancel()"
                 >
                 CANCEL</button>
+                
+                <button 
+                    *ngIf="done"
+                    type="button" 
+                    class="btn btn-muted mx-1" 
+                    (click)="hitdone()"
+                >
+                DONE</button>
                 <button 
                     type="submit" 
                     class="btn btn-primary btn-primary-light text-white mx-1 "
@@ -129,11 +146,20 @@
             
             <div class="modal-footer border-0 justify-content-center">
                 <button 
+                    *ngIf="cancel"
                     type="button" 
                     class="btn btn-muted mx-1" 
-                    (click)="cancel()"
+                    (click)="hitcancel()"
                 >
                 CANCEL</button>
+                
+                <button 
+                    *ngIf="done"
+                    type="button" 
+                    class="btn btn-muted mx-1" 
+                    (click)="hitdone()"
+                >
+                DONE</button>
                 <button 
                     type="submit" 
                     class="btn btn-primary bg-light-primary text-white mx-1"
@@ -176,11 +202,20 @@
             
             <div class="modal-footer border-0 justify-content-center">
                 <button 
+                    *ngIf="cancel"
                     type="button" 
                     class="btn btn-muted mx-1" 
-                    (click)="cancel()"
+                    (click)="hitcancel()"
                 >
                 CANCEL</button>
+                
+                <button 
+                    *ngIf="done"
+                    type="button" 
+                    class="btn btn-muted mx-1" 
+                    (click)="hitdone()"
+                >
+                DONE</button>
                 <button 
                     type="submit" 
                     class="btn btn-primary btn-primary-light text-white mx-1"
