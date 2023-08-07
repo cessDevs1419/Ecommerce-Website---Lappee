@@ -1,4 +1,4 @@
-<div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
+<div class="position-relative w-100 toast-container-parent">
   <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
 </div>
 
@@ -147,7 +147,7 @@
           <div class="row row-cols-1 gy-3">
             <div class="col">
               <label for="bannerLabel" class="form-label mb-1">Banner Label*</label>
-                <input type="text" class="form-control" id="bannerLabel" formControlName="bannerLabel">
+              <input type="text" class="form-control" id="bannerLabel" formControlName="bannerLabel">
             </div>
             <div class="col">
               <label class="form-label mb-1">Banner Image*</label>

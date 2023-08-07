@@ -85,3 +85,7 @@ export const POSTUploadSiteLogo: string = api + "api/admin/site-settings/site-lo
 export const PATCHEditSiteName: string = api + "api/admin/site-settings/site-name/edit";
 export const POSTUploadBanner: string = api + "api/admin/site-settings/banners/store";
 export const DELETEBanner: string = api + "api/admin/site-settings/banners/delete";
+export const POSTAddABoutUs: string = api + "api/admin/site-settings/about-us/store";
+export const POSTAddToS: string = api + "api/admin/site-settings/tos/store";
+export const DELETEAboutUs: string = api + "api/admin/site-settings/about-us/delete";
+export const DELETEToS: string = api + "api/admin/site-settings/tos/delete";

@@ -72,6 +72,8 @@ import { AboutUsComponent } from './components/pages/main/about-us/about-us.comp
 import { TosComponent } from './components/pages/main/tos/tos.component';
 import { AdminSiteSettingsComponent } from './components/pages/admin/admin-site-settings/admin-site-settings.component';
 import { OrdersFormComponent } from './components/components/Forms/orders-form/orders-form/orders-form.component';
+import { AdminManageAboutUsComponent } from './components/pages/admin/admin-manage-about-us/admin-manage-about-us.component';
+import { AdminManageTosComponent } from './components/pages/admin/admin-manage-tos/admin-manage-tos.component';
 
 
 @NgModule({
@@ -137,6 +139,8 @@ import { OrdersFormComponent } from './components/components/Forms/orders-form/o
     TosComponent,
     AdminSiteSettingsComponent,
     OrdersFormComponent,
+    AdminManageAboutUsComponent,
+    AdminManageTosComponent,
   ],
   imports: [
     BrowserModule,
@@ -186,6 +190,8 @@ import { OrdersFormComponent } from './components/components/Forms/orders-form/o
           {path: 'inquiry', component: AdminInquiryComponent},
           {path: 'site-settings', component: AdminSiteSettingsComponent},
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent},
+          {path: 'manage-about-us', component: AdminManageAboutUsComponent},
+          {path: 'manage-tos', component: AdminManageTosComponent},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

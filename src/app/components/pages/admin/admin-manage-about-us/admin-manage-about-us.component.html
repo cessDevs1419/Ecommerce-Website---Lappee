@@ -1,0 +1,86 @@
+<div class="position-relative w-100 toast-container-parent">
+  <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+</div>
+
+<div *ngIf="!showAddSectionForm">
+  <div class="container-md h-auto p-2">
+    <app-table
+      tableTitle="MANAGE ABOUT US"
+      subTitle="CONTENT MANAGEMENT"
+      
+      [tableHead]="true"
+      tableContainerClass="p-4"
+      [paginate]="true"
+
+      [tableHeader]="['SECTION HEADER', 'INFORMATION']"
+      [tableRows]="['title', 'content']"
+      [tableAction]="true"
+      [Btntools]="true"
+      [tableTools]="true"
+      [tableData]="aboutUsSections"
+      
+      (rowDataSelected)="getSelectedSection($event)"
+
+      [addBtn]="true"
+      addbtnName="ADD SECTION"
+      (ShowAddForm)="toggleAddSectionForm()"
+      
+      [deleteBtn]="true">
+    </app-table>
+  </div>
+</div>
+
+<div class="modal fade" id="delete"  tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered " >
+    <form (ngSubmit)="deleteAboutUsSection()">
+      <div class="modal-content ">
+        <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
+            <div class="modal-title text-start">
+                <h1 class="modal-title fs-4 fw-bolder" >DELETE SECTION {{ this.selectedSection.title | uppercase }}</h1>
+                <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr class="divider m-0 mb-3">
+        <div class="modal-body">
+          <p class="fs-5 fw-bold mb-1 text-center">Are you sure you want to delete this section?</p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+          <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+        </div>
+    </div> 
+    </form>
+  </div>
+</div>
+
+<div *ngIf="showAddSectionForm">
+  <div class="container-md h-auto p-2">
+    <div class="row">
+      <div class="col-xxl-6">
+        <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
+          <h1 class="fw-bold fs-4 mb-0">ADD SECTION</h1>
+          <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
+
+          <form [formGroup]="aboutUsAddSectionForm" (ngSubmit)="submitAddSectionForm()">
+            <div class="row row-cols-1 gy-3">
+              <div class="col">
+                <label for="sectionHeader" class="form-label mb-1">Section Header*</label>
+                <input type="text" class="form-control" id="sectionHeader" formControlName="sectionHeader" placeholder="Section Title">
+              </div>
+              <div class="col">
+                <label for="sectionContent" class="form-label mb-1">Section Content*</label>
+                <textarea id="sectionContent" cols="30" rows="10" formControlName="sectionContent" class="form-control" placeholder="Enter text here..."></textarea>
+              </div>
+              <div class="col d-flex justify-content-end">
+                <button type="button" class="btn btn-muted me-3" (click)="toggleAddSectionForm()">Cancel</button>
+                <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
