@@ -17,7 +17,7 @@
             </div>
             
             <div class="toolkit px-5 d-none d-md-flex justify-content-between ">
-                <div [routerLink]="'/profile'" routerLinkActive="active-link" class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                <div [routerLink]="'/profile'" (click)="setFalse()" routerLinkActive="active-link" class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
                     <i class="bi bi-person-fill text-primary fs-4"></i>
                 </div>
                 <div class="icon-container position-relative rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
@@ -36,35 +36,35 @@
         
         <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
             
-            <li [routerLink]="'/admin/overview'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/overview'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
                     Overview
                 </a>
             </li>
             
-            <li [routerLink]="'/admin/category-management'"  routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/category-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
                 <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Category Setup
                 </a>
             </li>
             
-            <li [routerLink]="'/admin/product-management'"   routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/product-management'" (click)="setFalse()"  routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Products
                 </a>
             </li>
         
-            <li [routerLink]="'/admin/sales-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/sales-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Sales
                 </a>
             </li>
             
-            <li [routerLink]="'/admin/accounts-management'" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/accounts-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-people text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Accounts
@@ -94,56 +94,58 @@
             -->
 
             
-            <li [routerLink]="'/admin/order-management'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/order-management'" (click)="setFalse()" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Track Orders
                 </a>
             </li>
 
-            <li [routerLink]="'/admin/inquiry'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'/admin/inquiry'" (click)="setFalse()" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-envelope text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Inquiry
                 </a>
             </li>
             
-            <li  (click)="showSubmenu()" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
-                <a routerLinkActive="text-white " class="nav-link text-dark text-decoration-none" >
+            <li  (click)="showSubmenu()" [class]="toggleContent ? 'active-link d-flex align-items-center nav-item p-2 ps-4 mx-0':'d-flex align-items-center nav-item p-2 ps-4 mx-0'"  >
+                
+                <i [class]="toggleContent ? 'bi bi-gear text-white':'bi bi-gear text-dark'"></i>
+                <a [class]="toggleContent ? 'nav-link text-decoration-none text-white':'nav-link text-dark text-decoration-none'" >
                     Manage Contents
                 </a>
             </li>
             
-            <li  *ngIf="subMenu" [routerLink]="'/admin/site-settings'"  routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Site Settings
-                </a>
-            </li>
-
-            <li *ngIf="subMenu" [routerLink]="'/admin/site-settings/'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-envelope text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Kwan
-                </a>
-            </li>
+            <div *ngIf="subMenu" class="bg-body-secondary p-0 m-0">
             
-            <li *ngIf="subMenu" [routerLink]="'/admin/site-settings/'" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-envelope text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Kalabaw
-                </a>
-            </li>
-
-            <li [routerLink]="'/profile'" routerLinkActive="active-link"  class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-person-fill text-dark"></i>
+                <li [routerLink]="'/admin/site-settings'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                    <a routerLinkActive="text-primary" class="ms-4 text-dark nav-link text-decoration-none">
+                        Site Settings
+                    </a>
+                </li>
+                
+                <li  [routerLink]="'/about'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                    <a routerLinkActive="text-primary" class="ms-4 text-dark nav-link text-decoration-none">
+                        About Us
+                    </a>
+                </li>
+                
+                <li *ngIf="subMenu" [routerLink]="'/terms'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                    <a routerLinkActive="text-primary" class="ms-4 nav-link text-dark text-decoration-none">
+                        Terms Of Service
+                    </a>
+                </li>
+    
+            </div>
+            
+            <li [routerLink]="'/profile'" (click)="setFalse()" routerLinkActive="active-link"  class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     User Profile
                 </a>
             </li>
             
-            <li [routerLink]="'notifications'" routerLinkActive="active-link" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <li [routerLink]="'notifications'" (click)="setFalse()" routerLinkActive="active-link" class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-bell-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Notifications

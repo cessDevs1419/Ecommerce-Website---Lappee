@@ -44,6 +44,8 @@
     background: linear-gradient(90deg, #2898FF -5.79%, #2898FF -5.77%, #0064C0 138.89%);
 }
 
+
+
 li, a{
     cursor: pointer;
 }
@@ -78,6 +80,7 @@ img{
     margin-left: 20px;
     transition: .1s ease-in;
 }
+
 
 
 @media screen and (max-width: 984px) {

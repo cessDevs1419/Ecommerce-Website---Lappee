@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnInit } from '@angular/core';
 
@@ -8,10 +8,14 @@ import { OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  isClassToggled: boolean = false;
 
+  
+  isClassToggled: boolean = false;
+  toggleContent: boolean = false;
+  
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
+    
   }
 
 
@@ -27,9 +31,15 @@ export class SidebarComponent {
 
     
   }
-
+  setFalse(){
+    this.subMenu = false
+    this.toggleContent = false
+  }
+  
   showSubmenu(){
     this.subMenu = !this?.subMenu
+    this.toggleContent = !this.toggleContent
+    this.router.navigate(['/admin/site-settings']);
   }
   
 }
