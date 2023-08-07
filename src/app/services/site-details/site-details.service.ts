@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETSiteDetails, PATCHEditSiteName, POSTUploadSiteLogo } from '../endpoints';
+import { DELETEBanner, GETSiteDetails, PATCHEditSiteName, POSTUploadBanner, POSTUploadSiteLogo } from '../endpoints';
 import { Observable, map, of } from 'rxjs';
 import { formatSiteDetails } from 'src/app/utilities/response-utils';
 import { SiteDetails } from 'src/assets/models/sitedetails';
@@ -57,6 +57,24 @@ export class SiteDetailsService {
   editSiteTitle(data: FormData): Observable<any>
   {
     return this.http.patch<any>(PATCHEditSiteName, data);
+  }
+
+  uploadBanner(data: FormData): Observable<any>
+  {
+    return this.http.post<any>(POSTUploadBanner, data);
+  }
+
+  deleteBanner(data: FormData): Observable<any>
+  {
+    return this.http.delete<any>(DELETEBanner, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: data 
+    });
   }
 
   ngOnInit(): void {
