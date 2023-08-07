@@ -37,8 +37,8 @@ export class SidebarComponent {
   }
   
   showSubmenu(){
-    this.subMenu = !this?.subMenu
-    this.toggleContent = !this.toggleContent
+    this.subMenu = true
+    this.toggleContent = true
     this.router.navigate(['/admin/site-settings']);
   }
   
