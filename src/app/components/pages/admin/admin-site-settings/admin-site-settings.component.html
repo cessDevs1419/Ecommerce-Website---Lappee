@@ -15,7 +15,13 @@
               <div class="col d-flex justify-content-center">
                 <div>
                   <div class="logo-container">
-                    <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
+                    <div *ngIf="siteLogo | async as logo">
+                      <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'url(' + logo.site_logo + ')'}">
+                      </div>
+                    </div>
+                    <div *ngIf="!(siteLogo | async)">
+                      <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'none'}">
+                      </div>
                     </div>
                     <label for="logoUpload" class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
                       <i class="bi bi-upload fs-5"></i>
@@ -119,7 +125,7 @@
                   <h1 class="modal-title fs-4 fw-bolder" >DELETE BANNER {{ selectedBanner.label | uppercase }}</h1>
                   <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
               </div>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #confirmDeleteModal></button>
           </div>
           <hr class="divider m-0 mb-3">
           <div class="modal-body">
@@ -128,7 +134,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-            <button type="submit" class="btn btn-primary bg-light-primary ">CONFIRM</button>
+            <button type="submit" class="btn btn-primary bg-light-primary">CONFIRM</button>
           </div>
       </div> 
       </form>

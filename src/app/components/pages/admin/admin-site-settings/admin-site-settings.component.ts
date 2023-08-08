@@ -1,14 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
-import { Banner } from 'src/assets/models/sitedetails';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Banner, SiteLogo } from 'src/assets/models/sitedetails';
 import { OnInit } from '@angular/core';
 import { BannersService } from 'src/app/services/banners/banners.service';
-import { formatBanners } from 'src/app/utilities/response-utils';
+import { formatBanners, formatSiteLogo } from 'src/app/utilities/response-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SiteDetailsService } from 'src/app/services/site-details/site-details.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { FormBuilder, Validators } from '@angular/forms';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-admin-site-settings',
@@ -17,6 +18,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class AdminSiteSettingsComponent {
   
+  @Output() refreshData: EventEmitter<any> = new EventEmitter();
+
   size: string = 'w-100';
 
   // To know whether to show or hide add banner form.
@@ -28,6 +31,10 @@ export class AdminSiteSettingsComponent {
     label: '',
     path: '',
   };
+
+  siteLogo: Observable<SiteLogo>;
+
+  logoImage: any;
 
   // To know what file to upload for site logo.
   imagePath: any;
@@ -41,6 +48,11 @@ export class AdminSiteSettingsComponent {
   toastHeader: string = "";
   toastTheme: string = "default"; 
   @ViewChild(ToastComponent) toast: ToastComponent;
+
+  @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
+
+  modal: bootstrap.Modal;
+  
 
   // Site Name Form
   siteNameForm = this.fb.group({
@@ -65,8 +77,14 @@ export class AdminSiteSettingsComponent {
 
   ngOnInit()
   {
-    this.banners = this.bannerService.getBanners().pipe(
-      map((response: any) => formatBanners(response))
+    // this.banners = this.bannerService.getBanners().pipe(
+    //   map((response: any) => formatBanners(response))
+    // );
+
+    this.banners = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.bannerService.getBanners()),
+      map((response: any) => formatBanners(response)),
     );
 
     this.route.paramMap.subscribe((param) => {
@@ -77,12 +95,25 @@ export class AdminSiteSettingsComponent {
       } else {
         this.showAddForm = false;
       }
-    }); 
+    });
+
+    // Get current logo
+    this.siteLogo = this.siteDetailsService.getSiteLogo().pipe(map((response: any) => formatSiteLogo(response)));
+  }
+
+  ngAfterViewInit()
+  {
+    this.modal = new bootstrap.Modal(this.confirmDeleteModal.nativeElement);
+  }
+
+  closeModal()
+  {
+    this.confirmDeleteModal.nativeElement.click();
   }
 
   refreshTableData(): void {
     this.refreshData$.next();
-}
+  }
 
   editSiteLogo()
   {
@@ -277,6 +308,15 @@ export class AdminSiteSettingsComponent {
         this.toastContent = "You have deleted a banner.";
         this.toast.switchTheme('default');
         this.toast.show();
+
+        this.selectedBanner = {
+          id: '',
+          label: '',
+          path: '',
+        };
+
+        this.closeModal();
+
       },
       error: (error: HttpErrorResponse) => {
         this.toastHeader = "Failed to remove banner!";
@@ -288,6 +328,6 @@ export class AdminSiteSettingsComponent {
       }
     })
 
-    this.refreshData$.next();
+    this.refreshTableData();
   }
 }
