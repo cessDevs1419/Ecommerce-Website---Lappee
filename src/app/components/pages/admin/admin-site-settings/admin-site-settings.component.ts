@@ -309,13 +309,13 @@ export class AdminSiteSettingsComponent {
         this.toast.switchTheme('default');
         this.toast.show();
 
+        this.closeModal();
+
         this.selectedBanner = {
           id: '',
           label: '',
           path: '',
         };
-
-        this.closeModal();
 
       },
       error: (error: HttpErrorResponse) => {
