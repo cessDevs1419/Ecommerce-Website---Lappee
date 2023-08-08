@@ -47,6 +47,7 @@ export class AdminProductsComponent {
 
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
+        
     }
     
 	

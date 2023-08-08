@@ -372,7 +372,9 @@ export class ProductFormComponent {
                 
             break;
             case 'edit-var-to-add-prod':
-                this.navigateToProductAdd('add');
+                this.route.paramMap.subscribe(async (params) => {
+                    this.navigateToProductAdd('add');
+                });
             break;
             case 'edit-prod-to-prod-management':
                 this.navigateToProductManagement();
@@ -455,7 +457,9 @@ export class ProductFormComponent {
         this.variantService.setVariantToEditForm(this.editVariantForm, index);
         
         await this.asyncTask();
-        this.router.navigate(['/admin/product-management', 'variant', 'edit']);
+        this.route.paramMap.subscribe(async (params) => {
+            this.router.navigate(['/admin/product-management', 'variant', 'edit']);
+        });
     
     }
     
@@ -872,56 +876,54 @@ export class ProductFormComponent {
                             message: `${editProductResponse.message} ${addVariantResponse.message} ${editVariantResponse.message} ${deleteVariantResponse.message}`
                         };
                         this.handleResponse(combinedResponse);
+
+                        
+                        await this.asyncTask();
+                        this.doneAction('');
                         this.EditFormvariantsList.clear()
                         this.AdditionvariantsList.clear()
                         this.DeletedvariantsList.clear()
                         this.EditedvariantsList.clear()
-                        
-                        await this.asyncTask();
-                        this.doneAction('');
 
                     } else if (editProductResponse) {
                         this.handleResponse(editProductResponse);
+                        
+                        await this.asyncTask();
+                        this.doneAction('');
                         this.EditFormvariantsList.clear()
                         this.AdditionvariantsList.clear()
                         this.DeletedvariantsList.clear()
                         this.EditedvariantsList.clear()
-                        
-                        await this.asyncTask();
-                        this.doneAction('');
                         
                     } else if (addVariantResponse) {
                         this.handleResponse(addVariantResponse);
                         
+                        await this.asyncTask();
+                        this.doneAction('');
                         this.EditFormvariantsList.clear()
                         this.AdditionvariantsList.clear()
                         this.DeletedvariantsList.clear()
                         this.EditedvariantsList.clear()
-                        
-                        await this.asyncTask();
-                        this.doneAction('');
 
                     } else if (editVariantResponse) {
                         this.handleResponse(editVariantResponse);
                         
+                        await this.asyncTask();
+                        this.doneAction('');
                         this.EditFormvariantsList.clear()
                         this.AdditionvariantsList.clear()
                         this.DeletedvariantsList.clear()
                         this.EditedvariantsList.clear()
-                        
-                        await this.asyncTask();
-                        this.doneAction('');
                         
                     } else if (deleteVariantResponse) {
                         this.handleResponse(deleteVariantResponse);
                         
+                        await this.asyncTask();
+                        this.doneAction('');
                         this.EditFormvariantsList.clear()
                         this.AdditionvariantsList.clear()
                         this.DeletedvariantsList.clear()
                         this.EditedvariantsList.clear()
-                        
-                        await this.asyncTask();
-                        this.doneAction('');
                         
                     }else{
                         console.log('nothing change')

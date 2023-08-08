@@ -310,7 +310,7 @@ export class AdminSiteSettingsComponent {
         this.toast.show();
 
         this.closeModal();
-
+        this.refreshTableData();
         this.selectedBanner = {
           id: '',
           label: '',
@@ -327,7 +327,5 @@ export class AdminSiteSettingsComponent {
         console.log(error);
       }
     })
-
-    this.refreshTableData();
   }
 }
