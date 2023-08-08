@@ -17,8 +17,6 @@ import * as bootstrap from 'bootstrap';
   styleUrls: ['./admin-site-settings.component.css']
 })
 export class AdminSiteSettingsComponent {
-  
-  @Output() refreshData: EventEmitter<any> = new EventEmitter();
 
   size: string = 'w-100';
 
@@ -77,10 +75,6 @@ export class AdminSiteSettingsComponent {
 
   ngOnInit()
   {
-    // this.banners = this.bannerService.getBanners().pipe(
-    //   map((response: any) => formatBanners(response))
-    // );
-
     this.banners = this.refreshData$.pipe(
       startWith(undefined),
       switchMap(() => this.bannerService.getBanners()),
@@ -310,7 +304,9 @@ export class AdminSiteSettingsComponent {
         this.toast.show();
 
         this.closeModal();
+
         this.refreshTableData();
+        
         this.selectedBanner = {
           id: '',
           label: '',
