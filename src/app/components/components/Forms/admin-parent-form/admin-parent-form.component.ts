@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 @Component({
@@ -38,13 +39,15 @@ export class AdminParentFormComponent {
     
     
 	constructor(private route: ActivatedRoute) {}
+	private routerEventsSubscription: Subscription;
 	
 	ngOnInit() {
 		this.route.paramMap.subscribe((params) => {
 			const page = params.get('page');
-		    const action = params.get('action');
-		    const id = params.get('id');
-		    
+			const action = params.get('action');
+			const id = params.get('id') || null;
+
+
 			this.AddCategory = page === 'category' && action === 'add';
 			this.EditCategory = page === 'category' && action === 'edit';
 
@@ -64,6 +67,7 @@ export class AdminParentFormComponent {
 			
 		});
 	}
+
 	
     //Toast Functions
     

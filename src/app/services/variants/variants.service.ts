@@ -61,14 +61,12 @@ export class VariantsService {
     //GET SET EDIT VARIANTS UPON ADD PRODUCT
 	setVariantToEditForm(form: FormGroup, index: number) {
 		this.editVariantData = { form, index };
-		console.log(this.editVariantData)
 	}
 	
 	getVariantFromEditForm(): { form: FormGroup, index: number } | null {
 		return this.editVariantData;
 	}
-	
-	
+
 	//GET AND SELECT VARIANTS FROM SELECTED PRODUCT
 	
 	loadVariants(): void {  
@@ -159,8 +157,13 @@ export class VariantsService {
 	
 	
 	addtoDatabaseVariant(variantFormGroup: FormGroup) {
-		//this.DatabaseVariantList.push(variantFormGroup);
+		this.DatabaseVariantList.push(variantFormGroup);
 		this.AdditionvariantsList.push(variantFormGroup);
+	}
+	
+	removeAdditional(index: number) {
+		//this.DatabaseVariantList.push(variantFormGroup);
+		this.AdditionvariantsList.removeAt(index)
 	}
 	
 	async editfromDatabaseVariant(form: FormGroup, index: number) {
@@ -185,8 +188,9 @@ export class VariantsService {
 	
 	deletefromDatabaseVariant(id: any, index: number) {
 		if (index >= 0 && index < this.DatabaseVariantList.length) {
-			this.DatabaseVariantList.removeAt(index);
-			this.EditedvariantsList.removeAt(index);
+			
+		}
+		this.DatabaseVariantList.removeAt(index);
 			
 			if (id) {
 				this.variantId.push(this.formBuilder.control(id));
@@ -199,7 +203,6 @@ export class VariantsService {
 					this.EditedvariantsList.removeAt(editedVariantIndex);
 				}
 			}
-		}
 	}
 	
 
