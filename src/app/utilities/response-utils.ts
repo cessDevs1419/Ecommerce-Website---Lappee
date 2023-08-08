@@ -119,8 +119,8 @@ export function formatUser(response: any): User[] {
       mname: data.mname,
       lname: data.lname,
       suffix: data.suffix,
-      created_at: data.created_at,
-      last_login: data.last_login,
+      created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+      last_login: formatDate(data.last_login, 'medium', 'en_PH'),
       user_type: data.user_type
     }));
 }
@@ -151,13 +151,13 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     id: data.id,
     user_id: data.user_id,
     status: data.status,
-    created_at: data.created_at,
-    updated_at: data.updated_at,
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
     paid: data.paid,
-    tracking_no: data.tracking_no,
-    packed_date: data.packed_date,
-    shipped_date: data.shipped_date,
-    delivered_date: data.delivered_date,
+    tracking_no: formatDate(data.tracking_no, 'medium', 'en_PH'),
+    packed_date: formatDate(data.packed_date, 'medium', 'en_PH') ,
+    shipped_date: formatDate(data.shipped_date, 'medium', 'en_PH'),
+    delivered_date: formatDate(data.delivered_date, 'medium', 'en_PH'),
     total_price: data.total_price,
     address_line_1: data.address_line_1,
     address_line_2: data.address_line_2,
@@ -172,8 +172,8 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
       order_id: data.data.order_id,
       user_id: data.data.user_id,
       status: data.data.status,
-      created_at: data.data.created_at,
-      updated_at: data.data.updated_at,
+      created_at: formatDate(data.data.created_at, 'medium', 'en_PH'),
+      updated_at: formatDate(data.data.updated_at, 'medium', 'en_PH'),
       paid: data.data.paid,
       tracking_no: data.data.tracking_no,
       packed_date: data.data.packed_date,
@@ -192,7 +192,7 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
 export function formatOrderDetails(response: OrderList): OrderDetail[] {
   return response.data.map((data: OrderDetail) => ({
     order_id: data.order_id,
-    ordered_on: data.ordered_on,
+    ordered_on: formatDate(data.ordered_on, 'medium', 'en_PH'),
     order_contents: data.order_contents
   }))
 }
