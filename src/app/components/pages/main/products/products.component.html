@@ -12,7 +12,7 @@
                     <p>ID: {{match.id}}</p>
                     <div class="d-flex flex-row justify-content-start rating-yellow"  *ngIf="this.reviews | async as review">
                         <app-star-ratings [rating]="review.rating"></app-star-ratings>
-                        <p class="ms-1">{{review.count.total}} total review/s</p>
+                        <p class="ms-1">{{review.count.total}} total {{review.count.total == 1 ? 'review' : 'reviews'}}</p>
                     </div>
                     <div class="d-flex flex-row">
                         <p class="h2 m-0">{{this.selectedPrice | currency}}</p>
@@ -101,8 +101,8 @@
     </div>
     <div class="row reviews-overview mt-5 py-3 px-5" *ngIf="this.reviews | async as review">
         <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
-            <div class="fs-1 fw-bold">{{ review.rating }}<span class="muted-text fs-2">/5.0</span></div>
-            <app-star-ratings [rating]="4" class="fs-3 rating-yellow"></app-star-ratings>
+            <div class="fs-1 fw-bold">{{ review.rating ? review.rating : 0}}<span class="muted-text fs-2">/5.0</span></div>
+            <app-star-ratings [rating]="review.rating" class="fs-3 rating-yellow"></app-star-ratings>
             <div class="fs-6">{{ review.count.total }} ratings</div>
         </div>
         <div class="col-lg d-flex flex-column align-items-center justify-content-center rating-details">
