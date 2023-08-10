@@ -157,7 +157,7 @@ export class VariantsService {
 	
 	
 	addtoDatabaseVariant(variantFormGroup: FormGroup) {
-		this.DatabaseVariantList.push(variantFormGroup);
+		//this.DatabaseVariantList.push(variantFormGroup);
 		this.AdditionvariantsList.push(variantFormGroup);
 	}
 	

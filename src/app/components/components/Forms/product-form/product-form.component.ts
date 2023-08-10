@@ -28,8 +28,9 @@ export class ProductFormComponent {
     @ViewChild('priceInput', { static: false }) priceInputRef!: ElementRef<HTMLInputElement>;
     @ViewChild('openModalBtn') openModalBtn!: ElementRef;
     @ViewChild('modalRef') modalRef!: ElementRef;
-    @ViewChild('dismiss') dismiss: ElementRef;
-
+    @ViewChild('dismiss1') dismissModal1: ElementRef;
+    @ViewChild('dismiss2') dismissModal2: ElementRef;
+    
 	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
@@ -423,6 +424,12 @@ export class ProductFormComponent {
                     this.navigateToProductEdit(prod_id);
                 });
                 break;
+            case 'edit-additional-var-to-edit-prod':
+                    this.route.paramMap.subscribe(async (params) => {
+                        const prod_id = params.get('id');
+                        this.navigateToProductEdit(prod_id);
+                    });
+                break;
             case 'edit-var-to-edit-prod':
                 this.route.paramMap.subscribe(async (params) => {
                     const prod_id = params.get('prod_id');
@@ -436,7 +443,8 @@ export class ProductFormComponent {
     }
     
     async closeModal() {
-        this.dismiss.nativeElement.click();
+        this.dismissModal1.nativeElement.click();
+        this.dismissModal2.nativeElement.click();
     }
     
     //Place Variant to EditForm
@@ -480,7 +488,9 @@ export class ProductFormComponent {
         this.variantService.setVariantToEditForm(this.editVariantForm, index);
         
         await this.asyncTask();
-        this.router.navigate(['/admin/product-management', 'variant', 'edit/additional']);
+        this.route.paramMap.subscribe(async (params) => {
+            this.router.navigate(['/admin/product-management', 'variant', 'edit/additional/from', value.product_id]);
+        });
     
     }
 
@@ -539,23 +549,23 @@ export class ProductFormComponent {
         
     }
     
-    // async removeAdditionalVariants(){
-    //     const index = this.Additionalindex
-    //     if (index >= 0 && index < this.AdditionvariantsList.length) {
-    //         this.AdditionvariantsList.removeAt(index);
-    //         this.variantService.removeAdditional(index);
+    async removeAdditionalVariants(){
+        const index = this.Additionalindex
+        if (index >= 0 && index < this.AdditionvariantsList.length) {
+            this.AdditionvariantsList.removeAt(index);
+            this.variantService.removeAdditional(index);
             
-    //         const productSuccess = {
-    //             head: 'Delete Variant',
-    //             sub: 'Successfully removed variant'
-    //         };
+            const productSuccess = {
+                head: 'Delete Variant',
+                sub: 'Successfully removed variant'
+            };
             
-    //         this.ProductSuccess.emit(productSuccess);
+            this.ProductSuccess.emit(productSuccess);
             
-    //     }
-    //     await this.asyncTask();
-    //     this.closeModal()
-    // }
+        }
+        await this.asyncTask();
+        this.closeModal()
+    }
     
     //check for duplicate variant
     isDuplicateVariant(existingVariant: any, newVariant: any): boolean {
@@ -1259,7 +1269,7 @@ export class ProductFormComponent {
                         sub: 'Successfully edited variant'
                     };
                     
-                    this.doneAction('edit-var-to-edit-prod');
+                    this.doneAction('edit-additional-var-to-edit-prod');
                     this.ProductSuccess.emit(productSuccess);
                 }
                 
