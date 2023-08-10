@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
@@ -23,6 +23,10 @@ export class AdminManageTosComponent {
   toastTheme: string = "default"; 
   @ViewChild(ToastComponent) toast: ToastComponent;
 
+  @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
+
+  modal: bootstrap.Modal;
+
   selectedSection: AboutUsTosSection = {
     id: '',
     title: '',
@@ -37,14 +41,26 @@ export class AdminManageTosComponent {
     sectionContent: ['', [Validators.required]]
   });
 
+  private refreshData$ = new Subject<void>();
 
   constructor(private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void
   {
-    this.aboutUsSections = this.aboutUsToSService.getTos().pipe(
-      map((response: any) => formatAboutUsTos(response))
+    this.aboutUsSections = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.aboutUsToSService.getTos()),
+      map((response: any) => formatAboutUsTos(response)),
     );
+  }
+
+  refreshTableData(): void {
+    this.refreshData$.next();
+  }
+
+  closeModal()
+  {
+    this.confirmDeleteModal.nativeElement.click();
   }
 
   toggleAddSectionForm(): void
@@ -70,7 +86,11 @@ export class AdminManageTosComponent {
       this.aboutUsToSService.postAddToS(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully added section', 'Added a section to about us.');
+
           this.tosAddSectionForm.reset();
+
+          this.refreshTableData();
+
           this.toggleAddSectionForm();
         },
         error: (error: HttpErrorResponse) => {
@@ -118,6 +138,10 @@ export class AdminManageTosComponent {
       this.aboutUsToSService.deleteToSSection(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully deleted section', 'Removed a section to about us.');
+
+          this.closeModal();
+
+          this.refreshTableData();
 
           // Reset selected
           this.selectedSection = {

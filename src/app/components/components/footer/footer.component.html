@@ -2,7 +2,9 @@
 <div class="container-md my-3 d-flex flex-column align-items-center" *ngIf="!this.isAdminDashboard">
     <div class="d-flex justify-content-center">
         <a class="me-3" [routerLink]="['contactus']">Contact Us</a>
-        <a [routerLink]="['about-us']">About Us</a>
+        <a class="me-3" [routerLink]="['about-us']">About Us</a>
+        <a [routerLink]="['tos']">Terms of Service</a>
+
     </div>
     <p class="text-center" *ngIf="this.siteTitle | async as details">{{details.site_name}} 2023. All rights reserved.</p>
 </div>

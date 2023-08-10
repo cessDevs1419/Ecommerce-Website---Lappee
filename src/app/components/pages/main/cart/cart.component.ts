@@ -243,7 +243,7 @@ export class CartComponent {
 
   validatePage1(): void {
     console.log(this.orderPaymentMethod?.value);
-    if(this.orderPaymentMethod?.valid && this.orderList.length > 0 && this.accountService.getIsLoggedIn()){
+    if(this.orderPaymentMethod?.valid && this.orderList.length > 0 && this.accountService.getIsLoggedIn() && this.isInfoRegistered){
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
       this.isItemSelected = true;
       this.isInfoSelected = true;
@@ -264,7 +264,7 @@ export class CartComponent {
         this.isItemSelected = false;
       }
 
-      if(!this.accountService.getIsLoggedIn()){
+      if(!this.accountService.getIsLoggedIn() || !this.isInfoRegistered){
         this.isInfoSelected = false;
       }
     }

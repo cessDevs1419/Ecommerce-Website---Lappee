@@ -2,8 +2,8 @@
     <div class="tos-section p-5 bg-light-gray">
         <p class="fs-3 mulish-black body-text">TERMS OF SERVICE</p>
 
-        <div *ngFor="let section of sections | async">
-            <p class="fw-bold m-0">{{section.order == 1 ? '' : section.order - 1 + "."}} {{ section.order == 1 ? '' : section.title}}</p>
+        <div *ngFor="let section of sections | async; let i = index;">
+            <p class="fw-bold m-0">{{(i + 1) == 1 ? '' : i + "."}} {{ (i + 1) == 1 ? '' : section.title}}</p>
             <p class="whitespace-prewrap">{{section.content}}</p>
         </div>
     </div>

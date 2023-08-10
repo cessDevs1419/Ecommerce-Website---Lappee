@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 import { OnInit } from '@angular/core';
@@ -38,13 +38,30 @@ export class AdminManageAboutUsComponent {
     created_at: '',
   };
 
+  @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
+
+  modal: bootstrap.Modal;
+
+  private refreshData$ = new Subject<void>();
+
   constructor(private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void
   {
-    this.aboutUsSections = this.aboutUsToSService.getAboutUs().pipe(
-      map((response: any) => formatAboutUsTos(response))
+    this.aboutUsSections = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.aboutUsToSService.getAboutUs()),
+      map((response: any) => formatAboutUsTos(response)),
     );
+  }
+
+  refreshTableData(): void {
+    this.refreshData$.next();
+  }
+
+  closeModal()
+  {
+    this.confirmDeleteModal.nativeElement.click();
   }
 
   toggleAddSectionForm(): void
@@ -70,7 +87,11 @@ export class AdminManageAboutUsComponent {
       this.aboutUsToSService.postAddAboutUs(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully added section', 'Added a section to about us.');
+
           this.aboutUsAddSectionForm.reset();
+
+          this.refreshTableData();
+
           this.toggleAddSectionForm();
         },
         error: (error: HttpErrorResponse) => {
@@ -118,6 +139,10 @@ export class AdminManageAboutUsComponent {
       this.aboutUsToSService.deleteAboutUsSection(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully deleted section', 'Removed a section to about us.');
+
+          this.closeModal();
+
+          this.refreshTableData();
 
           // Reset selected
           this.selectedSection = {
