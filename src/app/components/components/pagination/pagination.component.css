@@ -1,0 +1,11 @@
+.active-page {
+    background-color: var(--primary);
+    color: white;
+}
+
+.circle {
+    cursor: pointer;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+}

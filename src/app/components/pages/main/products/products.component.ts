@@ -14,6 +14,7 @@ import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { Review, ReviewItem } from 'src/assets/models/reviews';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/assets/models/user';
 
 @Component({
   selector: 'app-products',
@@ -38,13 +39,23 @@ export class ProductsComponent {
   toastTheme: string = "default"; 
   
   reviews!: Observable<ReviewItem>;
-  reviewsList!: Observable<Review[]>
+  reviewsList!: Observable<Review[]>;
+  reviewListArray: Review[] = [];
+  reviewMatch: Review;
+  reviewListMatched: Review[] = [];
+
+  userId: string;
 
   navsubscription: any;
 
   galleryRef: GalleryRef = this.gallery.ref('product-images');
 
   @ViewChild(ToastComponent) toast: ToastComponent;
+
+  //pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 3;
+
 
   constructor(private fb: FormBuilder, 
               private productsService: ProductsService, 
@@ -113,6 +124,18 @@ export class ProductsComponent {
   }
 
   initProducts(): void {
+
+    this.accountService.checkLoggedIn().subscribe({
+      next: (state: boolean) => {
+        if(state){
+          this.accountService.getLoggedUser().subscribe({
+            next: (user: User) => {
+              this.userId = user.user_id;
+            }
+          })
+        }
+      }
+    })
     
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
     this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProducts(response)));
@@ -134,10 +157,33 @@ export class ProductsComponent {
 
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
-        reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
+        reviewData.subscribe((response: any) => this.reviews = formatReviews(response));
 
         this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)))
-    
+        this.reviewsList.subscribe({
+          next: (reviews: Review[]) => {
+            this.reviewListArray = reviews;
+            let matchIndex = -1;
+            if(this.userId){
+              console.log("user id found")
+              matchIndex = this.matchReviewFromUser(this.reviewListArray);
+            }
+            if(matchIndex > -1) {
+              this.reviewMatch = this.reviewListArray[matchIndex];
+              this.reviewListArray.splice(matchIndex, 1);
+              this.reviewListArray.unshift(this.reviewMatch);
+              this.reviewListMatched = this.reviewListArray;
+            }
+            else {
+              this.reviewListMatched = this.reviewListArray;
+            }
+            console.log(matchIndex);
+            console.log(this.reviewListArray);
+            console.log(this.reviewListMatched);
+
+          }
+        });
+
         console.log('item found');
         
         this.initVariants();
@@ -272,6 +318,27 @@ export class ProductsComponent {
     }
 
     console.log(this.productToCart.value);
+  }
+
+  matchReviewFromUser(arr: Review[]): number {
+    let matchIndex = -1;
+
+    arr.forEach((value, index) => {
+      if(value.user_id == this.userId){
+        matchIndex = index;
+      }
+    })
+
+    return matchIndex;
+  }
+
+  paginateReview(): Review[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.reviewListMatched.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
   }
 
   submitComment(): void {

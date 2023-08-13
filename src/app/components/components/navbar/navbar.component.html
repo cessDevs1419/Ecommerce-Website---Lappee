@@ -12,7 +12,7 @@
 
             <div class="fs-6 my-2 d-flex align-items-center" *ngIf="this.accountService.getIsLoggedIn()">
                 <p *ngIf="(this.accountService.getLoggedUser() | async) as user" class="m-0">
-                    <a title="Admin Dashboard" [routerLink]="['/admin']" *ngIf="user.user_type == 200" class="text-reset text-decoration-none"><i class="bi bi-bar-chart-line"></i> Dashboard</a>
+                    <a title="Admin Dashboard" [routerLink]="['/admin']" *ngIf="user.user_type == 200" class="text-reset text-decoration-none"><i class="bi bi-grid"></i> Dashboard</a>
                 </p>
             </div>
 

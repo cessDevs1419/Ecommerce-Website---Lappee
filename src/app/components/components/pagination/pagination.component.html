@@ -1,1 +1,14 @@
+<div class="d-flex flex-row align-items-center page-container">
+    <div class="circle d-flex align-items-center justify-content-center" *ngFor="let page of getPaginationRange(); let i = index" [class.active-page]="page === currentPage" (click)="onPageChange(page)">
+        <a class="d-block text-reset text-decoration-none">{{ page }}</a>
+    </div>
 
+    <div class="circle d-flex align-items-center justify-content-center" *ngIf="totalPages.length > visiblePages">
+        <a class="d-block text-reset text-decoration-none">...</a>
+    </div>
+
+    <div class="circle d-flex align-items-center justify-content-center" *ngIf="totalPages.length > visiblePages" (click)="onPageChange(totalPages.length)">
+        <a class="d-block text-reset text-decoration-none">{{ totalPages.length }}</a>
+    </div>
+
+</div>
