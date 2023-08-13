@@ -32,6 +32,10 @@ export class OrdersComponent {
 
   searchResults: OrderDetail[] = [];
 
+  //pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+
   constructor(private orderService: OrderService,
               private cartService: CartService) {}
 
@@ -79,5 +83,14 @@ export class OrdersComponent {
 
       return orderIDLowerCase.includes(lowerCasedSearchTerm) || nameFound;
     });
+  }
+
+  paginateReview(): OrderDetail[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.searchResults.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
   }
 }

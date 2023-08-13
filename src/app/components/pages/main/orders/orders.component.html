@@ -17,7 +17,7 @@
     </div>
 
     <div *ngIf="this.searchResults && !isLoading">
-        <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of this.searchResults">
+        <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of paginateReview()">
             
             <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
                 <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
@@ -52,6 +52,9 @@
             <div class="d-flex flex-column border-top justify-content-center align-items-end">
                 <p class="m-0">Order Total:<span class="color-primary fs-3 fw-bold ms-3">{{ this.calculateOrderPrice(order) | currency}}</span></p>    
             </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-end">
+            <app-pagination [itemsPerPage]="itemsPerPage" [totalItems]="searchResults.length" (pageChange)="onPageChange($event)"></app-pagination>
         </div>
     </div>
 
