@@ -111,6 +111,7 @@
                                 type="button" 
                                 class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 (click)="showEditForm()"
+                                [title]="'Edit'"
                             >
                                 <i class="bi bi-pencil-square fs-5"></i>
                             </button>
@@ -121,6 +122,7 @@
                                 type="button" 
                                 class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 (click)="showEditSubForm()"
+                                [title]="'Edit'"
                             >
                                 <i class="bi bi-pencil-square fs-5"></i>
                             </button>
@@ -132,6 +134,7 @@
                                 type="button" 
                                 class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#delete"
+                                [title]="'Delete'"
                             >
                                 <i class="bi bi-trash fs-5"></i>
                             </button>
@@ -142,6 +145,7 @@
                                 type="button" 
                                 class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#deleteSub"
+                                [title]="'Delete'"
                             >
                                 <i class="bi bi-trash fs-5"></i>
                             </button>
@@ -153,6 +157,7 @@
                                 type="button" 
                                 class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#view"
+                                [title]="'View'"
                             >
                                 <i class="bi bi-eye fs-5"></i>
                             </button>
@@ -163,6 +168,7 @@
                                 type="button" 
                                 class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#view2"
+                                [title]="'View'"
                             >
                                 <i class="bi bi-eye fs-5"></i>
                             </button>
@@ -174,6 +180,7 @@
                                 type="button"
                                 [class]="bannedStatus[item.user_id] ? 'btn btn-danger bg-banned text-white border-danger rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center' : 'btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center'"
                                 data-bs-toggle="modal" data-bs-target="#ban"
+                                [title]="bannedStatus[item.user_id] ? 'Unban':'Ban'"
                             >
                                 <i class="bi bi-hammer fs-5"></i>
                             </button>
@@ -186,6 +193,7 @@
                                     type="button"
                                     class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                     data-bs-toggle="modal" data-bs-target="#confirm"
+                                    [title]="'Confirm Payment'"
                                 >
                                     <i class="bi bi-check-lg fs-5"></i>
                                 </button>
@@ -195,6 +203,7 @@
                                     type="button"
                                     class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                     data-bs-toggle="modal" data-bs-target="#ship"
+                                    [title]="'Ship Order'"
                                 >
                                     <i class="bi bi-box-seam fs-5"></i>
                                 </button>
@@ -205,6 +214,7 @@
                                     type="button"
                                     class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                     data-bs-toggle="modal" data-bs-target="#deliver"
+                                    [title]="'Deliver Order'"
                                 >
                                     <i class="bi bi-truck fs-5"></i>
                                 </button>
@@ -215,6 +225,7 @@
                                     type="button"
                                     class="btn btn-primary bg-primary text-white border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
                                     data-bs-toggle="modal" data-bs-target="#deliver"
+                                    [title]="'Delivered'"
                                 >
                                     <i class="bi bi-truck fs-5"></i>
                                 </button>
@@ -247,84 +258,137 @@
                 
                 <!--Enable this table Actions-->
                 <td *ngIf="tableAction"
-                            class="dataTools d-flex justify-content-center align-items-center pt-3"
-                        >       
+                    class="dataTools d-flex justify-content-center align-items-center pt-3"
+                >       
+                
+                    <!--EDIT BTN-->
+                    <button 
+                        (click)="sendRowData(item)"
+                        *ngIf="editBtn"
+                        type="button" 
+                        class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        (click)="showEditForm()"
+                        [title]="'Edit'"
+                    >
+                        <i class="bi bi-pencil-square fs-5"></i>
+                    </button>
+                    
+                    <button 
+                        (click)="sendRowData(item)"
+                        *ngIf="editSubBtn"
+                        type="button" 
+                        class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        (click)="showEditSubForm()"
+                        [title]="'Edit'"
+                    >
+                        <i class="bi bi-pencil-square fs-5"></i>
+                    </button>
+                    
+                    <!--DELETE BTN-->
+                    <button 
+                        (click)="sendRowData(item)"
+                        *ngIf="deleteBtn"
+                        type="button" 
+                        class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#delete"
+                        [title]="'Delete'"
+                    >
+                        <i class="bi bi-trash fs-5"></i>
+                    </button>
+                    
+                    <button 
+                        (click)="sendRowData(item)"
+                        *ngIf="deleteSubBtn"
+                        type="button" 
+                        class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#deleteSub"
+                        [title]="'Delete'"
+                    >
+                        <i class="bi bi-trash fs-5"></i>
+                    </button>
+                    
+                    <!--VIEW BTN-->
+                    <button
+                        (click)="sendRowData(item)"
+                        *ngIf="viewBtn"
+                        type="button" 
+                        class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#view"
+                        [title]="'View'"
+                    >
+                        <i class="bi bi-eye fs-5"></i>
+                    </button>
+                    
+                    <button
+                        (click)="sendRowData(item)"
+                        *ngIf="viewBtn2"
+                        type="button" 
+                        class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                        data-bs-toggle="modal" data-bs-target="#view2"
+                        [title]="'View'"
+                    >
+                        <i class="bi bi-eye fs-5"></i>
+                    </button>
+                    
+                    <!--BAN BTN-->
+                    <button
+                        (click)="sendRowData(item)"
+                        *ngIf="banBtn"
+                        type="button"
+                        [class]="bannedStatus[item.user_id] ? 'btn btn-danger bg-banned text-white border-danger rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center' : 'btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center'"
+                        data-bs-toggle="modal" data-bs-target="#ban"
+                        [title]="bannedStatus[item.user_id] ? 'Unban':'Ban'"
+                    >
+                        <i class="bi bi-hammer fs-5"></i>
+                    </button>
+                
+                    <!--SHIPPED STATUS BTN-->
+                    <ng-container *ngIf="orderBtn">
+                        <button
+                            (click)="sendRowData(item)"
+                            *ngIf="item.status === paymentStatus"
+                            type="button"
+                            class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#confirm"
+                            [title]="'Confirm Payment'"
+                        >
+                            <i class="bi bi-check-lg fs-5"></i>
+                        </button>
+                        <button
+                            (click)="sendRowData(item)"
+                            *ngIf="item.status === shipStatus"
+                            type="button"
+                            class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#ship"
+                            [title]="'Ship Order'"
+                        >
+                            <i class="bi bi-box-seam fs-5"></i>
+                        </button>
                         
-                            <!--EDIT BTN-->
-                            <button 
-                                (click)="sendRowData(item)"
-                                *ngIf="editBtn"
-                                type="button" 
-                                class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                (click)="showEditForm()"
-                            >
-                                <i class="bi bi-pencil-square fs-5"></i>
-                            </button>
-                            
-                            <button 
-                                (click)="sendRowData(item)"
-                                *ngIf="editSubBtn"
-                                type="button" 
-                                class="{{editBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                (click)="showEditSubForm()"
-                            >
-                                <i class="bi bi-pencil-square fs-5"></i>
-                            </button>
-                            
-                            <!--DELETE BTN-->
-                            <button 
-                                (click)="sendRowData(item)"
-                                *ngIf="deleteBtn"
-                                type="button" 
-                                class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#delete"
-                            >
-                                <i class="bi bi-trash fs-5"></i>
-                            </button>
-                            
-                            <button 
-                                (click)="sendRowData(item)"
-                                *ngIf="deleteSubBtn"
-                                type="button" 
-                                class="{{deleteBtnclass}} btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#deleteSub"
-                            >
-                                <i class="bi bi-trash fs-5"></i>
-                            </button>
-                            
-                            <button
-                                (click)="sendRowData(item)"
-                                *ngIf="viewBtn"
-                                type="button" 
-                                class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#view"
-                            >
-                                <i class="bi bi-eye fs-5"></i>
-                            </button>
-                            
-                            <button
-                                (click)="sendRowData(item)"
-                                *ngIf="viewBtn2"
-                                type="button" 
-                                class="{{viewBtnclass}} btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#view2"
-                            >
-                                <i class="bi bi-eye fs-5"></i>
-                            </button>
-                            
-                            <button
-                                (click)="sendRowData(item)"
-                                *ngIf="banBtn"
-                                type="button"
-                                [class]="bannedStatus[item.user_id] ? 'btn btn-danger bg-banned text-white border-danger rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center' : 'btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center'"
-                                data-bs-toggle="modal" data-bs-target="#ban"
-                            >
-                                <i class="bi bi-hammer fs-5"></i>
-                            </button>
+                        <button
+                            (click)="sendRowData(item)"
+                            *ngIf="item.status === deliverStatus"
+                            type="button"
+                            class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#deliver"
+                            [title]="'Deliver Order'"
+                        >
+                            <i class="bi bi-truck fs-5"></i>
+                        </button>
                         
+                        <button
+                            (click)="sendRowData(item)"
+                            *ngIf="item.status === 200"
+                            type="button"
+                            class="btn btn-primary bg-primary text-white border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                            data-bs-toggle="modal" data-bs-target="#deliver"
+                            [title]="'Delivered'"
+                        >
+                            <i class="bi bi-truck fs-5"></i>
+                        </button>
                         
-
-
+                    </ng-container>
+                    
                 </td>
             </tr>
         </table>

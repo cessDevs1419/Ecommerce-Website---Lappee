@@ -80,6 +80,7 @@ export class TableComponent {
 	@Input() orderBtn: boolean;
 	@Input() setFirstUpper!: boolean;
 	
+	showTooltip: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
 	pageSize: number = this.pageSizeOptions[0];
