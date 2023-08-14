@@ -42,6 +42,7 @@ export class CartComponent {
 
   imgpath: string = ""; 
   imgname: string = "";
+  imgfile!: File;
 
   user: User;
 
@@ -209,6 +210,8 @@ export class CartComponent {
   imageUpload(event: any): void {
     let img: File = event.target.files[0];
     let reader = new FileReader();
+    this.imgfile = img;
+
     reader.onload = (e: any) => {
       this.imgpath = e.target.result;
     }
@@ -297,6 +300,10 @@ export class CartComponent {
         formData.append('products[' + index + "][variant_id]", item.variant_id);
         formData.append('products[' + index + "][quantity]", item.quantity.toString());
       });
+
+      if(this.imgfile){
+        formData.append('proofs[]', this.imgfile);
+      }
 
       console.log(formData);
 

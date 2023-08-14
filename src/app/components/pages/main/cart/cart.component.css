@@ -56,6 +56,12 @@ input[type=file] {
     width: 50%;
 }
 
+.img-name-clamp {
+    max-width: 20rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 @media screen and (max-width: 576px) {
     .qr-code-section {
         width: 100%;
