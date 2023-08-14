@@ -42,4 +42,13 @@ export class SidebarComponent {
     this.router.navigate(['/admin/site-settings']);
   }
   
+  isSiteSettingsActive(): boolean {
+    return this.router.url === '/admin/site-settings';
+  }
+  isAboutSiteActive(): boolean {
+    return this.router.url === '/admin/manage-about-us';
+  }
+  isTermsSiteActive(): boolean {
+    return this.router.url === '/admin/manage-tos';
+  }
 }

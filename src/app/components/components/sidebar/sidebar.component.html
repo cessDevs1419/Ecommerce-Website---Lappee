@@ -118,20 +118,29 @@
             
             <div *ngIf="subMenu" class="bg-body-secondary p-0 m-0">
             
-                <li [routerLink]="'/admin/site-settings'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a routerLinkActive="text-primary" class="ms-4 text-dark nav-link text-decoration-none">
+                <li [routerLink]="'/admin/site-settings'" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
+                    <a *ngIf="isSiteSettingsActive()" class="ms-4 text-primary nav-link text-decoration-none">
+                        Site Settings
+                    </a>
+                    <a *ngIf="!isSiteSettingsActive()" class="ms-4 text-dark nav-link text-decoration-none">
                         Site Settings
                     </a>
                 </li>
                 
                 <li  [routerLink]="'/admin/manage-about-us'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a routerLinkActive="text-primary" class="ms-4 text-dark nav-link text-decoration-none">
+                    <a *ngIf="isAboutSiteActive()" class="ms-4 text-primary nav-link text-decoration-none">
+                        About Us
+                    </a>
+                    <a *ngIf="!isAboutSiteActive()" class="ms-4 text-dark nav-link text-decoration-none">
                         About Us
                     </a>
                 </li>
                 
                 <li *ngIf="subMenu" [routerLink]="'/admin/manage-tos'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a routerLinkActive="text-primary" class="ms-4 nav-link text-dark text-decoration-none">
+                    <a *ngIf="isTermsSiteActive()" class="ms-4 nav-link text-primary text-decoration-none">
+                        Terms Of Service
+                    </a>
+                    <a *ngIf="!isTermsSiteActive()" class="ms-4 nav-link text-dark text-decoration-none">
                         Terms Of Service
                     </a>
                 </li>
