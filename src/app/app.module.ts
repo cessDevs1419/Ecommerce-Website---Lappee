@@ -51,7 +51,6 @@ import { CourierDeliveredComponent } from './components/pages/courier/courier-de
 import { ProfileBannerComponent } from './components/components/profile-banner/profile-banner.component';
 import { OrdersComponent } from './components/pages/main/orders/orders.component';
 import { MainRoutingComponent } from './components/pages/main/main-routing/main-routing.component';
-import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from './components/components/line-graph/line-graph.component';
 import { authGuard } from './services/auth/auth-guard.guard';
 import { ToastComponent } from './components/components/toast/toast.component';
@@ -74,7 +73,7 @@ import { AdminSiteSettingsComponent } from './components/pages/admin/admin-site-
 import { OrdersFormComponent } from './components/components/Forms/orders-form/orders-form/orders-form.component';
 import { AdminManageAboutUsComponent } from './components/pages/admin/admin-manage-about-us/admin-manage-about-us.component';
 import { AdminManageTosComponent } from './components/pages/admin/admin-manage-tos/admin-manage-tos.component';
-
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -120,7 +119,6 @@ import { AdminManageTosComponent } from './components/pages/admin/admin-manage-t
     ProfileBannerComponent,
     MainRoutingComponent,
     ToastComponent,
-    DonutChartComponent,
     LineGraphComponent,
     ProductFormComponent,
     CategoryFormComponent,
@@ -141,6 +139,7 @@ import { AdminManageTosComponent } from './components/pages/admin/admin-manage-t
     OrdersFormComponent,
     AdminManageAboutUsComponent,
     AdminManageTosComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -204,14 +203,24 @@ import { AdminManageTosComponent } from './components/pages/admin/admin-manage-t
 
       {path: '', redirectTo: 'home', pathMatch:'full'}
     ]),
-
+    
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     GalleryModule.withConfig({
 
     }),
-    LightboxModule
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
+    LightboxModule,
+    
   ],
   providers: [
     {

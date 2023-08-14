@@ -1,0 +1,17 @@
+.select-data-container{
+    max-width: 200px;
+}
+
+.color{
+    width: 1rem;
+    height: 1rem;
+}
+
+
+.bg-inner{
+    background-color: #00F0FF;
+}
+
+.bg-outer{
+    background-color: #1C92FF;
+}

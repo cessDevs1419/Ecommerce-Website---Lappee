@@ -3,24 +3,69 @@
 <div class="container-md m-auto h-auto p-2" >
     
     <div class="row pb-3">
-        <div class="col-xl-4 ">
-            <div class="container bg-white rounded-5 p-3 d-flex align-items-center justify-content-between">
-                
-                <div class="legend">
-                    <h1>This Month's Orders</h1>
+        <div class="col-lg-4 ">
+            <div class="container container-shadow-subtle h-100 bg-white rounded-4 p-3 d-flex align-items-center justify-content-between">
+                <div class="row w-100 m-auto ">
+                    <div class="col-xl-6">
+                        <div class="container position-relative p-0">
+                            <div class="container w-100 p-0 position-absolute top-0 start-0">
+                                <circle-progress 
+                                    name="E" 
+                                    [options]="outerDataOptions" 
+                                    [renderOnClick]="false" 
+                                    class="w-100 p-0"
+                            
+                                    >
+                                </circle-progress>
+                            </div>
+                            <div class="container h-100 w-100 p-3 px-0">
+                                <circle-progress 
+                                    name="E" 
+                                    [options]="innerDataOptions" 
+                                    [renderOnClick]="false" 
+                                    class="w-100 m-0 p-0 pt-1 d-flex justify-content-center align-items-center "
+                                    >
+                                </circle-progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 mt-3 mt-xl-0">
+                        <h6 class="fs-6 fw-bold text-secondary ">This Month's Orders</h6>
+                        <ul class="list-unstyled mt-2 mx-0 "> 
+                            <li class="text-decoration-none mt-1">
+                                <div class="body d-flex justify-content-start align-items-center">
+                                    <div class="color rounded-circle bg-outer me-2 "></div>
+                                    <div class="text ">
+                                        <p class="fs-6 text-secondary lh-base mb-0 ">Pending Orders</p>
+                                        <p class="fs-6 fw-bold lh-1 mb-0">300</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="text-decoration-none mt-1">
+                                <div class="body d-flex justify-content-start align-items-center">
+                                    <div class="color  rounded-circle bg-inner me-2"></div>
+                                    <div class="text">
+                                        <p class="fs-6 text-secondary lh-base mb-0">Completed Orders</p>
+                                        <p class="fs-6 fw-bold lh-1 mb-0">300</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div> 
-        <div class="col-lg-8 ">
-            <div class="container bg-white rounded-5 p-0">
-                <div class="data-container p-2 text-center">
-                    <select class="form-select w-25 border-0" aria-label="Default select example">
+        <div class="col-lg-8 mt-3 mt-lg-0">
+            <div class="container bg-white rounded-4 p-0 container-shadow-subtle">
+                <div class="select-data-container p-2 text-center">
+                    <select class="form-select border-0" aria-label="Default select example">
                         <option selected>Select Graph Data</option>
                         <option value="yearly">Yearly Sales Graphs</option>
                         <option value="monthly">Monthly Sales Graphs</option>
                         <option value="weekly">Weekly Sales Graphs</option>
                     </select>
-                    <div class="data-text-container w-25">
+                    <div class="data-text-container ">
                         <h1 class="fs-3 fw-bold mb-0">₱102.7k</h1>
                         <p class="text-light-muted mt-0">Overall Revenue</p>
                     </div>
@@ -29,7 +74,7 @@
                 <app-line-graph
                     [data]="lineChartData"
                     width="860"
-                    height="150"
+                    height="100"
                 >
                 </app-line-graph>
             </div>
