@@ -28,13 +28,14 @@ export class SidebarComponent {
   subMenu: boolean = false;
   
   ngOnInit(): void {
-
-    
+    console.log('baliw')
   }
+  
   setFalse(){
     this.subMenu = false
     this.toggleContent = false
   }
+  
   
   showSubmenu(){
     this.subMenu = true
