@@ -9,8 +9,7 @@ export interface DeliveryInfo {
     city: string,
     province: string,
     zip_code: number,
-    address_line_1: string,
-    address_line_2: string,
+    address: string,
     id: number,
     number: string
 }

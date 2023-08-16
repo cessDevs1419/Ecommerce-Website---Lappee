@@ -67,7 +67,7 @@ export class ProfileComponent {
                     this.editProfileForm.patchValue({
                       editProvince: info[0].city,
                       editCity: info[0].province,
-                      editAddressLine: info[0].address_line_1,
+                      editAddressLine: info[0].address,
                       editZipCode: info[0].zip_code.toString(),
                       editPhoneNumber: info[0].number
                     })
@@ -99,8 +99,7 @@ export class ProfileComponent {
     if(this.editProfileForm.valid){
 
       let formData: any = new FormData();
-      formData.append('address_line_1', this.editAddressLine?.value);
-      formData.append('address_line_2', '');
+      formData.append('address', this.editAddressLine?.value);
       formData.append('city', this.editCity?.value);
       formData.append('province', this.editProvince?.value);
       formData.append('zip_code', this.editZipCode?.value);
