@@ -207,6 +207,11 @@ export class CartComponent {
     }
   }
 
+  changeQuantity(params: string[]): void {
+    console.log("change quantity cart page");
+    this.cartContents[Number(params[0])].quantity = Number(params[1]);
+  }
+
   imageUpload(event: any): void {
     let img: File = event.target.files[0];
     let reader = new FileReader();
@@ -287,6 +292,8 @@ export class CartComponent {
 
   order(): void {
     //final checks
+    console.log("trigger order");
+
     if(this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected){
 
       //post the request here

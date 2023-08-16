@@ -7,7 +7,7 @@
         </ol>
     </nav>
     
-    <form [formGroup]="orderForm" (submit)="order()">
+    <form [formGroup]="orderForm">
         <div class="carousel slide" id="shoppingCartCarousel" #carousel>
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -36,7 +36,7 @@
 
                                     <tbody *ngIf="cartContents.length != 0" class="table-group-divider">
                                         <tr *ngFor="let item of cartContents; let i = index" class="item-row">
-                                            <app-cart-item class="cart-item-row" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)"></app-cart-item>
+                                            <app-cart-item class="cart-item-row" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)"></app-cart-item>
 
                                         </tr>
                                         

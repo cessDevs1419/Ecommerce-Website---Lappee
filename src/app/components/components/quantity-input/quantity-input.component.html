@@ -5,7 +5,7 @@
         <button class="btn btn-outline-secondary" (click)="change(1)"><i class="bi bi-plus"></i></button> 
     </div>
 
-    <div class>
+    <div *ngIf="showStock">
         <p class="ms-3 text-muted m-0">{{max}} pieces in stock.</p>
     </div>
 </div>

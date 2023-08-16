@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild, forwardRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, forwardRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -14,12 +14,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class QuantityInputComponent implements ControlValueAccessor {
-  private onChange: any = (quantity: number) => {};
+  private onChange: any = (quantity: number) => { this.quantityChange.emit(this.quantity) };
   private onTouch: any = () => {};
 
+
   @Input() max: number;
+  @Input() showStock: boolean = true;
+  @Input() quantity: number = 1;
+  @Output() quantityChange: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('quantity_input') input: ElementRef;
-  quantity: number;
 
   writeValue(obj: any): void {
     this.quantity = obj;
@@ -63,5 +66,7 @@ export class QuantityInputComponent implements ControlValueAccessor {
     if(this.quantity < 1) {
       this.quantity = 1;
     }
+
+    this.onChange(this.quantity);
   }
 }
