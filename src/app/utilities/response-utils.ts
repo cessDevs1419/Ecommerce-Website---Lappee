@@ -139,8 +139,7 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     city: data.city,
     province: data.province,
     zip_code: data.zip_code,
-    address_line_1: data.address_line_1,
-    address_line_2: data.address_line_2,
+    address: data.address,
     id: data.id,
     number: data.number
   }))
