@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { CircleProgressComponent } from 'ng-circle-progress';
+import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progress';
 
 @Component({
   selector: 'app-admin-sales',
@@ -27,7 +27,8 @@ export class AdminSalesComponent {
     { label: 'April', value: 70 }
   ];
   
-  outerDataOptions = {
+  outerDataOptions: CircleProgressOptions = {
+    title: '',
     percent: (this.innerData / this.outerData) * 100,
     radius: 60,
     outerStrokeWidth: 12,
@@ -36,23 +37,56 @@ export class AdminSalesComponent {
     outerStrokeColor: "#4882c2",
     innerStrokeColor: "#3C3C3C",
     showBackground: false,
-    title: 'UI',
     animateTitle: false,
     clockwise: false,
     showUnits: false,
     showTitle:false,
     showSubtitle:false,
-    animationDuration: 1000,
+    animationDuration: 500,
     startFromZero: false,
     outerStrokeGradient: true,
     outerStrokeGradientStopColor: '#53a9ff',
     lazy: true,
     subtitleFormat: (percent: number): string => {
       return `${percent}%`;
-    }
+    },
+    class: '',
+    backgroundGradient: false,
+    backgroundColor: '',
+    backgroundGradientStopColor: '',
+    backgroundOpacity: 0,
+    backgroundStroke: '',
+    backgroundStrokeWidth: 0,
+    backgroundPadding: 0,
+    toFixed: 0,
+    maxPercent: this.outerData,
+    renderOnClick: false,
+    units: '',
+    unitsFontSize: '',
+    unitsFontWeight: '',
+    unitsColor: '',
+    outerStrokeLinecap: 'round',
+    titleFormat: undefined,
+    titleColor: '',
+    titleFontSize: '',
+    titleFontWeight: '',
+    subtitle: '',
+    subtitleColor: '',
+    subtitleFontSize: '',
+    subtitleFontWeight: '',
+    imageSrc: undefined,
+    imageHeight: 0,
+    imageWidth: 0,
+    animation: true,
+    animateSubtitle: false,
+    showImage: false,
+    showInnerStroke: true,
+    responsive: false,
+    showZeroOuterStroke: true
   }
   
-  innerDataOptions = {
+  innerDataOptions: CircleProgressOptions = {
+    title: '',
     percent: (this.secondinnerData / this.secondouterData) * 100,
     radius: 37,
     outerStrokeWidth: 12,
@@ -61,19 +95,53 @@ export class AdminSalesComponent {
     outerStrokeColor: "#58AFFF",
     innerStrokeColor: "#3C3C3C",
     showBackground: false,
-    title: 'UI',
     animateTitle: false,
     clockwise: false,
     showUnits: false,
     showTitle:false,
     showSubtitle:false,
-    animationDuration: 1000,
+    animationDuration: 500,
     startFromZero: false,
     outerStrokeGradient: true,
     outerStrokeGradientStopColor: '#00F0FF',
     lazy: true,
     subtitleFormat: (percent: number): string => {
       return `${percent}%`;
-    }
+    },
+    class: '',
+    backgroundGradient: false,
+    backgroundColor: '',
+    backgroundGradientStopColor: '',
+    backgroundOpacity: 0,
+    backgroundStroke: '',
+    backgroundStrokeWidth: 0,
+    backgroundPadding: 0,
+    toFixed: 0,
+    maxPercent: this.secondouterData,
+    renderOnClick: false,
+    units: '',
+    unitsFontSize: '',
+    unitsFontWeight: '',
+    unitsColor: '',
+    outerStrokeLinecap: 'round',
+    titleFormat: undefined,
+    titleColor: '',
+    titleFontSize: '',
+    titleFontWeight: '',
+    subtitle: '',
+    subtitleColor: '',
+    subtitleFontSize: '',
+    subtitleFontWeight: '',
+    imageSrc: undefined,
+    imageHeight: 0,
+    imageWidth: 0,
+    animation: true,
+    animateSubtitle: false,
+    showImage: false,
+    showInnerStroke: true,
+    responsive: false,
+    showZeroOuterStroke: false
   }
+  
+  
 }

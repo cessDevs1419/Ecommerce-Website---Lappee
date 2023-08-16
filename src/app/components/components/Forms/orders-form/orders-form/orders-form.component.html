@@ -20,7 +20,7 @@
     <form  (ngSubmit)="shipPackage()" >
         <div class="modal-body text-center pt-0 pb-0">
             <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as ship?</p>
-            <h1 class="text-primary fs-4 fw-bolder" >{{selectedRowData?.id}}</h1>
+            <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
         </div>
         
         <div class="modal-footer border-0 justify-content-center mb-3">
@@ -40,7 +40,7 @@
     <form  (ngSubmit)="delivered()" >
         <div class="modal-body text-center pt-0 pb-0">
             <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as delivered?</p>
-            <h1 class="text-primary fs-4 fw-bolder" >{{selectedRowData?.id}}</h1>
+            <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
         </div>
         
         <div class="modal-footer border-0 justify-content-center mb-3">

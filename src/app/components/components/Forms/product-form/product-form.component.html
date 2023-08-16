@@ -1146,7 +1146,7 @@
             <div class="modal-body text-center pt-0 pb-0">
                 <input type="hidden" [value]="selectedRowData?.id" formControlName="product_id">
                 <p class="fs-5 fw-bold mb-1">Are you sure you want to delete this product?</p>
-                <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+                <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
             </div>
             
             <div class="modal-footer border-0 ">
@@ -1173,7 +1173,7 @@
                     <form (ngSubmit)="removeVariants()">
                         <div class="modal-body text-center pt-0 pb-0">
                             <p class="fs-5 fw-bold mb-1">Are you sure you want to remove this variant?</p>
-                            <h1 class="text-primary fs-4 fw-bolder" *ngIf="this.selectedDeleteVariant">{{this.selectedDeleteVariant.color_title}}, {{this.selectedDeleteVariant.size}}</h1>
+                            <h1 class="text-primary fs-4 fw-bolder text-truncate" *ngIf="this.selectedDeleteVariant">{{this.selectedDeleteVariant.color_title}}, {{this.selectedDeleteVariant.size}}</h1>
                         </div>
                         
                         <div class="modal-footer border-0 ">
@@ -1208,7 +1208,7 @@
                     <form (ngSubmit)="removeAdditionalVariants()"  >
                         <div class="modal-body text-center pt-0 pb-0">
                             <p class="fs-5 fw-bold mb-1">Are you sure you want to remove this variant?</p>
-                            <h1 class="text-primary fs-4 fw-bolder" *ngIf="this.selectedDeleteVariant">{{this.selectedDeleteVariant.color_title}}, {{this.selectedDeleteVariant.size}}</h1>
+                            <h1 class="text-primary fs-4 fw-bolder text-truncate" *ngIf="this.selectedDeleteVariant">{{this.selectedDeleteVariant.color_title}}, {{this.selectedDeleteVariant.size}}</h1>
                         </div>
                         
                         <div class="modal-footer border-0 ">
