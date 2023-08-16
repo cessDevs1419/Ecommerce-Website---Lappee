@@ -237,13 +237,14 @@
             formControlName="main_category_id"
         >
         <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
-        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">
         <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
         <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
     </div>
 </form>
+
 <!--DELETE SUB CATEGORY FORM-->
 <form *ngIf="formDeleteSubCategory" [formGroup]="deleteSubCategoryForm"  (ngSubmit)="onSubCategoryDeleteSubmit()">
     <div  class="modal-body text-center pt-0 pb-0">
@@ -252,7 +253,7 @@
             [value]="selectedRowData?.id"
         >
         <p class="fs-5 fw-bold mb-1">Are you sure to remove this Subcategory?</p>
-        <h1 class="text-primary fs-4 fw-bolder">{{selectedRowData?.name}}</h1>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">
         <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
