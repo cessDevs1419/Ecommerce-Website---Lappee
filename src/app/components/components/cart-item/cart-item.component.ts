@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CartItem } from 'src/assets/models/products';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+import { CartItem, Product } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-cart-item',
@@ -11,6 +11,7 @@ export class CartItemComponent {
   @Input() componentId !: String;
   @Input() index!: number;
   @Input() cartItem!: CartItem;
+  @Input() productArray: Product[] = [];
   @Output() addOrderList: EventEmitter<any> = new EventEmitter();
   @Output() removeOrderList: EventEmitter<any> = new EventEmitter();
   @Output() changeQuantity: EventEmitter<string[]> = new EventEmitter();
@@ -18,9 +19,32 @@ export class CartItemComponent {
   isIncluded: boolean = false;
   selectedColor: string = "#DDDEE3";
   priceConvert: number;
+  maxStock: number = 10;
 
   ngOnInit(): void {
     this.priceConvert = Number(this.cartItem.price);
+    this.updateStockInfo();
+  }
+
+  ngOnChanges(): void {
+    this.updateStockInfo();
+  }
+
+  updateStockInfo(): void {
+    if(this.productArray){
+      this.productArray.forEach((product, index) => {
+        console.log(index);
+        if(product.id == this.cartItem.product.id){
+          product.product_variants.forEach((variant, index) => {
+            if(variant.variant_id == this.cartItem.variant){
+              this.maxStock = variant.stock;
+            }
+          })
+        }
+      })
+    }
+    console.log(this.productArray);
+    console.log(this.maxStock);
   }
 
   emit(): void {

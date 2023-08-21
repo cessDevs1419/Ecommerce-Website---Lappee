@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { CartItem, Order, Variant } from 'src/assets/models/products';
+import { CartItem, Order, Product, Variant } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { User } from 'src/assets/models/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -9,9 +9,10 @@ import * as bootstrap from 'bootstrap';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { Observable, map } from 'rxjs';
-import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProducts } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
+import { ProductsService } from 'src/app/services/products/products.service';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,8 @@ export class CartComponent {
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
   isInfoSelected: boolean = true;
+
+  products: Product[];
 
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
@@ -67,12 +70,22 @@ export class CartComponent {
   constructor(private cart: CartService,
               public accountService: AccountsService,
               private deliveryInfoService: DeliveryinfoService,
-              private orderService: OrderService) {}
+              private orderService: OrderService,
+              private productsService: ProductsService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
     this.checkAddress();
-    //this.user = this.accountService.getCurrentUser();
+    let products = this.productsService.getProducts().pipe(map((response:any) => formatProducts(response)));
+    products.subscribe({
+      next: (response: any) => {
+        this.products = response;
+        console.log(this.products);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err)
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -209,7 +222,14 @@ export class CartComponent {
 
   changeQuantity(params: string[]): void {
     console.log("change quantity cart page");
+    let variantIndex = this.matchIndexAndVariant(Number(params[0]));
     this.cartContents[Number(params[0])].quantity = Number(params[1]);
+    let updatedSubtotal: number = 0;
+    this.orderList.forEach(item => {
+      updatedSubtotal += Number(item.product.product_variants[variantIndex].price) * item.quantity;
+    })
+
+    this.subtotal = updatedSubtotal;
   }
 
   imageUpload(event: any): void {

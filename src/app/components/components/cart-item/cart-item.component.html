@@ -12,5 +12,5 @@
         </p>
     </td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ this.cartItem.price | currency }}</td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'" ><app-quantity-input [showStock]="false" [quantity]="this.cartItem.quantity" (quantityChange)="handleQuantityChange($event)"></app-quantity-input></td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'" ><app-quantity-input [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> <p class="m-0 fs-6">In stock: {{this.maxStock}}</p></td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td>
