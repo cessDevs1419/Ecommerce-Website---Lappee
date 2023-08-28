@@ -39,6 +39,7 @@ export class AdminOrderManagementComponent {
             switchMap(() => this.service.getAdminOrders()),
             map((Response: any) => formatAdminOrder(Response))
         );
+        console.log(this.orders)
         
 	}
 
