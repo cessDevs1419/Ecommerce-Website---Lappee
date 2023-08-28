@@ -867,11 +867,7 @@ export class ProductFormComponent {
             //need to work
             forkJoin(observables).subscribe({
                 next: async ([editProductResponse, addVariantResponse, editVariantResponse, deleteVariantResponse]) => {
-                    console.log("Inside next callback");
-                    console.log("editProductResponse:", editProductResponse);
-                    console.log("addVariantResponse:", addVariantResponse);
-                    console.log("editVariantResponse:", editVariantResponse);
-                    console.log("deleteVariantResponse:", deleteVariantResponse);
+
         
                     this.cdr.detectChanges();
                     if (

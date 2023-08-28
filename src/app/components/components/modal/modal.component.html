@@ -108,6 +108,7 @@
                 <app-orders-form
                     *ngIf="modalConfirm"
                     [formConfirm]="true"
+                    (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
                     (OrderWarning)="WarningToast($event)"
@@ -120,6 +121,7 @@
                 <app-orders-form
                     *ngIf="modalShip"
                     [formShip]="true"
+                    (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
                     (OrderWarning)="WarningToast($event)"
@@ -132,6 +134,7 @@
                 <app-orders-form
                     *ngIf="modalDeliver"
                     [formDelivered]="true"
+                    (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
                     (OrderWarning)="WarningToast($event)"
