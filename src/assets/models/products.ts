@@ -31,6 +31,7 @@ export interface CartItem {
     quantity: number
     price: string,
     image_url: string,
+    isSelected: boolean
 }
 
 export interface ColorVariant {

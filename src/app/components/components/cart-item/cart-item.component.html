@@ -1,5 +1,5 @@
 
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+    <!-- <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
         <div class="form-check text-center">
             <input class="form-check-input" type="checkbox" value="true" (change)="emit()">
         </div>
@@ -13,4 +13,36 @@
     </td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ this.cartItem.price | currency }}</td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'" ><app-quantity-input [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> <p class="m-0 fs-6">In stock: {{this.maxStock}}</p></td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td> -->
+
+    <div class="row mb-3 px-3 d-flex align-items-center" [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+        <div class="col-1" >
+            <div class="form-check text-center">
+                <input class="form-check-input" type="checkbox" value="true" (ngModelChange)="emit()" [(ngModel)]="cartItem.isSelected">
+            </div>
+        </div>
+
+        <div class="col-2">
+            <img class="cart-item-img" [src]="this.cartItem.image_url">
+        </div>
+
+        <div class="col-3">
+            <p class="fw-bold m-0">{{this.cartItem.product.name}}</p> 
+            <p *ngIf="this.cartItem.variant" class="m-0">
+                {{this.cartItem.variant_details}}
+            </p>
+        </div>
+
+        <div class="col-2">
+            {{ this.cartItem.price | currency }}
+        </div>
+
+        <div class="col-2">
+            <app-quantity-input [size]="'small'" [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> 
+            <p class="m-0 fs-6">In stock: {{this.maxStock}}</p>
+        </div>
+
+        <div class="col-2">
+            {{ priceConvert * this.cartItem.quantity | currency }}
+        </div>
+    </div>

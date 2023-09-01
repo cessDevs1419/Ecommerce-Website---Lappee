@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem, Order, Product, Variant } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
@@ -25,6 +25,7 @@ export class CartComponent {
 
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
+  @ViewChildren('itemCheckbox') itemChkBoxes: QueryList<any>;
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
@@ -55,6 +56,8 @@ export class CartComponent {
   
   orderPaymentProofError: boolean = false;
 
+  parentCheckbox: boolean = false;
+
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
     orderPaymentMethod: new FormControl('', Validators.required),
@@ -71,7 +74,8 @@ export class CartComponent {
               public accountService: AccountsService,
               private deliveryInfoService: DeliveryinfoService,
               private orderService: OrderService,
-              private productsService: ProductsService) {}
+              private productsService: ProductsService,
+              private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
@@ -133,6 +137,10 @@ export class CartComponent {
         }
       }
     });
+  }
+
+  selectAll() {
+    this.cartContents.forEach(item => item.isSelected = this.parentCheckbox);
   }
 
   matchOrderListToCart(index: number): number {

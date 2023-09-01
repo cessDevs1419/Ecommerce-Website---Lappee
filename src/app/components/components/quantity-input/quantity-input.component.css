@@ -10,6 +10,10 @@
     max-width: 3.5rem;
 }
 
+.padding-small {
+    padding: .5rem;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
