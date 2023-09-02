@@ -14,9 +14,19 @@ body {
     font-family: Mulish, sans-serif;
 
 }
+.cursor-pointer{
+    cursor: pointer;
+}
 
 .bg-light-gray {
     background-color: var(--light-gray);
+}
+
+.bg-dark-grey{
+    background-color: #7E7E7E;
+}
+.bg-dark-lite{
+    background-color: #D9D9D9;
 }
 
 .color-primary {
