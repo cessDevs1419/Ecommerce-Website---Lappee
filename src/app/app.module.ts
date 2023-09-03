@@ -74,6 +74,8 @@ import { OrdersFormComponent } from './components/components/Forms/orders-form/o
 import { AdminManageAboutUsComponent } from './components/pages/admin/admin-manage-about-us/admin-manage-about-us.component';
 import { AdminManageTosComponent } from './components/pages/admin/admin-manage-tos/admin-manage-tos.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { OrderHistoryLoaderComponent } from './components/components/loader/main/order-history-loader/order-history-loader.component';
+import { LoaderComponent } from './components/components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +141,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     OrdersFormComponent,
     AdminManageAboutUsComponent,
     AdminManageTosComponent,
+    OrderHistoryLoaderComponent,
+    LoaderComponent,
 
   ],
   imports: [

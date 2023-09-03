@@ -12,6 +12,8 @@
         </form>
     </div>
 
+    <app-loader [componentName]="orderLoader" [flag]="isLoading"></app-loader>
+
     <div *ngIf="isLoading && !doneLoading">
         Loading data...
     </div>

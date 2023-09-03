@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { Observable, map } from 'rxjs';
+import { OrderHistoryLoaderComponent } from 'src/app/components/components/loader/main/order-history-loader/order-history-loader.component';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -31,6 +32,8 @@ export class OrdersComponent {
   get searchTerm() { return this.searchForm.get('searchTerm') }
 
   searchResults: OrderDetail[] = [];
+
+  orderLoader = OrderHistoryLoaderComponent;
 
   //pagination
   currentPage: number = 1;
