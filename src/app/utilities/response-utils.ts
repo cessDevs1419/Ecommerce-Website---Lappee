@@ -46,7 +46,8 @@ export function formatCategories(response: CategoryList) : Category[] {
     return response.data.map((data: Category) => ({
       id: data.id,
       name: data.name,
-      sub_categories: data.sub_categories
+      sub_categories: data.sub_categories,
+      images: data.images
     }));
 }
 

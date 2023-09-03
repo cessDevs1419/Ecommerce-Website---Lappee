@@ -1,7 +1,9 @@
 
 <div class="container-fluid d-flex flex-row justify-content-center align-items-start" id="navbarCategoryDetails">
-    <img class="img-fluid d-none d-md-block" src="https://picsum.photos/240/300">
-    <div id="navDropdownLinks" class="d-flex flex-row">
+    <div class="border-end px-3">
+        <img class="img-fluid d-none d-md-block navbar-category-image" [src]="category.images[0]">
+    </div>
+    <div id="navDropdownLinks" class="d-flex flex-row mx-3">
         <div>
             <strong><p>{{category.name.toUpperCase()}}</p></strong>
             <!-- 
@@ -13,9 +15,10 @@
                 <ul class="list-unstyled categoryDetails-productlist">
                     <li *ngFor="let item of filteredSubcategories | async"><a class="text-reset text-decoration-none" title="View {{item.name}}" [routerLink]="['/subcategory', item.id]"><p class="productlist-item">{{item.name}}</p></a></li>
                 </ul>
-                <a href="#" [routerLink]="category.name">More Items...</a>
             </div>
         </div>
     </div>
-    <img class="img-fluid d-none d-md-block" src="https://picsum.photos/240/300">
+    <div class="border-start px-3">
+        <img class="img-fluid d-none d-md-block navbar-category-image" [src]="category.images[0]">
+    </div>
 </div>

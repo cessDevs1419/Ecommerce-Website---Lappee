@@ -7,7 +7,8 @@ export interface CategoryList {
 export interface Category {
     id: string,
     name: string
-    sub_categories: Subcategory[]
+    sub_categories: Subcategory[],
+    images: string[]
 }
 
 export interface Subcategory {

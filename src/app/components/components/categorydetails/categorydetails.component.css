@@ -1,7 +1,7 @@
-#navbarCategoryDetails {
-    gap: 2rem;
-}
-
 .productlist-item:hover {
     text-decoration: underline;
+}
+
+.navbar-category-image {
+    max-height: 300px;
 }

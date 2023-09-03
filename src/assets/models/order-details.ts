@@ -16,7 +16,8 @@ export interface OrderContent {
     color_title: string,
     quantity: number,
     sub_price: string,
-    product_id: string
+    product_id: string,
+    images: string[]
 }
 
 
