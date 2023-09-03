@@ -18,8 +18,7 @@ export class CartService {
       variant_details: variant_details,
       quantity: quantity,
       price: price,
-      image_url: imgurl,
-      isSelected: false
+      image_url: imgurl
     }
     // check for duplicates if items is not null
     if(this.items.length != 0){

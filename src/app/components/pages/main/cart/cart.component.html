@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <!-- table tag-->
-                            <div class="p-3 pb-1 table-group">
+                            <!-- <div class="p-3 pb-1 table-group">
                                 <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{cartContents.length}} )</p>
                                 <div *ngIf="!isItemSelected" class="bg-danger-subtle text-danger p-3 my-2">
                                     <p class="m-0">You need to select one or more items from your cart.</p>
@@ -39,27 +39,20 @@
                                             <app-cart-item class="cart-item-row" [productArray]="this.products" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)"></app-cart-item>
 
                                         </tr>
-                                        
-                                        <!--
-                                        <tr>
-                                            <td *ngFor="let item of orderList">
-                                                <p>{{item.product.id + item.variant}}</p>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> -->
                             
                             <!-- DIV BASED CART CONTENTS -->
-                            <div class="p-3 pb-1 table-group mt-3">
+                            <div class="p-3 pb-1 table-group">
                                 <p class="fs-3 fw-bold"><i class="bi bi-cart4 color-primary"></i> Item Summary ( {{cartContents.length}} )</p>
                                 <div *ngIf="!isItemSelected" class="bg-danger-subtle text-danger p-3 my-2">
                                     <p class="m-0">You need to select one or more items from your cart.</p>
                                 </div>
 
-                                <div class="px-3 row border-bottom border-dark border-2">
+                                <div class="px-3 pb-3 row border-bottom border-dark border-2">
                                     <div class="col-1 fw-bold">
-                                        <input class="form-check-input" type="checkbox" value="true" [(ngModel)]="parentCheckbox" [ngModelOptions]="{standalone: true}" (change)="selectAll()">
+                                        <input class="form-check-input" type="checkbox" value="true" (change)="selectAll()">
                                     </div>
                                     <div class="col-2 fw-bold">Preview</div>
                                     <div class="col-3 fw-bold">Name</div>
@@ -74,7 +67,7 @@
                                     </div>
 
                                     <div *ngIf="cartContents.length != 0">
-                                        <app-cart-item *ngFor="let item of cartContents; let i = index" [productArray]="this.products" [cartItem]="item" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)"></app-cart-item>
+                                        <app-cart-item *ngFor="let item of cartContents; let i = index" [productArray]="this.products" [cartItem]="item" [selectAll]="selectAllFlag" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)"></app-cart-item>
                                     </div>
                                 </div>
                             </div>

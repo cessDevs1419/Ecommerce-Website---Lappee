@@ -12,6 +12,7 @@ export class CartItemComponent {
   @Input() index!: number;
   @Input() cartItem!: CartItem;
   @Input() productArray: Product[] = [];
+  @Input() selectAll: boolean = false
   @Output() addOrderList: EventEmitter<any> = new EventEmitter();
   @Output() removeOrderList: EventEmitter<any> = new EventEmitter();
   @Output() changeQuantity: EventEmitter<string[]> = new EventEmitter();
@@ -33,7 +34,6 @@ export class CartItemComponent {
   updateStockInfo(): void {
     if(this.productArray){
       this.productArray.forEach((product, index) => {
-        console.log(index);
         if(product.id == this.cartItem.product.id){
           product.product_variants.forEach((variant, index) => {
             if(variant.variant_id == this.cartItem.variant){
@@ -43,13 +43,12 @@ export class CartItemComponent {
         }
       })
     }
-    console.log(this.productArray);
-    console.log(this.maxStock);
   }
 
   emit(): void {
     this.isIncluded = !this.isIncluded;
     console.log("isIncluded: " + this.isIncluded);
+    console.log("selectAll: " + this.selectAll);
     if(this.isIncluded){
       this.addOrderList.emit(this.index);
     }

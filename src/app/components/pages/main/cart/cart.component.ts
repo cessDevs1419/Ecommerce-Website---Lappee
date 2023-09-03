@@ -56,7 +56,7 @@ export class CartComponent {
   
   orderPaymentProofError: boolean = false;
 
-  parentCheckbox: boolean = false;
+  selectAllFlag: boolean = false;
 
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
@@ -140,7 +140,8 @@ export class CartComponent {
   }
 
   selectAll() {
-    this.cartContents.forEach(item => item.isSelected = this.parentCheckbox);
+    this.selectAllFlag = !this.selectAllFlag;
+    console.log(this.selectAllFlag);
   }
 
   matchOrderListToCart(index: number): number {

@@ -18,7 +18,7 @@
     <div class="row mb-3 px-3 d-flex align-items-center" [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
         <div class="col-1" >
             <div class="form-check text-center">
-                <input class="form-check-input" type="checkbox" value="true" (ngModelChange)="emit()" [(ngModel)]="cartItem.isSelected">
+                <input class="form-check-input" type="checkbox" value="true" (ngModelChange)="emit()" [(ngModel)]="selectAll">
             </div>
         </div>
 
