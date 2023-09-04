@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant } from 'src/assets/models/products';
@@ -51,6 +51,7 @@ export class ProductsComponent {
   galleryRef: GalleryRef = this.gallery.ref('product-images');
 
   @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild("itemTemplate", {static: true}) itemTemplate: TemplateRef<any>;
 
   //pagination
   currentPage: number = 1;

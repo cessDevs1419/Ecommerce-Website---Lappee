@@ -76,6 +76,7 @@ import { AdminManageTosComponent } from './components/pages/admin/admin-manage-t
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { OrderHistoryLoaderComponent } from './components/components/loader/main/order-history-loader/order-history-loader.component';
 import { LoaderComponent } from './components/components/loader/loader.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 @NgModule({
   declarations: [
@@ -224,7 +225,7 @@ import { LoaderComponent } from './components/components/loader/loader.component
       animationDuration: 300,
     }),
     LightboxModule,
-    
+    NgxImageZoomModule
   ],
   providers: [
     {

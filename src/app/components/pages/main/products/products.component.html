@@ -3,7 +3,14 @@
 </div>
 <div class="container-md mt-5">
     <div class="row">
-        <gallery gallerize *ngIf="this.product| async" id="product-images" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+        <gallery gallerize *ngIf="this.product| async" id="product-images"  [itemTemplate]="itemTemplate" [thumbPosition]="position" imageSize="contain" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+
+        <!-- Gallery Template -->
+        <ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+            <ng-container>
+              <lib-ngx-image-zoom [thumbImage]="data.thumb" [fullImage]="data.src" [magnification]="1" [enableScrollZoom]="true" [enableLens]="true" [lensHeight]="150" [lensWidth]="150"></lib-ngx-image-zoom>
+            </ng-container>
+        </ng-template>
 
         <div *ngFor="let match of product | async"  class="col-lg">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
