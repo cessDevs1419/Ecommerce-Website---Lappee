@@ -1,6 +1,6 @@
 
         <!--ADD PRODUCT FORM-->
-        <form *ngIf="formAddProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
+        <!-- <form *ngIf="formAddProduct" [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
             <div class="row px-0 w-100 m-auto" >
                 <div class="col-lg-6 ">
                         <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
@@ -197,7 +197,319 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form> -->
+
+        <div class="addProductForm" *ngIf="formAddProduct">
+            <form [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
+                <div class="row px-0 w-100 m-auto" >
+                    <div class="col-lg-6 ">
+                            <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                                <div class="form-title text-start mb-4">
+                                    <h1 class="modal-title fs-4 fw-bolder mb-0" >ADD PRODUCT</h1>
+                                    <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">PRODUCT CONTROL</div>
+                                </div>
+                                <div class="body pt-0 pb-0">
+                                
+                                    <div class="w-100 mb-3">
+                                        <label for="addproductName" class="form-label">Product Name</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="addproductName" 
+                                            name="addproductName" 
+                                            formControlName="name"
+                                            placeholder="One Love"
+                                            required
+                                        >
+            
+                                    </div>
+                                                
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">    
+                                            <label for="addproductCategory" class="form-label">Category</label>
+                                            <select 
+                                                class="form-select" 
+                                                id="addproductCategory"
+                                                name="addproductCategory" 
+                                                (change)="onCategorySelect($event)"
+                                                formControlName="category" 
+                                                required
+                                            >
+                
+                                                <option *ngFor="let category of categories | async" [value]=" category.name ">{{ category.name }}</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-sm-6 mb-3">    
+                                            <label for="addproductSubCategory" class="form-label">Sub Category</label>
+                                            <select 
+                                                class="form-select" 
+                                                id="addproductSubCategory" 
+                                                name="addproductSubCategory" 
+                                                formControlName="subcategory" 
+                
+                                            >
+                
+                                                <option *ngFor="let subCategory of (filteredSubCategories | async) ?? []" [value]="subCategory.id">{{ subCategory.name }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="mb-3">
+                                        <label for="addproductDescription" class="form-label">Product Description</label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="addproductDescription" 
+                                            name="addproductPriceDescription" 
+                                            rows="3" 
+                                            formControlName="description"
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <hr class="divider">
+                                    
+                                    <div class="d-flex flex-wrap justify-content-start w-100">
+                                        <div *ngFor="let control of this.imageList.controls; let i = index" class="image-container bg-dark-grey btn mb-2 mx-auto d-flex justify-content-end align-items-start rounded-0 p-1">
+                                            <button type="button" class="btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
+                                                <i class="bi bi-x text-white"></i>
+                                            </button>
+                                        </div>
+                                        <button type="button" (click)="selectFileForAdding()" class="mx-auto border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                            <span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
+                                            <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                        </button>
+                                    </div>
+
+                                    
+                                    <div class="body pt-0 pb-0 mt-3 mb-5">
+                                        <p class="fw-bold text-dark-emphasis">Variant List</p>
+                                        <div 
+                                            class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
+                                            *ngIf="variantsList.length < 1"
+                                        >
+                                            <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
+                                        </div>
+                                        
+                                        <ul class="variants-list list-unstyled" *ngIf="variantsList && variantsList.length > 0">
+                                            <li class="variant-list-item text-decoration-none mt-2 mb-3 cursor-poi" *ngFor="let variant of variantsList.value; let i = index" >
+                                                <div class="data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                                                    <div class="m-auto row d-flex align-items-center w-100 ">
+                                                        <div class="col-sm-2 me-2">
+                                                            <div class="color-container border rounded-3" [style.background-color]="variant.color">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                                            <div class="data w-100">
+                                                                <div class="row ms-0 m-auto w-100 ">
+                                                                    <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                        <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">{{ variant.color_title }}</h1>
+                                                                    </div>
+                                                                    <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                        <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate">[{{ variant.color }}]</h1>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row ms-0 m-auto w-100">
+                                                                    <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                        <p class="fs-6 m-0 mx-0">Size: {{ variant.size }}</p>
+                                                                    </div>
+                                                                    <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                        <p class="fs-6 m-0 mx-0">Stock Limit: {{ variant.stock_limit }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="actions d-flex">
+                                                        <button 
+                                                            (click)="editVariant(variant, i)"
+                                                            type="button" 
+                                                            class=" btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                        >
+                                                            <i class="bi bi-pencil-square fs-5"></i>
+                                                        </button>
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#removeVariants"
+                                                            (click)="selectVariant(variant, i)"
+                                                        >
+                                                            <i class="bi bi-trash fs-5"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                            </li>
+                                        </ul>
+                                        
+                                    </div>
+                                    
+                                    <div class="modal-footer border-0">
+                                        <button  
+                                            type="button" 
+                                            class="btn btn-muted mx-2" 
+                                            *ngIf="cancel"
+                                            (click)="cancelAction('add-prod-to-prod-management')"
+                                        >
+                                            CANCEL
+                                        </button>
+                                        
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-muted mx-2" 
+                                            *ngIf="done"
+                                            (click)="doneAction('add-prod-to-prod-management')"
+                                        >
+                                            DONE
+                                        </button>
+                                        <button 
+                                            type="submit" 
+                                            class="btn btn-primary bg-light-primary"
+                                            [disabled]="variantsList.length < 1"
+                                            >
+                                            ADD PRODUCT
+                                        </button>
+                                    </div>   
+                                </div>
+                            </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mt-lg-0 mt-4">
+                        <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                            <div class="form-title text-start mb-4">
+                                <h1 class="modal-title fs-4 fw-bolder" >ADD PRODUCT VARIANT</h1>
+                                <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
+                            </div>
+                            
+                            <div class="body pt-0 pb-0">
+                                <div class="form-body pt-0 pb-0 " >
+                                
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addproductSize" class="form-label">Size</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="addproductSize" 
+                                                name="addproductSize" 
+                                                formControlName="size"
+                                                placeholder="sizes"
+                                                required
+                                            >
+                
+                                        </div>
+                                        
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addvariantPrice" class="form-label">Price</label>
+                                            <input 
+                                                type="number" 
+                                                class="form-control" 
+                                                id="addvariantPrice" 
+                                                name="addvariantPrice" 
+                                                [value]="1"
+                                                formControlName="price"
+                                                required
+                                                step="0.01"
+                                            
+                                                [placeholder]="01.01"
+                                                (click)="addVariantForm.get('price')?.setValue(null)"
+                                            >
+                                            <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
+                                                price must be 2 decimal places, 00.00
+                                                [class.border]="isDecimal(addVariantForm.get('price')?.value)"
+                                                [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
+                                            </p> -->
+                                        </div>
+                
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addvariantQty" class="form-label">Stock</label>
+                                            <input 
+                                                type="number" 
+                                                class="form-control" 
+                                                id="addvariantQty" 
+                                                name="addvariantQty" 
+                                                formControlName="stock"
+                                                placeholder="300"
+                                                required
+                                                [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                                [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                            >
+                                            <p *ngIf="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value">
+                                                stock should be higher than limit
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addvariantQtyLimit" class="form-label">Stock Limit</label>
+                                            <input 
+                                                type="number" 
+                                                class="form-control" 
+                                                id="addvariantQtyLimit" 
+                                                name="addvariantQtyLimit" 
+                                                formControlName="stock_limit"
+                                                placeholder="30"
+                                                required
+                                                [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                                [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
+                                            >
+                
+                                        </div>
+                
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addproductColor" class="form-label">Color</label>
+                                            <input 
+                                                type="color" 
+                                                class="form-control form-control-color border w-100" 
+                                                id="addproductColor" 
+                                                name="addproductColor" 
+                                                formControlName="color"
+                                                placeholder="#XXXXXX"
+                                                pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                                                [ngClass]="{'border-danger': addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty}"
+                                            >
+                                            <p *ngIf="addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty">
+                                                Color must be in the hex format "#3C3C3C".
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="addproductColorTitle" class="form-label">Color Title</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="addproductColorTitle" 
+                                                name="addproductColorTitle" 
+                                                formControlName="color_title"
+                                                placeholder="color name"
+                                            >
+                                        </div>
+                
+                                    </div>
+                                    
+                                    <div class="modal-footer border-0 mt-4" >
+                                        <button 
+                                            type="submit" 
+                                            class="btn btn-primary bg-light-primary" 
+                                            
+                                        >
+                                            ADD VARIANT
+                                        </button>
+                                    </div>  
+                                </div>
+            
+                                <!-- *ngIf="variantsList.length > 0 && !showForm" -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
         
         <!--EDIT PRODUCT FORM-->
         <form *ngIf="formEditProduct" [formGroup]="editProductForm"  (ngSubmit)="onProductEditSubmit()">

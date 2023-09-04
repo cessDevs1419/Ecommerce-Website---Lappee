@@ -6,3 +6,20 @@
 .variant-list-item{
     cursor: pointer;
 }
+
+.image-container{
+    min-width: 7.5rem;
+    height: 7rem;
+}
+
+.image-btn-container{
+    max-width: 7.5rem;
+    width: 100%;
+    height: 7rem;
+}
+
+.border-dashed{
+    border: dashed 2px;
+    padding: 20px;
+}
+

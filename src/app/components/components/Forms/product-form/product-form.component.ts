@@ -308,6 +308,7 @@ export class ProductFormComponent {
             const file = files[i];
             const fileControl = this.formBuilder.control(file);
             this.product_service.addImageToList(fileControl);
+            
         }
     }
     
