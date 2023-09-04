@@ -189,9 +189,10 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
 }
 
 export function formatOrderDetails(response: OrderList): OrderDetail[] {
-  return response.data.map((data: OrderDetail) => ({
+  console.log(response);
+  return response.data.details.map((data: OrderDetail) => ({
     order_id: data.order_id,
-    ordered_on: formatDate(data.ordered_on, 'medium', 'en_PH'),
+    ordered_on: data.ordered_on,
     order_contents: data.order_contents
   }))
 }

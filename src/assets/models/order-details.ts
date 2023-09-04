@@ -1,7 +1,12 @@
 export interface OrderList {
     success: string,
     message: string,
-    data: OrderDetail[]
+    data: OrderListInfo
+}
+
+export interface OrderListInfo {
+    order_count: number,
+    details: OrderDetail[]
 }
 
 export interface OrderDetail {
@@ -17,7 +22,8 @@ export interface OrderContent {
     quantity: number,
     sub_price: string,
     product_id: string,
-    images: string[]
+    images: string[],
+    is_reviewed: boolean
 }
 
 
