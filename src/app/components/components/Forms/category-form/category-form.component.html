@@ -50,18 +50,20 @@
     
 </form> -->
 
-<form *ngIf="formAddCategory" [formGroup]="addCategoryForm" (ngSubmit)="onCategoryAddSubmit()">
-    <div class="container w-100 h-100 row mx-0">
-        <div class="col-lg-6 h-100 container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
-            </div>
-            <hr class="divider mb-4">
-            
-            <div class="modal-body pt-0 pb-0 mb-4 ">
-                <div class="w-100 mb-3">
+<div class="container w-100 h-100 row mx-0" *ngIf="formAddCategory">
+    <div class="col-lg-6 h-100 container-shadow bg-white p-4">
+        <div class="form-title text-start mb-2">
+            <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
+            <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
+        </div>
+        <hr class="divider mb-4">
+        
+        <div class="modal-body pt-0 pb-0 mb-4 ">
+        
 <!--ADD NEW CATEGORY-->
+            <form  [formGroup]="addCategoryForm" >
+                <div class="w-100 mb-3">
+
                     <label for="categoryName" class="form-label">Main Category Name</label>
                     <input 
                         class="form-control border border-dark border-1" 
@@ -71,80 +73,88 @@
                         required
                     >
                 </div>
-                <div class="row px-2">
-                    <div class="col-xl-5 px-1">
-                        <div class="w-100 mb-3">
+            </form>
+            
+            
+            <div class="row px-2">
 <!--ADD NEW ATTRIBUTE-->
+                <div class="col-xl-5 px-1">
+                    <form [formGroup]="addAttributeForm">
+                        <div class="w-100 mb-3">
                             <label for="newAttributes" class="form-label">Add New Attributes</label>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control border-end-0" placeholder="New Attributes">
-                                <button class="input-group-text border-start-0 border border-dark-subtle" id="AddVariants">+</button>
+                                <input formControlName="name"  type="text" class="form-control border-end-0" placeholder="New Attributes">
+                                <button class="input-group-text border-start-0 border border-dark-subtle" id="AddVariants" (click)="onAttributeAddSubmit()">+</button>
                             </div>
                         </div>
-                        
-                        <div class="attribute-list border border-dark-subtle rounded-2">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control border-start-0 border-top-0 border-end-0" placeholder="Search...">
-                                <button class="input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
+                    </form>
+                
+                    
+                    <div class="attribute-list border border-dark-subtle rounded-2">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
+                            <button class="input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
 <!-- ATTRIBUTE LIST -->
-                            <ul class="list-unstyled px-4 ">
-                                <li class="text-decoration-none m-auto mb-2 d-flex align-items-center">
-                                    <div class="input-group mb-3 ">
-                                        <div class="input-group-text border-0">
-                                            <input class="form-check-input mt-0 border-dark-subtle cursor-pointer" type="checkbox" value="" aria-label="Checkbox for following text input">
+                        <form [formGroup]="selectedAttributeForm">
+                            <ul class="list-unstyled px-4 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                <li class="text-decoration-none m-auto mb-2 ">
+                                    <label >
+                                        <div class="input-group d-flex align-items-center">
+                                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox" (change)="toggleAttribute(item.id, item.name)" />
+                                            <p class="mx-2 m-auto cursor-pointer">{{ item.name }}</p>
                                         </div>
-                                        <label class="">Hood</label>
-                                    </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
+                        
+                    </div>
+                </div>
+                
+<!--SELECTED ATTRIBUTE LIST -->                
+                <div class="col-xl-7 px-1 mt-3 mt-xl-0">
+                    <div class="w-100 mb-3">
+                        <label for="attributesList" class="form-label">Selected Attributes</label>
+                        <div class="border border-dark-subtle rounded-2 p-3 px-1 h-100">
+                            <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap">
+                                <li class="item-list bg-dark-lite mx-2 mb-2 rounded-3 d-flex align-items-center" *ngFor="let item of selectedCheckboxesName.controls; ">
+                                    <label class="mx-2 item">{{item.value}}</label>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-xl-7 px-1 mt-3 mt-lg-0">
-                        <div class="w-100 mb-3">
-<!--SELECTED ATTRIBUTE LIST -->
-                            <label for="attributesList" class="form-label">Selected Attributes</label>
-                            <div class="border border-dark-subtle rounded-2 p-3 px-1 h-100">
-                                <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap">
-                                    <li class="item-list bg-dark-lite mx-2 mb-2 rounded-3 d-flex align-items-center">
-                                        <label class="mx-2 item">hood</label>
-                                        <button class="btn border-0">x</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="modal-footer border-0 justify-content-end mb-4">
+            <button 
+                *ngIf="cancel"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitcancel()"
+            >
+            CANCEL</button>
             
-            <div class="modal-footer border-0 justify-content-end mb-4">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
-                >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-primary-light text-white mx-1"
-                >
-                CONFIRM</button>
-            </div>
+            <button 
+                *ngIf="done"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitdone()"
+            >
+            DONE</button>
+            <button 
+                (click)="onCategoryAddSubmit()"
+                type="submit" 
+                class="btn btn-primary btn-primary-light text-white mx-1"
+            >
+            CONFIRM</button>
         </div>
     </div>
-    
-</form>
+</div>
 
 <!--EDIT CATEGORY FORM-->
 <form *ngIf="formEditCategory" [formGroup]="editCategoryForm"  (ngSubmit)="onCategoryEditSubmit()">
@@ -266,17 +276,18 @@
     </div>
 </form> -->
 
-<form *ngIf="formAddSubCategory" [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
-    <div class="container w-100 h-100 row mx-0">
-        <div class="col-lg-6 h-100 container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
-            </div>
-            <hr class="divider mb-4">
-            
-            <div class="modal-body pt-0 pb-0 mb-4 ">
+
+<div class="container w-100 h-100 row mx-0" *ngIf="formAddSubCategory">
+    <div class="col-lg-6 h-100 container-shadow bg-white p-4">
+        <div class="form-title text-start mb-2">
+            <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
+            <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
+        </div>
+        <hr class="divider mb-4">
+        
+        <div class="modal-body pt-0 pb-0 mb-4 ">
 <!--ADD NEW SUB CATEGORY-->    
+            <form  [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
                 <div class="w-100 mb-3">
                     <label for="categoryName" class="form-label">Select Main Category</label>
                     <select 
@@ -294,99 +305,106 @@
                 <div class="w-100 mb-3 m-auto justify-content-start">
                     <label class="form-label" >Sub Category Name</label>
                     <!-- <button class="btn mb-3 border mx-2" type="button" (click)="addSubCategory()">+</button> -->
-                    <input class="form-control" type="text" />
+                    <input class="form-control" formControlName="sub_category" type="text" />
                 </div>
-                
-                <!-- <div class="m-auto col-sm-8" formArrayName="sub_categories">
-                    <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
-                        <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
-                        <span class="input-group-text p-0" id="basic-addon2">
-                            <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
-                        </span>
-                    </div>
-                </div> -->
-                <div class="row px-2">
+            </form>
+            
+            
+            <!-- <div class="m-auto col-sm-8" formArrayName="sub_categories">
+                <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
+                    <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
+                    <span class="input-group-text p-0" id="basic-addon2">
+                        <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
+                    </span>
+                </div>
+            </div> -->
+            
+            <div class="row px-2">
 <!--ADD NEW ATTRIBUTE-->
-                    <div class="col-xl-5 px-1">
+                <div class="col-xl-5 px-1">
+
+                    <form [formGroup]="addAttributeForm">
                         <div class="w-100 mb-3">
                             <label for="newAttributes" class="form-label">Add New Attributes</label>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control border-end-0" placeholder="New Attributes">
-                                <button class="input-group-text border-start-0 border border-dark-subtle" id="AddVariants">+</button>
+                                <input formControlName="name"  type="text" class="form-control border-end-0" placeholder="New Attributes">
+                                <button class="input-group-text border-start-0 border border-dark-subtle" id="AddVariants" (click)="onAttributeAddSubmit()">+</button>
                             </div>
                         </div>
-                        
-                        <div class="attribute-list border border-dark-subtle rounded-2">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control border-start-0 border-top-0 border-end-0" placeholder="Search...">
-                                <button class="input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
+                    </form>
+                    
+                    <div class="attribute-list border border-dark-subtle rounded-2">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
+                            <button class="input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
 <!-- ATTRIBUTE LIST -->
-                            <ul class="list-unstyled px-4 ">
-                                <li class="text-decoration-none m-auto mb-2 d-flex align-items-center">
-                                    <div class="input-group mb-3 ">
-                                        <div class="input-group-text border-0">
-                                            <input class="form-check-input mt-0 border-dark-subtle cursor-pointer" type="checkbox" value="" aria-label="Checkbox for following text input">
+                        <form [formGroup]="selectedAttributeForm">
+                            <ul class="list-unstyled px-4 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                <li class="text-decoration-none m-auto mb-2 ">
+                                    <label >
+                                        <div class="input-group d-flex align-items-center">
+                                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox" (change)="toggleAttribute(item.id, item.name)" />
+                                            <p class="mx-2 m-auto cursor-pointer">{{ item.name }}</p>
                                         </div>
-                                        <label class="">Hood</label>
-                                    </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
+                        
+                    </div>
+                </div>
+                
+<!--SELECTED ATTRIBUTE LIST -->                
+                <div class="col-xl-7 px-1 mt-3 mt-lg-0">
+                    <div class="w-100 mb-3">
+                        <label for="attributesList" class="form-label">Selected Attributes</label>
+                        <div class="border border-dark-subtle rounded-2 p-3 px-1 h-100">
+<!--DATA ATTRIBUTE LIST -->
+                            <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap mb-0">
+                                <li class="item-list bg-dark-grey mx-2 mb-2  rounded-3 d-flex align-items-center">
+                                    <label class="mx-2 item text-white">hood</label>
+                                </li>
+                            </ul>
+<!--ADDITIONAL ATTRIBUTE LIST -->
+                            <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap">
+                                <li class="item-list bg-dark-lite mx-2 mb-2 rounded-3 d-flex align-items-center" *ngFor="let item of selectedCheckboxesName.controls; ">
+                                    <label class="mx-2 item">{{item.value}}</label>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    
-<!--SELECTED ATTRIBUTE LIST -->                
-                    <div class="col-xl-7 px-1 mt-3 mt-lg-0">
-                        <div class="w-100 mb-3">
-                            <label for="attributesList" class="form-label">Selected Attributes</label>
-                            <div class="border border-dark-subtle rounded-2 p-3 px-1 h-100">
-<!--DATA ATTRIBUTE LIST -->
-                                <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap mb-0">
-                                    <li class="item-list bg-dark-grey mx-2 mb-2 p-1  rounded-3 d-flex align-items-center">
-                                        <label class="mx-2 item text-white">hood</label>
-                                    </li>
-                                </ul>
-                                <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap">
-<!--ADDITIONAL ATTRIBUTE LIST -->
-                                    <li class="item-list bg-dark-lite mx-2 mb-2 rounded-3 d-flex align-items-center">
-                                        <label class="mx-2 item">hood</label>
-                                        <button class="btn border-0">x</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="modal-footer border-0 justify-content-end mb-4">
+            <button 
+                *ngIf="cancel"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitcancel()"
+            >
+            CANCEL</button>
             
-            <div class="modal-footer border-0 justify-content-end mb-4">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
-                >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-primary-light text-white mx-1"
-                >
-                CONFIRM</button>
-            </div>
+            <button 
+                *ngIf="done"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitdone()"
+            >
+            DONE</button>
+            <button 
+                type="submit" 
+                class="btn btn-primary btn-primary-light text-white mx-1"
+                (click)="onSubCategoryAddSubmit()"
+            >
+            CONFIRM</button>
         </div>
     </div>
-    
-</form>
+</div>
 
 <!--EDIT SUB CATEGORY FORM-->
 <form *ngIf="formEditSubCategory" [formGroup]="editSubCategoryForm"  (ngSubmit)="onSubCategoryEditSubmit()">

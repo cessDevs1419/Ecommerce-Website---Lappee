@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
-import { Observable, Subject, map, startWith, switchMap, throwError } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, take, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from '../../toast/toast.component';
 
@@ -22,6 +22,7 @@ import { Location } from '@angular/common';
 })
 export class CategoryFormComponent {
     
+    public searchString: string;
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
     @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
@@ -42,6 +43,7 @@ export class CategoryFormComponent {
     @Input() selectedRowData: any;
     @Input() refreshTable: any;
     
+    addAttributeForm: FormGroup;
     addCategoryForm: FormGroup;
     editCategoryForm: FormGroup;
     deleteCategoryForm: FormGroup;
@@ -50,6 +52,11 @@ export class CategoryFormComponent {
     editSubCategoryForm: FormGroup;
     deleteSubCategoryForm: FormGroup;
 
+    attributeId: FormArray;
+    
+    selectedAttributeForm: FormGroup;
+    
+    attributes!: Observable<AdminCategory[]>;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
@@ -71,6 +78,16 @@ export class CategoryFormComponent {
         private location: Location
     ) 
     {
+    
+        this.addAttributeForm = new FormGroup({
+            name: new FormControl('', Validators.required)
+        });
+        
+        this.selectedAttributeForm = this.formBuilder.group({
+            selectedCheckboxesId: this.formBuilder.array([]),
+            selectedCheckboxesName: this.formBuilder.array([])
+        });
+        
         this.addCategoryForm = new FormGroup({
             category: new FormControl('', Validators.required)
         });
@@ -84,9 +101,14 @@ export class CategoryFormComponent {
             main_category_id: new FormControl('', Validators.required)
         });
         
+        // this.addSubCategoryForm = this.formBuilder.group({
+        //     main_category: ['', Validators.required],
+        //     sub_categories: this.formBuilder.array([])
+        // });
+        
         this.addSubCategoryForm = this.formBuilder.group({
             main_category: ['', Validators.required],
-            sub_categories: this.formBuilder.array([])
+            sub_category: ['', Validators.required],
         });
         
         this.editSubCategoryForm = this.formBuilder.group({
@@ -99,6 +121,13 @@ export class CategoryFormComponent {
     }
 
     ngOnInit(): void {
+    
+        this.attributes = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.category_service.getAdminCategories()),
+            map((Response: any) => formatAdminCategories(Response))
+        );
+        
         this.categories = this.refreshData$.pipe(
             startWith(undefined), 
             switchMap(() => this.category_service.getAdminCategories()),
@@ -111,21 +140,21 @@ export class CategoryFormComponent {
             map((Response: any) => formatAdminSubcategories(Response))
         );
         
-        this.categories.subscribe((categories: any[]) => { 
-            this.editCategories = categories.find(category => category.id === this.selectedRowData)?.name || 'error';
+        // this.categories.subscribe((categories: any[]) => { 
+        //     this.editCategories = categories.find(category => category.id === this.selectedRowData)?.name || 'error';
             
-            this.editCategoryForm.patchValue({
-                category: this.editCategories ? this.editCategories : null
-            });
-        });
+        //     this.editCategoryForm.patchValue({
+        //         category: this.editCategories ? this.editCategories : null
+        //     });
+        // });
         
-        this.sub_categories.subscribe((sub_categories: any[]) => { 
-            this.editSubCategories = sub_categories.find(sub_category => sub_category.id === this.selectedRowData)?.name || 'error';
+        // this.sub_categories.subscribe((sub_categories: any[]) => { 
+        //     this.editSubCategories = sub_categories.find(sub_category => sub_category.id === this.selectedRowData)?.name || 'error';
             
-            this.editSubCategoryForm.patchValue({
-                sub_category: this.editSubCategories ? this.editSubCategories : null
-            });
-        });
+        //     this.editSubCategoryForm.patchValue({
+        //         sub_category: this.editSubCategories ? this.editSubCategories : null
+        //     });
+        // });
         
 
     }
@@ -142,6 +171,40 @@ export class CategoryFormComponent {
     hitdone(): void{
         this.location.back();
     }
+    
+    //attribute setup
+    get selectedCheckboxesId(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+    }
+    
+    get selectedCheckboxesName(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+    }
+    
+    toggleAttribute(id: string, name: string) {
+        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+    
+        // Check if the id is already present in the selectedCheckboxesId array
+        const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
+    
+        if (idIndex === -1) {
+          // If id is not present, add both id and name to their respective arrays
+            selectedCheckboxesIdArray.push(this.formBuilder.control(id));
+            selectedCheckboxesNameArray.push(this.formBuilder.control(name));
+        } else {
+          // If id is already present, remove it from both arrays (toggle off)
+            selectedCheckboxesIdArray.removeAt(idIndex);
+            selectedCheckboxesNameArray.removeAt(idIndex);
+        }
+
+    }
+    
+    
+    removeAttribute(id: string, name: string){
+        this.toggleAttribute(id, name)
+    }
+    
     //ADD SUB CATEGORY
     get subCategories(): FormArray {
         return this.addSubCategoryForm.get('sub_categories') as FormArray;
@@ -169,81 +232,88 @@ export class CategoryFormComponent {
     }
     
     //Submit Functions
+    onAttributeAddSubmit(): void {
+        
+        console.log(this.addAttributeForm.get('name')?.value)
+
+    }
     onCategoryAddSubmit(): void {
 
-        if(this.addCategoryForm.valid){
+        // if(this.addCategoryForm.valid){
 
             
-            let formData: any = new FormData();
-            formData.append('name', this.addCategoryForm.get('category')?.value);
+        //     let formData: any = new FormData();
+        //     formData.append('name', this.addCategoryForm.get('category')?.value);
             
-            this.category_service.postCategory(formData).subscribe({
-                next: (response: any) => { 
-                    const successMessage = {
-                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
-                        sub: response?.message
-                    };
+        //     this.category_service.postCategory(formData).subscribe({
+        //         next: (response: any) => { 
+        //             const successMessage = {
+        //                 head: 'Category ' + this.addCategoryForm.get('category')?.value,
+        //                 sub: response?.message
+        //             };
                     
-                    this.RefreshTable.emit();
-                    this.refreshTableData();
-                    this.CategorySuccess.emit(successMessage);
-                    this.addCategoryForm.reset();
-                    this.done = true
-                    this.cancel = false
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
+        //             this.RefreshTable.emit();
+        //             this.refreshTableData();
+        //             this.CategorySuccess.emit(successMessage);
+        //             this.addCategoryForm.reset();
+        //             this.done = true
+        //             this.cancel = false
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             if (error.error?.data?.error) {
+        //                 const fieldErrors = error.error.data.error;
+        //                 const errorsArray = [];
                     
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
+        //                 for (const field in fieldErrors) {
+        //                     if (fieldErrors.hasOwnProperty(field)) {
+        //                         const messages = fieldErrors[field];
+        //                         let errorMessage = messages;
+        //                         if (Array.isArray(messages)) {
+        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                         }
+        //                         errorsArray.push(errorMessage);
+        //                     }
+        //                 }
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
-                        };
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: errorsArray,
+        //                 };
                     
-                        this.CategoryWarn.emit(errorDataforProduct);
-                    } else {
+        //                 this.CategoryWarn.emit(errorDataforProduct);
+        //             } else {
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
-                        };
-                        this.CategoryError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: 'Please Try Another One',
+        //                 };
+        //                 this.CategoryError.emit(errorDataforProduct);
+        //             }
+        //             return throwError(() => error);
                     
-                }
-            });
+        //         }
+        //     });
         
         
-        }else{
-            this.addCategoryForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addCategoryForm.controls) {
-                if (this.addCategoryForm.controls.hasOwnProperty(controlName) && this.addCategoryForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
-                }
-            }
+        // }else{
+        //     this.addCategoryForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addCategoryForm.controls) {
+        //         if (this.addCategoryForm.controls.hasOwnProperty(controlName) && this.addCategoryForm.controls[controlName].errors?.['required']) {
+        //             const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //             emptyFields.push(label);
+        //         }
+        //     }
 
-            const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
-            };
-            this.CategoryWarn.emit(errorData);
+        //     const errorData = {
+        //         errorMessage: `Please fill in the following required fields: `,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
+        //     this.CategoryWarn.emit(errorData);
             
-        }
+        // }
+        
+        console.log(this.addCategoryForm.get('category')?.value, this.selectedAttributeForm.value)
 
     }
 
@@ -347,92 +417,92 @@ export class CategoryFormComponent {
     
     onSubCategoryAddSubmit(): void {
 
-        if(this.addSubCategoryForm.valid){
+        // if(this.addSubCategoryForm.valid){
     
-            let formData: any = new FormData();
-            formData.append('main_category_id', this.addSubCategoryForm.get('main_category')?.value);
-            formData.append('name', this.addSubCategoryForm.get('sub_categories')?.value);
+        //     let formData: any = new FormData();
+        //     formData.append('main_category_id', this.addSubCategoryForm.get('main_category')?.value);
+        //     formData.append('name', this.addSubCategoryForm.get('sub_categories')?.value);
 
-            this.subcategory_service.postSubcategory(formData).subscribe({
-                next: (response: any) => { 
-                    const successMessage = {
-                        head: 'Category ' + this.addCategoryForm.get('sub_categories')?.value,
-                        sub: response?.message
-                    };
+        //     this.subcategory_service.postSubcategory(formData).subscribe({
+        //         next: (response: any) => { 
+        //             const successMessage = {
+        //                 head: 'Category ' + this.addCategoryForm.get('sub_categories')?.value,
+        //                 sub: response?.message
+        //             };
                     
-                    this.RefreshTable.emit();
-                    this.refreshTableData();
-                    this.CategorySuccess.emit(successMessage);
-                    this.addSubCategoryForm.reset();
-                    this.done = true
-                    this.cancel = false
+        //             this.RefreshTable.emit();
+        //             this.refreshTableData();
+        //             this.CategorySuccess.emit(successMessage);
+        //             this.addSubCategoryForm.reset();
+        //             this.done = true
+        //             this.cancel = false
                     
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             if (error.error?.data?.error) {
+        //                 const fieldErrors = error.error.data.error;
+        //                 const errorsArray = [];
                     
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }else if(field === 'additional'){
-                                    errorMessage = 'The subcategory name is already exist'
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
+        //                 for (const field in fieldErrors) {
+        //                     if (fieldErrors.hasOwnProperty(field)) {
+        //                         const messages = fieldErrors[field];
+        //                         let errorMessage = messages;
+        //                         if (Array.isArray(messages)) {
+        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                         }else if(field === 'additional'){
+        //                             errorMessage = 'The subcategory name is already exist'
+        //                         }
+        //                         errorsArray.push(errorMessage);
+        //                     }
+        //                 }
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
-                        };
-                    
-
-                        this.CategoryWarn.emit(errorDataforProduct);
-                    } else if (error.error?.data?.error?.additional){
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'The data is already exist',
-                        };
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: errorsArray,
+        //                 };
                     
 
-                        this.CategoryError.emit(errorDataforProduct);
-                    }else {
+        //                 this.CategoryWarn.emit(errorDataforProduct);
+        //             } else if (error.error?.data?.error?.additional){
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: 'The data is already exist',
+        //                 };
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
-                        };
-                        this.CategoryError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
-                }
-            });
+
+        //                 this.CategoryError.emit(errorDataforProduct);
+        //             }else {
+                    
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: 'Please Try Another One',
+        //                 };
+        //                 this.CategoryError.emit(errorDataforProduct);
+        //             }
+        //             return throwError(() => error);
+        //         }
+        //     });
         
-        }
+        // }
         
-        else if(this.addSubCategoryForm.invalid){
-            this.addSubCategoryForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addSubCategoryForm.controls) {
-                if (this.addSubCategoryForm.controls.hasOwnProperty(controlName) && this.addSubCategoryForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
-                }
-            }
+        // else if(this.addSubCategoryForm.invalid){
+        //     this.addSubCategoryForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addSubCategoryForm.controls) {
+        //         if (this.addSubCategoryForm.controls.hasOwnProperty(controlName) && this.addSubCategoryForm.controls[controlName].errors?.['required']) {
+        //             const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //             emptyFields.push(label);
+        //         }
+        //     }
 
-            const errorData = {
-                errorMessage: `Please fill in the following required fields `,
-                suberrorMessage: emptyFields.join(', ')
-            };
-            this.CategoryWarn.emit(errorData);
-        }
+        //     const errorData = {
+        //         errorMessage: `Please fill in the following required fields `,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
+        //     this.CategoryWarn.emit(errorData);
+        // }
     
-    
+        console.log(this.addSubCategoryForm.get('main_category')?.value, this.addSubCategoryForm.get('sub_category')?.value, this.selectedAttributeForm.value)
     }
     
     async onSubCategoryEditSubmit() {
