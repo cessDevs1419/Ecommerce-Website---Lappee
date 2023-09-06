@@ -10,7 +10,7 @@ export class CartService {
 
   constructor() { }
 
-  addToCart(product: Product, variant: string, variant_details: string, quantity: number, price: string, imgurl: string): void {
+  addToCart(product: Product, variant: string, variant_details: string[], quantity: number, price: string, imgurl: string): void {
     let duplicate = -1;
     let cartItem: CartItem = {
       product: product,

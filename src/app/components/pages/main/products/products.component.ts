@@ -262,7 +262,7 @@ export class ProductsComponent {
 
   addToCart(): boolean {
     let variantId = "";
-    let details = "";
+    let details = [];
     if(!this.hasVariant){
       //add to cart with form checks for variant validation
       if(this.productToCart.valid){
@@ -273,7 +273,7 @@ export class ProductsComponent {
           }
         }
         
-        details = "Color: " + this.colorCurrent.name + " | Size: " + this.sizeCurrent;
+        details = [this.colorCurrent.name, this.sizeCurrent]
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images[0]);
         console.warn('added to cart');
