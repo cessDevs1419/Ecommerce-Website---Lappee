@@ -99,8 +99,8 @@
                         </div>
 <!-- ATTRIBUTE LIST -->
                         <form [formGroup]="selectedAttributeForm">
-                            <ul class="list-unstyled px-4 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
-                                <li class="text-decoration-none m-auto mb-2 ">
+                            <ul class="list-unstyled px-4 " >
+                                <li class="text-decoration-none m-auto mb-2 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
                                     <label >
                                         <div class="input-group d-flex align-items-center">
                                             <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox" (change)="toggleAttribute(item.id, item.name)" />

@@ -27,6 +27,11 @@ export const POSTProductsAdmin: string = api + "api/admin/products/store";
 export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
+//Attributes Admin Endpoints
+export const GETAttributesAdmin: string = api + "api/admin/attributes";
+export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
+export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
+
 //Variant Admin Endpoints
 export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";
 export const PATCHVariantsAdmin: string = api + "api/admin/products/variants/edit";

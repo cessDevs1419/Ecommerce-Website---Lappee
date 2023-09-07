@@ -10,6 +10,8 @@ import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderCon
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
+import { AttributeList, Attributes } from "src/assets/models/attributes";
+
 
 // Formatting
 
@@ -60,6 +62,14 @@ export function formatProducts(response: ProductList): Product[] {
     description: data.description,
     images: data.images,
     product_variants: data.product_variants
+  }));
+}
+
+// returns Attributes array from a ProductList
+export function formatAttributes(response: AttributeList): Attributes[] {
+  return response.data.map((data: Attributes) => ({
+    id: data.id,
+    name: data.name,
   }));
 }
 
