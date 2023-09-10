@@ -57,8 +57,25 @@ body {
     color: var(--muted-gray);
 }
 
+.admin-bg{
+    background: #2E303D;
+}
+
+.sidebar-bg{
+    background: #1E2029;
+}
+
 .bg-gradient-primary {
     background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+.text-dark-subtle-grey
+{
+    color: #C1C1C1;
+}
+
+.text-dark-subtle-noactive
+{
+    color: rgba(255, 255, 255, 0.19);
 }
 
 .btn-muted{

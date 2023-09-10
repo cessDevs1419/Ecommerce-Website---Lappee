@@ -77,6 +77,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { OrderHistoryLoaderComponent } from './components/components/loader/main/order-history-loader/order-history-loader.component';
 import { LoaderComponent } from './components/components/loader/loader.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { AdminAttributesComponent } from './components/pages/admin/admin-attributes/admin-attributes.component';
+import { AdminMainCategoriesComponent } from './components/pages/admin/admin-main-categories/admin-main-categories.component';
+import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-categories/admin-sub-categories.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +147,9 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
     AdminManageTosComponent,
     OrderHistoryLoaderComponent,
     LoaderComponent,
+    AdminAttributesComponent,
+    AdminMainCategoriesComponent,
+    AdminSubCategoriesComponent,
 
   ],
   imports: [
@@ -177,7 +183,9 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
         children: [
           {path: '', redirectTo: 'overview', pathMatch: 'full'},
           {path: 'overview', component: AdminOverviewComponent},
-          {path: 'category-management', component: AdminCategoriesComponent,},
+          {path: 'attribute-management', component: AdminAttributesComponent,},
+          {path: 'main-category-management', component: AdminMainCategoriesComponent,},
+          {path: 'sub-category-management', component: AdminSubCategoriesComponent,},
           {path: 'product-management', component: AdminProductsComponent},
           {path: 'sales-management', component: AdminSalesComponent},
           {path: 'discounts-management', component: AdminDiscountsComponent},

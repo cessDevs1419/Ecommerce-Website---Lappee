@@ -157,7 +157,7 @@
 </div>
 
 <!--EDIT CATEGORY FORM-->
-<form *ngIf="formEditCategory" [formGroup]="editCategoryForm"  (ngSubmit)="onCategoryEditSubmit()">
+<!-- <form  >
     <div class="container d-flex align-items-center h-100">
         <div class="col-lg-6 m-auto container-shadow bg-white p-4">
             <div class="form-title text-start mb-2">
@@ -210,8 +210,115 @@
             </div>
         </div>
     </div>
-</form>
+</form> -->
 
+<div class="container w-100 h-100 row mx-0" *ngIf="formEditCategory">
+    <div class="col-lg-6 h-100 container-shadow bg-white p-4">
+        <div class="form-title text-start mb-2">
+            <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
+            <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
+        </div>
+        <hr class="divider mb-4">
+        
+        <div class="modal-body pt-0 pb-0 mb-4 ">
+        
+<!--ADD NEW CATEGORY-->
+            <form  [formGroup]="editCategoryForm"  >
+                <div class="w-100 mb-3">
+
+                    <label for="categoryName" class="form-label">Main Category Name</label>
+                    <input 
+                        class="form-control border border-dark border-1" 
+                        type="text" 
+                        id="categoryName" 
+                        formControlName="category" 
+                        [value]="editCategories"
+                        required
+                    >                
+                </div>
+            </form>
+            
+            
+            <div class="row px-2">
+<!--ADD NEW ATTRIBUTE-->
+                <div class="col-xl-5 px-1">
+                    <form [formGroup]="addAttributeForm">
+                        <div class="w-100 mb-3">
+                            <label for="newAttributes" class="form-label">Add New Attributes</label>
+                            <div class="input-group mb-3">
+                                <input formControlName="name"  type="text" class="form-control border-end-0" placeholder="New Attributes">
+                                <button class="input-group-text border-start-0 border border-dark-subtle" id="AddVariants" (click)="onAttributeAddSubmit()">+</button>
+                            </div>
+                        </div>
+                    </form>
+                
+                    
+                    <div class="attribute-list border border-dark-subtle rounded-2">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
+                            <button class="input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+<!-- ATTRIBUTE LIST -->
+                        <form [formGroup]="selectedAttributeForm">
+                            <ul class="list-unstyled px-4 " >
+                                <li class="text-decoration-none m-auto mb-2 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                    <label >
+                                        <div class="input-group d-flex align-items-center">
+                                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox" (change)="toggleAttribute(item.id, item.name)" />
+                                            <p class="mx-2 m-auto cursor-pointer">{{ item.name }}</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
+                        
+                    </div>
+                </div>
+                
+<!--SELECTED ATTRIBUTE LIST -->                
+                <div class="col-xl-7 px-1 mt-3 mt-xl-0">
+                    <div class="w-100 mb-3">
+                        <label for="attributesList" class="form-label">Selected Attributes</label>
+                        <div class="border border-dark-subtle rounded-2 p-3 px-1 h-100">
+                            <ul class="list-unstyled w-100 d-flex align-items-center flex-wrap">
+                                <li class="item-list bg-dark-lite mx-2 mb-2 rounded-3 d-flex align-items-center" *ngFor="let item of selectedCheckboxesName.controls; ">
+                                    <label class="mx-2 item">{{item.value}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer border-0 justify-content-end mb-4">
+            <button 
+                *ngIf="cancel"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitcancel()"
+            >
+            CANCEL</button>
+            
+            <button 
+                *ngIf="done"
+                type="button" 
+                class="btn btn-muted mx-1" 
+                (click)="hitdone()"
+            >
+            DONE</button>
+            <button 
+                (click)="onCategoryEditSubmit()"
+                type="submit" 
+                class="btn btn-primary btn-primary-light text-white mx-1"
+            >
+            CONFIRM</button>
+        </div>
+    </div>
+</div>
+<!-- wala pang function tong edit  -->
 <!--ADD SUB CATEGORY FORM-->
 <!-- <form *ngIf="formAddSubCategory" [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
     <div class="container d-flex align-items-center h-100">

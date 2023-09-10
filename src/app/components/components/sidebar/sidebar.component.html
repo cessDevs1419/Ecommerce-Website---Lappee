@@ -1,7 +1,7 @@
 <div class="d-flex ">
 
-    <header  class="dashboard-header w-100 mx-0 mb-5 z-3 position-relative bg-white" >
-        <div class="dashboard-container container-fluid w-100 start-0 position-fixed bg-white d-flex justify-content-between align-items-center p-2 flex-wrap">
+    <header  class="dashboard-header z-3 position-relative d-flex align-items-center admin-bg" >
+        <!-- <div class="dashboard-container container-fluid w-100 start-0 position-fixed bg-white d-flex justify-content-between align-items-center p-2 flex-wrap">
             <div  class="title-container d-flex align-items-center p-2">
                 
                 <button (click)="toggleClass()" class="text-center fs-1 d-flex justify-content-center  border-0 bg-white  ">
@@ -16,138 +16,246 @@
                 </a>
             </div>
             
-            <div class="toolkit px-5 d-none d-md-flex justify-content-between ">
-                <div [title]="'User Profile'" [routerLink]="'/profile'" (click)="setFalse()" routerLinkActive="active-link" class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
-                    <i class="bi bi-person-fill text-primary fs-4"></i>
-                </div>
-                <div [title]="'Notifications'" class="icon-container position-relative rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
-                    <i class="bi bi-bell-fill text-primary fs-4"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span class="visually-hidden">Notification</span>
-                    </span>
-                </div>
+
+        </div> -->
+        
+        <!-- <div class="toolkit border px-5 d-none d-md-flex justify-content-between ">
+
+            <div [title]="'Notifications'" class="icon-container position-relative rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                <i class="bi bi-bell-fill text-primary fs-4"></i>
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                    <span class="visually-hidden">Notification</span>
+                </span>
             </div>
-        </div>
+            
+            <div [title]="'User Profile'" [routerLink]="'/profile'" routerLinkActive="active-link" class="icon-container rounded-circle bg-white mx-3 d-flex justify-content-center align-items-center">
+                <i class="bi bi-person-fill text-primary fs-4"></i>
+            </div>
+        </div> -->
     </header>
 
-    <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 bg-white  start-0 position-fixed h-100 border border-end-2 ">
+    <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 start-0 position-fixed h-100 ">
         
+        <ul class="nav flex-column mb-auto " *ngIf="admin">
 
-        
-        <ul class="nav flex-column mb-auto mt-5" *ngIf="admin">
-            
-            <li [routerLink]="'/admin/overview'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none" aria-current="page">
-                    Overview
-                </a>
-            </li>
-            
-            <li [routerLink]="'/admin/category-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-gear text-dark"></i>
-                <a  routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Category Setup
-                </a>
-            </li>
-            
-            <li [routerLink]="'/admin/product-management'" (click)="setFalse()"  routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-bag text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Products
-                </a>
-            </li>
-        
-            <li [routerLink]="'/admin/sales-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item  p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-graph-up text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Sales
-                </a>
-            </li>
-            
-            <li [routerLink]="'/admin/accounts-management'" (click)="setFalse()" routerLinkActive="active-link" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-people text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Accounts
-                </a>
-            </li>
-            
-            <!--
-                <li [routerLink]="'accounts-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <i routerLinkActive="text-white" class="bi bi-tags text-dark"></i>
-                    <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                        Discounts
-                    </a>
-                </li>
-                <li [routerLink]="'accounts-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <i routerLinkActive="text-white" class="bi bi-person-lines-fill text-dark"></i>
-                    <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                        Assign Parcels
-                    </a>
-                </li>
-                <li [routerLink]="'accounts-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <i routerLinkActive="text-white" class="bi bi-truck text-dark"></i>
-                    <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                        Couriers
-                    </a>
-                </li>
-            
-            -->
+            <div [ngClass]="isManageFileActive() ? 'admin-bg':''">
+                <div [class]="isManageFileActive() ? 'active-rounded-bottom sidebar-bg':''  " routerLinkActive="active-link">
+                    <li [routerLink]="'/admin/overview'" (click)="closeAllMenu()"  class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
+                        
+                        <div routerLinkActive="active-link-icon" class="icon-container rounded-3 p-2 px-3" >
+                            <i routerLinkActive=" text-white" class="bi bi-microsoft text-dark-subtle-grey"></i>
+                        </div>
 
-            
-            <li [routerLink]="'/admin/order-management'" (click)="setFalse()" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-list-check text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Track Orders
-                </a>
-            </li>
-
-            <li [routerLink]="'/admin/inquiry'" (click)="setFalse()" routerLinkActive="active-link"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                <i routerLinkActive="text-white" class="bi bi-envelope text-dark"></i>
-                <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
-                    Inquiry
-                </a>
-            </li>
-            
-            <li  (click)="showSubmenu()" [class]="toggleContent ? 'active-link d-flex align-items-center nav-item p-2 ps-4 mx-0':'d-flex align-items-center nav-item p-2 ps-4 mx-0'"  >
-                
-                <i [class]="toggleContent ? 'bi bi-gear text-white':'bi bi-gear text-dark'"></i>
-                <a [class]="toggleContent ? 'nav-link text-decoration-none text-white':'nav-link text-dark text-decoration-none'" >
-                    Manage Contents
-                </a>
-            </li>
-            
-            <div *ngIf="subMenu" class="bg-body-secondary p-0 m-0">
-            
-                <li [routerLink]="'/admin/site-settings'" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a *ngIf="isSiteSettingsActive()" class="ms-4 text-primary nav-link text-decoration-none">
-                        Site Settings
-                    </a>
-                    <a *ngIf="!isSiteSettingsActive()" class="ms-4 text-dark nav-link text-decoration-none">
-                        Site Settings
-                    </a>
-                </li>
-                
-                <li  [routerLink]="'/admin/manage-about-us'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a *ngIf="isAboutSiteActive()" class="ms-4 text-primary nav-link text-decoration-none">
-                        About Us
-                    </a>
-                    <a *ngIf="!isAboutSiteActive()" class="ms-4 text-dark nav-link text-decoration-none">
-                        About Us
-                    </a>
-                </li>
-                
-                <li *ngIf="subMenu" [routerLink]="'/admin/manage-tos'"  class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
-                    <a *ngIf="isTermsSiteActive()" class="ms-4 nav-link text-primary text-decoration-none">
-                        Terms Of Service
-                    </a>
-                    <a *ngIf="!isTermsSiteActive()" class="ms-4 nav-link text-dark text-decoration-none">
-                        Terms Of Service
-                    </a>
-                </li>
-    
+                        <a class="nav-link text-dark-subtle-grey text-decoration-none" aria-current="page">
+                            Overview
+                        </a>
+                    </li>
+                </div>
             </div>
             
-            <li [routerLink]="'/profile'" (click)="setFalse()" routerLinkActive="active-link"  class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
+            <div *ngIf="isOverviewActive() === false" [ngClass]=" isManageContentActive() ? 'admin-bg':''   " >
+                <div  [ngClass]="  isManageFileActive() ? 'active-link':'link-container border' && isManageContentActive() ? 'admin-bg':''">
+                    <div  [ngClass]="isManageContentActive() ? 'active-rounded-bottom sidebar-bg':''  ">
+                        <li (click)="showFile()"  [ngClass]="isManageFileActive() ? 'active-link d-flex align-items-center nav-item p-2 ps-2 mx-0 ':'d-flex align-items-center nav-item p-2 ps-2 mx-0'   "  >
+                            <div [class]="isManageFileActive() ? 'active-link-icon icon-container rounded-3 p-2 px-3':'icon-container rounded-3 p-2 px-3'  " >
+                                <i [class]="isManageFileActive() ? 'bi bi-folder2-open text-white':'bi bi-folder2-open text-dark-subtle-grey'"></i>
+                            </div>
+                            <a [class]="toggleFile ? 'nav-link text-decoration-none text-dark-subtle-grey':'nav-link text-dark-subtle-grey text-decoration-none'" >
+                                File Management
+                            </a>
+                        </li>
+                        
+                        <div *ngIf="isManageFileActive()" class=" p-0 m-0 ps-2 pb-3">
+                        
+                            <li [routerLink]="'/admin/attribute-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                                <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Attributes
+                                </a>
+                            </li>
+        
+                            <li [routerLink]="'/admin/main-category-management'"  routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                                <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Main Category
+                                </a>
+                            </li>
+                            
+                            <li [routerLink]="'/admin/sub-category-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                                <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Sub Category
+                                </a>
+                            </li>
+                            
+                            <li [routerLink]="'/admin/product-management'"  routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-bag text-dark-subtle-grey"></i> -->
+                                <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Products
+                                </a>
+                            </li>
+                        
+                            <li [routerLink]="'/admin/sales-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-graph-up text-dark-subtle-grey"></i> -->
+                                <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Sales
+                                </a>
+                            </li>
+                            
+                            <li [routerLink]="'/admin/order-management'" routerLinkActive="text-dark-subtle-grey"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-list-check text-dark-subtle-grey"></i> -->
+                                <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Track Orders
+                                </a>
+                            </li>
+                
+                            <li [routerLink]="'/admin/inquiry'" routerLinkActive="text-dark-subtle-grey"  class="d-flex align-items-center nav-item ps-4 p-1 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-envelope text-dark-subtle-grey"></i> -->
+                                <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Inquiry
+                                </a>
+                            </li>
+                            
+                            <li [routerLink]="'/admin/accounts-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                                <!-- <i routerLinkActive="text-white" class="bi bi-people text-dark-subtle-grey"></i> -->
+                                <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                    Accounts
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            
+            <div *ngIf="isOverviewActive() === true" class="admin-bg" >
+                <div  class="active-rounded-top sidebar-bg">
+                    <li (click)="showFile()"  [class]="toggleFile ? 'active-link d-flex align-items-center nav-item p-2 ps-2 mx-0 ':'d-flex align-items-center nav-item p-2 ps-2 mx-0'   "  >
+                        <div [class]="toggleFile ? 'active-link-icon icon-container rounded-3 p-2 px-3':'icon-container rounded-3 p-2 px-3'  " >
+                            <i [class]="toggleFile ? 'bi bi-folder2-open text-white':'bi bi-folder2-open text-dark-subtle-grey'"></i>
+                        </div>
+                        <a [class]="toggleFile ? 'nav-link text-decoration-none text-dark-subtle-grey':'nav-link text-dark-subtle-grey text-decoration-none'" >
+                            File Management
+                        </a>
+                    </li>
+                    
+                    <div *ngIf="FileMenu" class=" p-0 m-0 ps-2 pb-3">
+                    
+                        <li [routerLink]="'/admin/attribute-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                            <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Attributes
+                            </a>
+                        </li>
+    
+                        <li [routerLink]="'/admin/main-category-management'"  routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                            <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Main Category
+                            </a>
+                        </li>
+                        
+                        <li [routerLink]="'/admin/sub-category-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-gear text-dark-subtle-grey"></i> -->
+                            <a  routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Sub Category
+                            </a>
+                        </li>
+                        
+                        <li [routerLink]="'/admin/product-management'"  routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-bag text-dark-subtle-grey"></i> -->
+                            <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Products
+                            </a>
+                        </li>
+                    
+                        <li [routerLink]="'/admin/sales-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-graph-up text-dark-subtle-grey"></i> -->
+                            <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Sales
+                            </a>
+                        </li>
+                        
+                        <li [routerLink]="'/admin/order-management'" routerLinkActive="text-dark-subtle-grey"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-list-check text-dark-subtle-grey"></i> -->
+                            <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Track Orders
+                            </a>
+                        </li>
+            
+                        <li [routerLink]="'/admin/inquiry'" routerLinkActive="text-dark-subtle-grey"  class="d-flex align-items-center nav-item ps-4 p-1 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-envelope text-dark-subtle-grey"></i> -->
+                            <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Inquiry
+                            </a>
+                        </li>
+                        
+                        <li [routerLink]="'/admin/accounts-management'" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <!-- <i routerLinkActive="text-white" class="bi bi-people text-dark-subtle-grey"></i> -->
+                            <a routerLinkActive="text-white" class="nav-link ms-4 text-dark-subtle-noactive text-decoration-none">
+                                Accounts
+                            </a>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            
+            <div [ngClass]="isManageFileActive() ? 'admin-bg':''">
+                <div [class]="isManageContentActive() ? 'active-link':'link-container' && isManageFileActive() ? 'active-rounded-top sidebar-bg border-0':'' ">
+                
+                    <li  (click)="showContent()" [ngClass]="isManageContentActive() ? 'd-flex align-items-center nav-item p-2 ps-2 mx-0':'d-flex align-items-center nav-item p-2 ps-2 mx-0'"  >
+                        <div [class]="isManageContentActive() ? 'active-link-icon icon-container rounded-3 p-2 px-3':'icon-container rounded-3 p-2 px-3' && isManageContentActive() ? 'active-link-icon icon-container rounded-3 p-2 px-3':'icon-container rounded-3 p-2 px-3' " >
+                            <i [class]="isManageContentActive() ? 'bi bi-sliders text-white':'bi bi-sliders text-dark-subtle-grey'  && isManageContentActive() ? 'bi bi-sliders text-white':'bi bi-sliders text-dark-subtle-grey' "></i>
+                        </div>
+                    
+                        <a [class]="isManageContentActive() ? 'nav-link text-decoration-none nav-link text-dark-subtle-grey':'nav-link text-dark-subtle-grey text-decoration-none'" >
+                            Manage Contents
+                        </a>
+                    </li>
+                    
+                    <div *ngIf="isManageContentActive() " class=" p-0 m-0 ps-2 pb-3">
+                    
+                        <li [routerLink]="'/admin/site-settings'" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isSiteSettingsActive()" class="ms-4 text-dark-subtle-grey nav-link text-decoration-none">
+                                Site Settings
+                            </a>
+                            <a *ngIf="!isSiteSettingsActive()" class="ms-4 text-dark-subtle-noactive nav-link text-decoration-none">
+                                Site Settings
+                            </a>
+                        </li>
+                        
+                        <li  [routerLink]="'/admin/manage-about-us'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isAboutSiteActive()" class="ms-4 text-dark-subtle-grey nav-link text-decoration-none">
+                                About Us
+                            </a>
+                            <a *ngIf="!isAboutSiteActive()" class="ms-4 text-dark-subtle-noactive nav-link text-decoration-none">
+                                About Us
+                            </a>
+                        </li>
+                        
+                        <li [routerLink]="'/admin/manage-tos'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isTermsSiteActive()" class="ms-4 nav-link text-dark-subtle-grey text-decoration-none">
+                                Terms Of Service
+                            </a>
+                            <a *ngIf="!isTermsSiteActive()" class="ms-4 nav-link text-dark-subtle-noactive text-decoration-none">
+                                Terms Of Service
+                            </a>
+                        </li>
+            
+                    </div>
+                    
+                </div>
+            </div>
+            
+            
+            <div [ngClass]="isManageContentActive() ? 'admin-bg ':''">
+                <div [ngClass]="isManageContentActive() ? 'active-rounded-top sidebar-bg p-3':''">
+                
+                
+                
+                </div>
+            </div>
+            
+            <!-- <li [routerLink]="'/profile'" (click)="setFalse()" routerLinkActive="active-link"  class="d-md-none d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-person-fill text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     User Profile
@@ -159,11 +267,14 @@
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
                     Notifications
                 </a>
-            </li>
+            </li> -->
             
         </ul>
         
-        
+    </div>
+    
+</div>
+
         <!-- <li [routerLink]="'stocks-management'" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="d-flex align-items-center nav-item p-2 ps-4 mx-0">
                 <i routerLinkActive="text-white" class="bi bi-boxes text-dark"></i>
                 <a routerLinkActive="text-white" class="nav-link text-dark text-decoration-none">
@@ -187,8 +298,3 @@
             </li>
             
         </ul> -->
-    </div>
-    
-    
-    
-</div>
