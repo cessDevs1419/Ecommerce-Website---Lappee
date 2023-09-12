@@ -1,1 +1,28 @@
-<p>admin-attributes works!</p>
+
+<div class="container-md m-auto h-auto p-2 text-center" >
+    <app-table
+        tableTitle="Attribute Management"
+        subTitle="Product Management"
+        [tableHead]="true"
+        tableContainerClass="p-4"
+        [paginate]="false"
+        
+        [searchBar]="true"
+        [tableTools]="true"
+        [Btntools]="true"
+        
+        [addBtn]="true"
+        addbtnName="Add New"
+
+        
+        [tableHeader]="['ID','Name', 'Products']"
+        [tableRows]="['name', 'main_category']"
+    
+    ></app-table>
+
+    <!--MAIN-->
+
+
+
+
+</div>

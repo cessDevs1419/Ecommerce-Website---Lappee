@@ -35,6 +35,21 @@
     margin-left: 300px;
 }
 
+.header-tools{
+    max-width: 70px;
+    
+}
+
+.header-icon-container{
+    width: 2rem;
+    height: 2rem;
+}
+
+.icon-container{
+    width: 2rem;
+    height: 2rem;
+}
+
 /*Sidebar style*/
 .sidebar{
     max-width: 300px;

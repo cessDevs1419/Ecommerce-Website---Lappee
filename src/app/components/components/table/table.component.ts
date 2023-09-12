@@ -21,8 +21,18 @@ export class TableComponent {
 	@Output() ShowAddSubForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowEditSubForm: EventEmitter<any> = new EventEmitter<any>();
 
+	//table theme
+	table_container_bg: string = 'table-bg-dark'
+	tabletitlecolor: string = 'text-white'
+	tablesubtitlecolor: string = ''
+	textcolor: string = 'text-white'
+	borders: string = 'dark-subtle-borders'
+	btncolor: string = 'dark-subtle-btn'
+	tableHeaderbg: string = 'bg-header-dark'
+	
 	public searchString: string;
 	
+
 	//Table Title 
 	@Input() tableTitle: string;
 	@Input() subTitle: string;

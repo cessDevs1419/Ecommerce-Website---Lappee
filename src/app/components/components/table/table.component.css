@@ -11,12 +11,16 @@
     background: #0064C0;
 }
 
+.bg-header-dark{
+    background: #16181F;
+}
+
 table th:first-child{
-    border-radius: 8px 0 0 8px;
+    border-radius: 16px 0 0 16px;
 }
 
 table th:last-child{
-    border-radius:0 8px 8px 0;
+    border-radius:0 16px 16px 0;
 }
 
 .max-text{
@@ -43,3 +47,18 @@ table th:last-child{
   .tooltip-container:hover .tooltip {
     display: block;
   }
+  
+  ::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+  }
+  
+  

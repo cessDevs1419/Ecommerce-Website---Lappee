@@ -12,10 +12,17 @@ export class SidebarComponent {
   
   isClassToggled: boolean = false;
   toggleContent: boolean = false;
-  toggleFile: boolean = false;
+  toggleProduct: boolean = false;
+  toggleOrder: boolean = false;
   ContentMenu: boolean = false;
-  FileMenu: boolean = false;
+  ProductMenu: boolean = false;
+  OrderMenu: boolean = false;
   overviewClass: boolean = false;
+
+  admin_bg: string = "admin-bg-dark";
+  sidebar_bg: string = "sidebar-bg-dark";
+  active_link: string = "active-link";
+  active_link_icon: string = "active-link-icon";
   
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
@@ -41,15 +48,15 @@ export class SidebarComponent {
   }
   
   closeFile(){
-    this.FileMenu = false
-    this.toggleFile = false
+    this.ProductMenu = false
+    this.toggleProduct = false
   }
   
   closeAllMenu(){
     this.ContentMenu = false
     this.toggleContent = false
-    this.FileMenu = false
-    this.toggleFile = false
+    this.ProductMenu = false
+    this.toggleProduct = false
     this.overviewClass = true
     console.log(this.overviewClass )
   }
@@ -58,16 +65,23 @@ export class SidebarComponent {
   showContent(){
     this.ContentMenu = true
     this.toggleContent = true
-    this.overviewClass = false
     this.router.navigate(['/admin/site-settings']);
     this.closeFile()
   }
   
-  showFile(){
-    this.FileMenu = true
-    this.toggleFile = true
-    this.overviewClass = false
+  showProduct(){
+    this.ProductMenu = true
+    this.toggleProduct = true
+
     this.router.navigate(['/admin/attribute-management']);
+    this.closeContent()
+  }
+  
+  showOrders(){
+    this.ProductMenu = true
+    this.toggleProduct = true
+
+    this.router.navigate(['/admin/order-management']);
     this.closeContent()
   }
   
@@ -75,16 +89,18 @@ export class SidebarComponent {
     return this.router.url === '/admin/overview';
   }
   
-  isManageFileActive(): boolean {
+  isManageProductActive(): boolean {
     return (
       this.router.url === '/admin/attribute-management' ||
-      this.router.url === '/admin/main-category-management' ||
-      this.router.url === '/admin/sub-category-management' ||
-      this.router.url === '/admin/product-management' ||
-      this.router.url === '/admin/sales-management' ||
+      this.router.url === '/admin/category-management' ||
+      this.router.url === '/admin/product-management'
+    );
+  }
+  
+  isManageOrderActive(): boolean {
+    return (
       this.router.url === '/admin/order-management' ||
-      this.router.url === '/admin/inquiry' ||
-      this.router.url === '/admin/accounts-management' 
+      this.router.url === '/admin/order-management'
     );
   }
   
@@ -94,6 +110,18 @@ export class SidebarComponent {
       this.router.url === '/admin/manage-about-us' ||
       this.router.url === '/admin/manage-tos' 
     );
+  }
+  
+  isManageSalesReportActive(): boolean {
+    return this.router.url === '/admin/sales-management' 
+  }
+  
+  isManageInquiriesActive(): boolean {
+    return this.router.url === '/admin/inquiry' 
+  }
+  
+  isManageAccountsActive(): boolean {
+    return this.router.url === '/admin/accounts-management' 
   }
   
   

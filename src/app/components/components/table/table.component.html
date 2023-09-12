@@ -1,24 +1,30 @@
 
-<div class="table-container bg-white rounded-4 box container-shadow-subtle {{tableContainerClass}}">
+<div class=" table-container rounded-4 {{table_container_bg}} {{tableContainerClass}} ">
 
     <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 " *ngIf="tableHead">
-        <div class="row w-100 mx-0 ">
+        <div class="row w-100 mx-0">
             <div class="col-lg-6 px-0">
                 <div class="table-title text-start">
-                    <h1 class="header-title fw-bold fs-4 mb-0">{{tableTitle}}</h1>
-                    <h3 class="header-sub-title fw-bold fs-6 mt-0">{{subTitle}}</h3>
+                    <h1 class="header-title fw-bold fs-4 mb-1 {{tabletitlecolor}}">{{tableTitle}}</h1>
+                    <h3 class="header-sub-title fw-bold fs-6 mt-0 {{tablesubtitlecolor}}">{{subTitle}}</h3>
                 </div>
             </div>
-            <div class="col-lg-6 px-0">          
+            
+            <div class="col-lg-6 px-0 d-flex align-items-center justify-content-end ">          
                 <div 
-                    class="table-tools d-flex justify-content-between w-100 flex-column flex-sm-row justify-content-lg-end align-items-center px-0"
+                    class="table-tools d-flex  w-auto flex-column flex-sm-row justify-content-lg-end align-items-center px-0 flex-lg-row-reverse"
                     *ngIf="tableTools"
                 >
                     <div class="searchbar-container w-auto px-0 {{searchBarclass}}" *ngIf="searchBar">
-                        <div  class="input-group mx-1 " >
+                        <div  class="input-group mx-1 bg-transparent" >
+                            
+                            <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-4 rounded-end-0 border border-1 border-end-0  {{borders}}" id="basic-addon2">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            
                             <input 
                             
-                                class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
+                                class="form-control search-field {{textcolor}} rounded-4 rounded-start-0 border border-1 border-start-0 p-2 {{borders}} bg-transparent" 
                                 name="searchString" 
                                 type="search" 
                                 placeholder="Search Items Here"
@@ -29,7 +35,7 @@
                             
                             <input 
                             
-                                class="form-control search-field rounded-4 rounded-end-0 border-end-0 border-primary" 
+                                class="form-control {{textcolor}} search-field rounded-4 rounded-start-0 border border-1 border-start-0 bg-transparent p-2 {{borders}}" 
                                 name="searchString" 
                                 type="search" 
                                 placeholder="Search Items Here"
@@ -37,30 +43,26 @@
                                 *ngIf="paginate === false"
                             >
                                 
-                            <span class="input-group-text searchbar-btn bg-white rounded-4 rounded-start-0 border-primary" id="basic-addon2">
-                                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1C92FF" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                            </span>
+
                         </div>
                     </div>
-                    
-
                     
                     <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
                         <button
                             *ngIf="addBtn"
                             type="button" 
-                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addBtnclass}}"
+                            class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addBtnclass}}"
                             (click)="showAddForm()"
-                            >{{addbtnName}}
+                            >
+                            <i class="bi bi-plus-lg fw-bold"></i>
+                            {{addbtnName}}
                         </button>
 
                         
                         <button
                             *ngIf="addSubBtn"
                             type="button" 
-                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{addSubBtnclass}}"
+                            class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addSubBtnclass}}"
                             (click)="showAddSubForm()"
                             >{{addSubtnName}}
                         </button>
@@ -68,7 +70,7 @@
                         <button 
                             *ngIf="restockBtn"
                             type="button" 
-                            class="btn btn-primary text-nowrap text-white mx-1 bg-theme-blue {{restockBtnclass}}"
+                            class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{restockBtnclass}}"
                             
                             >RESTOCK</button>
                     </div>
@@ -77,7 +79,8 @@
             </div>
         </div>
     </div>
-    
+
+
     <div class="table-container  overflow-x-auto">
         <table class="table table-striped" *ngIf="paginate === true">
             <thead>
@@ -241,18 +244,26 @@
         <table class="table table-striped" *ngIf="paginate === false">
             <thead>
                 <tr >
-                    <th class=" bg-theme-blue th fw-bold fs-6 text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
+                    <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white p-3 text-nowrap" >
+                        <input type="checkbox" name="" id="">
+                    </th>
+                    <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
                     
                     <!--Enable this tableHeader Action-->
                     <th *ngIf="tableAction"
-                        class="th bg-theme-blue fw-bold fs-6 text-center dataTools text-white p-3"
+                        class="th {{tableHeaderbg}}  fw-bold fs-6 text-center dataTools text-white p-3"
                     >       
                     ACTIONS
                     </th>
                 </tr>
             </thead>
+            
             <tr *ngFor="let item of (tableData | async | searchFilter: searchString)" >
-                <td class="text-center pt-3 text-nowrap max-text text-truncate overflow-hidden" *ngFor="let row of tableRows">
+                <td class="{{textcolor}} text-center pt-3 text-nowrap max-text text-truncate overflow-hidden">
+                    <input type="checkbox" name="" id="">
+                </td>
+                
+                <td class="{{textcolor}} text-center pt-3 text-nowrap max-text text-truncate overflow-hidden" *ngFor="let row of tableRows">
                     {{ item[row] }}
                 </td>
                 
@@ -417,8 +428,5 @@
     
 
     </nav>
-    
-
-
 </div>
 

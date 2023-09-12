@@ -14,6 +14,29 @@ body {
     font-family: Mulish, sans-serif;
 
 }
+
+.admin-bg-dark{
+    background: #2E303D;
+}
+
+.sidebar-bg-dark{
+    background: #1E2029;
+}
+
+.table-bg-dark{
+    background: #1E2029;
+}
+
+.dark-subtle-borders{
+    border: #959BA5;;
+}
+
+.dark-subtle-btn{
+    background: #16181F;
+}
+
+
+
 .cursor-pointer{
     cursor: pointer;
 }
@@ -57,13 +80,7 @@ body {
     color: var(--muted-gray);
 }
 
-.admin-bg{
-    background: #2E303D;
-}
 
-.sidebar-bg{
-    background: #1E2029;
-}
 
 .bg-gradient-primary {
     background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
