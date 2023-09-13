@@ -26,7 +26,10 @@ export class AdminProductsComponent {
 	margin = "mx-lg-2"
 	size = "w-100"
     
-    
+    //theme
+    counter_bg: string = 'table-bg-dark'
+    counter_heading_text_color: string = 'dark-theme-heading-text-color'
+    text_color: string = 'dark-theme-text-color'
 	constructor(
 		private service: ProductsService,
 		private subcategory_service: SubcategoriesService,

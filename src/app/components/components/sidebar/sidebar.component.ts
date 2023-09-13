@@ -93,7 +93,8 @@ export class SidebarComponent {
     return (
       this.router.url === '/admin/attribute-management' ||
       this.router.url === '/admin/category-management' ||
-      this.router.url === '/admin/product-management'
+      this.router.url === '/admin/product-management' ||
+      this.router.url === '/admin/product-management/product/add' 
     );
   }
   

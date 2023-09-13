@@ -35,6 +35,13 @@ body {
     background: #16181F;
 }
 
+.dark-theme-text-color{
+    color: #FFFFFFB2;
+}
+
+.dark-theme-heading-text-color{
+    color: #1C92FF;
+}
 
 
 .cursor-pointer{

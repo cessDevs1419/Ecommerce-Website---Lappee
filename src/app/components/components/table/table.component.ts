@@ -3,6 +3,7 @@ import { Observable, of} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
 import { ModalComponent } from '../modal/modal.component';
+import { FormGroup } from '@angular/forms';
 
 interface TableItem {
     property: string;
@@ -29,7 +30,8 @@ export class TableComponent {
 	borders: string = 'dark-subtle-borders'
 	btncolor: string = 'dark-subtle-btn'
 	tableHeaderbg: string = 'bg-header-dark'
-	
+	actionbarbtnbg: string = 'item-selected'
+	bordercolor: string = 'border-color-dark'
 	public searchString: string;
 	
 
@@ -90,6 +92,10 @@ export class TableComponent {
 	@Input() orderBtn: boolean;
 	@Input() setFirstUpper!: boolean;
 	
+	selectedIds: number[] = [];
+	checkedState: { [key: number]: boolean } = {};
+	showActionButtons = false;
+	
 	showTooltip: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
@@ -100,7 +106,35 @@ export class TableComponent {
 
 	searchFilter: string = '';
 
+	showAction(){
+		this.showActionButtons = true
+	} 
+	toggleSelection(item: any, event: any) {
+		const target = event.target as HTMLInputElement;
+		const checked = target.checked;
+	
+		if (checked) {
+		    this.selectedIds.push(item.id);
+		    console.log(this.selectedIds)
+		} else {
+		    const index = this.selectedIds.indexOf(item.id);
+		    if (index !== -1) {
+				this.selectedIds.splice(index, 1);
+		    }
+		}
+		this.checkedState[item.id] = checked;
+	}
+	
+	isChecked(id: number): boolean {
+		return this.checkedState[id] || false;
+	}
+	
+	removeAllSelected() {
+		this.selectedIds.forEach(id => (this.checkedState[id] = false));
+		this.selectedIds = [];
+	}
 
+	
 	ngOnInit() {
 	    this.calculatePagination();
 	}

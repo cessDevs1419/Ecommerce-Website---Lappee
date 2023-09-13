@@ -1,30 +1,37 @@
 <div class="container-md m-auto h-auto p-2 text-center" >
     <app-table
-        tableTitle="MAIN CATEGORIES"
-        subTitle="MANAGEMENT"
+        tableTitle="Category Management"
+        subTitle="Product Management"
         [tableHead]="true"
         tableContainerClass="p-4"
         [paginate]="false"
         
         [tableTools]="true"
-        [searchBar]="false"
+        [searchBar]="true"
         [Btntools]="true"
         [addBtn]="true"
-        addbtnName="ADD CATEGORY"
+        addbtnName="Add New"
         [addBtnclass]="size"
-        
+        [tableAction]="true"
         
         [tableHeader]="['ID', 'Name', 'Sub Categories']"
         [tableRows]="['id','name','subcategories']"
         [tableData]="categories"
         
         (rowDataSelected)="onRowDataSelected($event)"
-        (ShowAddForm)="showAddCategoryForm()"
         (ShowEditForm)="showEditCategoryForm()"
     ></app-table>
 
     <!--MAIN-->
+    <app-modal
+        modalId="add"
+        modalTitle="Add Category"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
 
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
     
     <app-modal
         modalId="delete"

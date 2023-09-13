@@ -4,13 +4,16 @@
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="modal-dialog  modal-dialog-centered rounded-0 {{modalClass}}" >
-        <div class="modal-content rounded-0 p-2">
+    <div class="modal-dialog modal-dialog-centered rounded-0  " >
+        <div class="modal-content rounded-4 p-2 {{modalClass}} {{modalTheme}}">
 
             <div class="modal-title-container mb-0 container">
                 <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
                     <div class="modal-title text-start">
-                        <h1 class="modal-title fs-4 fw-bolder lh-1 {{modalTitleClass}}">{{modalTitle}}</h1>
+                        <div class="title d-flex align-items-center">
+                            <i *ngIf="modalHideIcon" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                            <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
+                        </div>
                         <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
                         <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="allowAnotherSub">
                             <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
@@ -20,10 +23,9 @@
                         </div>
                     </div>  
                     
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
+                    <button *ngIf="modalHideCloseBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                 
                 </div>
-                <hr class="divider m-0 mb-3">
             </div>
             
                 <app-category-form 

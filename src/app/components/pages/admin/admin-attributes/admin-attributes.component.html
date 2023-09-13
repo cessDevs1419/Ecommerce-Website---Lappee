@@ -9,6 +9,7 @@
         
         [searchBar]="true"
         [tableTools]="true"
+        [tableAction]="true"
         [Btntools]="true"
         
         [addBtn]="true"
@@ -16,13 +17,21 @@
 
         
         [tableHeader]="['ID','Name', 'Products']"
-        [tableRows]="['name', 'main_category']"
+        [tableRows]="['id', 'name', 'products']"
+        [tableData]="categories"
     
     ></app-table>
 
     <!--MAIN-->
 
-
-
+    <app-modal
+        modalId="add"
+        modalTitle="Add Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
+    
 
 </div>

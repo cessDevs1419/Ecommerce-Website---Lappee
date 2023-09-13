@@ -41,6 +41,9 @@ export class ModalComponent {
 	@Input() modalSubTitleClass!: string;
     @Input() modalinfoTitle!: any;
 	@Input() modalClass!: string;
+	@Input() modalHideCloseBtn!: boolean;
+	@Input() modalHideIcon!: boolean;
+	@Input() modalIcon!: string;
 	
 	@Input() selectedRowData: any;
 	@Input() modalDeleteCategory!: boolean;
@@ -56,6 +59,10 @@ export class ModalComponent {
 	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
+	
+	//modal theme
+	modalTheme: string = 'table-bg-dark';
+	modalTitleColor : string = 'dark-theme-text-color';
 	
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
