@@ -1,0 +1,45 @@
+<form *ngIf="formAddAttribute" [formGroup]="addAttributeForm" (ngSubmit)="onAttributeAddSubmit()" >
+    <div class="container">
+        <div class=" w-100 px-1">
+            <input formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Attribute Name">
+        </div> 
+        <div class="modal-footer mt-2 mb-2 p-0 border-0" >
+            <button 
+                type="button" 
+                data-bs-dismiss="modal"
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Cancel
+            </button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Confirm
+            </button>
+        </div> 
+    </div> 
+</form>
+
+<!-- <form *ngIf="formEditAttribute" [formGroup]="EditAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
+    <div class="container">
+        <div class=" w-100 px-1">
+            <input formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Attribute Name">
+        </div> 
+        <div class="modal-footer mt-2 mb-2 p-0 border-0" >
+            <button 
+                type="button" 
+                data-bs-dismiss="modal"
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Cancel
+            </button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Confirm
+            </button>
+        </div> 
+    </div> 
+</form> -->

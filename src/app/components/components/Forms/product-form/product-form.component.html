@@ -204,18 +204,20 @@
             <form [formGroup]="addProductForm"  (ngSubmit)="onProductAddSubmit()">
                 <div class="row px-0 w-100 m-auto" >
                     <div class="col-lg-6 ">
-                            <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
+                            <div class="container {{formColor}} p-4 rounded-4  m-auto mt-0">
                                 <div class="form-title text-start mb-4">
-                                    <h1 class="modal-title fs-4 fw-bolder mb-0" >ADD PRODUCT</h1>
-                                    <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">PRODUCT CONTROL</div>
+                                    <h1 class="modal-title {{formTextColor}} fs-4 fw-bolder mb-0" >Manage Products</h1>
+                                    <div class="modal-sub-title dark-form-subtitle fs-6 mt-0">Product Management</div>
+                                    <hr class="divider border-white">
                                 </div>
-                                <div class="body pt-0 pb-0">
                                 
+                                <div class="body pt-0 pb-0">
+                                    <p class="{{formTextColor}} fw-bold fs-5">Product Details</p>
                                     <div class="w-100 mb-3">
-                                        <label for="addproductName" class="form-label">Product Name</label>
+                                        <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                             id="addproductName" 
                                             name="addproductName" 
                                             formControlName="name"
@@ -227,9 +229,9 @@
                                                 
                                     <div class="row">
                                         <div class="col-sm-6 mb-3">    
-                                            <label for="addproductCategory" class="form-label">Category</label>
+                                            <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
                                             <select 
-                                                class="form-select" 
+                                                class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                 id="addproductCategory"
                                                 name="addproductCategory" 
                                                 (change)="onCategorySelect($event)"
@@ -241,26 +243,13 @@
                                             </select>
                                         </div>
                                         
-                                        <div class="col-sm-6 mb-3">    
-                                            <label for="addproductSubCategory" class="form-label">Sub Category</label>
-                                            <select 
-                                                class="form-select" 
-                                                id="addproductSubCategory" 
-                                                name="addproductSubCategory" 
-                                                formControlName="subcategory" 
-                
-                                            >
-                
-                                                <option *ngFor="let subCategory of (filteredSubCategories | async) ?? []" [value]="subCategory.id">{{ subCategory.name }}</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     
                                     
-                                    <div class="mb-3">
-                                        <label for="addproductDescription" class="form-label">Product Description</label>
+                                    <div class="mb-4">
+                                        <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
                                         <textarea 
-                                            class="form-control" 
+                                            class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                             id="addproductDescription" 
                                             name="addproductPriceDescription" 
                                             rows="3" 
@@ -268,26 +257,51 @@
                                             required
                                         ></textarea>
                                     </div>
-                                    <hr class="divider">
+                                    
+                                    <hr class="divider border-white mt-4 mb-3">
+                                    
+                                    <div class="title-container mb-3 ">
+                                        <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
+                                    </div>
+                                    
+                                    <div class="title-container mb-3 ">
+                                        <p class="{{formTextColor}}">Add Images</p>
+                                    </div>
                                     
                                     <div class="d-flex flex-wrap justify-content-start w-100">
-                                        <div *ngFor="let control of this.imageList.controls; let i = index" class="image-container bg-dark-grey btn mb-2 mx-auto d-flex justify-content-end align-items-start rounded-0 p-1">
-                                            <button type="button" class="btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
+                                        <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
+                                            <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
                                                 <i class="bi bi-x text-white"></i>
                                             </button>
+                                            <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
                                         </div>
-                                        <button type="button" (click)="selectFileForAdding()" class="mx-auto border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                            <span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
+                                        <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                            <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
                                             <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                         </button>
                                     </div>
+                                    
 
                                     
-                                    <div class="body pt-0 pb-0 mt-3 mb-5">
-                                        <p class="fw-bold text-dark-emphasis">Variant List</p>
+                                    <div class="body pt-0 pb-0 mt-3 ">
+                                        <hr class="divider border-white mt-4 mb-3">
+                                        <div class="title-container mb-2 d-flex ">
+                                            <h3 class="{{formTextColor}} fs-5">Product Variants</h3>
+                                            <button 
+                                                type="btn"
+                                                class=" productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#variants"
+                                                (click)="showVariantForms()"
+                                            >
+                                            <i class="bi bi-plus-lg"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- hide this validation when variantsList is empty or when the button on the top is click-->
                                         <div 
                                             class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
-                                            *ngIf="variantsList.length < 1"
+                                            *ngIf="variantsList.length < 1 && hideVariantValidationContainer"
                                         >
                                             <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
                                         </div>
@@ -344,169 +358,98 @@
                                             </li>
                                         </ul>
                                         
-                                    </div>
-                                    
-                                    <div class="modal-footer border-0">
-                                        <button  
-                                            type="button" 
-                                            class="btn btn-muted mx-2" 
-                                            *ngIf="cancel"
-                                            (click)="cancelAction('add-prod-to-prod-management')"
-                                        >
-                                            CANCEL
-                                        </button>
-                                        
-                                        <button 
-                                            type="button" 
-                                            class="btn btn-muted mx-2" 
-                                            *ngIf="done"
-                                            (click)="doneAction('add-prod-to-prod-management')"
-                                        >
-                                            DONE
-                                        </button>
-                                        <button 
-                                            type="submit" 
-                                            class="btn btn-primary bg-light-primary"
-                                            [disabled]="variantsList.length < 1"
-                                            >
-                                            ADD PRODUCT
-                                        </button>
-                                    </div>   
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-lg-6 mt-lg-0 mt-4">
-                        <div class="container p-4 rounded-4 bg-white m-auto mt-0 container-shadow">
-                            <div class="form-title text-start mb-4">
-                                <h1 class="modal-title fs-4 fw-bolder" >ADD PRODUCT VARIANT</h1>
-                                <div class="modal-sub-title text-dark-emphasis fs-6">VARIANTS OF PRODUCT</div>
-                            </div>
-                            
-                            <div class="body pt-0 pb-0">
-                                <div class="form-body pt-0 pb-0 " >
+                                        <!-- show this when the button on the top is click   -->
+                                        <div *ngIf="showVariantFormContainer" class="container p-2 rounded-4 m-auto mt-0">
+                                            <div class="form-body pt-0 pb-0 " >
+                                                <form [formGroup]="addVariantForm"  (ngSubmit)="onaddProductVariants()">
+                                                    <div class="w-100 mb-3">
+                                                        <label class="form-label {{formTextColor}}">Variant Name</label>
+                                                        <input 
+                                                            type="text" 
+                                                            class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                            name="addVariantName" 
+                                                            formControlName="name"
+                                                            placeholder="Variant name"
+                                                            required
+                                                        >
+                                                    </div>
+                                                    
+                                                    <div class="row mb-3">
+                                                        <div class="col-sm-6 mb-3">
+                                                            <label for="addvariantQty" class="form-label {{formTextColor}}">Quantity</label>
+                                                            <input 
+                                                                type="number" 
+                                                                class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                id="addvariantQty" 
+                                                                name="addvariantQty" 
+                                                                [value]="1"
+                                                                
+                                                                required
+                                                            >
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-6 mb-3">
+                                                            <label for="addvariantPrice" class="form-label {{formTextColor}}">Price</label>
+                                                            <input 
+                                                                type="number" 
+                                                                class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                id="addvariantPrice" 
+                                                                name="addvariantPrice" 
+                                                                [value]="1"
+                                                                
+                                                                required
+                                                                step="0.01"
+                                                            
+                                                                [placeholder]="01.01"
+                                                                (click)="addVariantForm.get('price')?.setValue(null)"
+                                                            >
+                                                            <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
+                                                                price must be 2 decimal places, 00.00
+                                                                [class.border]="isDecimal(addVariantForm.get('price')?.value)"
+                                                                [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
+                                                            </p> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="title-container mb-3 d-flex  p-0">
+                                                        <h3 class="{{formTextColor}} fs-5 ">Attributes</h3>
+                                                        <button class=" productBtnOpener mt-0 d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#attributes">
+                                                        <i class="bi bi-plus-lg"></i>
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <!-- Needed to display   -->
+                                                    <ul class="list-unstyled d-flex flex-wrap justify-content-between">
+                                                        <li class="text-decoration-none mb-3 position-relative d-flex align-items-center" *ngFor="let item of attributesListName.controls; let i = index">
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                [value]="item.value"
+                                                                required
+                                                            >
+                                                            <button class="btn text-white position-absolute end-0 mt-0" (click)="removeAttribute(i)" >X</button>
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                    <hr class="divider border-white ">
                                 
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addproductSize" class="form-label">Size</label>
-                                            <input 
-                                                type="text" 
-                                                class="form-control" 
-                                                id="addproductSize" 
-                                                name="addproductSize" 
-                                                formControlName="size"
-                                                placeholder="sizes"
-                                                required
-                                            >
-                
-                                        </div>
-                                        
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addvariantPrice" class="form-label">Price</label>
-                                            <input 
-                                                type="number" 
-                                                class="form-control" 
-                                                id="addvariantPrice" 
-                                                name="addvariantPrice" 
-                                                [value]="1"
-                                                formControlName="price"
-                                                required
-                                                step="0.01"
+                                                    <div class="modal-footer" *ngIf="attributesListName.length > 0">
+                                                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                    </div>
+                                                </form>
+                                                
                                             
-                                                [placeholder]="01.01"
-                                                (click)="addVariantForm.get('price')?.setValue(null)"
-                                            >
-                                            <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
-                                                price must be 2 decimal places, 00.00
-                                                [class.border]="isDecimal(addVariantForm.get('price')?.value)"
-                                                [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
-                                            </p> -->
-                                        </div>
-                
+                                            </div>
+                                        </div>   
                                     </div>
                                     
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addvariantQty" class="form-label">Stock</label>
-                                            <input 
-                                                type="number" 
-                                                class="form-control" 
-                                                id="addvariantQty" 
-                                                name="addvariantQty" 
-                                                formControlName="stock"
-                                                placeholder="300"
-                                                required
-                                                [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
-                                                [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
-                                            >
-                                            <p *ngIf="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value">
-                                                stock should be higher than limit
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addvariantQtyLimit" class="form-label">Stock Limit</label>
-                                            <input 
-                                                type="number" 
-                                                class="form-control" 
-                                                id="addvariantQtyLimit" 
-                                                name="addvariantQtyLimit" 
-                                                formControlName="stock_limit"
-                                                placeholder="30"
-                                                required
-                                                [class.border]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
-                                                [class.border-danger]="addVariantForm.get('stock')?.value < addVariantForm.get('stock_limit')?.value"
-                                            >
-                
-                                        </div>
-                
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addproductColor" class="form-label">Color</label>
-                                            <input 
-                                                type="color" 
-                                                class="form-control form-control-color border w-100" 
-                                                id="addproductColor" 
-                                                name="addproductColor" 
-                                                formControlName="color"
-                                                placeholder="#XXXXXX"
-                                                pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-                                                [ngClass]="{'border-danger': addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty}"
-                                            >
-                                            <p *ngIf="addVariantForm.get('color')?.invalid && addVariantForm.get('color')?.dirty">
-                                                Color must be in the hex format "#3C3C3C".
-                                            </p>
-                                        </div>
-                                        
-                                        <div class="col-sm-6 mb-3">
-                                            <label for="addproductColorTitle" class="form-label">Color Title</label>
-                                            <input 
-                                                type="text" 
-                                                class="form-control" 
-                                                id="addproductColorTitle" 
-                                                name="addproductColorTitle" 
-                                                formControlName="color_title"
-                                                placeholder="color name"
-                                            >
-                                        </div>
-                
-                                    </div>
-                                    
-                                    <div class="modal-footer border-0 mt-4" >
-                                        <button 
-                                            type="submit" 
-                                            class="btn btn-primary bg-light-primary" 
-                                            
-                                        >
-                                            ADD VARIANT
-                                        </button>
-                                    </div>  
                                 </div>
-            
-                                <!-- *ngIf="variantsList.length > 0 && !showForm" -->
+                                
+                                
                             </div>
-                        </div>
                     </div>
                 </div>
             </form>
@@ -1572,3 +1515,38 @@
                 </div>
             </div>
         </div> -->
+        
+        <ng-container *ngIf="formSelectAttribute" >
+                <div  class="attribute-list border border-dark-subtle rounded-2 mx-3">
+                    <div class="input-group mb-3">
+                        <input type="text" class="{{formInputColor}} bg-transparent form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
+                        <button class="bg-transparent input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                            <i class="bi bi-search {{formTextColor}}"></i>
+                        </button>
+                    </div>
+                    <!-- ATTRIBUTE LIST -->
+                    <form  [formGroup]="selectedAttributeForm">
+                        <ul class="list-unstyled px-4 " >
+                            <li class="text-decoration-none m-auto mb-2 " *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                <label >
+                                    <div class="input-group d-flex align-items-center">
+                                        <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
+                                        type="checkbox" 
+                                        (change)="toggleAttribute(item.id, item.name)" 
+                                        [checked]="isSelected(item.id)"
+                                        />
+                                        <p class="mx-2 m-auto cursor-pointer {{formTextColor}}">{{ item.name }}</p>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal" (click)="removeAllAttribute()">Cancel</button>
+                    <button type="submit" class="btn btn-primary"  data-bs-dismiss="modal">Confirm</button>
+                </div>
+        </ng-container>
+        
+        
+        

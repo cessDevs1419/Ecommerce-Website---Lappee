@@ -1,12 +1,12 @@
 import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, filter, first, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, filter, first, forkJoin, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 
 import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { formatAdminCategories, formatAdminSubcategories, formatProducts} from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminSubcategories, formatAttributes, formatProducts} from 'src/app/utilities/response-utils';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
@@ -17,6 +17,7 @@ import { Product } from 'src/assets/models/products';
 import { Location } from '@angular/common';
 import { Variant } from 'src/assets/models/products';
 import * as bootstrap from 'bootstrap';
+import { AttributesService } from 'src/app/services/attributes/attributes.service';
 
 @Component({
     selector: 'app-product-form',
@@ -44,6 +45,7 @@ export class ProductFormComponent {
     @Input() selectedRowData: any;
     @Input() formAddProduct!: boolean;
     @Input() formEditProduct!: boolean;
+    @Input() formSelectAttribute!: boolean;
     @Input() formAddVariant!: boolean;
     @Input() formAdditionalVariant!: boolean;
     @Input() formEditVariant!: boolean;
@@ -53,6 +55,9 @@ export class ProductFormComponent {
     @Input() formEditDatabaseVariant!: boolean;
     @Input() formEditAdditionalVariant!: boolean;
     
+    private refreshData$ = new Subject<void>();
+	public searchString: string;
+	
     addProductForm: FormGroup;
     addVariantForm: FormGroup;
 	editProductForm: FormGroup;
@@ -61,16 +66,20 @@ export class ProductFormComponent {
 	deleteProductForm: FormGroup;
 	deleteVariantForm: FormGroup;
 	restockProductForm: FormGroup;
-    
+	selectedAttributeForm: FormGroup;
+
 	
 	categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     edit_sub_categories!: Observable<AdminSubcategory[]>;
 	filteredSubCategories!: Observable<AdminSubcategory[]>;
+	attributes!: Observable<AdminCategory[]>;
     products!: Observable<Product[]>;
     products_sub!: Observable<Product[]>;
     
     imageList: FormArray = this.formBuilder.array([]);
+    attributesListName: FormArray = this.formBuilder.array([]);
+    attributesListId: FormArray = this.formBuilder.array([]);
     variantsList: FormArray = this.formBuilder.array([]);
     //Database Variant place here if there's edit place here too also additional variant
     EditFormvariantsList: FormArray = this.formBuilder.array([]); 
@@ -88,30 +97,42 @@ export class ProductFormComponent {
     selectedVariants: any[] = [];
     selectedSubCategoryId: string;
     
-    
+    hideVariantValidationContainer: boolean = true;
+    showVariantFormContainer: boolean = false;
     index: number;
     Additionalindex: number;
     variant_id: string;
     done: boolean;
     cancel: boolean = true; 
-
+    selectedImages: string[] = [];
+    
+    //theme
+    formColor: string = "dark-form-bg"
+    formTextColor: string = "dark-theme-text-color"
+    formInputColor: string = "text-white"
+    formBorderColor: string = "dark-theme-border-color"
     
     constructor(
 	    private http: HttpClient,
 	    private category_service: CategoriesService,
 	    private sub_category_service: SubcategoriesService,
         private product_service: ProductsService,
+        private attribute_service: AttributesService,
         private errorService: ErrorHandlingService,
 	    private formBuilder: FormBuilder,
 	    private router: Router,
 	    private formDataService: FormsDataService,
 	    private variantService: VariantsService,
+	    private attributeService: AttributesService,
 	    private location: Location,
 	    private route: ActivatedRoute,
-	    private cdr: ChangeDetectorRef
+	    private cdr: ChangeDetectorRef,
+	    private cdRef: ChangeDetectorRef
     ) 
     {
         //get variants
+        this.attributesListName = this.attribute_service.getSelectedAttributesName()
+        this.attributesListId = this.attribute_service.getSelectedAttributesID()
         this.imageList = this.product_service.getImageList()
         this.variantsList = this.variantService.getVariants()
         this.EditFormvariantsList = this.variantService.getDatabaseVariant();
@@ -120,10 +141,14 @@ export class ProductFormComponent {
         this.DeletedvariantsList = this.variantService.getDeletedVariant();
         //products
         
+        this.selectedAttributeForm = this.formBuilder.group({
+            selectedCheckboxesId: this.formBuilder.array([]),
+            selectedCheckboxesName: this.formBuilder.array([])
+        });
+        
 	    this.addProductForm = this.formBuilder.group({
 	        name: ['', Validators.required],
             category: ['', Validators.required],
-            subcategory: ['', Validators.required],
 	        description: ['', Validators.required],
 	        images: this.imageList,
 
@@ -150,14 +175,20 @@ export class ProductFormComponent {
         });
         
         //variants
+        // this.addVariantForm = this.formBuilder.group({
+        //     size: ['', Validators.required],
+        //     stock: ['', Validators.required],
+        //     stock_limit: ['', Validators.required],
+        //     price: [1.01, [Validators.required]], //Validators.pattern(/^\d+\.\d{1,2}$/)  
+        //     color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
+        //     color_title: ['', Validators.required],
+        // },{ validators: this.stockHigherThanLimitValidator });
+        
         this.addVariantForm = this.formBuilder.group({
-            size: ['', Validators.required],
-            stock: ['', Validators.required],
-            stock_limit: ['', Validators.required],
-            price: [1.01, [Validators.required]], //Validators.pattern(/^\d+\.\d{1,2}$/)  
-            color: ['', [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-            color_title: ['', Validators.required],
-        },{ validators: this.stockHigherThanLimitValidator });
+            name: ['', Validators.required],
+            quantity: ['', Validators.required],
+            price: ['', Validators.required],
+        });
         
         this.editVariantForm = this.formBuilder.group({
             variant_id: [''],
@@ -189,6 +220,12 @@ export class ProductFormComponent {
                 const selectedSubCategoryId = this.selectedRowData.sub_category_id; 
                 return adminSubcategories.filter(subCategory => subCategory.id === selectedSubCategoryId);
             })
+        );
+        
+        this.attributes = this.refreshData$.pipe(
+            startWith(undefined), 
+            switchMap(() => this.attribute_service.getAttribute()),
+            map((Response: any) => formatAttributes(Response))
         );
         
         const savedFormData = this.formDataService.getFormData();
@@ -231,6 +268,72 @@ export class ProductFormComponent {
         
 	}
 
+    refreshTableData(): void {
+        this.refreshData$.next();
+    }
+    
+    confirmAttributes(): void {
+
+    }
+    
+    get selectedCheckboxesId(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+    }
+    
+    get selectedCheckboxesName(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+    }
+    
+    isSelected(value: string): boolean {
+        const selectedCheckboxesIdArray = this.attributesListId
+        return selectedCheckboxesIdArray.value.includes(value);
+    }
+    
+    toggleAttribute(id: string, name: string) {
+        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+    
+        // Check if the id is already present in the selectedCheckboxesId array
+        const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
+    
+        if (idIndex === -1) {
+          // If id is not present, add both id and name to their respective arrays
+            selectedCheckboxesIdArray.push(this.formBuilder.control(id));
+            selectedCheckboxesNameArray.push(this.formBuilder.control(name));
+            this.attribute_service.postSelectedAttribute(this.formBuilder.control(id), this.formBuilder.control(name))
+        } else {
+          // If id is already present, remove it from both arrays (toggle off)
+            selectedCheckboxesIdArray.removeAt(idIndex);
+            selectedCheckboxesNameArray.removeAt(idIndex);
+            this.attribute_service.removeSelectedAttribute(idIndex)
+        }
+
+    }
+    
+    removeAttribute(index: number){
+        this.attribute_service.removeSelectedAttribute(index)
+    }
+    
+    removeAllAttribute() {
+        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+    
+        // Clear both FormArrays
+        selectedCheckboxesIdArray.clear();
+        selectedCheckboxesNameArray.clear();
+    
+        // You can also reset the form if needed
+        this.selectedAttributeForm.reset();
+        this.attribute_service.removeAllSelectedAttribute()
+        console.log(this.selectedAttributeForm.value);
+    }
+    
+    
+    showVariantForms(){
+        this.hideVariantValidationContainer = false;
+        this.showVariantFormContainer = true;
+    }
+    
     //Validate
     stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
         const stockControl = control.get('stock');
@@ -302,13 +405,29 @@ export class ProductFormComponent {
         editInput?.click();
     }
     
+    fileUrlMap: Map<File, string> = new Map();
+
+    getFileKeys(): File[] {
+        return Array.from(this.fileUrlMap.keys());
+    }
+
+    convertFileToUrl(file: File) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            this.fileUrlMap.set(file, event.target?.result as string);
+        };
+
+        reader.readAsDataURL(file);
+    }
+    
     handleFileInput(event: any) {
         const files = event.target.files;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const fileControl = this.formBuilder.control(file);
             this.product_service.addImageToList(fileControl);
-            
+            this.convertFileToUrl(file);
         }
     }
     
@@ -656,7 +775,7 @@ export class ProductFormComponent {
 
         let formData: any = new FormData();
         formData.append('name', this.addProductForm.get('name')?.value);
-        formData.append('category', this.addProductForm.get('subcategory')?.value);
+        formData.append('category', this.addProductForm.get('category')?.value);
         formData.append('description', this.addProductForm.get('description')?.value);
         
         const imageFiles = this.addProductForm.get('images')?.value;
@@ -1005,14 +1124,12 @@ export class ProductFormComponent {
     async onaddProductVariants(): Promise<void> {
         if (this.addVariantForm.valid) {
             const newVariantFormGroup = this.formBuilder.group({
-                size: [this.addVariantForm.get('size')?.value, Validators.required],
-                stock: [this.addVariantForm.get('stock')?.value, Validators.required],
-                stock_limit: [this.addVariantForm.get('stock_limit')?.value, Validators.required],
-                price: [this.addVariantForm.get('price')?.value, Validators.required],
-                color: [this.addVariantForm.get('color')?.value, [Validators.required, Validators.pattern(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)]],
-                color_title: [this.addVariantForm.get('color_title')?.value],
+                name: [this.addVariantForm.get('name')?.value, Validators.required],
+                quantity: [this.addVariantForm.get('quantity')?.value, Validators.required],
+                price: [this.addVariantForm.get('price')?.value, Validators.required]
             });
-            
+                
+                console.log(this.addVariantForm.value)
                 const newVariantFormValue = newVariantFormGroup.value;
                 if (
                     this.variantsList.controls.some((control) =>

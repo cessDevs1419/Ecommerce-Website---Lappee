@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
-import { formatAdminCategories } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
 
 @Component({
@@ -13,23 +14,26 @@ export class AdminAttributesComponent {
 	
 	
   selectedRowData: any;
-  categories!: Observable<AdminCategory[]>;
+  attributes!: Observable<AdminCategory[]>;
 
   private refreshData$ = new Subject<void>();
   
   constructor(
-		  private category_service: CategoriesService,
+		  private attribute_service: AttributesService,
 	) {
     
 	}
 	
   ngOnInit(): void{
     
-    this.categories = this.refreshData$.pipe(
+    this.attributes = this.refreshData$.pipe(
         startWith(undefined), 
-        switchMap(() => this.category_service.getAdminCategories()),
-        map((Response: any) => formatAdminCategories(Response))
+        switchMap(() => this.attribute_service.getAttribute()),
+        map((Response: any) => formatAttributes(Response))
     );
+  
+    
+    
     
   }
 

@@ -80,6 +80,7 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { AdminAttributesComponent } from './components/pages/admin/admin-attributes/admin-attributes.component';
 import { AdminMainCategoriesComponent } from './components/pages/admin/admin-main-categories/admin-main-categories.component';
 import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-categories/admin-sub-categories.component';
+import { AttributeFormComponent } from './components/components/Forms/attribute-form/attribute-form.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-
     AdminAttributesComponent,
     AdminMainCategoriesComponent,
     AdminSubCategoriesComponent,
+    AttributeFormComponent,
 
   ],
   imports: [

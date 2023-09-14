@@ -8,7 +8,7 @@
 }
 
 .image-container{
-    min-width: 7.5rem;
+    max-width: 7.5rem;
     height: 7rem;
 }
 
@@ -23,3 +23,8 @@
     padding: 20px;
 }
 
+select option {
+    padding: 0;
+    background: #1E2029;
+    color: #fff;
+}

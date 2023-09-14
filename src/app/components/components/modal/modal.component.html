@@ -11,7 +11,11 @@
                 <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
                     <div class="modal-title text-start">
                         <div class="title d-flex align-items-center">
-                            <i *ngIf="modalHideIcon" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                            <ng-container *ngIf="modalHideIcon">
+                                <i *ngIf="modalIcon === 'add'" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'edit'" class="bi bi-pencil-square fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'delete'"  class="bi bi-trash fs-5 me-2 {{modalTitleColor}}"></i>
+                            </ng-container>
                             <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
                         </div>
                         <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
@@ -27,6 +31,28 @@
                 
                 </div>
             </div>
+                
+                <app-attribute-form 
+                    *ngIf="modalAddAttribute"
+                    [formAddAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+                
+                <app-category-form 
+                    *ngIf="modalAddCategory"
+                    [formAddCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
             
                 <app-category-form 
                     *ngIf="modalDeleteCategory"
@@ -63,6 +89,18 @@
                 >
                 </app-product-form> 
                 
+                <app-product-form
+                    *ngIf="modalSelectAttribute"
+                    [formSelectAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                >
+                </app-product-form> 
+            
                 <app-accounts-form
                     *ngIf="modalBanAccounts"
                     [formBanAccount]="true"

@@ -31,6 +31,11 @@ body {
     border: #959BA5;;
 }
 
+.productBtnOpener{
+    width: .5rem;
+    height: 1.5rem;
+}
+
 .dark-subtle-btn{
     background: #16181F;
 }
@@ -39,10 +44,21 @@ body {
     color: #FFFFFFB2;
 }
 
+.dark-theme-border-color{
+    border: #FFFFFFB2;
+}
+
 .dark-theme-heading-text-color{
     color: #1C92FF;
 }
 
+.dark-form-bg{
+    background: #1E2029;
+}
+
+.dark-form-subtitle{
+    color: #FFFFFF30;
+}
 
 .cursor-pointer{
     cursor: pointer;

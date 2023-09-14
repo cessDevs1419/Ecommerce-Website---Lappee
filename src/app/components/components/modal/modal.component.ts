@@ -46,6 +46,12 @@ export class ModalComponent {
 	@Input() modalIcon!: string;
 	
 	@Input() selectedRowData: any;
+	@Input() modalAddAttribute!: boolean;
+	@Input() modalEditAttribute!: boolean;
+    @Input() modalDeleteAttribute!: boolean;
+    @Input() modalSelectAttribute!: boolean;
+    @Input() modalAddCategory!: boolean;
+    @Input() modalEditCategory!: boolean;
 	@Input() modalDeleteCategory!: boolean;
 	@Input() modalDeleteSubCategory!: boolean;
 	@Input() modalDeleteProduct!: boolean; 

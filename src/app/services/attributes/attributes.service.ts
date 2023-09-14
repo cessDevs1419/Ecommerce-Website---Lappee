@@ -3,13 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GETAttributesAdmin, PostAttributeAdmin } from '../endpoints';
 import { AttributeList, Attributes } from 'src/assets/models/attributes';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AttributesService {
 
-  constructor(private http: HttpClient) { 
+  private attributesID: FormArray = this.formBuilder.array([]);
+  private attributesNAME: FormArray = this.formBuilder.array([]);
+
+  constructor(private http: HttpClient,
+    private formBuilder: FormBuilder
+  ) { 
 
   }
   
@@ -29,5 +35,28 @@ export class AttributesService {
   postAttribute(data: FormData): Observable<any> {
       return this.http.post<Attributes>(PostAttributeAdmin, data, this.httpOptions);
   } 
+  
+  getSelectedAttributesID(): FormArray {
+    return this.attributesID;
+  }
+  
+  getSelectedAttributesName(): FormArray {
+    return this.attributesNAME;
+  }
+  
+  postSelectedAttribute(id: FormControl, name: FormControl): void {
+    this.attributesID.push(id)
+    this.attributesNAME.push(name)
+  } 
+  
+  removeSelectedAttribute(index: number){
+    this.attributesID.removeAt(index)
+    this.attributesNAME.removeAt(index)
+  }
+  
+  removeAllSelectedAttribute(){
+    this.attributesID.clear()
+    this.attributesNAME.clear()
+  }
   
 }

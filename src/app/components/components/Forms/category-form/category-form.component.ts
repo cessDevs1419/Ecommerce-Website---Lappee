@@ -60,6 +60,7 @@ export class CategoryFormComponent {
     attributes!: Observable<AdminCategory[]>;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
+    
     private refreshData$ = new Subject<void>();
 
     editCategories: string;

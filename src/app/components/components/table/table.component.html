@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-    
+
     
         <div class="table-container  overflow-x-auto">
             <table class="table table-striped" *ngIf="paginate === true">
@@ -263,7 +263,7 @@
                     </tr>
                 </thead>
                 
-                <tr *ngFor="let item of (tableData | async | searchFilter: searchString)" >
+                <tr *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
                     <td class="{{textcolor}} text-center pt-3 text-nowrap max-text text-truncate overflow-hidden">
                         <input [checked]="isChecked(item.id)" (change)="toggleSelection(item, $event)" class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox"  />
                     </td>
@@ -276,18 +276,35 @@
                     <td *ngIf="tableAction" class="{{textcolor}}  pt-3 text-nowrap max-text text-truncate overflow-hidden">
                         <button 
                             id="actionBtn" 
-                            class="actionbtn position-relative btn btn-primary d-flex align-items-center justify-content-center p-2 bg-transparent border {{bordercolor}} {{textcolor}}"
-                            (click)="showAction()"
-                            
+                            class="actionbtn position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                            [class.activebtn]="activeButtonIndex === i"
+                            (click)="showAction(i)"
+
                             > 
                             <i class="bi bi-three-dots fs-5"></i> 
                         </button>
                     </td>
-                    <!-- <div *ngIf="showActionButtons" class="hover-div">
-                        <button class="btn">Edit</button>
-                        <hr class="divider">
-                        <button class="btn">Delete</button>
-                    </div> -->
+                    <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="position-absolute end-0">
+                        <div class="action-container position-relative p-0 d-block bg-white rounded-3 hover-div">
+                            <button 
+                                type="button"
+                                data-bs-toggle="modal" data-bs-target="#edit"
+                                class="edit-btn w-100 rounded-3 rounded-bottom-0"
+                                (click)="sendRowData(item)"
+                                > 
+                                Edit
+                            </button>
+                            
+                            <button 
+                                type="button"
+                                data-bs-toggle="modal" data-bs-target="#delete"
+                                class="edit-btn w-100 rounded-3 rounded-top-0"
+                                (click)="sendRowData(item)"
+                                > 
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 </tr>
             </table>
         </div>
@@ -330,7 +347,12 @@
                     </div>
                 </div>
                 <div class="col-sm-6 d-flex justify-content-end">
-                    <button  class="btn rounded-5 {{tabletitlecolor}} {{actionbarbtnbg}}">
+                    <button  
+                        type="button"
+                        data-bs-toggle="modal" data-bs-target="#delete"
+                        [title]="'Delete'"
+                        class="btn rounded-5 {{tabletitlecolor}} {{actionbarbtnbg}}"
+                    >
                         <i class="bi bi-trash"></i>
                         Delete
                     </button>

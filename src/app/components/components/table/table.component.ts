@@ -94,7 +94,8 @@ export class TableComponent {
 	
 	selectedIds: number[] = [];
 	checkedState: { [key: number]: boolean } = {};
-	showActionButtons = false;
+	rowActionVisibility: boolean[] = [];
+	activeButtonIndex: number | null = null;
 	
 	showTooltip: boolean;
 	currentPage: number = 1;
@@ -106,9 +107,24 @@ export class TableComponent {
 
 	searchFilter: string = '';
 
-	showAction(){
-		this.showActionButtons = true
-	} 
+	showAction(rowIndex: number) {
+		this.rowActionVisibility[rowIndex] = !this.rowActionVisibility[rowIndex];
+
+		for (let i = 0; i < this.rowActionVisibility.length; i++) {
+			if (i !== rowIndex) {
+				this.rowActionVisibility[i] = false;
+			}
+		}
+		
+		if (this.activeButtonIndex === rowIndex) {
+
+			this.activeButtonIndex = null;
+		} else {
+			this.activeButtonIndex = rowIndex;
+		}
+	}
+	
+	
 	toggleSelection(item: any, event: any) {
 		const target = event.target as HTMLInputElement;
 		const checked = target.checked;
