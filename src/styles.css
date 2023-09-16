@@ -15,6 +15,9 @@ body {
 
 }
 
+.text-light-subtle{
+    color: #d2d2d2;
+}
 .admin-bg-dark{
     background: #2E303D;
 }
@@ -58,6 +61,14 @@ body {
 
 .dark-form-subtitle{
     color: #FFFFFF30;
+}
+
+.dark-border-table{
+    border: 3px solid #3F4154;
+}
+
+.dark-border-checkbox{
+    border: 1.5px solid rgba(255, 255, 255, 0.20);
 }
 
 .cursor-pointer{

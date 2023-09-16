@@ -36,6 +36,24 @@ export class AttributesService {
       return this.http.post<Attributes>(PostAttributeAdmin, data, this.httpOptions);
   } 
   
+  // patchAttribute(data: FormData): Observable<any> {
+  //     return this.http.patch<Attributes>(PatchAttributeAdmin, data, this.httpOptions);
+  // } 
+  
+  // deleteAttribute(attributeId: number): Observable<any> {
+  //   return this.http.delete(DeleteAttribute, {
+  //     headers: new HttpHeaders({
+  //       'Accept': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Access-Control-Allow-Credentials': 'true'
+  //     }),
+  //     responseType: 'json',
+  //     body: {
+  //         id: attributeId
+  //       }
+  //   })
+  // }
+
   getSelectedAttributesID(): FormArray {
     return this.attributesID;
   }

@@ -1,10 +1,10 @@
 
-<div class="container position-relative  pb-5">
+<div class="container-fluid position-relative pb-4">
 
 
-    <div class=" table-container position-relative rounded-4 border {{bordercolor}} {{table_container_bg}} {{tableContainerClass}} ">
+    <div class="{{tableContainerClass}} overflow-hidden w-100 position-relative rounded-4 {{bordercolor}} {{table_container_bg}}  ">
     
-        <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 " *ngIf="tableHead">
+        <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 mb-3" *ngIf="tableHead">
             <div class="row w-100 mx-0">
                 <div class="col-lg-6 px-0">
                     <div class="table-title text-start">
@@ -86,7 +86,8 @@
         </div>
 
     
-        <div class="table-container  overflow-x-auto">
+        <div class="{{tableChildContainer}} overflow-x-auto  ">
+            <!--With Pagination-->
             <table class="table table-striped" *ngIf="paginate === true">
                 <thead>
                     <tr >
@@ -246,11 +247,20 @@
                 </tbody>
             </table>
             
-            <table class="table table-dark table-striped" *ngIf="paginate === false">
-                <thead class="border-0">
+            <!--Without Pagination -->
+            <table class="table table-striped" *ngIf="paginate === false">
+                <thead class="border-1 border">
                     <tr class="border border-dark">
-                        <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white p-3 text-nowrap" >
-                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox"  />
+                        <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white text-nowrap" >
+
+                            <div class="container cursor-pointer pb-1 mb-2 mt-0 d-flex align-content-center justify-content-center">
+                                <input 
+                                    class=" form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
+                                    type="checkbox"  
+                                    (change)="selectAll()"
+                                />
+                            </div>
+
                         </th>
     
                         <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white p-3 text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
@@ -263,50 +273,60 @@
                     </tr>
                 </thead>
                 
-                <tr *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
-                    <td class="{{textcolor}} text-center pt-3 text-nowrap max-text text-truncate overflow-hidden">
-                        <input [checked]="isChecked(item.id)" (change)="toggleSelection(item, $event)" class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" type="checkbox"  />
-                    </td>
+                <tbody class="">
+                    <tr *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
+                        <td class="{{textcolor}} ">
+                            <div class=" m-auto d-flex align-items-center justify-content-center p-2">
+                                <input [checked]="isChecked(item.id)" (change)="toggleSelection(item, $event)" class="form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" type="checkbox"  />
+                            </div>
+                        </td>
+                        
+                        <td class="m-auto " *ngFor="let row of tableRows">
+                            <div class=" m-auto d-flex align-items-center justify-content-center p-2 text-nowrap max-text text-truncate overflow-hidden">
+                                <label [ngClass]="row === 'id' ? 'text-uppercase':'' " class="{{textcolor}} ">{{ item[row] }}</label>
+                            </div>
+                        </td>
+                        
+                        <!--Enable this table Actions-->
+                        <td *ngIf="tableAction" class="{{textcolor}} position-relative ">
+                            <div class=" m-auto d-flex align-items-center p-2">
+                                <button 
+                                    id="actionBtn" 
+                                    class="actionbtn m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                                    [class.activebtn]="activeButtonIndex === i"
+                                    (click)="showAction(i)"
+        
+                                    > 
+                                    <i class="bi bi-three-dots fs-5"></i> 
+                                </button>
+                            </div>
+                            <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0">
+                                <div class="action-container border m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
+                                    <button 
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#edit"
+                                        class="edit-btn w-100 mt-0 rounded-3 rounded-bottom-0"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        Edit
+                                    </button>
+                                    
+                                    <button 
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#delete"
+                                        class="edit-btn w-100 rounded-3 rounded-top-0"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     
-                    <td class="{{textcolor}} text-center pt-3 text-nowrap max-text text-truncate overflow-hidden" *ngFor="let row of tableRows">
-                        {{ item[row] }}
-                    </td>
-                    
-                    <!--Enable this table Actions-->
-                    <td *ngIf="tableAction" class="{{textcolor}}  pt-3 text-nowrap max-text text-truncate overflow-hidden">
-                        <button 
-                            id="actionBtn" 
-                            class="actionbtn position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
-                            [class.activebtn]="activeButtonIndex === i"
-                            (click)="showAction(i)"
-
-                            > 
-                            <i class="bi bi-three-dots fs-5"></i> 
-                        </button>
-                    </td>
-                    <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="position-absolute end-0">
-                        <div class="action-container position-relative p-0 d-block bg-white rounded-3 hover-div">
-                            <button 
-                                type="button"
-                                data-bs-toggle="modal" data-bs-target="#edit"
-                                class="edit-btn w-100 rounded-3 rounded-bottom-0"
-                                (click)="sendRowData(item)"
-                                > 
-                                Edit
-                            </button>
-                            
-                            <button 
-                                type="button"
-                                data-bs-toggle="modal" data-bs-target="#delete"
-                                class="edit-btn w-100 rounded-3 rounded-top-0"
-                                (click)="sendRowData(item)"
-                                > 
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </tr>
+                </tbody>
             </table>
+            
         </div>
     
     
@@ -336,11 +356,11 @@
     
     </div>
     
-    <div *ngIf="selectedIds.length > 0" class="actionbar w-100 m-0 ms-0 start-0 position-absolute  d-flex justify-content-center  bottom-0">
+    <div *ngIf="selectedIds.length > 0" class="actionbar w-100 m-0 ms-0 start-0 position-absolute  d-flex justify-content-center  bottom-0 mb-3">
         <div class="bar rounded-5 p-2">
             <div class="row align-items-center p-2">
                 <div class="col-sm-6 d-flex align-items-center">
-                    <button (click)="removeAllSelected()" class="btn {{tabletitlecolor}}">X</button>
+                    <button (click)="removeAllSelected()" class="btn "><i class="bi bi-x {{tabletitlecolor}}"></i></button>
                     <div class="content d-flex align-items-center">
                         <label class="mx-2 lh-1 item-selected rounded-5 p-1 px-2 {{tabletitlecolor}}" > {{selectedIds.length}} </label>
                         <label class=" lh-1 {{tabletitlecolor}}" >Items Selected</label>

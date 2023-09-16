@@ -8,10 +8,10 @@
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
     
-    <div class="container p-0 ">
+    <div class="container-fluid px-3 form-container overflow-auto">
                 
             <!--categories-->
-                <app-category-form 
+                <!-- <app-category-form 
                     *ngIf="AddCategory"
                     formTitle="ADD CATEGORY"
                     formsubTitle="CATEGORY CONTROL"
@@ -32,10 +32,10 @@
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
+                ></app-category-form> -->
             
             <!--sub category -->
-                <app-category-form 
+                <!-- <app-category-form 
                     *ngIf="AddSubCategory"
                     formTitle="ADD SUB CATEGORY"
                     formsubTitle="CATEGORY CONTROL"
@@ -56,7 +56,7 @@
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
+                ></app-category-form> -->
             
 
             
@@ -83,7 +83,7 @@
                 >
                 </app-product-form>
 
-                <app-product-form
+                <!-- <app-product-form
                     *ngIf="AddVariant"
                     [formAddVariant]="true"
                     (ProductSuccess)="postSuccessToast($event)"
@@ -134,7 +134,7 @@
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                 >
-                </app-product-form>
+                </app-product-form> -->
     </div>
     
 </div>

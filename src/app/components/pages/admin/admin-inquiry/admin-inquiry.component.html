@@ -1,11 +1,12 @@
-<div class="container-md h-auto p-2">
+<div class="container-fluid h-auto">
   <app-table
     tableTitle="INQUIRIES"
     subTitle="MESSAGE FROM CUSTOMERS"
 
     [tableHead]="true"
-    tableContainerClass="p-4"
-    [paginate]="true"
+    tableContainerClass="p-4 table-container"
+    tableChildContainer="table-child-container"
+    [paginate]="false"
     
     [tableTools]="true"
     [searchBar]="true"

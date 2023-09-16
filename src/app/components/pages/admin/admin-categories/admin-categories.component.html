@@ -1,9 +1,10 @@
-<div class="container-md m-auto h-auto p-2 text-center" >
+<div class="container-fluid m-auto h-auto text-center" >
     <app-table
         tableTitle="Category Management"
         subTitle="Product Management"
         [tableHead]="true"
-        tableContainerClass="p-4"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
         [paginate]="false"
         
         [tableTools]="true"
@@ -36,28 +37,31 @@
     ></app-modal> 
     
     <app-modal
-        modalId="delete"
-        modalTitle="DELETE CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
+        modalId="edit"
+        modalTitle="Edit Category"
         modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="edit"
+    
+        [modalEditCategory]="true"
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
+    
+    <app-modal
+        modalId="delete"
+        modalTitle="Delete Category"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="delete"
     
         [modalDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
     ></app-modal> 
+
     
-    <!--SUB-->
-    
-    <app-modal
-        modalId="deleteSub"
-        modalTitle="DELETE SUB CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
-        modalClass="modal-md"
-        
-        [modalDeleteSubCategory]="true"
-        [selectedRowData]="selectedRowData"
-        (RefreshTable)="refreshTableData()"
-    ></app-modal> 
+
 
 
 </div>

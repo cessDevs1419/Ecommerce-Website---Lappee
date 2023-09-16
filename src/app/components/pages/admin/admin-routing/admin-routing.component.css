@@ -1,8 +1,12 @@
 .page-container{
     background: #2E303D;
-    min-height: calc(100vh - 72px);
+    min-height: 100vh;
     
     height: auto;
     width: calc(100% - 300px);
     margin-left: 300px;
+}
+
+.header-spacer{
+    min-height: 72px;
 }

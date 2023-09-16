@@ -1,7 +1,7 @@
-<div class="container-md m-auto h-auto p-2 pb-4" >
+<div class="container-fluid m-auto "  >
     
-    <div class="row p-3">
-        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 ">
+    <div class="row px-4">
+        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 pt-0">
             <div class="{{counter_bg}} border rounded-4 pt-4 panel-container text-center d-flex flex-column justify-content-center ">
                 <div class="panel-body ">
                     <!-- <div class="icon-container rounded-circle m-auto d-flex align-items-center justify-content-center">
@@ -13,7 +13,7 @@
 
             </div>
         </div> 
-        <div class="col-xl-3 col-lg-4 p-2 px-0 ps-md-2">
+        <div class="col-xl-3 col-lg-4 p-2 px-0 ps-md-2 pt-0">
             <div class="{{counter_bg}} border rounded-4 pt-4 panel-container text-center d-flex flex-column justify-content-center align-items-center">
                 <div class="panel-body ">
                     <!-- <div class="icon-container rounded-circle m-auto d-flex align-items-center justify-content-center">
@@ -30,7 +30,8 @@
         tableTitle="Manage Products"
         subTitle="Product Management"
         [tableHead]="true"
-        tableContainerClass="p-4"
+        tableContainerClass="p-4 table-container-lg"
+        tableChildContainer="table-child-container"
         [paginate]="false"
         
         [tableTools]="true"

@@ -30,7 +30,7 @@
 } */
 
 .dashboard-header{
-    min-height: 72px;  
+    min-height: 70px;  
     width: calc(100% - 300px);
     margin-left: 300px;
 }

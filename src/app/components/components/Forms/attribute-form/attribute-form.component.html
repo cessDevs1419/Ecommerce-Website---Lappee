@@ -21,10 +21,15 @@
     </div> 
 </form>
 
-<!-- <form *ngIf="formEditAttribute" [formGroup]="EditAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
+<form *ngIf="formEditAttribute" [formGroup]="editAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
     <div class="container">
         <div class=" w-100 px-1">
-            <input formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Attribute Name">
+            <input 
+                formControlName="name" 
+                type="text" 
+                class="form-control form-control-lg text-white bg-transparent tex border rounded-3" 
+                [value]="selectedRowData?.name"
+            >
         </div> 
         <div class="modal-footer mt-2 mb-2 p-0 border-0" >
             <button 
@@ -42,4 +47,16 @@
             </button>
         </div> 
     </div> 
-</form> -->
+</form>
+
+<form *ngIf="formDeleteAttribute" (ngSubmit)="onAttributeDeleteSubmit()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to delete this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-muted btn-primary" data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
+

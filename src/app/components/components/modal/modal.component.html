@@ -43,9 +43,42 @@
                     (CloseModal)="closeModal()"
                 ></app-attribute-form>
                 
+                <app-attribute-form 
+                    *ngIf="modalEditAttribute"
+                    [formEditAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+            
+                <app-attribute-form 
+                    *ngIf="modalDeleteAttribute"
+                    [formDeleteAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+        
                 <app-category-form 
                     *ngIf="modalAddCategory"
                     [formAddCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
+                
+                <app-category-form 
+                    *ngIf="modalEditCategory"
+                    [formEditCategory]="true"
                     [selectedRowData]="selectedRowData"
                     (CategorySuccess)="deleteSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
@@ -57,18 +90,6 @@
                 <app-category-form 
                     *ngIf="modalDeleteCategory"
                     [formDeleteCategory]="true"
-                    [selectedRowData]="selectedRowData"
-                    (CategorySuccess)="deleteSuccessToast($event)"
-                    (CategoryWarn)="WarningToast($event)"
-                    (CategoryError)="ErrorToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                    (CloseModal)="closeModal()"
-                ></app-category-form>
-                
-                
-                <app-category-form 
-                    *ngIf="modalDeleteSubCategory"
-                    [formDeleteSubCategory]="true"
                     [selectedRowData]="selectedRowData"
                     (CategorySuccess)="deleteSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"

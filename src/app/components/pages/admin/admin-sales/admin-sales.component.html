@@ -1,8 +1,8 @@
 
 
-<div class="container-md m-auto h-auto p-2" >
+<div class="container-fluid m-auto h-auto" >
     
-    <div class="row pb-3">
+    <div class="row pb-3 px-3">
         <div class="col-lg-4 ">
             <div class="container container-shadow-subtle h-100 bg-white rounded-4 p-3 d-flex align-items-center justify-content-between">
                 <div class="row w-100 m-auto ">
@@ -80,12 +80,14 @@
             </div>
         </div>
     </div>
+    
     <app-table
         tableTitle="TOTAL SALES"
         subTitle="PER PRODUCT"
         [tableHead]="true"
-        tableContainerClass="p-4"
-        [paginate]="true"
+        tableContainerClass="p-4 table-container-md"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
         
         [tableTools]="true"
         [searchBar]="true"

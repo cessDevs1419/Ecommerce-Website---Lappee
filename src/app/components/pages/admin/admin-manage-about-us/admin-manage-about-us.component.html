@@ -3,14 +3,15 @@
 </div>
 
 <div *ngIf="!showAddSectionForm">
-  <div class="container-md h-auto p-2">
+  <div class="container-fluid h-auto">
     <app-table
       tableTitle="MANAGE ABOUT US"
       subTitle="CONTENT MANAGEMENT"
       
       [tableHead]="true"
-      tableContainerClass="p-4"
-      [paginate]="true"
+      tableContainerClass="p-4 table-container"
+      tableChildContainer="table-child-container"
+      [paginate]="false"
 
       [tableHeader]="['SECTION HEADER', 'INFORMATION']"
       [tableRows]="['title', 'content']"

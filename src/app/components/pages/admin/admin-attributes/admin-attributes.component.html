@@ -1,10 +1,11 @@
 
-<div class="container-md m-auto h-auto p-2 text-center" >
+<div class="container-fluid m-auto h-auto text-center" >
     <app-table
         tableTitle="Attribute Management"
         subTitle="Product Management"
         [tableHead]="true"
-        tableContainerClass="p-4"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
         [paginate]="false"
         
         [searchBar]="true"
@@ -42,6 +43,7 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="edit"
+        [modalEditAttribute]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
     ></app-modal>
@@ -52,6 +54,8 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="delete"
+        
+        [modalDeleteAttribute]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
     ></app-modal>  

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component,EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component,ElementRef,EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
@@ -16,6 +16,9 @@ interface TableItem {
 })
 export class TableComponent {
 	
+	@ViewChild('checkboxDiv') checkboxDiv: ElementRef;
+    @ViewChild('checkboxInput') checkboxInput: ElementRef;
+
 	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowAddForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowEditForm: EventEmitter<any> = new EventEmitter<any>();
@@ -26,12 +29,13 @@ export class TableComponent {
 	table_container_bg: string = 'table-bg-dark'
 	tabletitlecolor: string = 'text-white'
 	tablesubtitlecolor: string = ''
-	textcolor: string = 'text-white'
+	textcolor: string = 'text-light-subtle'
 	borders: string = 'dark-subtle-borders'
 	btncolor: string = 'dark-subtle-btn'
 	tableHeaderbg: string = 'bg-header-dark'
 	actionbarbtnbg: string = 'item-selected'
-	bordercolor: string = 'border-color-dark'
+	bordercolor: string = 'dark-border-table'
+	checkboxcolor: string = 'dark-border-checkbox'
 	public searchString: string;
 	
 
@@ -77,6 +81,7 @@ export class TableComponent {
 	
 	//addClass to evey table element
 	@Input() tableContainerClass: string;
+	@Input() tableChildContainer: string;
 	@Input() searchBarclass: string;
 	@Input() addBtnclass: string;
 	@Input() addSubBtnclass: string;
@@ -124,6 +129,16 @@ export class TableComponent {
 		}
 	}
 	
+	selectAll() {
+		console.log("nagana")
+	}
+	toggleCheckbox() {
+		// Toggle the checkbox's checked property
+		const checkbox = this.checkboxInput.nativeElement as HTMLInputElement;
+		checkbox.checked = !checkbox.checked;
+		
+	}
+	
 	
 	toggleSelection(item: any, event: any) {
 		const target = event.target as HTMLInputElement;
@@ -144,6 +159,7 @@ export class TableComponent {
 	isChecked(id: number): boolean {
 		return this.checkedState[id] || false;
 	}
+
 	
 	removeAllSelected() {
 		this.selectedIds.forEach(id => (this.checkedState[id] = false));
@@ -214,7 +230,7 @@ export class TableComponent {
 
 	sendRowData(row: any) {
 	    this.rowDataSelected.emit(row);
-
+	    console.log(row)
 	}
 	
 	showAddForm(): void{

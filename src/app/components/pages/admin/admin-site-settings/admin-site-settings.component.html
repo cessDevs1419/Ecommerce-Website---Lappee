@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!showAddForm">
-  <div class="container-md m-auto h-auto p-2 pb-4" >
+  <div class="container-fluid m-auto h-auto p-2 pb-4" >
     <div class="row mb-5 row-cols-1 row-cols-lg-2 gy-5">
       <div class="col col-lg-4">
         <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
@@ -74,8 +74,9 @@
       subTitle="CONTENT MANAGEMENT"
       
       [tableHead]="true"
-      tableContainerClass="p-4"
-      [paginate]="true"
+      tableContainerClass="p-4 table-container-sm"
+      tableChildContainer="table-child-container"
+      [paginate]="false"
 
       [tableHeader]="['BANNER LABEL']"
       [tableRows]="['label']"
