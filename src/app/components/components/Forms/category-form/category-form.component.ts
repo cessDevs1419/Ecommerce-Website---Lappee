@@ -42,6 +42,7 @@ export class CategoryFormComponent {
     @Input() formEditSubCategory!: boolean;
     @Input() formDeleteSubCategory!: boolean;
     @Input() selectedRowData: any;
+    @Input() selectedRowDataForDelete: any;
     @Input() refreshTable: any;
     
     addAttributeForm: FormGroup;

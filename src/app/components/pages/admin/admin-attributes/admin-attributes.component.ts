@@ -14,6 +14,7 @@ export class AdminAttributesComponent {
 	
 	
   selectedRowData: any;
+  selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
 
   private refreshData$ = new Subject<void>();
@@ -40,7 +41,9 @@ export class AdminAttributesComponent {
 refreshTableData(): void {
   this.refreshData$.next();
 }
-
+onRowDataForDelete(rowData: any){
+  this.selectedRowDataForDelete = rowData;
+}
 onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
 

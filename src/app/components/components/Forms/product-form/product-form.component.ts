@@ -27,22 +27,21 @@ import { ThisReceiver } from '@angular/compiler';
 })
 export class ProductFormComponent {
     
-    private refreshData$ = new Subject<void>();
-	public searchString: string;
-	
     //theme
     formColor: string = "dark-form-bg"
     formTextColor: string = "dark-theme-text-color"
     formInputColor: string = "text-white"
     formBorderColor: string = "dark-theme-border-color"
 
+    private refreshData$ = new Subject<void>();
+	public searchString: string;
+	
     @ViewChild('priceInput', { static: false }) priceInputRef!: ElementRef<HTMLInputElement>;
     @ViewChild('openModalBtn') openModalBtn!: ElementRef;
     @ViewChild('modalRef') modalRef!: ElementRef;
     @ViewChild('dismiss1') dismissModal1: ElementRef;
-    @ViewChild('dismiss2') dismissModal2: ElementRef;
     
-	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
+    @Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
     @Output() CloseModal: EventEmitter<any> = new EventEmitter();
@@ -50,6 +49,7 @@ export class ProductFormComponent {
     @Output() DeleteVariant: EventEmitter<any> = new EventEmitter<any>();
 
     @Input() selectedRowData: any;
+    @Input() selectedRowDataForDelete: any;
     @Input() formAddProduct!: boolean;
     @Input() formEditProduct!: boolean;
     @Input() formSelectAttribute!: boolean;
@@ -58,39 +58,24 @@ export class ProductFormComponent {
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
-
+    //form group
     addProductForm: FormGroup;
+    editProductForm: FormGroup;
     addVariantForm: FormGroup;
     addAttributeForm: FormGroup;
-	editVariantForm: FormGroup;
+    editVariantForm: FormGroup;
 	deleteProductForm: FormGroup;
-	selectedAttributeForm: FormGroup;
-
-	categories!: Observable<AdminCategory[]>;
+    selectedAttributeForm: FormGroup;
+    
+    categories!: Observable<AdminCategory[]>;
 	attributes!: Observable<AdminCategory[]>;
     products!: Observable<Product[]>;
-    products_sub!: Observable<Product[]>;
     
+    variantsList: FormArray = this.formBuilder.array([]);
     imageList: FormArray = this.formBuilder.array([]);
     attributesListName: FormArray = this.formBuilder.array([]);
     attributesListId: FormArray = this.formBuilder.array([]);
-    getattributesListName: FormArray = this.formBuilder.array([]);
-    getattributesListId: FormArray = this.formBuilder.array([]);
-    variantsList: FormArray = this.formBuilder.array([]);
-
-    placeVariantTolist: any[] = [];
-
-    variantId: FormArray = this.formBuilder.array([]);
-    selectedDeleteVariant: Variant | undefined;
     
-    selectedSubCategory: null;
-    hideselectedsub: boolean = true;
-	showForm: boolean = false;
-    selectedVariants: any[] = [];
-    selectedSubCategoryId: string;
-    
-    hideVariantValidationContainer: boolean = true;
-    showVariantFormContainer: boolean = false;
     index: number;
     Additionalindex: number;
     variant_id: string;
@@ -98,13 +83,13 @@ export class ProductFormComponent {
     cancel: boolean = true; 
     selectedImages: string[] = [];
     isFormContainerVisible = false;
-
-
+    hideVariantValidationContainer: boolean = true;
+    showVariantFormContainer: boolean = false;
+    fileUrlMap: Map<File, string> = new Map();
     
     constructor(
 	    private http: HttpClient,
 	    private category_service: CategoriesService,
-	    private sub_category_service: SubcategoriesService,
         private product_service: ProductsService,
         private attribute_service: AttributesService,
         private errorService: ErrorHandlingService,
@@ -115,11 +100,9 @@ export class ProductFormComponent {
 	    private attributeService: AttributesService,
 	    private location: Location,
 	    private route: ActivatedRoute,
-	    private cdr: ChangeDetectorRef,
-	    private cdRef: ChangeDetectorRef
+
     ) 
     {
-        //get variants
         this.attributesListName = this.attribute_service.getSelectedAttributesName()
         this.attributesListId = this.attribute_service.getSelectedAttributesID()
         this.imageList = this.product_service.getImageList()
@@ -149,12 +132,9 @@ export class ProductFormComponent {
             attributeId: this.formBuilder.control(''), 
             attributeName: this.formBuilder.control(''),
         });
-        
-
-
     }
-
-	ngOnInit(): void{
+    
+    ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
@@ -164,98 +144,12 @@ export class ProductFormComponent {
             switchMap(() => this.attribute_service.getAttribute()),
             map((Response: any) => formatAttributes(Response))
         );
-        
-        this.addProductForm.valueChanges.subscribe((formData) => {
-            this.formDataService.saveFormData(formData);
-        });
 	}
 
     refreshTableData(): void {
         this.refreshData$.next();
     }
     
-    //Get and remove attributes
-    get selectedCheckboxesId(): FormArray {
-        return this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-    }
-    get selectedCheckboxesName(): FormArray {
-        return this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
-    }
-    isSelected(value: string): boolean {
-        const selectedCheckboxesIdArray = this.attributesListId
-        return selectedCheckboxesIdArray.value.includes(value);
-    }
-
-    toggleAttribute(id: string, name: string) {
-        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
-    
-        // Check if the id is already present in the selectedCheckboxesId array
-        const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
-    
-        if (idIndex === -1) {
-          // If id is not present, add both id and name to their respective arrays
-            selectedCheckboxesIdArray.push(this.formBuilder.control(id));
-            selectedCheckboxesNameArray.push(this.formBuilder.control(name));
-            this.attribute_service.postSelectedAttribute(this.formBuilder.control(id), this.formBuilder.control(name))
-        } else {
-          // If id is already present, remove it from both arrays (toggle off)
-            selectedCheckboxesIdArray.removeAt(idIndex);
-            selectedCheckboxesNameArray.removeAt(idIndex);
-            this.attribute_service.removeSelectedAttribute(idIndex)
-        }
-
-    }
-    
-    onSave(){
-    }
-    
-    removeAttribute(index: number){
-        this.attribute_service.removeSelectedAttribute(index)
-    }
-    removeAllAttribute() {
-        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
-    
-        // Clear both FormArrays
-        selectedCheckboxesIdArray.clear();
-        selectedCheckboxesNameArray.clear();
-    
-        // You can also reset the form if needed
-        this.selectedAttributeForm.reset();
-        this.attribute_service.removeAllSelectedAttribute()
-        console.log(this.selectedAttributeForm.value);
-    }
-    
-    
-    //Validate
-    stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
-        const stockControl = control.get('stock');
-        const stockLimitControl = control.get('stock_limit');
-    
-        if (stockControl && stockLimitControl) {
-            const stockValue = stockControl.value;
-            const stockLimitValue = stockLimitControl.value;
-    
-            if (stockValue !== null && stockLimitValue !== null && stockValue <= stockLimitValue) {
-                stockControl.setErrors({ stockNotHigherThanLimit: true });
-                return { stockNotHigherThanLimit: true };
-            } else {
-            // Reset the error when the condition is met
-            stockControl.setErrors(null);
-        }
-        }
-    
-        return null;
-    }
-    
-    isHexColor(color: string | null): boolean { 
-        if (!color) return false;
-        const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-        return hexColorPattern.test(color);
-    }
-    
-
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
         return new Promise((resolve) => {
@@ -265,8 +159,18 @@ export class ProductFormComponent {
         });
     }
     
-
-	//Get Image Value to Array
+    cancelAction(){
+        this.location.back()
+    }
+    
+    selectVariant(variant: Variant , index: number) {
+        this.index = index
+        console.log(variant, index)
+    }
+    
+    
+    
+//Get Image Value to Array
     selectFileForAdding() {
         const addInput = document.getElementById('addimages');
         addInput?.click();
@@ -275,7 +179,6 @@ export class ProductFormComponent {
         const editInput = document.getElementById('editimages');
         editInput?.click();
     }
-    fileUrlMap: Map<File, string> = new Map();
     getFileKeys(): File[] {
         return Array.from(this.fileUrlMap.keys());
     }
@@ -305,158 +208,88 @@ export class ProductFormComponent {
             this.fileUrlMap.delete(fileToRemove);
         }
     }
-    
     extractFileName(url: string): string {
         const parts = url.split('/'); 
         return parts[parts.length - 1]; 
     }
     
-
-    
-    
-    //Add Variant tools
-    showForms(value: any) {
-        this.route.paramMap.subscribe((params) => {
-		    const id = params.get('id');
-		    
-            switch(value){
-                case 'edit' : 
-                    this.showForm = true;
-                    this.router.navigate(['/admin/product-management','variant','additional/to',id]);
-                break
-                
-                default :
-                    this.showForm = true;
-                    this.router.navigate(['/admin/product-management','variant','add']);
-                break
-            }
-        });
+//Get and remove attributes
+    get selectedCheckboxesId(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
     }
-    
-    //route
-    navigateToProductManagement() {
-        this.location.back()
+    get selectedCheckboxesName(): FormArray {
+        return this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
     }
-    
-    cancelAction(){
-        this.location.back()
+    isSelected(value: string): boolean {
+        const selectedCheckboxesIdArray = this.attributesListId
+        return selectedCheckboxesIdArray.value.includes(value);
     }
+    toggleAttribute(id: string, name: string) {
+        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
     
-    async closeModal() {
-        this.dismissModal1.nativeElement.click();
-        this.dismissModal2.nativeElement.click();
-    }
+        // Check if the id is already present in the selectedCheckboxesId array
+        const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
     
-    //Place Variant to EditForm
-    async editVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        
-        this.editVariantForm.patchValue({
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-        
-        console.log(value)
-        this.variantService.setVariantToEditForm(this.editVariantForm, index);
-        
-        await this.asyncTask();
-        this.route.paramMap.subscribe(async (params) => {
-            this.router.navigate(['/admin/product-management', 'variant', 'edit']);
-        });
-    
-    }
-    
-    async editAdditionalVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        
-        this.editVariantForm.patchValue({
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-        
-        console.log(value)
-        this.variantService.setVariantToEditForm(this.editVariantForm, index);
-        
-        await this.asyncTask();
-        this.route.paramMap.subscribe(async (params) => {
-            this.router.navigate(['/admin/product-management', 'variant', 'edit/additional/from', value.product_id]);
-        });
-    
-    }
-
-    async editDatabaseVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        
-        this.editVariantForm.patchValue({
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-        
-        this.variantService.setVariantToEditForm(this.editVariantForm, index);
-        
-        await this.asyncTask();
-        this.router.navigate(['/admin/product-management', 'variant', 'edit/', value.variant_id, 'of', value.product_id]);
-    
-    }
-    
-    //Delete Variant
-    selectVariant(variant: Variant , index: number) {
-        this.selectedDeleteVariant = variant
-        this.index = index
-        console.log(variant, index)
-    }
-    
-    selectAdditionalVariant( index: number) {
-        this.Additionalindex = index
-    }
-
-    async removeVariants() {
-        const index = this.index
-        if (index >= 0 && index < this.variantsList.length) {
-            this.variantsList.removeAt(index);
+        if (idIndex === -1) {
+          // If id is not present, add both id and name to their respective arrays
+            selectedCheckboxesIdArray.push(this.formBuilder.control(id));
+            selectedCheckboxesNameArray.push(this.formBuilder.control(name));
+            this.attribute_service.postSelectedAttribute(this.formBuilder.control(id), this.formBuilder.control(name))
+        } else {
+          // If id is already present, remove it from both arrays (toggle off)
+            selectedCheckboxesIdArray.removeAt(idIndex);
+            selectedCheckboxesNameArray.removeAt(idIndex);
+            this.attribute_service.removeSelectedAttribute(idIndex)
         }
-        
-        this.variantService.deletefromDatabaseVariant(this.selectedDeleteVariant?.variant_id, index)
-       
-        
-        console.log(this.variantId)
 
-        
-        const productSuccess = {
-            head: 'Delete Variant',
-            sub: 'Successfully removed variant'
-        };
-        
-        this.ProductSuccess.emit(productSuccess);
-        
-        await this.asyncTask();
-        this.closeModal()
-        
     }
+    removeAttribute(index: number){
+        this.attribute_service.removeSelectedAttribute(index)
+    }
+    removeAllAttribute() {
+        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
     
-    async removeAdditionalVariants(){
-        const index = this.Additionalindex
+        // Clear both FormArrays
+        selectedCheckboxesIdArray.clear();
+        selectedCheckboxesNameArray.clear();
+    
+        // You can also reset the form if needed
+        this.selectedAttributeForm.reset();
+        this.attribute_service.removeAllSelectedAttribute()
+        console.log(this.selectedAttributeForm.value);
+    }
+    onSave(){
+    
+    }
+//Validate
+    stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
+        const stockControl = control.get('stock');
+        const stockLimitControl = control.get('stock_limit');
+    
+        if (stockControl && stockLimitControl) {
+            const stockValue = stockControl.value;
+            const stockLimitValue = stockLimitControl.value;
+    
+            if (stockValue !== null && stockLimitValue !== null && stockValue <= stockLimitValue) {
+                stockControl.setErrors({ stockNotHigherThanLimit: true });
+                return { stockNotHigherThanLimit: true };
+            } else {
+            // Reset the error when the condition is met
+            stockControl.setErrors(null);
+        }
+        }
+    
+        return null;
+    }
+    isHexColor(color: string | null): boolean { 
+        if (!color) return false;
+        const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+        return hexColorPattern.test(color);
+    }
 
-        await this.asyncTask();
-        this.closeModal()
-    }
-    
-    //check for duplicate variant
+//check for duplicate variant
     isDuplicateVariant(existingVariant: any, newVariant: any): boolean {
         return (
             existingVariant.name === newVariant.name &&
@@ -465,7 +298,7 @@ export class ProductFormComponent {
         );
     }
 
-    //For submission
+//For submission
     submit(mode: string, form: FormData, id: string): Observable<any> {
         switch(mode){
             case 'edit-product' :
@@ -483,10 +316,9 @@ export class ProductFormComponent {
             default:
             throw new Error(`Invalid mode: ${mode}`);
         }
-
+    
     }
     
-    //submission response
     handleResponse(
         response: any,
         
@@ -534,18 +366,42 @@ export class ProductFormComponent {
         }
         return throwError(() => error);
     }
-    
-    //Submit Functions
-    //showVarriant Forms
-    
+
+
+//Submit Functions
+//showVarriant Forms
     async showVariantForms(): Promise<void>{
         this.hideVariantValidationContainer = false;
         this.showVariantFormContainer = true;
         
         await this.onaddProductVariants()
     }
+    
+//Place Variant to EditForm
+    async editVariant(value: any, index: any): Promise<void>{
+        
+        this.index = index
+        
+        this.editVariantForm.patchValue({
+            size: value.size,
+            stock: value.stock,
+            stock_limit: value.stock_limit,
+            price: value.price,
+            color: value.color,
+            color_title: value.color_title,
+        });
+        
+        console.log(value)
+        this.variantService.setVariantToEditForm(this.editVariantForm, index);
+        
+        await this.asyncTask();
+        this.route.paramMap.subscribe(async (params) => {
+            this.router.navigate(['/admin/product-management', 'variant', 'edit']);
+        });
+    
+    }
 
-    //submit products
+//submit products
     async onProductAddSubmit(): Promise<void> {
 
         let formData: any = new FormData();
@@ -660,74 +516,75 @@ export class ProductFormComponent {
     
     }
 
-    //submit variants
+//submit variants
     async onaddProductVariants(): Promise<void> {
-        if (this.addVariantForm.valid) {
-            const newVariantFormGroup = this.formBuilder.group({
-                name: [this.addVariantForm.get('name')?.value, Validators.required],
-                quantity: [this.addVariantForm.get('quantity')?.value, Validators.required],
-                price: [this.addVariantForm.get('price')?.value, Validators.required]
-            });
+        // if (this.addVariantForm.valid) {
+        //     const newVariantFormGroup = this.formBuilder.group({
+        //         name: [this.addVariantForm.get('name')?.value, Validators.required],
+        //         quantity: [this.addVariantForm.get('quantity')?.value, Validators.required],
+        //         price: [this.addVariantForm.get('price')?.value, Validators.required]
+        //     });
                 
-                console.log(this.addVariantForm.value)
-                const newVariantFormValue = newVariantFormGroup.value;
-                if (
-                    this.variantsList.controls.some((control) =>
-                        this.isDuplicateVariant(control.value, newVariantFormValue)
-                    ) 
-                ) {
-                    const errorDataforProduct = {
-                        errorMessage: 'Add Another Variant',
-                        suberrorMessage: 'The data already exists',
-                    };
-                    this.ProductWarning.emit(errorDataforProduct);
-                }
-                else{
-                    this.variantService.addVariantToVariantsList(newVariantFormGroup);
-                    this.addVariantForm.reset();
-                    this.addVariantForm.markAsPristine();
-                    this.done = true
-                    this.cancel = false
+        //         console.log(this.addVariantForm.value)
+        //         const newVariantFormValue = newVariantFormGroup.value;
+        //         if (
+        //             this.variantsList.controls.some((control) =>
+        //                 this.isDuplicateVariant(control.value, newVariantFormValue)
+        //             ) 
+        //         ) {
+        //             const errorDataforProduct = {
+        //                 errorMessage: 'Add Another Variant',
+        //                 suberrorMessage: 'The data already exists',
+        //             };
+        //             this.ProductWarning.emit(errorDataforProduct);
+        //         }
+        //         else{
+        //             this.variantService.addVariantToVariantsList(newVariantFormGroup);
+        //             this.addVariantForm.reset();
+        //             this.addVariantForm.markAsPristine();
+        //             this.done = true
+        //             this.cancel = false
                     
                     
-                    const successVariants = {
-                        head: 'Add Variant',
-                        sub: 'Successfully added variants'
-                    };
+        //             const successVariants = {
+        //                 head: 'Add Variant',
+        //                 sub: 'Successfully added variants'
+        //             };
         
-                    this.ProductSuccess.emit(successVariants);
-                }
+        //             this.ProductSuccess.emit(successVariants);
+        //         }
 
             
-        } else {
-            this.addVariantForm.markAllAsTouched();
-            const emptyFields = [];
+        // } else {
+        //     this.addVariantForm.markAllAsTouched();
+        //     const emptyFields = [];
             
-                for (const controlName in this.addVariantForm.controls) {
-                    if (this.addVariantForm.controls.hasOwnProperty(controlName)) {
-                        const variantControl = this.addVariantForm.controls[controlName];
-                        if (variantControl.invalid) {
-                            const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                            if (variantControl.errors?.['required']) {
-                                emptyFields.push(label + ' is required');
-                            }
-                            if (variantControl.errors?.['pattern']) {
-                                emptyFields.push(label + ' must be in the correct format');
-                            }
-                            if (variantControl.errors?.['stockNotHigherThanLimit']) {
-                                emptyFields.push('Stock should be higher than the Limit');
-                            }
-                        }
-                    }
-                }
+        //         for (const controlName in this.addVariantForm.controls) {
+        //             if (this.addVariantForm.controls.hasOwnProperty(controlName)) {
+        //                 const variantControl = this.addVariantForm.controls[controlName];
+        //                 if (variantControl.invalid) {
+        //                     const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                     if (variantControl.errors?.['required']) {
+        //                         emptyFields.push(label + ' is required');
+        //                     }
+        //                     if (variantControl.errors?.['pattern']) {
+        //                         emptyFields.push(label + ' must be in the correct format');
+        //                     }
+        //                     if (variantControl.errors?.['stockNotHigherThanLimit']) {
+        //                         emptyFields.push('Stock should be higher than the Limit');
+        //                     }
+        //                 }
+        //             }
+        //         }
             
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
+        //     const errorDataforProduct = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
         
-            this.ProductError.emit(errorDataforProduct);
-        }
+        //     this.ProductError.emit(errorDataforProduct);
+        // }
     }
+    
     
 }

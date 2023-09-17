@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, throwError } from 'rxjs';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
@@ -17,20 +17,25 @@ export class AttributeFormComponent {
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
     
     @Input() selectedRowData: any;
+    @Input() selectedRowDataForDelete: any[] = [];
     @Input() formAddAttribute!: boolean;
     @Input() formEditAttribute!: boolean;
     @Input() formDeleteAttribute!: boolean;
+    @Input() formMultipleDeleteAttribute!: boolean;
     
     textcolor: string = 'text-light-subtle'
     
     addAttributeForm: FormGroup;
     editAttributeForm: FormGroup;
     deleteAttributeForm: FormGroup;
+    
+    newSelectedRowDataForDelete: any
     private refreshData$ = new Subject<void>();
     
     constructor(
         private attribute_service: AttributesService,
         private formBuilder: FormBuilder,
+        private cdr: ChangeDetectorRef
     ){
         this.addAttributeForm = new FormGroup({
             name: new FormControl('', Validators.required)
@@ -42,6 +47,11 @@ export class AttributeFormComponent {
         // this.deleteAttributeForm = new FormGroup({
         //     id: new FormArray[]
         // });
+
+    }
+    
+    ngOnInit() {
+        // Access the length of selectedRowDataForDelete
     }
     
     refreshTableData(): void {

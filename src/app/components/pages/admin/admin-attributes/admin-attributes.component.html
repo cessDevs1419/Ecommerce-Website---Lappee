@@ -17,6 +17,7 @@
         addbtnName="Add New"
 
         (rowDataSelected)="onRowDataSelected($event)"
+        (rowDataForDelete)="onRowDataForDelete($event)"
         [tableHeader]="['ID','Name', 'Products']"
         [tableRows]="['id', 'name', 'products']"
         [tableData]="attributes"
@@ -34,6 +35,7 @@
         
         [modalAddAttribute]="true"
         [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
     ></app-modal> 
     
@@ -45,9 +47,10 @@
         modalIcon="edit"
         [modalEditAttribute]="true"
         [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
     ></app-modal>
-
+    
     <app-modal
         modalId="delete"
         modalTitle="Delete Attributes"
@@ -57,9 +60,20 @@
         
         [modalDeleteAttribute]="true"
         [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
     ></app-modal>  
     
-    
-
+    <app-modal
+        modalId="deleteMultiple"
+        modalTitle="Delete Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="delete"
+        
+        [modalMultipleDeleteAttribute]="true"
+        [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal>  
 </div>

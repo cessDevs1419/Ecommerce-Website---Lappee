@@ -253,12 +253,18 @@
                     <tr class="border border-dark">
                         <th class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white text-nowrap" >
 
-                            <div class="container cursor-pointer pb-1 mb-2 mt-0 d-flex align-content-center justify-content-center">
-                                <input 
-                                    class=" form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
-                                    type="checkbox"  
-                                    (change)="selectAll()"
-                                />
+                            <div  class="container position-relative cursor-pointer pt-1 mb-2 mt-0 d-flex align-content-center justify-content-center">
+                                <label class="position-relative p-0 cursor-pointer">
+                                    <input 
+                                        #checkboxInput
+                                        [checked]="isAllChecked"
+                                        class="form-check-input visually-hidden" 
+                                        type="checkbox"  
+                                        (change)="selectAll()"
+                                    />
+                                    <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
+                                    <span class="minus position-absolute" ></span>
+                                </label>
                             </div>
 
                         </th>
@@ -277,7 +283,12 @@
                     <tr *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
                         <td class="{{textcolor}} ">
                             <div class=" m-auto d-flex align-items-center justify-content-center p-2">
-                                <input [checked]="isChecked(item.id)" (change)="toggleSelection(item, $event)" class="form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" type="checkbox"  />
+                                <input 
+                                    [checked]="isChecked(item.id)" 
+                                    (change)="toggleSelection(item, $event)" 
+                                    class="form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
+                                    type="checkbox"  
+                                />
                             </div>
                         </td>
                         
@@ -369,7 +380,7 @@
                 <div class="col-sm-6 d-flex justify-content-end">
                     <button  
                         type="button"
-                        data-bs-toggle="modal" data-bs-target="#delete"
+                        data-bs-toggle="modal" data-bs-target="#deleteMultiple"
                         [title]="'Delete'"
                         class="btn rounded-5 {{tabletitlecolor}} {{actionbarbtnbg}}"
                     >

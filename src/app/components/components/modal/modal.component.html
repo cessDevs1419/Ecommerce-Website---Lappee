@@ -58,6 +58,7 @@
                     *ngIf="modalDeleteAttribute"
                     [formDeleteAttribute]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (ProductError)="ErrorToast($event)"
@@ -65,6 +66,18 @@
                     (CloseModal)="closeModal()"
                 ></app-attribute-form>
         
+                <app-attribute-form 
+                    *ngIf="modalMultipleDeleteAttribute"
+                    [formMultipleDeleteAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+            
                 <app-category-form 
                     *ngIf="modalAddCategory"
                     [formAddCategory]="true"
@@ -91,6 +104,7 @@
                     *ngIf="modalDeleteCategory"
                     [formDeleteCategory]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
                     (CategorySuccess)="deleteSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
@@ -102,6 +116,7 @@
                     *ngIf="modalDeleteProduct"
                     [formDeleteProduct]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
@@ -204,6 +219,8 @@
                 >
                 
                 </app-orders-form>
+                
+
         </div> 
 
     </div>

@@ -159,3 +159,36 @@ table th:last-child{
         opacity: 1
     }
   }
+  
+
+.custom-checkbox {
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  color: #000; 
+}
+
+.minus{
+  display: none;
+  width: .5rem;
+  height: 0.1rem;
+  border-radius: 2px;
+  background: #ffffff;
+  border: 1px solid white;
+  right: 25%;
+  top: 38%;
+}
+
+input:checked + .custom-checkbox  {
+  background: #1C92FF;
+  box-shadow: 0px 0px 10px 1px #1C92FF;
+  content: "-"; 
+}
+
+/* input:checked + .minus  {
+  display: block;
+} */
+
+
+
+
