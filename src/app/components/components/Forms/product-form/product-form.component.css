@@ -42,3 +42,14 @@ select option {
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #959BA5;
 }
+
+.rounded-corner{
+    border-radius: 0;
+}
+
+.accordion-button::after {
+    content: none;
+}
+
+
+

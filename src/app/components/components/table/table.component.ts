@@ -103,7 +103,7 @@ export class TableComponent {
 	checkedState: { [key: number]: boolean } = {};
 	rowActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
-	
+	showMinus: boolean;
 	showTooltip: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
@@ -146,6 +146,7 @@ export class TableComponent {
 			
 			if(selectAllCheckbox.checked)
 			{
+				this.showMinus = true
 				if (areAllSelected) {
 					this.selectedIds = [];
 					this.rowDataForDelete.emit(this.selectedIds);
@@ -156,6 +157,7 @@ export class TableComponent {
 					data.forEach((item: any) => (this.checkedState[item.id] = true));
 				}
 			}else{
+				this.showMinus = false
 				this.selectedIds = [];
 				this.rowDataForDelete.emit(this.selectedIds);
 				data.forEach((item: any) => (this.checkedState[item.id] = false));
@@ -167,6 +169,7 @@ export class TableComponent {
 		});
 	}
 
+
 	toggleSelection(item: any, event: any) {
 		const target = event.target as HTMLInputElement;
 		const checked = target.checked;
@@ -174,7 +177,6 @@ export class TableComponent {
 		if (checked) {
 			this.selectedIds.push(item.id);
 			this.rowDataForDelete.emit(this.selectedIds);
-			
 		} else {
 			const index = this.selectedIds.indexOf(item.id);
 			if (index !== -1) {
@@ -190,8 +192,10 @@ export class TableComponent {
 		const selectAllCheckbox = this.checkboxInput.nativeElement as HTMLInputElement;
 		if (areAllUnSelected) {
 			selectAllCheckbox.checked = false;
+			this.showMinus = false
 		}else{
 			selectAllCheckbox.checked = true;
+			this.showMinus = true
 		}
 	}
 	

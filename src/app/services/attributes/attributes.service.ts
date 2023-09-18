@@ -10,8 +10,7 @@ import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 })
 export class AttributesService {
 
-  private attributesID: FormArray = this.formBuilder.array([]);
-  private attributesNAME: FormArray = this.formBuilder.array([]);
+  private attributes: FormArray = this.formBuilder.array([]);
 
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder
@@ -54,27 +53,25 @@ export class AttributesService {
   //   })
   // }
 
-  getSelectedAttributesID(): FormArray {
-    return this.attributesID;
+  getSelectedAttributes(): FormArray {
+    return this.attributes;
   }
   
-  getSelectedAttributesName(): FormArray {
-    return this.attributesNAME;
-  }
-  
-  postSelectedAttribute(id: FormControl, name: FormControl): void {
-    this.attributesID.push(id)
-    this.attributesNAME.push(name)
+  postSelectedAttribute(data: Attributes[]): void {
+    data.forEach((attribute) => {
+      this.attributes.push(this.formBuilder.group(attribute)); 
+    });
   } 
   
-  removeSelectedAttribute(index: number){
-    this.attributesID.removeAt(index)
-    this.attributesNAME.removeAt(index)
+  removeSelectedAttribute(id: string){
+    const index = this.attributes.controls.findIndex(control => control.value.id === id);
+    if (index !== -1) {
+      this.attributes.removeAt(index);
+    }
   }
   
   removeAllSelectedAttribute(){
-    this.attributesID.clear()
-    this.attributesNAME.clear()
+    this.attributes.clear()
   }
   
 }

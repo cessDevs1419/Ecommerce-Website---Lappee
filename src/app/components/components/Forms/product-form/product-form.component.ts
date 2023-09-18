@@ -19,6 +19,7 @@ import { Variant } from 'src/assets/models/products';
 import * as bootstrap from 'bootstrap';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { ThisReceiver } from '@angular/compiler';
+import { Attributes } from 'src/assets/models/attributes';
 
 @Component({
     selector: 'app-product-form',
@@ -67,14 +68,14 @@ export class ProductFormComponent {
 	deleteProductForm: FormGroup;
     selectedAttributeForm: FormGroup;
     
+    
     categories!: Observable<AdminCategory[]>;
 	attributes!: Observable<AdminCategory[]>;
     products!: Observable<Product[]>;
     
     variantsList: FormArray = this.formBuilder.array([]);
     imageList: FormArray = this.formBuilder.array([]);
-    attributesListName: FormArray = this.formBuilder.array([]);
-    attributesListId: FormArray = this.formBuilder.array([]);
+    attributesList: FormArray = this.formBuilder.array([]);
     
     index: number;
     Additionalindex: number;
@@ -82,6 +83,11 @@ export class ProductFormComponent {
     done: boolean;
     cancel: boolean = true; 
     selectedImages: string[] = [];
+    selectedAttribute: Attributes[] = [];
+    addedAttributes: Attributes[] = [];
+    originalSelectedAttribute: Attributes[] = [];
+    variantForms: any[] = []; 
+    selectedVariantIndex: number | null = null;
     isFormContainerVisible = false;
     hideVariantValidationContainer: boolean = true;
     showVariantFormContainer: boolean = false;
@@ -103,8 +109,8 @@ export class ProductFormComponent {
 
     ) 
     {
-        this.attributesListName = this.attribute_service.getSelectedAttributesName()
-        this.attributesListId = this.attribute_service.getSelectedAttributesID()
+
+        this.attributesList = this.attribute_service.getSelectedAttributes()
         this.imageList = this.product_service.getImageList()
         this.variantsList = this.variantService.getVariants()
         
@@ -214,55 +220,64 @@ export class ProductFormComponent {
     }
     
 //Get and remove attributes
-    get selectedCheckboxesId(): FormArray {
-        return this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+    isSelected(id: string): boolean {
+
+        for (const control of this.attributesList.controls) {
+            if (control.value.id === id) {
+                return true; 
+            }
+        }
+        return false; 
     }
-    get selectedCheckboxesName(): FormArray {
-        return this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
+
+    isAttributeSelected(attribute: Attributes): boolean {
+        return this.selectedAttribute.some(attr => attr.id === attribute.id);
     }
-    isSelected(value: string): boolean {
-        const selectedCheckboxesIdArray = this.attributesListId
-        return selectedCheckboxesIdArray.value.includes(value);
+    isAttributeAdded(attribute: Attributes): boolean {
+        return this.addedAttributes.some((attr) => attr.id === attribute.id);
     }
+    
     toggleAttribute(id: string, name: string) {
         const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
-    
-        // Check if the id is already present in the selectedCheckboxesId array
         const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
-    
+        
         if (idIndex === -1) {
-          // If id is not present, add both id and name to their respective arrays
-            selectedCheckboxesIdArray.push(this.formBuilder.control(id));
-            selectedCheckboxesNameArray.push(this.formBuilder.control(name));
-            this.attribute_service.postSelectedAttribute(this.formBuilder.control(id), this.formBuilder.control(name))
+            const attribute: Attributes = { id, name };
+    
+            if (!this.isAttributeSelected(attribute)) {
+                selectedCheckboxesIdArray.push(new FormControl(id));
+                this.selectedAttribute.push(attribute);
+            }
         } else {
-          // If id is already present, remove it from both arrays (toggle off)
             selectedCheckboxesIdArray.removeAt(idIndex);
-            selectedCheckboxesNameArray.removeAt(idIndex);
-            this.attribute_service.removeSelectedAttribute(idIndex)
+            this.selectedAttribute.splice(idIndex, 1);
         }
-
     }
-    removeAttribute(index: number){
-        this.attribute_service.removeSelectedAttribute(index)
-    }
-    removeAllAttribute() {
-        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        const selectedCheckboxesNameArray = this.selectedAttributeForm.get('selectedCheckboxesName') as FormArray;
     
-        // Clear both FormArrays
-        selectedCheckboxesIdArray.clear();
-        selectedCheckboxesNameArray.clear();
-    
-        // You can also reset the form if needed
-        this.selectedAttributeForm.reset();
-        this.attribute_service.removeAllSelectedAttribute()
-        console.log(this.selectedAttributeForm.value);
-    }
     onSave(){
-    
+        const attributesToAdd = this.selectedAttribute.filter((attr) => !this.isAttributeAdded(attr));
+
+        if (attributesToAdd.length > 0) {
+            this.attribute_service.postSelectedAttribute(attributesToAdd);
+            this.addedAttributes.push(...attributesToAdd);
+            this.selectedAttribute.splice(0)
+            this.selectedAttributeForm.reset()
+            console.log(this.attributesList)
+            this.addedAttributes.splice(0);
+        }else{
+            console.log('dito napunta', attributesToAdd, this.addedAttributes)
+        }
     }
+    
+    removeAttribute(index: number, id: string ) {
+        this.attribute_service.removeSelectedAttribute(id);
+        console.log(this.attributesList, this.addedAttributes)
+    }
+    
+    cancelAttribute() {
+        // console.log(this.selectedAttribute);
+    }
+
 //Validate
     stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
         const stockControl = control.get('stock');
@@ -366,15 +381,28 @@ export class ProductFormComponent {
         }
         return throwError(() => error);
     }
-
+    
+    toggleAccordion(index: number) {
+        // Toggle the visibility of the accordion item at the specified index
+        this.variantForms[index].isVisible = !this.variantForms[index].isVisible;
+    }
+    
+    selectVariantItem(variant: string, index: number){
+    
+    }
 
 //Submit Functions
 //showVarriant Forms
     async showVariantForms(): Promise<void>{
-        this.hideVariantValidationContainer = false;
-        this.showVariantFormContainer = true;
-        
-        await this.onaddProductVariants()
+        const newIndex = this.variantForms.length; 
+        this.variantForms.push({ index: newIndex, isVisible: true }); // Add a new form
+        this.hideVariantValidationContainer = false
+        // Hide the previous forms
+        this.variantForms.forEach(form => {
+            if (form.index !== newIndex) {
+                form.isVisible = false;
+            }
+        });
     }
     
 //Place Variant to EditForm
@@ -404,22 +432,48 @@ export class ProductFormComponent {
 //submit products
     async onProductAddSubmit(): Promise<void> {
 
-        let formData: any = new FormData();
+        const formData: FormData = new FormData();
+
         formData.append('name', this.addProductForm.get('name')?.value);
         formData.append('category', this.addProductForm.get('category')?.value);
         formData.append('description', this.addProductForm.get('description')?.value);
-        formData.append('variants', this.addProductForm.get('variantName')?.value);
-        
+      
         const imageFiles = this.addProductForm.get('images')?.value;
-        const imageFileNames: string[] = []; 
-        
+        const imageFileNames: string[] = [];
+      
         if (imageFiles) {
-            for (let i = 0; i < imageFiles.length; i++) {
-                const file: File = imageFiles[i]; 
-                imageFileNames.push(file.name); 
-                formData.append(`images[]`, file); 
-            }
+          for (let i = 0; i < imageFiles.length; i++) {
+            const file: File = imageFiles[i];
+            imageFileNames.push(file.name);
+            formData.append(`images[]`, file);
+          }
         }
+      
+        // Append variants to the formData
+        const variantsList = this.addProductForm.get('variants') as FormArray;
+        for (let i = 0; i < variantsList.length; i++) {
+          const variantFormGroup = variantsList.at(i) as FormGroup;
+          const variant = variantFormGroup.value;
+          
+          // Append variant properties as an array
+          formData.append(`variants[][name]`, variant.name);
+          formData.append(`variants[][quantity]`, variant.quantity);
+          formData.append(`variants[][price]`, variant.price.toFixed(2));
+      
+          // Append attributes as an array within each variant
+          const attributesList = variantFormGroup.get('attributes') as FormArray;
+          for (let j = 0; j < attributesList.length; j++) {
+            const attributeFormGroup = attributesList.at(j) as FormGroup;
+            const attribute = attributeFormGroup.value;
+            formData.append(`variants[][attributes][][attributeId]`, attribute.attributeId);
+            formData.append(`variants[][attributes][][attributeName]`, attribute.attributeName);
+          }
+        }
+      
+        // Display the FormData entries
+        formData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
 
         //append variants to array
         // const variantsList = this.addProductForm.get('variants') as FormArray;
@@ -431,9 +485,7 @@ export class ProductFormComponent {
         //     formData.append(`variants[${i}][price]`, variant.price.toFixed(2));
         // }
         
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
+
         
 
         
@@ -518,6 +570,7 @@ export class ProductFormComponent {
 
 //submit variants
     async onaddProductVariants(): Promise<void> {
+    
         // if (this.addVariantForm.valid) {
         //     const newVariantFormGroup = this.formBuilder.group({
         //         name: [this.addVariantForm.get('name')?.value, Validators.required],
@@ -584,6 +637,7 @@ export class ProductFormComponent {
         
         //     this.ProductError.emit(errorDataforProduct);
         // }
+        
     }
     
     

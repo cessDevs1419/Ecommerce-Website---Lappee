@@ -263,7 +263,7 @@
                                         (change)="selectAll()"
                                     />
                                     <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
-                                    <span class="minus position-absolute" ></span>
+                                    <span *ngIf="showMinus" class="minus position-absolute" ></span>
                                 </label>
                             </div>
 
@@ -283,12 +283,16 @@
                     <tr *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
                         <td class="{{textcolor}} ">
                             <div class=" m-auto d-flex align-items-center justify-content-center p-2">
-                                <input 
-                                    [checked]="isChecked(item.id)" 
-                                    (change)="toggleSelection(item, $event)" 
-                                    class="form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
-                                    type="checkbox"  
-                                />
+                                <label class="position-relative p-0 cursor-pointer">
+                                    <input 
+                                        [checked]="isChecked(item.id)" 
+                                        (change)="toggleSelection(item, $event)" 
+                                        class="visually-hidden form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
+                                        type="checkbox"  
+                                    />
+                                    <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
+                                    <span class="check position-absolute" ><i *ngIf="isChecked(item.id)" class="bi bi-check"></i></span>
+                                </label>
                             </div>
                         </td>
                         

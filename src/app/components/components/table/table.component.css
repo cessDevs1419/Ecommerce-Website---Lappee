@@ -169,7 +169,6 @@ table th:last-child{
 }
 
 .minus{
-  display: none;
   width: .5rem;
   height: 0.1rem;
   border-radius: 2px;
@@ -177,6 +176,11 @@ table th:last-child{
   border: 1px solid white;
   right: 25%;
   top: 38%;
+}
+
+.check{
+  right: 0%;
+  bottom: 10%;
 }
 
 input:checked + .custom-checkbox  {
