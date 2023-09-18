@@ -128,6 +128,17 @@ gallery-image {
     max-height: 600px;
 }
 
+.sticky-column {
+    position: sticky;
+    overflow: auto;
+    height: 500px;
+    top: 0;
+}
+
+.content-column {
+    flex: 1;
+}
+
 @media screen and (min-width: 992px) {
     .rating-details {
         margin-top: 0;
