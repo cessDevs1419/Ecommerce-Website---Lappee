@@ -65,7 +65,7 @@
                             </div>
                             
                             <div *ngIf="selectedColorSizes.length > 0">
-                                <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Sizes:</span> {{sizeCurrent}}</p>
+                                <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Size:</span> {{sizeCurrent}}</p>
                                 <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
                                     <div *ngIf="productSize?.errors?.['required']">
                                         <span class="text-danger">This field is required.</span>

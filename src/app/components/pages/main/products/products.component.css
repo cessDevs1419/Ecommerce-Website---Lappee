@@ -63,7 +63,8 @@
 .size-select-box {
     cursor: pointer;
     display: flex;
-    padding: 1rem;
+    padding: .75rem 2rem;
+    font-weight: bold;
     color: #FFFFFF;
     background-color: var(--muted-gray);
     transition: all .4s;
