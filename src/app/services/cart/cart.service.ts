@@ -46,6 +46,10 @@ export class CartService {
     console.log(this.getItems);
   }
 
+  removeItem(index: number){
+    this.items.splice(index, 1);
+  }
+
   getItems(): CartItem[] {
     return this.items;
   }

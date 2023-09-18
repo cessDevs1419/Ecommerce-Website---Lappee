@@ -15,3 +15,12 @@ td {
 .td-quantity {
     text-align: center;
 }
+
+.cart-item-action {
+    color: var(--body-text);
+    cursor: pointer;
+}
+
+.cart-item-action:hover {
+    color: var(--primary);
+}
