@@ -13,6 +13,7 @@ import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProduct
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 
 @Component({
   selector: 'app-cart',
@@ -23,9 +24,13 @@ export class CartComponent {
 
   Number = Number;
 
+  mode: string = "";
+
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
+  @ViewChild(ModalClientComponent) modal: ModalClientComponent;
   @ViewChildren('itemCheckbox') itemChkBoxes: QueryList<any>;
+
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
@@ -203,11 +208,17 @@ export class CartComponent {
   }
 
   removeFromCart(item: CartItem): void {
-    let index = this.matchCartItemAndVariant(item);
-    console.log(index);
-    if(index > -1){
+    this.mode = "confirm-dialog";
+    this.modal.confirmRemoveCartItem(item);
+  }
+
+  confirmRemoveCartItem(params: any) {
+    if(params.status){
+      let index = this.matchCartItemAndVariant(params.item);
+      console.log(index);
       this.cart.removeItem(index);
     }
+
   }
 
   removeFromOrder(sender: CartItem): void {

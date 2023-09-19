@@ -11,6 +11,7 @@
 
             <div class="modal-body" [ngSwitch]="this.mode"> 
                 <app-review-form *ngSwitchCase="'add-review'" [product]="this.product" (activateToast)="activateToast($event)" (dismiss)="dismiss()"></app-review-form>
+                <app-confirm-dialog *ngSwitchCase="'confirm-dialog'" [product]="this.product" [operation]="this.operation" [context]="this.context" (activateToast)="activateToast($event)" (dismiss)="dismiss()" (emitDeleteTrue)="passConfirmDialogOutput($event)"></app-confirm-dialog>
             </div>
         </div>
     </div>

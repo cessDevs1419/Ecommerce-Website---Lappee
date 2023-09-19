@@ -1,7 +1,8 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { OrderContent } from 'src/assets/models/order-details';
 import { ToastComponent } from '../toast/toast.component';
+import { CartItem } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-modal-client',
@@ -14,6 +15,8 @@ export class ModalClientComponent {
   @Input() mode: string = "";
   @Input() params_target: string = "";
   @Input() context: string = "";
+  @Input() operation: string = "";
+  @Output() confirmDialogOutput = new EventEmitter<boolean>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -24,7 +27,7 @@ export class ModalClientComponent {
   modalEl: bootstrap.Modal;
 
   // review resources
-  product!: OrderContent;
+  product!: any;
 
   ngOnInit(): void {
     
@@ -48,6 +51,18 @@ export class ModalClientComponent {
     this.modalTitle = "Add Review";
     this.product = item;
     this.show();
+  }
+
+  confirmRemoveCartItem(item: CartItem){
+    this.modalTitle = "Remove from Cart";
+    this.operation = "delete";
+    this.context = "cart";
+    this.product = item;
+    this.show()
+  }
+
+  passConfirmDialogOutput(params: any): void {
+    this.confirmDialogOutput.emit(params);
   }
 
   show(): void {
