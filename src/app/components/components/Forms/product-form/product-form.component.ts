@@ -62,8 +62,8 @@ export class ProductFormComponent {
     //form group
     addProductForm: FormGroup;
     editProductForm: FormGroup;
-    addVariantForm: FormGroup;
-    addAttributeForm: FormGroup;
+    addVariantForm: FormGroup[] = [];
+    addAttributeForm: FormGroup[] = []; 
     editVariantForm: FormGroup;
 	deleteProductForm: FormGroup;
     selectedAttributeForm: FormGroup;
@@ -87,8 +87,10 @@ export class ProductFormComponent {
     addedAttributes: Attributes[] = [];
     originalSelectedAttribute: Attributes[] = [];
     variantForms: any[] = []; 
+    savedVariantForms: any[] = [];
+    dynamicFormValues: any[] = [];
     selectedVariantIndex: number | null = null;
-    isFormContainerVisible = false;
+    currentlyEditedFormIndex: number | null = null;
     hideVariantValidationContainer: boolean = true;
     showVariantFormContainer: boolean = false;
     fileUrlMap: Map<File, string> = new Map();
@@ -127,17 +129,9 @@ export class ProductFormComponent {
             variants: this.formBuilder.array([]), 
         });
         
-        this.addVariantForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            quantity: ['', Validators.required],
-            price: ['', Validators.required],
-            attributes: this.formBuilder.array([]), 
-        });
+
         
-        this.addAttributeForm = this.formBuilder.group({
-            attributeId: this.formBuilder.control(''), 
-            attributeName: this.formBuilder.control(''),
-        });
+
     }
     
     ngOnInit(): void{
@@ -247,29 +241,43 @@ export class ProductFormComponent {
             if (!this.isAttributeSelected(attribute)) {
                 selectedCheckboxesIdArray.push(new FormControl(id));
                 this.selectedAttribute.push(attribute);
+                console.log(id)
             }
         } else {
             selectedCheckboxesIdArray.removeAt(idIndex);
             this.selectedAttribute.splice(idIndex, 1);
+            this.selectedAttributeForm.reset()
+            this.addedAttributes.splice(idIndex, 1);
+
+        }
+        
+        if(this.isSelected(id)){
+            console.log(id)
+            this.removeAttribute(id)
+            this.selectedAttribute.splice(idIndex, 1);
+            this.selectedAttributeForm.reset()
         }
     }
     
     onSave(){
         const attributesToAdd = this.selectedAttribute.filter((attr) => !this.isAttributeAdded(attr));
-
+        const attributesToRemove = this.addedAttributes.filter((attr) => !this.isSelected(attr.id));
+        
         if (attributesToAdd.length > 0) {
             this.attribute_service.postSelectedAttribute(attributesToAdd);
             this.addedAttributes.push(...attributesToAdd);
             this.selectedAttribute.splice(0)
-            this.selectedAttributeForm.reset()
+            this.selectedAttributeForm.reset();
             console.log(this.attributesList)
             this.addedAttributes.splice(0);
+            
         }else{
-            console.log('dito napunta', attributesToAdd, this.addedAttributes)
+            console.log('no input', attributesToAdd, this.addedAttributes)
         }
+        
     }
     
-    removeAttribute(index: number, id: string ) {
+    removeAttribute( id: string ) {
         this.attribute_service.removeSelectedAttribute(id);
         console.log(this.attributesList, this.addedAttributes)
     }
@@ -382,21 +390,25 @@ export class ProductFormComponent {
         return throwError(() => error);
     }
     
-    toggleAccordion(index: number) {
-        // Toggle the visibility of the accordion item at the specified index
-        this.variantForms[index].isVisible = !this.variantForms[index].isVisible;
-    }
-    
-    selectVariantItem(variant: string, index: number){
-    
-    }
-
-//Submit Functions
 //showVarriant Forms
     async showVariantForms(): Promise<void>{
         const newIndex = this.variantForms.length; 
         this.variantForms.push({ index: newIndex, isVisible: true }); // Add a new form
         this.hideVariantValidationContainer = false
+        
+        const addVariantForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            quantity: ['', Validators.required],
+            price: ['', Validators.required],
+        });
+        const addAttributeForm = this.formBuilder.group({
+            attributeId: [''], 
+            attributeValue: ['', Validators.required],
+        });
+        
+        this.addVariantForm.push(addVariantForm);
+        this.addAttributeForm.push(addAttributeForm);
+        
         // Hide the previous forms
         this.variantForms.forEach(form => {
             if (form.index !== newIndex) {
@@ -404,30 +416,46 @@ export class ProductFormComponent {
             }
         });
     }
-    
-//Place Variant to EditForm
-    async editVariant(value: any, index: any): Promise<void>{
-        
-        this.index = index
-        
-        this.editVariantForm.patchValue({
-            size: value.size,
-            stock: value.stock,
-            stock_limit: value.stock_limit,
-            price: value.price,
-            color: value.color,
-            color_title: value.color_title,
-        });
-        
-        console.log(value)
-        this.variantService.setVariantToEditForm(this.editVariantForm, index);
-        
-        await this.asyncTask();
-        this.route.paramMap.subscribe(async (params) => {
-            this.router.navigate(['/admin/product-management', 'variant', 'edit']);
-        });
-    
+//Accordion
+    toggleAccordion(index: number) {
+        for (let i = 0; i < this.variantForms.length; i++) {
+            if (i !== index) {
+                this.variantForms[i].isVisible = false;
+            }
+        }
+        this.variantForms[index].isVisible = !this.variantForms[index].isVisible;
+
     }
+    
+    selectVariantItem(variant: string, index: number){
+        this.removeVariant(index)
+    }
+    
+    //Place Variant to EditForm
+    editVariant(index: any){
+        this.toggleAccordion(index) 
+        //this.currentlyEditedFormIndex = index;
+    }
+    
+    saveVariant(index: any){
+        this.toggleAccordion(index) 
+        //const attributeForms = this.dynamicFormValues[index].map((attributeForm: Attributes) => attributeForm.name);
+        this.savedVariantForms.push({
+            variantForm: this.addVariantForm[index].value,
+            attributeForm: this.addAttributeForm[index].value
+        });
+        
+        console.log(this.savedVariantForms)
+    }
+    
+    removeVariant(index: any){
+        this.variantForms.splice(index, 1);
+        if(this.variantForms.length < 1){
+            this.hideVariantValidationContainer = true
+        }
+    }
+
+//Submit Functions
 
 //submit products
     async onProductAddSubmit(): Promise<void> {

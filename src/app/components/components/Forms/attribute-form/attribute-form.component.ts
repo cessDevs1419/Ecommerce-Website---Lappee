@@ -145,7 +145,7 @@ console.log(this.addAttributeForm.get('name')?.value)
             for (const value of formData.entries()) {
                 console.log(`${value[0]}, ${value[1]}`);
             }
-            // this.attribute_service.postAttribute(formData).subscribe({
+            // this.attribute_service.patchAttribute(formData).subscribe({
             //     next: (response: any) => { 
             //         const successMessage = {
             //             head: 'Category ' + this.editAttributeForm.get('name')?.value,
