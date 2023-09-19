@@ -81,6 +81,7 @@ import { AdminAttributesComponent } from './components/pages/admin/admin-attribu
 import { AdminMainCategoriesComponent } from './components/pages/admin/admin-main-categories/admin-main-categories.component';
 import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-categories/admin-sub-categories.component';
 import { AttributeFormComponent } from './components/components/Forms/attribute-form/attribute-form.component';
+import { ConfirmDialogComponent } from './components/components/modal-forms-client/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { AttributeFormComponent } from './components/components/Forms/attribute-
     AdminMainCategoriesComponent,
     AdminSubCategoriesComponent,
     AttributeFormComponent,
+    ConfirmDialogComponent,
 
   ],
   imports: [

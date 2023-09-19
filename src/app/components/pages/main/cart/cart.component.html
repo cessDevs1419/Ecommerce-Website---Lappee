@@ -67,7 +67,7 @@
                                     </div>
 
                                     <div *ngIf="cartContents.length != 0">
-                                        <app-cart-item *ngFor="let item of cartContents; let i = index" [productArray]="this.products" [cartItem]="item" [selectAll]="selectAllFlag" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)"></app-cart-item>
+                                        <app-cart-item *ngFor="let item of cartContents; let i = index" [productArray]="this.products" [cartItem]="item" [selectAll]="selectAllFlag" id="{{'cart-item-' + i}}" componentId="{{'cart-item-' + i}}" [index]=i (addOrderList)="addToOrder($event)" (removeOrderList)="removeFromOrder($event)" (changeQuantity)="changeQuantity($event)" (removeCartItem)="removeFromCart($event)" ></app-cart-item>
                                     </div>
                                 </div>
                             </div>

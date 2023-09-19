@@ -202,6 +202,14 @@ export class CartComponent {
     this.isItemSelected = true;
   }
 
+  removeFromCart(item: CartItem): void {
+    let index = this.matchCartItemAndVariant(item);
+    console.log(index);
+    if(index > -1){
+      this.cart.removeItem(index);
+    }
+  }
+
   removeFromOrder(sender: CartItem): void {
     let matchIndex = -1;
     let variantIndex = this.matchCartItemAndVariant(sender);

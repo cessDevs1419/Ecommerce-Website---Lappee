@@ -12,6 +12,8 @@ export class ModalClientComponent {
 
   @ViewChild('modal') modal: ElementRef;
   @Input() mode: string = "";
+  @Input() params_target: string = "";
+  @Input() context: string = "";
   modalTitle!: string;
 
   toastTheme!: string;

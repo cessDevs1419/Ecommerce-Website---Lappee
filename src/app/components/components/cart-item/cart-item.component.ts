@@ -16,6 +16,7 @@ export class CartItemComponent {
   @Output() addOrderList: EventEmitter<any> = new EventEmitter();
   @Output() removeOrderList: EventEmitter<any> = new EventEmitter();
   @Output() changeQuantity: EventEmitter<string[]> = new EventEmitter();
+  @Output() removeCartItem: EventEmitter<CartItem> = new EventEmitter(); 
   
   isIncluded: boolean = false;
   selectedColor: string = "#DDDEE3";
@@ -59,5 +60,9 @@ export class CartItemComponent {
 
   handleQuantityChange(number: number): void {
     this.changeQuantity.emit([this.index.toString(), number.toString()]);
+  }
+
+  handleRemoveItem(variant_id: string): void {
+    this.removeCartItem.emit(this.cartItem);
   }
 }
