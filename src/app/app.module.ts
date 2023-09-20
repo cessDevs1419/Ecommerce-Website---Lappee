@@ -83,6 +83,7 @@ import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-
 import { AttributeFormComponent } from './components/components/Forms/attribute-form/attribute-form.component';
 import { ConfirmDialogComponent } from './components/components/modal-forms-client/confirm-dialog/confirm-dialog.component';
 import { EditCartItemComponent } from './components/components/modal-forms-client/edit-cart-item/edit-cart-item.component';
+import { VariantAttributesComponent } from './components/components/variant-attributes/variant-attributes.component';
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { EditCartItemComponent } from './components/components/modal-forms-clien
     AttributeFormComponent,
     ConfirmDialogComponent,
     EditCartItemComponent,
+    VariantAttributesComponent,
 
   ],
   imports: [
