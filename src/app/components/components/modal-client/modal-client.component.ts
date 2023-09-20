@@ -16,6 +16,7 @@ export class ModalClientComponent {
   @Input() params_target: string = "";
   @Input() context: string = "";
   @Input() operation: string = "";
+  @Input() modalSize: string = "modal-lg"
   @Output() confirmDialogOutput = new EventEmitter<boolean>();
   modalTitle!: string;
 
@@ -53,6 +54,8 @@ export class ModalClientComponent {
     this.show();
   }
 
+  // Confirm Dialog Methods
+
   confirmRemoveCartItem(item: CartItem){
     this.modalTitle = "Remove from Cart";
     this.operation = "delete";
@@ -63,6 +66,14 @@ export class ModalClientComponent {
 
   passConfirmDialogOutput(params: any): void {
     this.confirmDialogOutput.emit(params);
+  }
+
+  // Edit Cart Item Methods
+  editCartItem(item: CartItem): void {
+    this.modalTitle = "Edit Cart Item";
+    this.product = item;
+    this.modalSize = 'modal-xl';
+    this.show();
   }
 
   show(): void {

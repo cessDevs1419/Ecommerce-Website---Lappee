@@ -2,7 +2,7 @@
     <div class="position-fixed vh-100 pe-none z-3 toast-container-parent m-5">
         <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
     </div>
-    <div class="modal-dialog modal-lg modal-fullscreen-sm-down modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered" [ngClass]="modalSize">
         <div class="modal-content">
             <div class="modal-header">
                 <p class="modal-title fs-3 fw-bold">{{this.modalTitle}}</p>
@@ -12,6 +12,7 @@
             <div class="modal-body" [ngSwitch]="this.mode"> 
                 <app-review-form *ngSwitchCase="'add-review'" [product]="this.product" (activateToast)="activateToast($event)" (dismiss)="dismiss()"></app-review-form>
                 <app-confirm-dialog *ngSwitchCase="'confirm-dialog'" [product]="this.product" [operation]="this.operation" [context]="this.context" (activateToast)="activateToast($event)" (dismiss)="dismiss()" (emitDeleteTrue)="passConfirmDialogOutput($event)"></app-confirm-dialog>
+                <app-edit-cart-item *ngSwitchCase="'edit-cart-item'" [product]="this.product" (dismiss)="dismiss()"></app-edit-cart-item>
             </div>
         </div>
     </div>

@@ -218,7 +218,11 @@ export class CartComponent {
       console.log(index);
       this.cart.removeItem(index);
     }
+  }
 
+  editCartItem(item: CartItem): void {
+    this.mode = "edit-cart-item";
+    this.modal.editCartItem(item);
   }
 
   removeFromOrder(sender: CartItem): void {

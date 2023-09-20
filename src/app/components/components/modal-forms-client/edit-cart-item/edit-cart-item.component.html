@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="sticky-column col-lg-6">
+        <gallery *ngIf="this.product" id="product-images" [thumbPosition]="'left'" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+    </div>
+
+    <div *ngIf="product as match"  class="col-lg-6 content-column">
+        <div class="d-flex flex-row justify-content-between border-bottom pb-3">
+            <div>
+                <h3>{{match.product.name}}</h3>
+                <p>ID: {{match.product.id}}</p>
+                <div class="d-flex flex-row">
+                    <p class="h2 m-0">{{this.match.price | currency}}</p>
+                    <!-- <p class="muted-text text-decoration-line-through align-self-start">P799</p>
+                    <div class="px-3 ms-1 discount d-flex align-items-center">-30%</div> -->
+                </div>
+            </div>
+           <!--  <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button> -->
+        </div>
+
+        <!-- <div id="spacer" style="height: 1000px;"></div> -->
+        <div class="mt-3" id="productDescOptions">
+            
+            <div class="mt-3" >
+                <form>
+                    <!--
+                    <div *ngIf="!this.hasVariant">
+                        <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
+                        <div *ngIf="productColor?.invalid && (productColor?.dirty || productColor?.touched)">
+                            <div *ngIf="productColor?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>                        
+                        <div class="d-inline-flex mt-0 pt-0 justify-content-start">
+                            <div *ngFor="let color of colorVariants" class="select-container me-3">
+                                <input type="radio" class="color-select" [value]="color.name" (click)="changeColor(color.name)" formControlName="color" name="color" id={{color.name}} />
+                                <label class="color-select-round" for={{color.name}} [style.background-color]="color.color"></label>
+                            </div>  
+                        </div>
+                        
+                        <div *ngIf="selectedColorSizes.length > 0">
+                            <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Size:</span> {{sizeCurrent}}</p>
+                            <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
+                                <div *ngIf="productSize?.errors?.['required']">
+                                    <span class="text-danger">This field is required.</span>
+                                </div>
+                            </div>
+                            <div class="d-inline-flex mt-0 pt-0 justify-content-start">
+                                <div *ngFor="let size of selectedColorSizes" class="select-container me-3">
+                                    <input type="radio" class="size-select" value={{size}} (click)="changeSize(size)" formControlName="size" name="size" id={{size}} />
+                                    <label class="size-select-box justify-content-center align-items-center" for={{size}}>{{size}}</label>
+                                </div>  
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="this.maxStock > 0">
+                            <p class="fs-4 mb-0 mt-3 mb-3"><span class="fw-bold">Quantity:</span></p>
+                            <div *ngIf="productQuantity?.invalid && (productQuantity?.dirty || productQuantity?.touched)">
+                                <div *ngIf="productQuantity?.errors?.['required']">
+                                    <span class="text-danger">This field is required.</span>
+                                </div>
+                            </div>
+                            <app-quantity-input formControlName="quantity" [max]="this.maxStock"></app-quantity-input>
+                        </div>
+
+                    </div>
+
+                    <div class="product-border-bottom mt-3 pb-3">
+                        <i *ngIf="!this.hasVariant">Choose a color to see its available sizes, choose a size to see how many are in stock.</i>
+                    </div> -->
+
+                    <div class="mt-3 row">
+                        <div class="col d-flex justify-content-end border-top pt-3">
+                            <button class="button-primary rounded-0">CONFIRM</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

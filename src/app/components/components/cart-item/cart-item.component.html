@@ -65,7 +65,7 @@
                 <p class="m-0">Size: {{this.cartItem.variant_details[1]}}</p>
             </div>
             <div class="text-muted">
-                <span class="cart-item-action">Edit</span> | <span class="cart-item-action" (click)="handleRemoveItem(this.cartItem.variant)">Remove</span>
+                <span class="cart-item-action" (click)="handleEditItem(this.cartItem)">Edit</span> | <span class="cart-item-action" (click)="handleRemoveItem(this.cartItem.variant)">Remove</span>
             </div>
         </div>
 

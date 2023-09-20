@@ -82,6 +82,7 @@ import { AdminMainCategoriesComponent } from './components/pages/admin/admin-mai
 import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-categories/admin-sub-categories.component';
 import { AttributeFormComponent } from './components/components/Forms/attribute-form/attribute-form.component';
 import { ConfirmDialogComponent } from './components/components/modal-forms-client/confirm-dialog/confirm-dialog.component';
+import { EditCartItemComponent } from './components/components/modal-forms-client/edit-cart-item/edit-cart-item.component';
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import { ConfirmDialogComponent } from './components/components/modal-forms-clie
     AdminSubCategoriesComponent,
     AttributeFormComponent,
     ConfirmDialogComponent,
+    EditCartItemComponent,
 
   ],
   imports: [
