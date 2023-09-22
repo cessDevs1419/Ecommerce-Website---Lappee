@@ -16,19 +16,21 @@ export interface Product {
 export interface Variant {
     variant_id: string,
     product_id: string,
-    //attributes: Attribute[]
+    attributes: Attribute[]
     color: string,
     color_title: string,
     size: string,
     stock: number,
     stock_limit: number,
-    price: string
+    price: string,
+    variant_name: string,
+    variant_images: string[]
 }
 
 export interface Attribute {
+    attribute_id: string
     attribute_name: string,
     attribute_value: string,
-    attribute_type: string
 }
 
 export interface CartItem {

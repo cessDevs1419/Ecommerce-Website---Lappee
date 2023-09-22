@@ -9,6 +9,7 @@ export class CartService {
   items: CartItem[] = [];
 
   constructor() { 
+    /*
     this.items.push({
       product: {
         id: 'product1',
@@ -25,7 +26,10 @@ export class CartService {
             size: 'XL',
             stock: 99,
             stock_limit: 10,
-            price: "650.00"
+            price: "650.00",
+            attributes: [
+
+            ]
           },
         ]
       },
@@ -35,6 +39,7 @@ export class CartService {
       price: '650.00',
       image_url: 'https://picsum.photos/800'
     })
+    */
   }
 
   ngOnInit(): void {

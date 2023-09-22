@@ -78,13 +78,16 @@ export function formatProductVariants(response: ProductList): Variant[] {
   let variantList = response.data.flatMap((product: Product) => product.product_variants);
   return variantList.map((variant: Variant) => ({
     variant_id: variant.variant_id,
+    variant_name: variant.variant_name,
     product_id: variant.product_id,
     color: variant.color,
     color_title: variant.color_title,
     size: variant.size,
     stock: variant.stock,
     stock_limit: variant.stock_limit,
-    price: variant.price
+    price: variant.price,
+    attributes: variant.attributes,
+    variant_images: variant.variant_images
   }));
 }
 
@@ -260,6 +263,17 @@ export function formatSiteLogo(response: SiteLogoList): SiteLogo {
   return {
     site_logo: response.data.site_logo
   }
+}
+
+export function formatProductsAndAttributes(response: ProductList): Product[] {
+  return response.data.map((data: Product) => ({
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    product_variants: data.product_variants,
+    sub_category_id: data.sub_category_id,
+    images: data.images
+  }))
 }
 
 // Filtering

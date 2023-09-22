@@ -44,12 +44,13 @@ export class ProductsService {
   }
   
   getProducts(): Observable<any>{
-    return this.http.get<ProductList>(GETProducts);
-    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+    //return this.http.get<ProductList>(GETProducts);
+    return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
 
   getProductDetails(id: string): Observable<any> {
-    return this.http.get(GETProductDetails + id);
+    //return this.http.get(GETProductDetails + id);
+    return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
   
   getNewProducts(): Observable<any> {
