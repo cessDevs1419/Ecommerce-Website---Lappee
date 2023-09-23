@@ -4,94 +4,69 @@
 	"data": [
 		{
 			"id": "qwerty",
+			"category_id": "cat650c4470b63bf",
 			"name": "Subcategory1 Item1",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
 			"description": "This is Subcategory1's first item.",
 			"product_variants": [
 				{
 					"variant_id": "variant1-prod1",
-					"product_id": "qwerty",
-					"color": "3888FF",
-					"color_title": "blue",
-					"size": "md",
+					"product_id": "zxcvb",
+					"variant_name": "Red Cotton",
+					"__color__": "4287F5",
+					"__color_title__": "red",
+					"__size__": "md",
 					"stock": 1,
 					"stock_limit": 1,
-					"price": "420.00"
+					"price": "420.00",
+					"variant_images": ["https://picsum.photos/800"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"attribute_name": "Size",
+							"attribute_value": "LG"
+						},
+						{
+							"attribute_id": "attr_color",
+							"attribute_name": "Color",
+							"attribute_value": "A83A32"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"attribute_name": "Fabric",
+							"attribute_value": "Cotton"
+						}
+					]
+				},
+				{
+					"variant_id": "variant2-prod1",
+					"product_id": "qwerty",
+					"variant_name": "Blue Polyester",
+					"__color__": "4287F5",
+					"__color_title__": "red",
+					"__size__": "md",
+					"stock": 1,
+					"stock_limit": 1,
+					"price": "420.00",
+					"variant_images": ["https://picsum.photos/900"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"attribute_name": "Size",
+							"attribute_value": "MD"
+						},
+						{
+							"attribute_id": "attr_color",
+							"attribute_name": "Color",
+							"attribute_value": "4287F5"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"attribute_name": "Fabric",
+							"attribute_value": "Polyester"
+						}
+					]
 				}
 			]
-        },
-        {
-            "id": "qwerty2",
-			"name": "Subcategory1 Item2",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCAThpoU64gGYyJKXSHX",
-			"description": "This is Subcategory1's second item.",
-			"product_variants": []
-        },
-        {
-            "id": "asdfgh",
-			"name": "Subcategory2 Item1",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
-			"description": "This is Subcategory2's first item.",
-			"product_variants": []
-        },
-        {
-            "id": "asdfgh2",
-			"name": "Subcategory2 Item2",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCATloQQk4lPrAFdczV6",
-			"description": "This is Subcategory2's second item.",
-			"product_variants": []
-        },
-        {
-            "id": "zxcvb",
-			"name": "Subcategory3 Item1",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This is Subcategory3's first item.",
-			"product_variants": []
-        },
-        {
-            "id": "zxcvb2",
-			"name": "Subcategory3 Item2",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 400.00,
-			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This is Subcategory3's second item.",
-			"product_variants": []
-        },
-		{
-            "id": "zxcvb3",
-			"name": "AAAAAAAAAAAAAA I should be first",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 500.00,
-			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This should be the first item.",
-			"product_variants": []
-        },
-		{
-            "id": "zxcvb4",
-			"name": "ZZZZZZZZZZZZ I should be last",
-			"stock": 0,
-			"stock_limit": 0,
-			"price": 69.00,
-			"sub_category_id": "SBCAT7JVn4ycYnlCwgCn1",
-			"description": "This should be the last item.",
-			"product_variants": []
         }
 	]
 }

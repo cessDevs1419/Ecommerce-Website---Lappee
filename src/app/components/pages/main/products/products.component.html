@@ -48,7 +48,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-3" >
+                <div class="mt-3">
+                    <app-variant-attributes mode="Product" [product]="match"></app-variant-attributes>
+                    <div class="mt-3 pt-3 row border-top">
+                        <div class="col">
+                            <button class="w-100 button-secondary-outline" (click)="addToCart()"><i class="bi bi-cart-fill me-2"></i> ADD TO CART</button>
+                        </div>
+                        <div class="col">
+                            <button class="w-100 button-primary" (click)="orderNow()"><i class="bi bi-bag-fill me-2"></i> ORDER NOW</button>
+                        </div>
+                            
+                    </div>
+                    <!--
                     <form [formGroup]="productToCart">
                         <div *ngIf="!this.hasVariant">
                             <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
@@ -105,6 +116,7 @@
                                 
                         </div>
                     </form>
+                    -->
                 </div>
             </div>
 

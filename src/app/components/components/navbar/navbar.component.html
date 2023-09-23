@@ -124,9 +124,11 @@
                     <ul class="navbar-nav">
                         <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">
                             <a href="#" class="nav-link dropdown-toggle text-uppercase" data-bs-toggle="dropdown" #categoryItems>{{category.name}}</a>
+                            <!--
                             <div id="navDropdown" class="dropdown-menu w-100">
                                 <app-categorydetails [category]="category" [subcategory]="subcategories" id="categoryDetailsDiv"></app-categorydetails>
                             </div>  
+                            -->
                         </li>
                     </ul>
                 </div>
