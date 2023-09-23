@@ -51,6 +51,7 @@ export class ModalComponent {
 	@Input() modalEditAttribute!: boolean;
     @Input() modalDeleteAttribute!: boolean;
     @Input() modalMultipleDeleteAttribute!: boolean;
+    @Input() modalMultipleDeleteCategory!: boolean;
     @Input() modalSelectAttribute!: boolean;
     @Input() modalAddCategory!: boolean;
     @Input() modalEditCategory!: boolean;
@@ -80,7 +81,7 @@ export class ModalComponent {
     toastHeader: string = "";
     toastTheme: string = "default";  
     
-
+    index: number | null = null;
 	private refreshData$ = new Subject<void>();
 
 
@@ -98,6 +99,10 @@ export class ModalComponent {
 	
     refreshTableData(): void {
         this.RefreshTable.emit();
+    }
+
+    indexVariant(index: number){
+        console.log(index)
     }
     
     confirmPayment(){

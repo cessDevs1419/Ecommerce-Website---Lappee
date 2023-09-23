@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {AdminCategory, AdminCategoryList, CategoryList } from 'src/assets/models/categories';
 import { Observable, from } from 'rxjs';
 import { GETAdminCategories, GETCategories, GETSubcategories, POSTCategories, PATCHCategories, DELETECategories } from '../endpoints';
@@ -43,7 +43,9 @@ export class CategoriesService {
     return this.http.patch<AdminCategory>(PATCHCategories, data, this.httpOptions);
   } 
   
-  deleteCategory(categoryId: number): Observable<any> {
+
+  
+  deleteCategories(categoryIds: number[]): Observable<any> {
     return this.http.delete(DELETECategories, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -52,8 +54,8 @@ export class CategoriesService {
       }),
       responseType: 'json',
       body: {
-          id: categoryId
-        }
+        categories: categoryIds // Pass an array of category IDs
+      }
     })
   }
   

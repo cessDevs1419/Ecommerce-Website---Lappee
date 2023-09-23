@@ -271,7 +271,6 @@ export class TableComponent {
 	
 	sendRowData(row: any) {
 	    this.rowDataSelected.emit(row);
-	    console.log(row)
 	}
 	
 	showAddForm(): void{

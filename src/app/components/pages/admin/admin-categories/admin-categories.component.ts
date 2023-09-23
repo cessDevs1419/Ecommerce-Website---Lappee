@@ -21,6 +21,7 @@ export class AdminCategoriesComponent {
     
     size = "w-100"
     selectedRowData: any;
+    selectedRowDataForDelete: any;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
@@ -54,6 +55,10 @@ export class AdminCategoriesComponent {
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
+    }
+    onRowDataForDelete(rowData: any){
+        this.selectedRowDataForDelete = rowData;
+        console.log(rowData)
     }
     
 	showAddCategoryForm(): void{

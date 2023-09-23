@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GETAttributesAdmin, PostAttributeAdmin } from '../endpoints';
 import { AttributeList, Attributes } from 'src/assets/models/attributes';
-import { FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,8 @@ import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 export class AttributesService {
 
   private attributes: FormArray = this.formBuilder.array([]);
-
+  private attributesArray: any[] = [];
+  private index: number;
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder
   ) { 
@@ -72,6 +73,29 @@ export class AttributesService {
   
   removeAllSelectedAttribute(){
     this.attributes.clear()
+  }
+
+  postIndex(index: number){
+    this.index = index
+  }
+  
+  getIndex(){
+    return this.index
+  }
+
+  postSelectedAttributeForm(attribute: any): void {
+    this.attributesArray.push(attribute);
+    console.log(this.attributesArray);
+  }
+
+  getSelectedAttributesForm(): any[] {
+    return this.attributesArray;
+  }
+  removeSelectedAttributeForm(id: string) {
+    // const index = this.addAttributeForm.findIndex((formGroup) => formGroup.get('id')?.value === id);
+    // if (index !== -1) {
+    //   this.addAttributeForm.splice(index, 1);
+    // }
   }
   
 }

@@ -11,6 +11,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class ProductsService {
 
 	private imageList: FormArray = this.formBuilder.array([]);
+	
   private newData: Observable<Product[]>;
   private productsSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(of([]));
   constructor(private http: HttpClient,

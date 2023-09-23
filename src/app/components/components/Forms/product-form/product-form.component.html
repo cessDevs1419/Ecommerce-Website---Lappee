@@ -176,9 +176,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible}" >
                                         <div class="accordion-body p-0">
-                                            <form [formGroup]="addVariantForm[i]">
+                                            <form [formGroup]="addVariantForm">
                                                 <div class="w-100 mb-3">
                                                     <label class="form-label {{formTextColor}}">Variant Name</label>
                                                     <input 
@@ -199,7 +200,7 @@
                                                             class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                             id="addvariantQty" 
                                                             name="addvariantQty" 
-                                                            formControlName="quantity" 
+                                                            formControlName="stock" 
                                                             [value]="1"
                                                             
                                                             required
@@ -234,32 +235,36 @@
                                                 <button class=" productBtnOpener mt-0 d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#attributes"
+                                                    (click)="getVariantIndex(i)"
                                                     >
                                                 <i class="bi bi-plus-lg"></i>
                                                 </button>
                                             </div>
                                                 
 <!-- Attribute List   -->
-                                            <form [formGroup]="addAttributeForm[i]">
-                                                <div class="row mb-3 d-flex justify-content-between">
-                                                    <div class="col-sm-6 mb-3 " *ngFor="let item of attributesList.value; let i = index">
-                                                            <div class=" position-relative d-flex align-items-center " >
-                                                                <input type="hidden" name="" formControlName="attributeId" [value]="item.id">
-                                                                <input 
-                                                                    [type]="item.name === 'color' ? 'color':'text'" 
-                                                                    [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100 ':'form-control rounded-3  bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}} '" 
-                                                                    [placeholder]="item.name"
-                                                                    formControlName="attributeValue"
-                                                                    required
-                                                                >
-                                                                <button class="btn text-white position-absolute end-0 mt-0" (click)="removeAttribute(item.id)" >
-                                                                    <i class="bi bi-x"></i>
-                                                                </button>
-                                                            </div>
-                                                    </div>
+                                            <div class="row mb-3 d-flex justify-content-between">
+                                                <div class="col-sm-6 mb-3" *ngFor="let item of selectedAttributeForms; let j = index">
+                                                    <form [formGroup]="addAttributeForm">
+                                                        <div class="position-relative d-flex align-items-center">
+                                                        
+                                                            <input
+                                                                [type]="item.name === 'color' ? 'color' : 'text'"
+                                                                [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
+                                                                [placeholder]="item.name"
+                                                                [formControlName]="'value'"
+                                                                
+                                                                required
+                                                            >
+                                                        
+                                                            <button class="btn text-white position-absolute end-0 mt-0" (click)="removeAttribute(item.id)">
+                                                                <i class="bi bi-x"></i>
+                                                            </button>
+                                                        
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form >
-                                            
+                                            </div>
+
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>
@@ -317,5 +322,16 @@
         <button type="submit" class="btn btn-primary" (click)="onSave()" data-bs-dismiss="modal">Confirm</button>
     </div>
 </ng-container>
-        
+
+
+<form *ngIf="formDeleteVariant" >
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to delete this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
         

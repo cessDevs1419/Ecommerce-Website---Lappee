@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { Observable, Subject, map, startWith, switchMap, take, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -24,6 +24,8 @@ import { AttributesService } from 'src/app/services/attributes/attributes.servic
 export class CategoryFormComponent {
     
     public searchString: string;
+    //theme
+    formTextColor: string = 'text-light-subtle'
 
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
     @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
@@ -35,6 +37,7 @@ export class CategoryFormComponent {
     @Input() formAddCategory!: boolean;
     @Input() formEditCategory!: boolean;
     @Input() formDeleteCategory!: boolean;
+    @Input() formMultipleDeleteCategory!: boolean;
     @Input() formTitle!: string;
     @Input() formsubTitle!: string;
     
@@ -57,7 +60,7 @@ export class CategoryFormComponent {
     attributeId: FormArray;
     
     selectedAttributeForm: FormGroup;
-    
+    categoriesList: AdminCategory[] = []
     attributes!: Observable<AdminCategory[]>;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
@@ -79,19 +82,21 @@ export class CategoryFormComponent {
         private errorService: ErrorHandlingService,
         private http: HttpClient,
         private router: Router,
-        private location: Location
+        private location: Location,
+        private cdr : ChangeDetectorRef
+        
     ) 
     {
         this.addCategoryForm = this.formBuilder.group({
-            category: new FormControl('', Validators.required)
+            category: new FormControl('', Validators.required),
         });
 
         this.editCategoryForm = new FormGroup({
             //main_category_id: new FormControl('', Validators.required),
-            category: new FormControl('', Validators.required)
+            category: new FormControl('', Validators.required),
         });
         
-        
+
     }
 
     ngOnInit(): void {
@@ -152,213 +157,222 @@ export class CategoryFormComponent {
     //Submit Functions
     
     onCategoryAddSubmit(): void {
-        let formData: any = new FormData();
-            formData.append('name', this.addCategoryForm.get('category')?.value);
+        if(this.addCategoryForm.valid){
 
             
+            let formData: any = new FormData();
+            let categoriesArray = this.addCategoryForm.get('category')?.value;
+            formData.append('categories[]', categoriesArray);
+            
+            this.category_service.postCategory(formData).subscribe({
+                next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
+                        sub: response?.message
+                    };
+                    
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.CategorySuccess.emit(successMessage);
+                    this.addCategoryForm.reset();
+                    this.done = true
+                    this.cancel = false
+                },
+                error: (error: HttpErrorResponse) => {
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
+                    
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
+                    
+                        this.CategoryWarn.emit(errorDataforProduct);
+                    } else {
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.CategoryError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
+                    
+                }
+            });
+        
+        
+        }else{
+            this.addCategoryForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.addCategoryForm.controls) {
+                if (this.addCategoryForm.controls.hasOwnProperty(controlName) && this.addCategoryForm.controls[controlName].errors?.['required']) {
+                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                    emptyFields.push(label);
+                }
+            }
+
+            const errorData = {
+                errorMessage: `Please fill in the following required fields: `,
+                suberrorMessage: emptyFields.join(', ')
+            };
+            this.CategoryWarn.emit(errorData);
+            
+        }
+        
+        
+
+    }
+
+    onCategoryEditSubmit(): void {
+            let formData: any = new FormData();
+
             for (const value of formData.entries()) {
                 console.log(`${value[0]}, ${value[1]}`);
             }
-        // if(this.addCategoryForm.valid){
-
             
-        //     let formData: any = new FormData();
-        //     formData.append('name', this.addCategoryForm.get('category')?.value);
-            
-        //     const selectedAttribute = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        //     for (let i = 0; i < selectedAttribute.length; i++) {
-        //         const selectedAttributeFormGroup = selectedAttribute.at(i) as FormGroup;
-        //         const attribute = selectedAttributeFormGroup.value;
-        //         formData.append(`attributes[${i}]`, attribute);
-        //     }
-            
-        //     for (const value of formData.entries()) {
-        //         console.log(`${value[0]}, ${value[1]}`);
-        //     }
-            
-        //     this.category_service.postCategory(formData).subscribe({
-        //         next: (response: any) => { 
-        //             const successMessage = {
-        //                 head: 'Category ' + this.addCategoryForm.get('category')?.value,
-        //                 sub: response?.message
-        //             };
-                    
-        //             this.RefreshTable.emit();
-        //             this.refreshTableData();
-        //             this.CategorySuccess.emit(successMessage);
-        //             this.addCategoryForm.reset();
-        //             this.done = true
-        //             this.cancel = false
-        //         },
-        //         error: (error: HttpErrorResponse) => {
-        //             if (error.error?.data?.error) {
-        //                 const fieldErrors = error.error.data.error;
-        //                 const errorsArray = [];
-                    
-        //                 for (const field in fieldErrors) {
-        //                     if (fieldErrors.hasOwnProperty(field)) {
-        //                         const messages = fieldErrors[field];
-        //                         let errorMessage = messages;
-        //                         if (Array.isArray(messages)) {
-        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
-        //                         }
-        //                         errorsArray.push(errorMessage);
-        //                     }
-        //                 }
-                    
-        //                 const errorDataforProduct = {
-        //                     errorMessage: 'Error Invalid Inputs',
-        //                     suberrorMessage: errorsArray,
-        //                 };
-                    
-        //                 this.CategoryWarn.emit(errorDataforProduct);
-        //             } else {
-                    
-        //                 const errorDataforProduct = {
-        //                     errorMessage: 'Error Invalid Inputs',
-        //                     suberrorMessage: 'Please Try Another One',
-        //                 };
-        //                 this.CategoryError.emit(errorDataforProduct);
-        //             }
-        //             return throwError(() => error);
-                    
-        //         }
-        //     });
-        
-        
-        // }else{
-        //     this.addCategoryForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.addCategoryForm.controls) {
-        //         if (this.addCategoryForm.controls.hasOwnProperty(controlName) && this.addCategoryForm.controls[controlName].errors?.['required']) {
-        //             const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //             emptyFields.push(label);
-        //         }
-        //     }
-
-        //     const errorData = {
-        //         errorMessage: `Please fill in the following required fields: `,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
-        //     this.CategoryWarn.emit(errorData);
-            
-        // }
-        
-        //console.log(this.addCategoryForm.get('category')?.value, this.selectedAttributeForm.value)
-
-    }
-
-    async onCategoryEditSubmit() {
-        
-        let formData: any = new FormData();
-        formData.append('id', this.selectedRowData.id);
-        formData.append('name', this.editCategoryForm.get('category')?.value);
-
-        
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-        
-        // if(this.editCategoryForm.valid){
-
-        //     let formData: any = new FormData();
-        //     formData.append('id',  this.selectedRowData);
-        //     formData.append('name', this.editCategoryForm.get('category')?.value);        
+            if(this.editCategoryForm.valid){
+                formData.append(`categories[${0}][id]`, this.selectedRowData.id);
+                formData.append(`categories[${0}][name]`, this.editCategoryForm.get('category')?.value);
+    
 
                 
-        //     this.category_service.patchCategory(formData).subscribe({
-        //         next: async(response: any) => { 
-        //             const successMessage = {
-        //                 head: 'Category ' + this.addCategoryForm.get('category')?.value,
-        //                 sub: response?.message
-        //             };
+            this.category_service.patchCategory(formData).subscribe({
+                next: async(response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addCategoryForm.get('category')?.value,
+                        sub: response?.message
+                    };
                     
-        //             this.RefreshTable.emit();
-        //             this.refreshTableData();
-        //             this.CategorySuccess.emit(successMessage);
-        //             this.editCategoryForm.reset();
-        //             this.done = true
-        //             this.cancel = false
-                    
-        //             await this.asyncTask();
-        //             this.router.navigate(['/admin/category-management']);
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.CategorySuccess.emit(successMessage);
+                    this.editCategoryForm.reset();
+                    this.done = true
+                    this.cancel = false
 
-        //         },
-        //         error: (error: HttpErrorResponse) => {
-        //             const errorData = this.errorService.handleError(error);
-        //             if (errorData.errorMessage === 'Unexpected Error') {
-        //                 this.CategoryError.emit(errorData);
-        //             } else {
-        //                 this.CategoryWarn.emit(errorData);
-        //             }
-        //             return throwError(() => error);
-        //         }
+                },
+                error: (error: HttpErrorResponse) => {
+                    const errorData = this.errorService.handleError(error);
+                    if (errorData.errorMessage === 'Unexpected Error') {
+                        this.CategoryError.emit(errorData);
+                    } else {
+                        this.CategoryWarn.emit(errorData);
+                    }
+                    return throwError(() => error);
+                }
 
-        //     });
+            });
             
 
-        // }
+        }
             
-        // else if(this.editCategoryForm.invalid){
-        //     this.editCategoryForm.markAllAsTouched();
-        //     const emptyFields = [];
-        //     for (const controlName in this.editCategoryForm.controls) {
-        //         if (this.editCategoryForm.controls.hasOwnProperty(controlName) && this.editCategoryForm.controls[controlName].errors?.['required']) {
-        //             const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-        //             emptyFields.push(label);
-        //         }
-        //     }
+        else if(this.editCategoryForm.invalid){
+            this.editCategoryForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.editCategoryForm.controls) {
+                if (this.editCategoryForm.controls.hasOwnProperty(controlName) && this.editCategoryForm.controls[controlName].errors?.['required']) {
+                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                    emptyFields.push(label);
+                }
+            }
 
-        //     const errorData = {
-        //         errorMessage: `Please fill in the following required fields: `,
-        //         suberrorMessage: emptyFields.join(', ')
-        //     };
-        //     this.CategoryWarn.emit(errorData);
-        // }
+            const errorData = {
+                errorMessage: `Please fill in the following required fields: `,
+                suberrorMessage: emptyFields.join(', ')
+            };
+            this.CategoryWarn.emit(errorData);
+        }
         
     }
-    
+
     onCategoryDeleteSubmit(): void {
-    
-        let formData: any = new FormData();
-        formData.append('id', this.selectedRowData.id);
 
-        
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        }
-            // this.category_service.deleteCategory(this.selectedRowData.id).subscribe({
-            //     next: async(response: any) => { 
+        const selectedCategory = [this.selectedRowData.id]
+        this.category_service.deleteCategories(selectedCategory).subscribe({
+            next: async(response: any) => { 
+            
+                const successMessage = {
+                    head: 'Category Delete',
+                    sub: response?.message
+                };
                 
-            //         const successMessage = {
-            //             head: 'Category Delete',
-            //             sub: response?.message
-            //         };
-                    
-            //         this.RefreshTable.emit();
-                    
-            //         this.refreshTableData();
-            //         this.CategorySuccess.emit(successMessage);
-            //         this.deleteCategoryForm.reset();
-                    
-            //         await this.asyncTask();
-            //         this.CloseModal.emit();
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         const customErrorMessages = {
-            //             errorMessage: 'Invalid Request',
-            //             suberrorMessage: 'There are subcategories under this category',
-            //         };
-                    
-            //         const errorData = this.errorService.handleError(error, customErrorMessages);
-            //         if (errorData.errorMessage === 'Unexpected Error') {
-            //             this.CategoryError.emit(errorData);
-            //         } else {
-            //             this.CategoryWarn.emit(errorData);
-            //         }
-            //         return throwError(() => error); 
-            //     }
-            // });
+                this.RefreshTable.emit();
+                
+                this.refreshTableData();
+                this.CategorySuccess.emit(successMessage);
+                this.deleteCategoryForm.reset();
+                
+                await this.asyncTask();
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                const customErrorMessages = {
+                    errorMessage: 'Invalid Request',
+                    suberrorMessage: 'There are subcategories under this category',
+                };
+                
+                const errorData = this.errorService.handleError(error, customErrorMessages);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                } else {
+                    this.CategoryWarn.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+            
+    }
+
+    onCategoryDeleteMultipleSubmit(): void {
+
+        const categoryList = this.selectedRowDataForDelete ;
+        const categoryIds = categoryList.map((category: any) => category);
+        
+        this.category_service.deleteCategories(categoryIds).subscribe({
+            next: async(response: any) => { 
+            
+                const successMessage = {
+                    head: 'Category Delete',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                
+                this.refreshTableData();
+                this.CategorySuccess.emit(successMessage);
+                this.deleteCategoryForm.reset();
+                
+                await this.asyncTask();
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                const customErrorMessages = {
+                    errorMessage: 'Invalid Request',
+                    suberrorMessage: 'There are subcategories under this category',
+                };
+                
+                const errorData = this.errorService.handleError(error, customErrorMessages);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                } else {
+                    this.CategoryWarn.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
             
     }
 

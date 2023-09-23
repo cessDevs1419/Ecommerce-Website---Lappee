@@ -55,6 +55,7 @@ export class VariantsService {
     }
 
     addVariantToVariantsList(variantFormGroup: FormGroup): void {
+        console.log(variantFormGroup);
         this.variantsList.push(variantFormGroup);
     }
     

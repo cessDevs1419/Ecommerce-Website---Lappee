@@ -112,6 +112,18 @@
                     (CloseModal)="closeModal()"
                 ></app-category-form>
                 
+                <app-category-form 
+                    *ngIf="modalMultipleDeleteCategory"
+                    [formMultipleDeleteCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
+
                 <app-product-form
                     *ngIf="modalDeleteProduct"
                     [formDeleteProduct]="true"
@@ -129,6 +141,7 @@
                     *ngIf="modalSelectAttribute"
                     [formSelectAttribute]="true"
                     [selectedRowData]="selectedRowData"
+                    (Index)="indexVariant($event)"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
@@ -137,6 +150,19 @@
                 >
                 </app-product-form> 
             
+                            
+                <app-product-form
+                    *ngIf="modalDeleteVariant"
+                    [formDeleteVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                >
+                </app-product-form> 
+                
                 <app-accounts-form
                     *ngIf="modalBanAccounts"
                     [formBanAccount]="true"
