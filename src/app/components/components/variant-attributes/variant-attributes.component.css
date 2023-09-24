@@ -20,11 +20,14 @@
 
 .variant-label input:checked + .variant-box {
     border: 1px solid var(--primary);
+    background-color: var(--primary);
+    color: white;
 }
 
 .variant-box {
     cursor: pointer;
     border: 1px solid var(--muted-gray);
+    transition: border .4s, background-color .4s, color .4s
 }
 
 .variant-image {
@@ -34,4 +37,8 @@
 
 .white-space-pre {
     white-space: pre;
+}
+
+.accordion {
+    transition: display .4s;
 }

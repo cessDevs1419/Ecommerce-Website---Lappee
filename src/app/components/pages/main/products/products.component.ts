@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { Product, ColorVariant } from 'src/assets/models/products';
+import { Product, ColorVariant, Variant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -258,6 +258,28 @@ export class ProductsComponent {
     this.selectedVariantId = selectedVariant?.variant_id ? selectedVariant.variant_id : "";
     this.maxStock = selectedVariant?.stock ? selectedVariant.stock : 0;
     console.log(this.productSize?.value);
+  }
+
+  addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}) {
+    let details: string[] = []
+    console.log(params.variant_attributes)
+    params.variant_attributes.forEach((key, value) => {
+      details.push(value + ": " + key);
+    })
+    this.cart.addToCart(this.currentProduct, params.variant.variant_id, details, 1, params.variant.price, params.variant.variant_images[0] )
+
+    console.warn('added to cart');
+    console.log(this.cart.items);
+
+    this.toastHeader = "Successful!";
+    this.toastContent = "The item has been added to your cart.";
+    this.toast.switchTheme('default');
+    this.toast.show();
+  }
+
+  orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
+    this.addToCartAttr(params);
+    this.router.navigate(['/cart']);
   }
 
   addToCart(): boolean {

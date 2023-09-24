@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, ViewChild, Output } from '@angular/core';
 import { CartItem, Product, Variant } from 'src/assets/models/products';
+import * as bootstrap from 'bootstrap';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-variant-attributes',
@@ -11,6 +13,10 @@ export class VariantAttributesComponent {
   @Input() mode: string = 'CartItem';
   @Input() cartItem!: CartItem;
   @Input() product!: Product;
+  @ViewChild('variantAccordion') variantAccordion: ElementRef;
+
+  @Output() addToCart: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
+  @Output() orderNow: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
 
   item!: Product;
 
@@ -18,6 +24,17 @@ export class VariantAttributesComponent {
   selectedSize: string;
   selectedSizeVariants: Variant[] = [];
   selectedVariantAttributes: string;
+  selectVariantAttrMap: Map<string, string> = new Map();
+  selectedVariant: Variant;
+
+  variantForm = new FormGroup({
+    variantSize: new FormControl(0, Validators.required),
+    variantSelect: new FormControl('', Validators.required),
+  });
+
+  get variantSize() { return this.variantForm.get('variantSize') };
+  get variantSelect() { return this.variantForm.get('variantSelect') };
+
 
   ngOnInit(): void {
     this.initAttributes();
@@ -67,12 +84,15 @@ export class VariantAttributesComponent {
   changeVariant(variant: Variant){
     console.log(variant);
     this.selectedVariantAttributes = "";
+    this.selectVariantAttrMap.clear();
 
     variant.attributes.forEach(attr => {
       console.log(attr.attribute_name + ": " + attr.attribute_value)
-      this.selectedVariantAttributes += attr.attribute_name + ": " + attr.attribute_value + "\n\n";
-      console.log(this.selectedVariantAttributes);
+      this.selectedVariantAttributes += attr.attribute_name + ": " + attr.attribute_value + "\n";
+      this.selectVariantAttrMap.set(attr.attribute_name, attr.attribute_value);
+      console.log(this.selectVariantAttrMap);
     })
+    this.selectedVariant = variant;
   }
 
   loadVariantAttributes(variant: Variant): Map<string, string> {
@@ -83,4 +103,32 @@ export class VariantAttributesComponent {
     return map
   }
 
+  toggleAccordion(): void {
+    let accordion = new bootstrap.Collapse(this.variantAccordion.nativeElement);
+    console.log(accordion);
+    accordion.toggle();
+  }
+
+  validateForm(): boolean {
+    if(this.variantForm.valid){
+      return true;
+    }
+    else {
+      console.log("invalid");
+      this.variantForm.markAllAsTouched();
+      return false;
+    }
+  }
+
+  addToCartEmit(): void {
+    if(this.validateForm()){
+      this.addToCart.emit({variant: this.selectedVariant, variant_attributes: this.selectVariantAttrMap});
+    }
+  }
+
+  orderNowEmit(): void {
+    if(this.validateForm()){
+      this.orderNow.emit({variant: this.selectedVariant, variant_attributes: this.selectVariantAttrMap});
+    }
+  }
 }

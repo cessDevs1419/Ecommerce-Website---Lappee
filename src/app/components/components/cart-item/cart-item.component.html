@@ -54,17 +54,16 @@
             </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-2">
             <img class="cart-item-img" [src]="this.cartItem.image_url">
         </div>
 
-        <div class="col-2 d-flex flex-column justify-content-between">
+        <div class="col-3 d-flex flex-column justify-content-between">
             <div *ngIf="this.cartItem.variant">
                 <p class="fw-bold m-0">{{this.cartItem.product.name}}</p> 
-                <p class="m-0">Color: {{this.cartItem.variant_details[0]}}</p>
-                <p class="m-0">Size: {{this.cartItem.variant_details[1]}}</p>
+                <p class="m-0" *ngFor="let attr of this.cartItem.variant_details">{{attr}}</p>
             </div>
-            <div class="text-muted">
+            <div class="text-muted mt-3">
                 <span class="cart-item-action" (click)="handleEditItem(this.cartItem)">Edit</span> | <span class="cart-item-action" (click)="handleRemoveItem(this.cartItem.variant)">Remove</span>
             </div>
         </div>
