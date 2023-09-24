@@ -46,7 +46,7 @@ export class CartService {
     
   }
 
-  addToCart(product: Product, variant: string, variant_details: string[], quantity: number, price: string, imgurl: string): void {
+  addToCart(product: Product, variant: string, variant_details: Map<string, string>, quantity: number, price: string, imgurl: string[]): void {
     let duplicate = -1;
     let cartItem: CartItem = {
       product: product,

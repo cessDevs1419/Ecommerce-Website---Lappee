@@ -17,9 +17,11 @@ export class EditCartItemComponent {
   galleryRef: GalleryRef = this.gallery.ref('product-images');
 
   ngOnInit(): void {
-    this.product.product.images.forEach((url: string) => {
+    this.product.image_url.forEach((url: string) => {
       console.log(url);
       this.galleryRef.addImage({src: url, thumb: url});
     });
+
+    console.log(this.product.variant_details)
   }
 }

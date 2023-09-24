@@ -20,9 +20,11 @@
         <!-- <div id="spacer" style="height: 1000px;"></div> -->
         <div class="mt-3" id="productDescOptions">
             
-            <div class="mt-3" >
-                <form>
-                    <!--
+            <div class="mt-3">
+                <app-variant-attributes [cartItem]="product" mode="CartItem"></app-variant-attributes>
+                 <!--
+                    <form>
+                   
                     <div *ngIf="!this.hasVariant">
                         <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
                         <div *ngIf="productColor?.invalid && (productColor?.dirty || productColor?.touched)">
@@ -66,14 +68,14 @@
 
                     <div class="product-border-bottom mt-3 pb-3">
                         <i *ngIf="!this.hasVariant">Choose a color to see its available sizes, choose a size to see how many are in stock.</i>
-                    </div> -->
+                    </div>
 
                     <div class="mt-3 row">
                         <div class="col d-flex justify-content-end border-top pt-3">
                             <button class="button-primary rounded-0">CONFIRM</button>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
         </div>
 

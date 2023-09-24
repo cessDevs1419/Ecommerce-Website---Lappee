@@ -36,10 +36,10 @@ export interface Attribute {
 export interface CartItem {
     product: Product,
     variant: string,
-    variant_details: string[],
+    variant_details: Map<string, string>,
     quantity: number
     price: string,
-    image_url: string
+    image_url: string[]
 }
 
 export interface ColorVariant {

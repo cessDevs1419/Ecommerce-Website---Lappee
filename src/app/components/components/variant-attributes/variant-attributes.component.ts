@@ -28,7 +28,7 @@ export class VariantAttributesComponent {
   selectedVariant: Variant;
 
   variantForm = new FormGroup({
-    variantSize: new FormControl(0, Validators.required),
+    variantSize: new FormControl('', Validators.required),
     variantSelect: new FormControl('', Validators.required),
   });
 
@@ -70,6 +70,15 @@ export class VariantAttributesComponent {
       }
     })
 
+    if(this.mode == "CartItem"){
+      let itemSize = this.cartItem.variant_details.get('Size')!;
+      this.variantForm.setValue({
+        variantSize: itemSize,
+        variantSelect: this.cartItem.variant
+      })
+      this.selectedSize = itemSize;
+      this.selectedSizeVariants = this.sizes.get(itemSize)!;
+    }
 
     console.log(this.sizes);
   }
@@ -79,6 +88,8 @@ export class VariantAttributesComponent {
     this.selectedSizeVariants = this.sizes.get(size)!;
     console.log(this.selectedSizeVariants);
     console.log(this.sizes.get(size));
+
+    console.log(this.cartItem.variant_details.get('Size'));
   }
 
   changeVariant(variant: Variant){
@@ -130,5 +141,13 @@ export class VariantAttributesComponent {
     if(this.validateForm()){
       this.orderNow.emit({variant: this.selectedVariant, variant_attributes: this.selectVariantAttrMap});
     }
+  }
+
+  editCartItemEmit(): void {
+
+  }
+
+  compare(one: string, two: string){
+    console.log()
   }
 }

@@ -261,12 +261,12 @@ export class ProductsComponent {
   }
 
   addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}) {
-    let details: string[] = []
-    console.log(params.variant_attributes)
+    let details: string[] = [];
+    console.log(params.variant_attributes);
     params.variant_attributes.forEach((key, value) => {
       details.push(value + ": " + key);
     })
-    this.cart.addToCart(this.currentProduct, params.variant.variant_id, details, 1, params.variant.price, params.variant.variant_images[0] )
+    this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.variant_images)
 
     console.warn('added to cart');
     console.log(this.cart.items);
@@ -297,7 +297,7 @@ export class ProductsComponent {
         
         details = [this.colorCurrent.name, this.sizeCurrent]
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images[0]);
+        //this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images);
         console.warn('added to cart');
 
         this.toastHeader = "Successful!";
