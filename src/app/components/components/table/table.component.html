@@ -52,17 +52,24 @@
                         
                         <div *ngIf="Btntools" class="button-container mt-sm-0 p-0 mt-2 w-auto d-flex justify-content-start justify-content-lg-end">
                             <button
-                                *ngIf="addBtn"
+                                *ngIf="addProdBtn"
                                 type="button" 
                                 class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addBtnclass}}" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#add"
                                 (click)="showAddForm()"
                                 >
                                 <i class="bi bi-plus-lg fw-bold"></i>
                                 {{addbtnName}}
                             </button>
-    
+                            <button
+                                *ngIf="addBtn"
+                                type="button" 
+                                class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addBtnclass}}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#add"
+                                >
+                                <i class="bi bi-plus-lg fw-bold"></i>
+                                {{addbtnName}}
+                            </button>
                             
                             <!-- <button
                                 *ngIf="addSubBtn"

@@ -12,11 +12,13 @@ export class AttributesService {
 
   private attributes: FormArray = this.formBuilder.array([]);
   private attributesArray: any[] = [];
+  addAttributeForm: FormGroup
+
   private index: number;
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder
   ) { 
-
+    this.addAttributeForm = this.formBuilder.group({})
   }
   
   httpOptions = {
@@ -83,9 +85,12 @@ export class AttributesService {
     return this.index
   }
 
+  addControl(id: string) {
+    this.addAttributeForm.addControl(id, this.formBuilder.control('', Validators.required));
+  }
+  
   postSelectedAttributeForm(attribute: any): void {
     this.attributesArray.push(attribute);
-    console.log(this.attributesArray);
   }
 
   getSelectedAttributesForm(): any[] {

@@ -141,12 +141,14 @@
                     *ngIf="modalSelectAttribute"
                     [formSelectAttribute]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedAttributeData]="selectedAttributeData"
                     (Index)="indexVariant($event)"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (SendAttribute)="sendAttribute($event)"
                 >
                 </app-product-form> 
             

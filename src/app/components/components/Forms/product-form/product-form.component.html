@@ -70,31 +70,7 @@
                             </div>
                         </div>
                                                 
-<!-- Image Form -->
-                        <hr class="divider border-white mt-4 mb-3">
-                        
-                        <div class="image-form body pt-0 pb-0">
-                            <div class="title-container mb-3 ">
-                                <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
-                            </div>
-                            
-                            <div class="title-container mb-3 ">
-                                <p class="{{formTextColor}}">Add Images</p>
-                            </div>
-                            
-                            <div class="d-flex flex-wrap justify-content-start w-100">
-                                <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
-                                    <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
-                                        <i class="bi bi-x text-white"></i>
-                                    </button>
-                                    <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
-                                </div>
-                                <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                    <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
-                                    <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
-                                </button>
-                            </div>
-                        </div>
+
                         
                         <hr class="divider border-white mt-4 mb-3">
                         
@@ -242,29 +218,51 @@
                                             </div>
                                                 
 <!-- Attribute List   -->
-                                            <div class="row mb-3 d-flex justify-content-between">
-                                                <div class="col-sm-6 mb-3" *ngFor="let item of selectedAttributeForms; let j = index">
-                                                    <form [formGroup]="addAttributeForm">
+                                            <!-- Assuming this is inside your component's template -->
+                                            <form [formGroup]="addAttributeForm">
+                                                <div class="row mb-3 d-flex justify-content-between">
+                                                  <div class="col-sm-6 mb-3" *ngFor="let item of selectedAttributeForms; let j = index">
                                                         <div class="position-relative d-flex align-items-center">
-                                                        
                                                             <input
-                                                                [type]="item.name === 'color' ? 'color' : 'text'"
-                                                                [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
-                                                                [placeholder]="item.name"
-                                                                [formControlName]="'value'"
-                                                                
-                                                                required
+                                                            [type]="item.name === 'color' ? 'color' : 'text'"
+                                                            [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
+                                                            [placeholder]="item.name"
+                                                            [formControlName]="'value'"
+                                                            required
                                                             >
-                                                        
                                                             <button class="btn text-white position-absolute end-0 mt-0" (click)="removeAttribute(item.id)">
                                                                 <i class="bi bi-x"></i>
                                                             </button>
-                                                        
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
 
+<!-- Image Form -->
+                                        <hr class="divider border-white mt-4 mb-3">
+                                                                
+                                        <div class="image-form body pt-0 pb-0">
+                                            <div class="title-container mb-3 ">
+                                                <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
+                                            </div>
+                                            
+                                            <div class="title-container mb-3 ">
+                                                <p class="{{formTextColor}}">Add Images</p>
+                                            </div>
+                                            
+                                            <div class="d-flex flex-wrap justify-content-start w-100">
+                                                <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
+                                                    <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
+                                                        <i class="bi bi-x text-white"></i>
+                                                    </button>
+                                                    <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                </div>
+                                                <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                    <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
+                                                    <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                                </button>
+                                            </div>
+                                        </div>
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>

@@ -53,6 +53,7 @@ export class TableComponent {
 	
 	//addBtn Details
 	@Input() addBtn!: boolean;
+	@Input() addProdBtn!: boolean;
 	@Input() addbtnName!: string;
 	@Input() addCategoryBtn!: boolean;
 	@Input() addCategoryName!: string;

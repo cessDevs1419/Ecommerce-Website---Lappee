@@ -68,7 +68,7 @@ export class ModalComponent {
 	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
-	
+	selectedAttributeData: any;
 	//modal theme
 	modalTheme: string = 'table-bg-dark';
 	modalTitleColor : string = 'dark-theme-text-color';
@@ -126,6 +126,9 @@ export class ModalComponent {
         });
     }
     
+    sendAttribute(value: any){
+        this.selectedAttributeData = value
+    }
     async closeModal() {
         this.dismiss.nativeElement.click();
     }

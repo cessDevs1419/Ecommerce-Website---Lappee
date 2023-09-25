@@ -38,7 +38,6 @@ export class ProductsService {
   
   addImageToList(fileControl: FormControl): void {
     this.imageList.push(fileControl);
-    console.log(this.imageList)
 }
   removeImg(index: number){
     this.imageList.removeAt(index)
