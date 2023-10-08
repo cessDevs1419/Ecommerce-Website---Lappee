@@ -1,10 +1,77 @@
 <!--ADD CATEGORY FORM-->    
+    <div class="container m-auto ">
+        <form *ngIf="formAddCategory" [formGroup]="addCategoryForm" >
+            <div class=" w-100 px-1">
+                <hr class="divider border-white mt-0 mb-4">
+                <input formControlName="category" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Category Name">
+            </div>
+        </form>
+        
+<!-- Attribute List   -->
+        <div class=" w-100 px-1 mt-3">
+            <div class="row">
+                <div class="col-lg-4">
+                    <form [formGroup]="addAttributeForm">
+                        <p class="text-start mb-1 {{formTextColor}}">Add New Attributes</p>
+                        <div class="input-group mb-3">
+                            <input type="text" formControlName="name" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control   border-end-0" placeholder="Add Attribute" >
+                            <button 
+                                class="rounded-corner bg-transparent input-group-text border-start-0  border border-dark-subtle" 
+                                id="AddVariants"
+                                (click)="onAttributeAddSubmit()"
+                                >
+                                <i class="bi bi-plus-lg {{formTextColor}}"></i>
+                            </button>
+                        </div>
+                    </form>
 
-<form *ngIf="formAddCategory" [formGroup]="addCategoryForm" (ngSubmit)="onCategoryAddSubmit()" >
-    <div class="container">
-        <div class=" w-100 px-1">
-            <input formControlName="category" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Category Name">
-        </div> 
+                    <div  class="attribute-list-container overflow-hidden border border-dark-subtle rounded-2">
+                        
+                        <div class="input-group mb-3">
+                            <input type="text" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
+                            <button class="rounded-corner bg-transparent input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                <i class="bi bi-search {{formTextColor}}"></i>
+                            </button>
+                        </div>
+                        <!-- ATTRIBUTE LIST -->
+                        <form [formGroup]="selectedAttributeForm">
+                            <ul class="attribute-list overflow-y-auto list-unstyled px-4  " >
+                                <li class="text-decoration-none mb-2 d-flex" *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                    <label >
+                                        <div class="input-group d-flex align-items-center">
+                                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
+                                                type="checkbox" 
+                                                [checked]="isChecked(item)"
+                                                (change)="onCheckboxChange(item)"
+                                            />
+                                            <p class="mx-2 m-auto cursor-pointer {{formTextColor}}">{{ item.name }}</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
+
+                    </div>
+                </div>
+                
+                <div class="col-lg-8 ps-0">
+                    <p class="text-start  mb-1 {{formTextColor}}">Selected Attributes</p>
+                    <div class="selected-attribute-list p-0 border border-dark-subtle rounded-2">
+                        <ul class="d-flex p-0 flex-wrap">
+                            <li class="mx-2 mt-2" *ngFor="let item of checkedItems">
+                                <div class="item-list h-auto border rounded-4 p-1 px-2 d-flex justify-content-between align-items-center">
+                                    <label class="{{formTextColor}} me-2">{{item.name}}</label>
+                                    <button class="btn border-0 bg-none p-0" (click)="removeAttribute(item)">
+                                        <i class="{{formTextColor}} bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal-footer mt-2 mb-2 p-0 border-0" >
             <button 
                 type="button" 
@@ -15,13 +82,14 @@
             </button>
             <button 
                 type="submit" 
-                class="btn btn-primary bg-light-primary rounded-3" 
-            >
+                class="btn btn-primary bg-light-primary rounded-3 " 
+                (click)="onCategoryAddSubmit()"
+                >
                 Confirm
             </button>
         </div> 
     </div> 
-</form>
+
 
 <!--EDIT CATEGORY FORM-->
 <form *ngIf="formEditCategory" [formGroup]="editCategoryForm" (ngSubmit)="onCategoryEditSubmit()" >

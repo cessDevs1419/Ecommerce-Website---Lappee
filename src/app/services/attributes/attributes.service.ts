@@ -13,6 +13,7 @@ export class AttributesService {
   private attributes: FormArray = this.formBuilder.array([]);
   private attributesArray: any[] = [];
   addAttributeForm: FormGroup
+  private selectedAttribute: any[] = [];
 
   private index: number;
   constructor(private http: HttpClient,
@@ -96,11 +97,20 @@ export class AttributesService {
   getSelectedAttributesForm(): any[] {
     return this.attributesArray;
   }
+  
   removeSelectedAttributeForm(id: string) {
     // const index = this.addAttributeForm.findIndex((formGroup) => formGroup.get('id')?.value === id);
     // if (index !== -1) {
     //   this.addAttributeForm.splice(index, 1);
     // }
+  }
+  
+  postSelectedAttributes(item: any){
+    this.selectedAttribute.push(item)
+  }
+  
+  getSelectedAttribute(){
+    return this.selectedAttribute;
   }
   
 }

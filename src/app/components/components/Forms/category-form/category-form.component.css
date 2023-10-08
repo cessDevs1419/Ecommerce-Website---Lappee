@@ -14,3 +14,15 @@
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #959BA5;
 }
+
+.selected-attribute-list{
+    height: 21.3rem;
+}
+.attribute-list-container{
+    height: 18rem;
+}
+
+.attribute-list{
+    height: 14rem;
+}
+

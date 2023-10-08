@@ -69,7 +69,9 @@ export class CategoryFormComponent {
 
     editCategories: string;
     editSubCategories: string;
+    checkedItems: any[] = [];
     
+
     modal: ModalComponent;
     done: boolean;
     cancel: boolean = true;
@@ -87,6 +89,12 @@ export class CategoryFormComponent {
         
     ) 
     {
+        this.selectedAttributeForm = this.formBuilder.group({});
+        this.checkedItems = this.attribute_service.getSelectedAttribute();
+        this.addAttributeForm = new FormGroup({
+            name: new FormControl('', Validators.required)
+        });
+        
         this.addCategoryForm = this.formBuilder.group({
             category: new FormControl('', Validators.required),
         });
@@ -96,7 +104,6 @@ export class CategoryFormComponent {
             category: new FormControl('', Validators.required),
         });
         
-
     }
 
     ngOnInit(): void {
@@ -142,7 +149,33 @@ export class CategoryFormComponent {
         this.refreshData$.next();
     }
 
-
+    isChecked(item: any): boolean{
+        const selectedAttributes = this.attribute_service.getSelectedAttribute();
+        return selectedAttributes.includes(item);
+        
+    }
+    
+    onCheckboxChange(item: any) {
+        const selectedAttributes = this.attribute_service.getSelectedAttribute();
+        if (selectedAttributes.includes(item)) {
+            const index = selectedAttributes.indexOf(item);
+            if (index !== -1) {
+                selectedAttributes.splice(index, 1);
+            }
+        } else {
+            selectedAttributes.push(item);
+        }
+    }
+    
+    removeAttribute(item: any){
+        const selectedAttributes = this.attribute_service.getSelectedAttribute();
+        if (selectedAttributes.includes(item)) {
+            const index = selectedAttributes.indexOf(item);
+            if (index !== -1) {
+                selectedAttributes.splice(index, 1);
+            }
+        } 
+    }
     
     //ADD SUB CATEGORY
     asyncTask(): Promise<void> {
@@ -155,7 +188,82 @@ export class CategoryFormComponent {
     }
 
     //Submit Functions
-    
+    onAttributeAddSubmit(): void {
+        if(this.addAttributeForm.valid){
+
+            let formData: any = new FormData();
+            formData.append('name', this.addAttributeForm.get('name')?.value);
+            
+            this.attribute_service.postAttribute(formData).subscribe({
+                next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addAttributeForm.get('name')?.value,
+                        sub: response?.message
+                    };
+                    
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.CategorySuccess.emit(successMessage);
+                    this.addAttributeForm.reset();
+
+                },
+                error: (error: HttpErrorResponse) => {
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
+                    
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
+                    
+                        this.CategoryWarn.emit(errorDataforProduct);
+                    } else {
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.CategoryError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
+                    
+                }
+            });
+        
+            
+        }else{
+            this.addAttributeForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in this.addAttributeForm.controls) {
+                if (this.addAttributeForm.controls.hasOwnProperty(controlName) && this.addAttributeForm.controls[controlName].errors?.['required']) {
+                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                    emptyFields.push(label);
+                }
+            }
+
+            const errorData = {
+                errorMessage: `Please fill in the following required fields: `,
+                suberrorMessage: emptyFields.join(', ')
+            };
+            this.CategoryWarn.emit(errorData);
+            
+        }
+
+console.log(this.addAttributeForm.get('name')?.value)
+    }
+
     onCategoryAddSubmit(): void {
         if(this.addCategoryForm.valid){
 
