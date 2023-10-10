@@ -90,7 +90,7 @@ export class ProductFormComponent {
     done: boolean;
     cancel: boolean = true; 
     selectedImages: string[] = [];
-    
+
     selectedAttribute: Attributes[] = [];
     addedAttributes: Attributes[] = [];
     originalSelectedAttribute: Attributes[] = [];
@@ -167,9 +167,6 @@ export class ProductFormComponent {
             switchMap(() => this.attribute_service.getAttribute()),
             map((Response: any) => formatAttributes(Response))
         );
-
-
-
 	
     }
 
@@ -195,7 +192,6 @@ export class ProductFormComponent {
         console.log(variant, index)
     }
     
-   
     
 //Get Image Value to Array
     selectFileForAdding() {
@@ -531,8 +527,6 @@ export class ProductFormComponent {
 
     }
     
-    
-
     removeAttribute( id: string ) {
         this.attribute_service.removeSelectedAttribute(id);
         this.attribute_service.removeSelectedAttributeForm(id);
@@ -543,6 +537,11 @@ export class ProductFormComponent {
         // console.log(this.selectedAttribute);
     }
     
+    onCategorySelect(event: any) {
+        const selectedValue = event.target.value;
+        console.log(selectedValue);
+        // You can now use the selectedValue as needed.
+    }
 //Submit Functions
 
 //submit products

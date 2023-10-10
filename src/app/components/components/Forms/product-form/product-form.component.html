@@ -48,10 +48,11 @@
                                         id="addproductCategory"
                                         name="addproductCategory" 
                                         formControlName="category" 
+                                        (change)="onCategorySelect($event)"
                                         required
                                     >
         
-                                        <option *ngFor="let category of categories | async" [value]=" category.name ">{{ category.name }}</option>
+                                        <option *ngFor="let category of categories | async" [value]=" category.id ">{{ category.name }}</option>
                                     </select>
                                 </div>
                                 
@@ -206,8 +207,6 @@
                                                 </div>
                                             </form>
                                             
-
-                                                
 <!-- Attribute List   -->
                                             <!-- Assuming this is inside your component's template -->
                                             <form [formGroup]="addAttributeForm">
@@ -255,7 +254,7 @@
                                             </div>
                                         </div>
 
-                                            <div class="modal-footer">
+                                            <div class="modal-footer mt-4">
                                                 <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>
                                                 <button type="submit" class="btn btn-primary" (click)="saveVariant(i)">Save</button>
                                             </div>

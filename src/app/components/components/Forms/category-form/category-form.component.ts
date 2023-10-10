@@ -261,7 +261,6 @@ export class CategoryFormComponent {
             
         }
 
-console.log(this.addAttributeForm.get('name')?.value)
     }
 
     onCategoryAddSubmit(): void {
@@ -269,8 +268,25 @@ console.log(this.addAttributeForm.get('name')?.value)
 
             
             let formData: any = new FormData();
-            let categoriesArray = this.addCategoryForm.get('category')?.value;
-            formData.append('categories[]', categoriesArray);
+            let categoriesName = this.addCategoryForm.get('category')?.value;
+            let attributeArray = this.attribute_service.getSelectedAttribute().map(item => (item.id))
+            // let categoriesArray: any[] = [];
+            
+            // let categoryObject = {
+            //     name: categoriesName,
+            //     attributes: attributeArray
+            // };
+
+            // categoriesArray.push(categoryObject);
+
+            formData.append('name', categoriesName);
+            formData.append('attributes[]', attributeArray);
+
+
+
+            formData.forEach((value: any, key: number) => {
+                console.log(`${key}: ${value}`);
+            });
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 

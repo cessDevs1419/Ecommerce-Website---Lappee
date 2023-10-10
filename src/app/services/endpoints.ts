@@ -13,6 +13,7 @@ export const DELETESubcategories: string = api + "api/admin/category/sub/delete"
 //Category Endpoints
 export const GETCategories: string = api + "api/client/category/";
 export const GETAdminCategories: string = api + "api/admin/category";
+export const GETAdminCategoriesAttribute: string = api + "api/admin/category/attributes/";
 export const POSTCategories: string = api + "api/admin/category/store";
 export const PATCHCategories: string = api + "api/admin/category/edit";
 export const DELETECategories: string = api + "api/admin/category/delete";
