@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {AdminCategory, AdminCategoryList, CategoryList } from 'src/assets/models/categories';
 import { Observable, from } from 'rxjs';
-import { GETAdminCategories, GETCategories, GETSubcategories, POSTCategories, PATCHCategories, DELETECategories } from '../endpoints';
+import { GETAdminCategories, GETCategories, GETSubcategories, POSTCategories, PATCHCategories, DELETECategories, GETAttributesAdmin, GETAdminCategoriesAttribute } from '../endpoints';
+import { AttributeList, Attributes } from 'src/assets/models/attributes';
 
 
 @Injectable({
@@ -35,6 +36,10 @@ export class CategoriesService {
     return this.http.get<AdminCategoryList>(GETAdminCategories);
   }
   
+  getCategoryAttribute(id: string): Observable<AttributeList>{
+    return this.http.get<AttributeList>(GETAdminCategoriesAttribute + id);
+  }
+
   postCategory(data: FormData): Observable<any> {
     return this.http.post<AdminCategory>(POSTCategories, data, this.httpOptions);
   } 

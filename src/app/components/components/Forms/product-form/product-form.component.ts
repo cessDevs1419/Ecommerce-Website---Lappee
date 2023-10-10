@@ -2,11 +2,11 @@ import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, Template
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, filter, first, forkJoin, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 
-import { AdminCategory } from 'src/assets/models/categories';
+import { AdminCategory, NewAdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { formatAdminCategories, formatAdminSubcategories, formatAttributes, formatProducts} from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminSubcategories, formatAttributes, formatProducts} from 'src/app/utilities/response-utils';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
@@ -76,12 +76,15 @@ export class ProductFormComponent {
     
     
     categories!: Observable<AdminCategory[]>;
-	attributes!: Observable<AdminCategory[]>;
+	attributes!: Observable<NewAdminCategory[]>;
+	categoryAttributes!: Observable<NewAdminCategory>;
     products!: Observable<Product[]>;
     
     variantsList: FormArray = this.formBuilder.array([]);
     imageList: FormArray = this.formBuilder.array([]);
     attributesList: FormArray = this.formBuilder.array([]);
+    attributeFormsArray: any[] = [];
+
     formChangesSubscription: Subscription;
 
     index: number;
@@ -147,9 +150,7 @@ export class ProductFormComponent {
             attributes: this.formBuilder.array([]),
         });
 
-        this.addAttributeForm = this.formBuilder.group({
-            value: ['', Validators.required],
-        });
+        this.addAttributeForm = this.formBuilder.group({});
 
         this.selectedAttributeForms.forEach((item) => {
             this.addAttributeForm.addControl(item.id, this.formBuilder.control('', Validators.required));
@@ -162,11 +163,11 @@ export class ProductFormComponent {
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
 
-        this.attributes = this.refreshData$.pipe(
-            startWith(undefined), 
-            switchMap(() => this.attribute_service.getAttribute()),
-            map((Response: any) => formatAttributes(Response))
-        );
+        // this.attributes = this.refreshData$.pipe(
+        //     startWith(undefined), 
+        //     switchMap(() => this.attribute_service.getAttribute()),
+        //     map((Response: any) => formatAttributes(Response))
+        // );
 	
     }
 
@@ -407,21 +408,29 @@ export class ProductFormComponent {
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
 
         if (addVariantForm) {
-            for (let i = 0; i < this.selectedAttributeForms.length; i++) {
-                const items = this.selectedAttributeForms[i];
-                const value = this.addAttributeForm.get('value')?.value;
+            const formControls = this.addAttributeForm.controls;
+            const attributeFormsArray = this.attributeFormsArray;
 
-                items.value = value;
-                attributesArray.push(this.formBuilder.control(items));
-                this.cd.detectChanges();
-            }
+            Object.keys(formControls).forEach((controlName: string) => {
+                const controlValue = formControls[controlName].value;
+                const attributeIndex = attributeFormsArray.findIndex((attributeForm: any) => attributeForm.id === controlName);
+            
+                if (attributeIndex !== -1) {
+                    attributeFormsArray[attributeIndex].value = controlValue;
+                }
+            });
+
+            this.attributeFormsArray.forEach((attributeForm) => {
+                const newAttributeFormGroup = this.formBuilder.group({
+                    id: [attributeForm.id],
+                    name: [attributeForm.name],
+                    value: [attributeForm.value],
+                });
+                attributesArray.push(newAttributeFormGroup);
+            });
 
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
             variantsArray.push(newVariantControl);
-
-
-            console.log(this.addVariantForm)
-            //addVariantForm.reset()
 
             for (let i = variantsArray.length - 1; i >= 0; i--) {
                 if (variantsArray.at(i).value === null) {
@@ -433,7 +442,7 @@ export class ProductFormComponent {
         }
         
         this.toggleAccordion(index);
-        
+    
     }
     
     removeVariant(index: any){
@@ -449,98 +458,30 @@ export class ProductFormComponent {
         
     }
 
-//Get and remove attributes
-    isSelected(id: string): boolean {
-    
-        for (const control of this.attributesList.controls) {
-            if (control.value.id === id) {
-                return true; 
-            }
-        }
-        return false; 
-    }
-    
-    isAttributeSelected(attribute: Attributes): boolean {
-        return this.selectedAttribute.some(attr => attr.id === attribute.id);
-    }
-    isAttributeAdded(attribute: Attributes): boolean {
-        return this.addedAttributes.some((attr) => attr.id === attribute.id);
-    }
-    getAttributeIdValue(): string {
-        return this.attributeIdInput.nativeElement.value;
-    }
-    
-    toggleAttribute(id: string, name: string) {
-        const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-        const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
-        
-        if (idIndex === -1) {
-            const attribute: Attributes = { id, name };
-    
-            if (!this.isAttributeSelected(attribute)) {
-                selectedCheckboxesIdArray.push(new FormControl(id));
-                this.selectedAttribute.push(attribute);
-
-            }
-        } else {
-            selectedCheckboxesIdArray.removeAt(idIndex);
-            this.selectedAttribute.splice(idIndex, 1);
-            this.selectedAttributeForm.reset()
-            this.addedAttributes.splice(idIndex, 1);
-
-        }
-        
-        if(this.isSelected(id)){
-            this.removeAttribute(id)
-            this.selectedAttribute.splice(idIndex, 1);
-            this.selectedAttributeForm.reset()
-
-        }
-    }
-    
-    onSave() {
-        const attributesToAdd = this.selectedAttribute.filter((attr) => !this.isAttributeAdded(attr));
-        
-        if (attributesToAdd.length > 0) {
-            this.attribute_service.postSelectedAttribute(attributesToAdd);
-
-            for (const attribute of attributesToAdd) {
-                const addAttributeForm = {
-                    id: attribute.id,
-                    name: attribute.name,
-                    value: '',
-                };
-                
-                this.attribute_service.postSelectedAttributeForm(addAttributeForm); 
-
-            }
-
-            this.addedAttributes.push(...attributesToAdd);
-            this.selectedAttribute.splice(0)
-            this.selectedAttributeForm.reset();
-            this.addedAttributes.splice(0);
-
-
-        }else{
-            console.log('no input', attributesToAdd, this.addedAttributes)
-        }   
-
-    }
-    
-    removeAttribute( id: string ) {
-        this.attribute_service.removeSelectedAttribute(id);
-        this.attribute_service.removeSelectedAttributeForm(id);
-        console.log(this.attributesList, this.addedAttributes)
-    }
-
-    cancelAttribute() {
-        // console.log(this.selectedAttribute);
-    }
     
     onCategorySelect(event: any) {
         const selectedValue = event.target.value;
-        console.log(selectedValue);
-        // You can now use the selectedValue as needed.
+        
+        this.categoryAttributes = this.category_service.getCategoryAttribute(selectedValue).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
+        this.categoryAttributes.subscribe((data: NewAdminCategory) => {
+            if (data && data.attributes) {
+                
+                for (const attribute of data.attributes) {
+                    const addAttributeForm = {
+                        id: attribute.attribute_id,
+                        name: attribute.name,
+                        value: '',
+                    };
+                    
+                    this.addAttributeForm.addControl(attribute.attribute_id, new FormControl('', Validators.required));
+                    //this.attributeFormsArray.push(attributeFormControl);
+                    this.attributeFormsArray.push(addAttributeForm);
+
+
+                    //this.attribute_service.postSelectedAttributeForm(addAttributeForm); 
+                }
+            }
+        });
     }
 //Submit Functions
 
@@ -587,8 +528,6 @@ export class ProductFormComponent {
         //     formData.append(`variants[${i}][quantity]`, variant.stock);
         //     formData.append(`variants[${i}][price]`, variant.price.toFixed(2));
         // }
-        
-
         
 
         
@@ -743,5 +682,94 @@ export class ProductFormComponent {
         
     }
     
-    
+
 }
+
+//Get and remove attributes
+    // isSelected(id: string): boolean {
+    
+    //     for (const control of this.attributesList.controls) {
+    //         if (control.value.id === id) {
+    //             return true; 
+    //         }
+    //     }
+    //     return false; 
+    // }
+    
+    // isAttributeSelected(attribute: Attributes): boolean {
+    //     return this.selectedAttribute.some(attr => attr.id === attribute.id);
+    // }
+    // isAttributeAdded(attribute: Attributes): boolean {
+    //     return this.addedAttributes.some((attr) => attr.id === attribute.id);
+    // }
+    
+    // getAttributeIdValue(): string {
+    //     return this.attributeIdInput.nativeElement.value;
+    // }
+    
+    // toggleAttribute(id: string, name: string) {
+    //     const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
+    //     const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
+        
+    //     if (idIndex === -1) {
+    //         const attribute: Attributes = { id, name };
+    
+    //         if (!this.isAttributeSelected(attribute)) {
+    //             selectedCheckboxesIdArray.push(new FormControl(id));
+    //             this.selectedAttribute.push(attribute);
+
+    //         }
+    //     } else {
+    //         selectedCheckboxesIdArray.removeAt(idIndex);
+    //         this.selectedAttribute.splice(idIndex, 1);
+    //         this.selectedAttributeForm.reset()
+    //         this.addedAttributes.splice(idIndex, 1);
+
+    //     }
+        
+    //     if(this.isSelected(id)){
+    //         this.removeAttribute(id)
+    //         this.selectedAttribute.splice(idIndex, 1);
+    //         this.selectedAttributeForm.reset()
+
+    //     }
+    // }
+    
+    // onSave() {
+    //     const attributesToAdd = this.selectedAttribute.filter((attr) => !this.isAttributeAdded(attr));
+        
+    //     if (attributesToAdd.length > 0) {
+    //         this.attribute_service.postSelectedAttribute(attributesToAdd);
+
+    //         for (const attribute of attributesToAdd) {
+    //             const addAttributeForm = {
+    //                 id: attribute.id,
+    //                 name: attribute.name,
+    //                 value: '',
+    //             };
+                
+    //             this.attribute_service.postSelectedAttributeForm(addAttributeForm); 
+
+    //         }
+
+    //         this.addedAttributes.push(...attributesToAdd);
+    //         this.selectedAttribute.splice(0)
+    //         this.selectedAttributeForm.reset();
+    //         this.addedAttributes.splice(0);
+
+
+    //     }else{
+    //         console.log('no input', attributesToAdd, this.addedAttributes)
+    //     }   
+
+    // }
+    
+    // removeAttribute( id: string ) {
+    //     this.attribute_service.removeSelectedAttribute(id);
+    //     this.attribute_service.removeSelectedAttributeForm(id);
+    //     console.log(this.attributesList, this.addedAttributes)
+    // }
+
+    // cancelAttribute() {
+    //     // console.log(this.selectedAttribute);
+    // }
