@@ -31,9 +31,11 @@
             <label for={{variant.variant_id}} class="w-100 variant-label">
                 <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} (change)="changeVariant(variant)" formControlName="variantSelect" />
                 <div class="d-flex flex-row rounded-1 p-3 variant-box" *ngIf="loadVariantAttributes(variant) as attr">
+                    
                     <div class="">
-                        <img src={{variant.variant_images[0]}} class="variant-image rounded-1">
+                        <img src={{variant.images[0]}} class="variant-image rounded-1">
                     </div>
+                    
                     <div class="d-flex flex-column ms-3 justify-content-center">
                         <p class="m-0 fw-bold fs-5">{{variant.variant_name}}</p>
                         <p class="m-0">{{variant.price  | currency}}</p>

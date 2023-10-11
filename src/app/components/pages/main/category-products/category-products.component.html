@@ -1,0 +1,27 @@
+<div class="container-md">
+    <div class="row mt-5 justify-content-between">
+        <div class="col-md d-flex justify-content-start">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/']" title="Home" class="fs-4 text-uppercase">Home</a></li>
+                    <li *ngIf="categoryId" class="breadcrumb-item active fs-4 text-uppercase">{{categoryId}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md d-flex justify-content-end">
+            <form class="d-inline-flex align-items-center">
+                <label for="productSort" class="form-label text-nowrap m-0 me-3 fw-bold">SORT BY</label>
+                <select class="form-select" [(ngModel)]="sortOption" name="sortSelect" (change)="productSort()">
+                    <option value="name-normal">Alphabetical (A-Z)</option>
+                    <option value="name-inverse">Alphabetical (Z-A)</option>
+                    <option value="price-asc">Price (Ascending)</option>
+                    <option value="price-desc">Price (Descending)</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="mt-3">
+        <app-product-grid [products]="productsFiltered" [searchString]="" class="row"></app-product-grid>
+    </div>
+
+<!--WORKING NA SEARCHSTRING NEED NA LANG TO FIND OUT HOW TO CONNECT IT WITH SEARCH BAR-->

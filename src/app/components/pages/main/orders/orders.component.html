@@ -45,8 +45,11 @@
                             </div>
                         </div>
                         <div class="col-md-3 ps-0 ps-md-3 pb-3 pb-md-0 d-flex flex-md-column flex-row justify-content-center align-items-center">
+                            <!-- 
                             <button [disabled]="!checkProductStock(item.product_id, item.color_title, item.size)" class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
                             <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
+                            -->
+                            <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
                             <button *ngIf="!item.is_reviewed" class="border-md-end border-top button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                         </div>
                     </div>

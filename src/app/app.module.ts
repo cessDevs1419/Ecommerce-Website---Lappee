@@ -84,6 +84,7 @@ import { AttributeFormComponent } from './components/components/Forms/attribute-
 import { ConfirmDialogComponent } from './components/components/modal-forms-client/confirm-dialog/confirm-dialog.component';
 import { EditCartItemComponent } from './components/components/modal-forms-client/edit-cart-item/edit-cart-item.component';
 import { VariantAttributesComponent } from './components/components/variant-attributes/variant-attributes.component';
+import { CategoryProductsComponent } from './components/pages/main/category-products/category-products.component';
 
 @NgModule({
   declarations: [
@@ -158,6 +159,7 @@ import { VariantAttributesComponent } from './components/components/variant-attr
     ConfirmDialogComponent,
     EditCartItemComponent,
     VariantAttributesComponent,
+    CategoryProductsComponent,
 
   ],
   imports: [
@@ -175,6 +177,7 @@ import { VariantAttributesComponent } from './components/components/variant-attr
       {path: 'home', component: HomeComponent, title: 'Home'},
       {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
+      {path: 'category/:categoryId' , component: CategoryProductsComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent, title: 'Cart'},
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},

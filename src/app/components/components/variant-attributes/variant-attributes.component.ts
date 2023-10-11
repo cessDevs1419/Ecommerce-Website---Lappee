@@ -53,20 +53,20 @@ export class VariantAttributesComponent {
     }
 
     //get all available sizes
-    this.item.product_variants.forEach(variant => {
+    this.item.variants.forEach(variant => {
       let size = variant.attributes.find(attribute => attribute.attribute_name === "Size");
       if(size){
         let array: Variant[] = [];
         //check if size already exists
-        if(this.sizes.has(size.attribute_value)){
-          array = this.sizes.get(size.attribute_value)!
+        if(this.sizes.has(size.value)){
+          array = this.sizes.get(size.value)!
 
           // add item if unique
           if(!array.includes(variant)){
             array.push(variant)
           }
         }
-        this.sizes.set(size.attribute_value, array)
+        this.sizes.set(size.value, array)
       }
     })
 
@@ -98,9 +98,9 @@ export class VariantAttributesComponent {
     this.selectVariantAttrMap.clear();
 
     variant.attributes.forEach(attr => {
-      console.log(attr.attribute_name + ": " + attr.attribute_value)
-      this.selectedVariantAttributes += attr.attribute_name + ": " + attr.attribute_value + "\n";
-      this.selectVariantAttrMap.set(attr.attribute_name, attr.attribute_value);
+      console.log(attr.attribute_name + ": " + attr.value)
+      this.selectedVariantAttributes += attr.attribute_name + ": " + attr.value + "\n";
+      this.selectVariantAttrMap.set(attr.attribute_name, attr.value);
       console.log(this.selectVariantAttrMap);
     })
     this.selectedVariant = variant;
@@ -109,7 +109,7 @@ export class VariantAttributesComponent {
   loadVariantAttributes(variant: Variant): Map<string, string> {
     let map = new Map<string, string>();
     variant.attributes.forEach(attr => {
-      map.set(attr.attribute_name, attr.attribute_value);
+      map.set(attr.attribute_name, attr.value);
     })
     return map
   }
