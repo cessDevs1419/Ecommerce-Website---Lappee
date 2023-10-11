@@ -416,6 +416,7 @@ export class ProductFormComponent {
         const variantsArray = this.addProductForm.get('variants') as FormArray;
         const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
 
         if (addVariantForm) {
             const formControls = this.addAttributeForm.controls;
@@ -428,16 +429,23 @@ export class ProductFormComponent {
                 if (attributeIndex !== -1) {
                     attributeFormsArray[attributeIndex].value = controlValue;
                 }
-
             });
 
             this.attributeFormsArray.forEach((attributeForm) => {
-                const newAttributeFormGroup = this.formBuilder.group({
-                    id: [attributeForm.id],
-                    value: [attributeForm.value],
-                });
-                attributesArray.push(newAttributeFormGroup);
-                
+                const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
+
+                if (existingIndex !== -1) {
+                    // If the ID already exists, update the existing form group
+                    const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
+                    existingFormGroup.get('value')?.setValue(attributeForm.value);
+                } else {
+                    // If the ID doesn't exist, create a new form group
+                    const newAttributeFormGroup = this.formBuilder.group({
+                        id: [attributeForm.id],
+                        value: [attributeForm.value],
+                    });
+                    attributesArray.push(newAttributeFormGroup);
+                }
             });
 
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
@@ -450,6 +458,12 @@ export class ProductFormComponent {
             }
             this.addAttributeForm.reset();
             this.fileUrlMap.clear();
+            while (attributesArray .length !== 0) {
+                attributesArray .removeAt(0);
+            }
+            while (imagesArray.length !== 0) {
+                imagesArray.removeAt(0);
+            }
             this.product_service.removeAllImg();
             this.isFormSave = false;
         }
@@ -501,7 +515,7 @@ export class ProductFormComponent {
 
         const formData: FormData = new FormData();
         const imageFiles = this.addVariantForm.get('images')?.value;
-
+        const attributeList = this.addVariantForm.get('attributes') as FormArray;
 
         formData.append('name', this.addProductForm.get('name')?.value);
         formData.append('category', this.addProductForm.get('category')?.value);
@@ -516,6 +530,7 @@ export class ProductFormComponent {
             formData.append(`variants[${i}][stock]`, variant.stock);
             formData.append(`variants[${i}][price]`, variant.price.toFixed(2));
             formData.append(`images`, imageFiles);
+            formData.append(`attributes`, attributeList.value);
         }
 
         // Append images to the formData
@@ -530,13 +545,13 @@ export class ProductFormComponent {
         // }
 
         // Append attribute to the formData
-        const attributeList = this.addVariantForm.get('attributes') as FormArray;
-        for (let i = 0; i < attributeList.length; i++) {
-            const attributeFormGroup = attributeList.at(i) as FormGroup;
-            const attribute = attributeFormGroup.value;
-            formData.append(`attribute[${i}][id]`, attribute.id);
-            formData.append(`value`, attribute.value);
-        }
+        // const attributeList = this.addVariantForm.get('attributes') as FormArray;
+        // for (let i = 0; i < attributeList.length; i++) {
+        //     const attributeFormGroup = attributeList.at(i) as FormGroup;
+        //     const attribute = attributeFormGroup.value;
+        //     formData.append(`attribute[${i}][id]`, attribute.id);
+        //     formData.append(`value`, attribute.value);
+        // }
 
         // Display the FormData entries
         formData.forEach((value, key) => {
