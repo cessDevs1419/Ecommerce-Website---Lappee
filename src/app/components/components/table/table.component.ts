@@ -29,7 +29,7 @@ export class TableComponent {
 	//table theme
 	table_container_bg: string = 'table-bg-dark'
 	tabletitlecolor: string = 'text-white'
-	tablesubtitlecolor: string = ''
+	tablesubtitlecolor: string = 'text-secondary'
 	textcolor: string = 'text-light-subtle'
 	borders: string = 'dark-subtle-borders'
 	btncolor: string = 'dark-subtle-btn'

@@ -21,7 +21,7 @@
                         <div class="searchbar-container w-auto px-0 {{searchBarclass}}" *ngIf="searchBar">
                             <div  class="input-group mx-1 bg-transparent" >
                                 
-                                <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-4 rounded-end-0 border border-1 border-end-0  {{borders}}" id="basic-addon2">
+                                <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-3 rounded-end-0 border border-1 border-end-0  {{borders}}" id="basic-addon2">
                                     <i class="bi bi-search"></i>
                                 </span>
                                 
@@ -38,7 +38,7 @@
                                 
                                 <input 
                                 
-                                    class="form-control {{textcolor}} search-field rounded-4 rounded-start-0 border border-1 border-start-0 bg-transparent p-2 {{borders}}" 
+                                    class="form-control {{textcolor}} search-field rounded-3 rounded-start-0 border border-1 border-start-0 bg-transparent p-2 {{borders}}" 
                                     name="searchString" 
                                     type="search" 
                                     placeholder="Search Items Here"
@@ -54,7 +54,7 @@
                             <button
                                 *ngIf="addProdBtn"
                                 type="button" 
-                                class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addBtnclass}}" 
+                                class="add-btn btn btn-primary text-nowrap text-white mx-1 border-0 py-2 px-3 {{btncolor}} {{addBtnclass}}" 
                                 (click)="showAddForm()"
                                 >
                                 <i class="bi bi-plus-lg fw-bold"></i>
@@ -63,7 +63,7 @@
                             <button
                                 *ngIf="addBtn"
                                 type="button" 
-                                class="btn btn-primary text-nowrap text-white mx-1 border-0 p-2 {{btncolor}} {{addBtnclass}}" 
+                                class="add-btn btn btn-primary text-nowrap text-white mx-1 border-0 py-2 px-3 {{btncolor}} {{addBtnclass}}" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#add"
                                 >

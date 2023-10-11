@@ -122,6 +122,7 @@ body {
 .bg-gradient-primary {
     background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
+
 .text-dark-subtle-grey
 {
     color: #C1C1C1;
@@ -285,11 +286,6 @@ input[type=text], input[type=password], input[type=email], textarea {
 
 .whitespace-prewrap {
     white-space: pre-wrap;
-}
-
-.content-form {
-  background-color: white;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 /* Skeleton Loader Generics*/
