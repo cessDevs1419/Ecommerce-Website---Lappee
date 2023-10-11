@@ -43,6 +43,10 @@ export class ProductsService {
     this.imageList.removeAt(index)
   }
   
+  removeAllImg(){
+    this.imageList.clear()
+  }
+  
   getProducts(): Observable<any>{
     //return this.http.get<ProductList>(GETProducts);
     return this.http.get<ProductList>('../../assets/sampleData/products.json');
