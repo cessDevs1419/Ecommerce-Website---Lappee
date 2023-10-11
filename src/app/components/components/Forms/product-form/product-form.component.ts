@@ -513,54 +513,46 @@ export class ProductFormComponent {
 
         console.log(this.addProductForm)
 
-        const formData: FormData = new FormData();
-        const imageFiles = this.addVariantForm.get('images')?.value;
-        const attributeList = this.addVariantForm.get('attributes') as FormArray;
+        const productFormData: FormData = new FormData();
 
-        formData.append('name', this.addProductForm.get('name')?.value);
-        formData.append('category', this.addProductForm.get('category')?.value);
-        formData.append('description', this.addProductForm.get('description')?.value);
+        // Add Product Fields
+        productFormData.append('name', this.addProductForm.get('name')?.value);
+        productFormData.append('category', this.addProductForm.get('category')?.value);
+        productFormData.append('description', this.addProductForm.get('description')?.value);
 
-        // Append variants to the formData
+        // Get Variants
         const variantsList = this.addProductForm.get('variants') as FormArray;
+
         for (let i = 0; i < variantsList.length; i++) {
             const variantFormGroup = variantsList.at(i) as FormGroup;
             const variant = variantFormGroup.value;
-            formData.append(`variants[${i}][name]`, variant.name);
-            formData.append(`variants[${i}][stock]`, variant.stock);
-            formData.append(`variants[${i}][price]`, variant.price.toFixed(2));
-            formData.append(`images`, imageFiles);
-            formData.append(`attributes`, attributeList.value);
+        
+            productFormData.append(`variants[${i}][name]`, variant.name);
+            productFormData.append(`variants[${i}][stock]`, variant.stock);
+            productFormData.append(`variants[${i}][price]`, variant.price.toFixed(2));
+
+            for (let image of variant.images) {
+                let index = 0;
+                productFormData.append(`variants[${i}][images][${index}]`, image);
+                index++;
+            }
+
+            for (let attribute of variant.attributes) {
+                let index = 0;
+                productFormData.append(`variants[${i}][attributes][${index}][category_attribute_id]`, attribute.id);
+                productFormData.append(`variants[${i}][attributes][${index}][value]`, attribute.value);
+                index++;
+            }
         }
 
-        // Append images to the formData
-        
-        // const imageFileNames: string[] = [];
-        // if (imageFiles) {
-        //     for (let i = 0; i < imageFiles.length; i++) {
-        //         const file: File = imageFiles[i];
-        //         imageFileNames.push(file.name);
-        //         formData.append(`variants[${i}][images]`, file);
-        //     }
-        // }
-
-        // Append attribute to the formData
-        // const attributeList = this.addVariantForm.get('attributes') as FormArray;
-        // for (let i = 0; i < attributeList.length; i++) {
-        //     const attributeFormGroup = attributeList.at(i) as FormGroup;
-        //     const attribute = attributeFormGroup.value;
-        //     formData.append(`attribute[${i}][id]`, attribute.id);
-        //     formData.append(`value`, attribute.value);
-        // }
-
         // Display the FormData entries
-        formData.forEach((value, key) => {
+        productFormData.forEach((value, key) => {
             console.log(`${key}: ${value}`);
         });
         
         if(this.addProductForm.valid){
         
-            this.product_service.postProduct(formData).subscribe({
+            this.product_service.postProduct(productFormData).subscribe({
                 next: (response: any) => { 
                     
                     const productSuccess = {
