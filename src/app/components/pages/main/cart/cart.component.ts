@@ -159,7 +159,7 @@ export class CartComponent {
         console.log("Found match: " + orderlistitem + " | " + item.product.id);
         let cartItemIndex = index;
 
-        item.product.product_variants.forEach((variant: Variant, index: number) => {
+        item.product.variants.forEach((variant: Variant, index: number) => {
           if(orderlistvariant === variant.variant_id){
             console.log("Found matching variant: " + orderlistvariant + " | " + variant.variant_id);
             matchindex = cartItemIndex;
@@ -175,7 +175,7 @@ export class CartComponent {
   matchIndexAndVariant(index: number): number {
     let matchIndex =-1;
     let variantId = this.cartContents[index].variant;
-    this.cartContents[index].product.product_variants.forEach((variant: any, index: number) => {
+    this.cartContents[index].product.variants.forEach((variant: any, index: number) => {
       if(variantId === variant.variant_id){
         matchIndex = index;
       }
@@ -186,7 +186,7 @@ export class CartComponent {
   matchCartItemAndVariant(sender: CartItem): number {
     let matchIndex = -1
     let variantId = sender.variant;
-    sender.product.product_variants.forEach((variant: any, index: number) => {
+    sender.product.variants.forEach((variant: any, index: number) => {
       if(variantId === variant.variant_id){
         matchIndex = index;
       }
@@ -199,7 +199,7 @@ export class CartComponent {
 
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
-      this.subtotal += Number(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
+      this.subtotal += Number(this.cartContents[index].product.variants[variantIndex].price) * this.cartContents[index].quantity;
     }
     /* else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
@@ -236,7 +236,7 @@ export class CartComponent {
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
-        this.subtotal -= Number(this.orderList[i].product.product_variants[variantIndex].price) * this.orderList[i].quantity;
+        this.subtotal -= Number(this.orderList[i].product.variants[variantIndex].price) * this.orderList[i].quantity;
         console.log('Match found at index ' + i);
       }
     }
@@ -258,7 +258,7 @@ export class CartComponent {
     this.cartContents[Number(params[0])].quantity = Number(params[1]);
     let updatedSubtotal: number = 0;
     this.orderList.forEach(item => {
-      updatedSubtotal += Number(item.product.product_variants[variantIndex].price) * item.quantity;
+      updatedSubtotal += Number(item.product.variants[variantIndex].price) * item.quantity;
     })
 
     this.subtotal = updatedSubtotal;

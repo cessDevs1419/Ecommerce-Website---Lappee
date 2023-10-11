@@ -70,10 +70,9 @@ export function formatProducts(response: ProductList): Product[] {
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
-    sub_category_id: data.sub_category_id,
     description: data.description,
-    images: data.images,
-    product_variants: data.product_variants
+    category: data.category,
+    variants: data.variants,
   }));
 }
 
@@ -86,8 +85,8 @@ export function formatAttributes(response: AttributeList): Attributes[] {
 }
 
 // returns Variant array from a ProductList
-export function formatProductVariants(response: ProductList): Variant[] {
-  let variantList = response.data.flatMap((product: Product) => product.product_variants);
+/* export function formatProductVariants(response: ProductList): Variant[] {
+  let variantList = response.data.flatMap((product: Product) => product.variants);
   return variantList.map((variant: Variant) => ({
     variant_id: variant.variant_id,
     variant_name: variant.variant_name,
@@ -100,6 +99,19 @@ export function formatProductVariants(response: ProductList): Variant[] {
     price: variant.price,
     attributes: variant.attributes,
     variant_images: variant.variant_images
+  }));
+} */
+
+export function formatProductVariants(response: ProductList): Variant[] {
+  let variantList = response.data.flatMap((product: Product) => product.variants);
+  return variantList.map((variant: Variant) => ({
+    variant_id: variant.variant_id,
+    variant_name: variant.variant_name,
+    stock: variant.stock,
+    price: variant.price,
+    attributes: variant.attributes,
+    product_id: variant.product_id,
+    images: variant.images
   }));
 }
 
@@ -282,9 +294,8 @@ export function formatProductsAndAttributes(response: ProductList): Product[] {
     id: data.id,
     name: data.name,
     description: data.description,
-    product_variants: data.product_variants,
-    sub_category_id: data.sub_category_id,
-    images: data.images
+    variants: data.variants,
+    category: data.category,
   }))
 }
 
@@ -296,9 +307,16 @@ export function filterSubcategories(subcategoryID: string,input: Observable<Subc
 }
 
 // returns all products with specified subcategory ID
-export function filterProductsBySubcategory(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+/* export function filterProductsBySubcategory(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
   return productObservable.pipe(map((prods: Product[]) => {
     return prods.filter((product: Product) => product.sub_category_id === subcategoryID);
+  }));
+} */
+
+// return all products with specified category
+export function filterProductsBySubcategory(category: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+  return productObservable.pipe(map((prods: Product[]) => {
+    return prods.filter((product: Product) => product.category === category);
   }));
 }
 

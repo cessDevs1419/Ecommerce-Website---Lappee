@@ -122,13 +122,15 @@
                     <app-searchbar class="d-block d-md-none"></app-searchbar>
                     <hr>
                     <ul class="navbar-nav">
-                        <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">
+                        <!-- <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">
                             <a href="#" class="nav-link dropdown-toggle text-uppercase" data-bs-toggle="dropdown" #categoryItems>{{category.name}}</a>
-                            <!--
+                            
                             <div id="navDropdown" class="dropdown-menu w-100">
                                 <app-categorydetails [category]="category" [subcategory]="subcategories" id="categoryDetailsDiv"></app-categorydetails>
-                            </div>  
-                            -->
+                            </div>
+                        </li> -->
+                        <li *ngFor="let category of categories | async" class="nav-item p-2">
+                            <a class="nav-link text-uppercase" [routerLink]="['/category', category.id]">{{category.name}}</a>
                         </li>
                     </ul>
                 </div>

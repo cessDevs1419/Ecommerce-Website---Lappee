@@ -145,12 +145,12 @@ export class ProductsComponent {
     this.product.subscribe((product: Product[]) => {
       if(product.length > 0){
         this.currentProduct = product[0];
-        this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
+        this.selectedPrice = Number(this.currentProduct.variants[0].price);
         
         // initialize gallerize
         this.galleryRef.reset();
-        product[0].images.forEach((url: string) => {
-          console.log(url);
+        product[0].variants.forEach((variant: Variant) => {
+          let url = variant.images[0];
           this.galleryRef.addImage({src: url, thumb: url});
         });
 
@@ -187,13 +187,13 @@ export class ProductsComponent {
 
         console.log('item found');
         
-        this.initVariants();
+        //this.initVariants();
       }
       else {
         console.log('no items found');
       }
 
-      if(this.currentProduct.product_variants.length > 0){
+      if(this.currentProduct.variants.length > 0){
         this.hasVariant = false
       }
       else {
@@ -204,13 +204,13 @@ export class ProductsComponent {
     });
   }
   
-
+/*
   initVariants(): void {
-    for(let variantColor of this.currentProduct.product_variants){
+    for(let variantColor of this.currentProduct.variants){
       let existingColor = this.colorVariants.find((cv) => cv.color === variantColor.color);
       if(!existingColor){
         let variantSizes: string[] = [];
-        for(let variantSize of this.currentProduct.product_variants){
+        for(let variantSize of this.currentProduct.variants){
           if(variantSize.color === variantColor.color){
             variantSizes.push(variantSize.size)
           }
@@ -226,9 +226,10 @@ export class ProductsComponent {
     }
     console.log(this.colorVariants);
   }
+*/
 
   recheckVariant(): void {
-    if(this.currentProduct.product_variants.length > 0){
+    if(this.currentProduct.variants.length > 0){
       this.hasVariant = false
     }
     else {
@@ -249,9 +250,10 @@ export class ProductsComponent {
     console.log(this.productColor?.value);
   }
 
+  /*
   changeSize(size: string): void {
     this.sizeCurrent = size;
-    let selectedVariant = this.currentProduct.product_variants.find((cv) => cv.color_title === this.colorCurrent.name && cv.size === this.sizeCurrent);
+    let selectedVariant = this.currentProduct.variants.find((cv) => cv.color_title === this.colorCurrent.name && cv.size === this.sizeCurrent);
     console.log(selectedVariant ? 'variant found' : 'variant not found');
     this.selectedPrice = Number(selectedVariant?.price);
     this.productSize?.setValue(size);
@@ -259,6 +261,7 @@ export class ProductsComponent {
     this.maxStock = selectedVariant?.stock ? selectedVariant.stock : 0;
     console.log(this.productSize?.value);
   }
+  */
 
   addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}) {
     let details: string[] = [];
@@ -266,7 +269,7 @@ export class ProductsComponent {
     params.variant_attributes.forEach((key, value) => {
       details.push(value + ": " + key);
     })
-    this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.variant_images)
+    this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
 
     console.warn('added to cart');
     console.log(this.cart.items);
@@ -282,6 +285,7 @@ export class ProductsComponent {
     this.router.navigate(['/cart']);
   }
 
+  /*
   addToCart(): boolean {
     let variantId = "";
     let details = [];
@@ -289,7 +293,7 @@ export class ProductsComponent {
       //add to cart with form checks for variant validation
       if(this.productToCart.valid){
         // get variant id of selected color and size
-        for(let variant of this.currentProduct.product_variants){
+        for(let variant of this.currentProduct.variants){
           if(variant.color == this.colorCurrent.hex && variant.size == this.sizeCurrent){
             variantId = variant.variant_id;
           }
@@ -322,8 +326,9 @@ export class ProductsComponent {
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, "", "", 1, this.currentProduct.price.toString());
         console.warn('added to cart');
-    } */
+    }
   }
+  
 
   orderNow(): void {
     if(this.productToCart.valid){
@@ -342,6 +347,7 @@ export class ProductsComponent {
 
     console.log(this.productToCart.value);
   }
+  */
 
   matchReviewFromUser(arr: Review[]): number {
     let matchIndex = -1;
@@ -354,7 +360,8 @@ export class ProductsComponent {
 
     return matchIndex;
   }
-
+  
+  
   paginateReview(): Review[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.reviewListMatched.slice(startIndex, startIndex + this.itemsPerPage);

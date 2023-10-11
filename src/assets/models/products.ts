@@ -7,30 +7,43 @@ export interface ProductList {
 export interface Product {
     id: string,
     name: string,
-    sub_category_id: string,
     description: string,
-    images: string[],
-    product_variants: Variant[]
+    category: string,
+    variants: Variant[],
 }
 
 export interface Variant {
     variant_id: string,
-    product_id: string,
+    variant_name: string,
+    stock: number,
+    price: string,
     attributes: Attribute[]
+    images: string[]
+
+    product_id: string
+}
+
+/*
+export interface Variant {
+    variant_id: string,
+    variant_name: string,
+    stock: number,
+    price: string,
+    attributes: Attribute[]
+    
+    product_id: string,
     color: string,
     color_title: string,
     size: string,
-    stock: number,
     stock_limit: number,
-    price: string,
-    variant_name: string,
     variant_images: string[]
-}
+} */
 
 export interface Attribute {
-    attribute_id: string
+    attribute_id: string,
+    category_attribute_id: string,
     attribute_name: string,
-    attribute_value: string,
+    value: string,
 }
 
 export interface CartItem {

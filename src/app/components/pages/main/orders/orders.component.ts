@@ -63,17 +63,19 @@ export class OrdersComponent {
     })
   }
 
+  /*
   checkProductStock(product_id: string, variant_color: string, variant_size: string): boolean {
       // match id
       if(this.productsArr.filter(product => product.id === product_id).length > 0){
         let matchProduct = this.productsArr.filter(product => product.id === product_id);
         // match variant color and size
-        if((matchProduct[0].product_variants.filter(variant => variant.color_title === variant_color).length > 0) && (matchProduct[0].product_variants.filter(variant => variant.size === variant_size).length > 0)) {
+        if((matchProduct[0].variants.filter(variant => variant.color_title === variant_color).length > 0) && (matchProduct[0].variants.filter(variant => variant.size === variant_size).length > 0)) {
           return true;
         }
       }
       return false;
   }
+  */
 
   calculateOrderPrice(order: OrderDetail): number {
     let total: number = 0

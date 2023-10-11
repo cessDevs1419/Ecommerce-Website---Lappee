@@ -37,7 +37,7 @@ export class CartItemComponent {
     if(this.productArray){
       this.productArray.forEach((product, index) => {
         if(product.id == this.cartItem.product.id){
-          product.product_variants.forEach((variant, index) => {
+          product.variants.forEach((variant, index) => {
             if(variant.variant_id == this.cartItem.variant){
               this.maxStock = variant.stock;
             }
