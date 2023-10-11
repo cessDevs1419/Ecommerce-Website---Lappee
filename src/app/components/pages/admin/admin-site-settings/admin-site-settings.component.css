@@ -2,6 +2,15 @@
   color: #C1C1C1;
 }
 
+.content-form {
+  background-color: #1E2029;
+  border: 3px solid #3F4154;
+}
+
+.content-form h1{
+  color: #BBBBBB;
+}
+
 .logo-container {
   position: relative;
   height: 200px;
@@ -29,6 +38,16 @@
   height: 200px;
   width: 200px;
   border-style: dashed !important;
+}
+
+.btn-save:hover{
+  background: #1C92FF;
+  box-shadow: 0px 0px 10px 1px #1C92FF;
+}
+
+.btn-cancel:hover {
+  background: #BBBBBB;
+  color: #FFF;
 }
 
 .upload-banner i {

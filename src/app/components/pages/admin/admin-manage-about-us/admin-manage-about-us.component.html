@@ -5,15 +5,15 @@
 <div *ngIf="!showAddSectionForm">
   <div class="container-fluid h-auto">
     <app-table
-      tableTitle="MANAGE ABOUT US"
-      subTitle="CONTENT MANAGEMENT"
+      tableTitle="Manage About Us"
+      subTitle="Content Management"
       
       [tableHead]="true"
       tableContainerClass="p-4 table-container"
       tableChildContainer="table-child-container"
       [paginate]="false"
 
-      [tableHeader]="['SECTION HEADER', 'INFORMATION']"
+      [tableHeader]="['Section Header', 'Information']"
       [tableRows]="['title', 'content']"
       [tableAction]="true"
       [Btntools]="true"
@@ -23,7 +23,7 @@
       (rowDataSelected)="getSelectedSection($event)"
 
       [addBtn]="true"
-      addbtnName="ADD SECTION"
+      addbtnName="Add Section"
       (ShowAddForm)="toggleAddSectionForm()"
       
       [deleteBtn]="true">

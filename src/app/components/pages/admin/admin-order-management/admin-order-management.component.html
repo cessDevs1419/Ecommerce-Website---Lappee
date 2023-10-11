@@ -1,7 +1,7 @@
 <div class="container-fluid m-auto h-auto" >
     <app-table
-        tableTitle="TRACK ORDERS"
-        subTitle="STATUS AND TRACK ORDER LIST"
+        tableTitle="Track Orders"
+        subTitle="Status & Track Order List"
         [tableHead]="true"
         tableContainerClass="p-4 table-container"
         tableChildContainer="table-child-container"
@@ -16,7 +16,7 @@
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
         [setFirstUpper]="true"
-        [tableHeader]="['ORDER ID', 'PLACED ON', 'STATUS']"
+        [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
         [tableRows]="['id', 'created_at', 'status' ]"
         [tableData]="orders"
         (rowDataSelected)="onRowDataSelected($event)"

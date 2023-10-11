@@ -18,6 +18,7 @@ import * as bootstrap from 'bootstrap';
 })
 export class AdminSiteSettingsComponent {
 
+  btncolor: string = 'dark-subtle-btn'
   size: string = 'w-100';
 
   // To know whether to show or hide add banner form.
