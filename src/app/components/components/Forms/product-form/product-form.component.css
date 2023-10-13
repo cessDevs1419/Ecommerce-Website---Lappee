@@ -51,5 +51,10 @@ select option {
     content: none;
 }
 
+.accordion-body {
+    border: 1px solid var(--adm-light-gray);
+    border-radius: 10px;
+}
+
 
 

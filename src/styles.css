@@ -8,6 +8,8 @@
     --body-text: #3C3C3C;
     --muted-gray: #C1C1C1;
     --light-gray: #EFF0F5;
+    --adm-dark-gray: #787878;
+    --adm-light-gray: #BBBBBB;
 }
 
 * {
@@ -48,6 +50,11 @@
 .productBtnOpener{
     width: .5rem;
     height: 1.5rem;
+    background-color: var(--primary);
+}
+
+.glow-primary {
+    box-shadow: 0px 0px 20px 0px rgba(28,146,255,0.75);
 }
 
 .dark-subtle-btn{
@@ -144,6 +151,32 @@
 .btn-muted{
     border: 1px solid #BABABA;
     color: #BABABA;
+}
+
+.btn-admin-outline-primary {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all .4s ease-in-out
+}
+
+.btn-admin-outline-primary:hover {
+    color: var(--light-gray);
+    background-color: var(--primary);
+}
+
+.btn-admin-outline {
+    border: 1px solid var(--adm-dark-gray);
+    color: var(--adm-dark-gray);
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all .4s ease-in-out
+}
+
+.btn-admin-outline:hover {
+    background-color: var(--adm-dark-gray);
+    color: #FFFFFF;
 }
 
 .container-shadow{
@@ -294,6 +327,11 @@ input[type=text], input[type=password], input[type=email], textarea {
 
 .whitespace-prewrap {
     white-space: pre-wrap;
+}
+
+.blue-accent {
+    width: .75rem;
+    background-color: var(--primary);
 }
 
 /* Skeleton Loader Generics*/

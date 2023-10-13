@@ -13,7 +13,10 @@
                         
 <!-- Product Form -->
                         <div class="product-form body pt-0 pb-0">
-                            <p class="{{formTextColor}} fw-bold fs-5">Product Details</p>
+                            <div class="d-flex flex-row p-0 mb-3">
+                                <div class="blue-accent me-2"></div>
+                                <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Details</p>
+                            </div>
                             
                             <div class="w-100 mb-3">
                                 <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
@@ -66,14 +69,17 @@
                         <hr class="divider border-white mt-4 mb-3">
                         
                         <div class="body pt-0 pb-0 mt-3 ">
-                            <div class="title-container mb-2 d-flex ">
-                                <h3 class="{{formTextColor}} fs-5">Product Variants</h3>
+                            <div class="title-container my-4 d-flex align-items-center">
+                                <div class="d-flex flex-row p-0">
+                                    <div class="blue-accent me-2"></div>
+                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Variants</p>
+                                </div>
                                 <button 
                                     type="btn"
-                                    class=" productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
+                                    class=" productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-3 rounded-0 fw-bold glow-primary" 
                                     (click)="showVariantForms()"
                                 >
-                                <i class="bi bi-plus-lg"></i>
+                                    <i class="bi bi-plus-lg "></i>
                                 </button>
                             </div>
                             
@@ -88,7 +94,7 @@
 <!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
 <!-- variant list   -->
 
-                            <div class="accordion ">
+                            <div class="accordion border-0">
                                 <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
                                     <div class="border-0 p-0" *ngIf="!form.isVisible">
                                         <div class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
@@ -142,7 +148,7 @@
                                     </div>
                                     
                                     <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible}" >
-                                        <div class="accordion-body p-0">
+                                        <div class="accordion-body p-3">
                                             <form [formGroup]="addVariantForm">
                                                 <div class="w-100 mb-3">
                                                     <label class="form-label {{formTextColor}}">Variant Name</label>
@@ -197,12 +203,15 @@
 <!-- Attribute List   -->
                                             <!-- Assuming this is inside your component's template -->
                                             <div class="title-container mb-2 d-flex ">
-                                                <h3 class="{{formTextColor}} fs-5">Attributes</h3>
+                                                <div class="d-flex flex-row p-0 mb-3">
+                                                    <div class="blue-accent me-2"></div>
+                                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Attributes</p>
+                                                </div>
                                                 <button 
                                                     type="btn"
-                                                    class="productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
+                                                    class="productBtnOpener d-flex align-items-center justify-content-center btn btn-admin-outline-primary mx-2 glow-primary" 
                                                 >
-                                                <i class="bi bi-question"></i>
+                                                    <i class="bi bi-info"></i>
                                                 </button>
                                             </div>
                                             <form [formGroup]="addAttributeForm">
@@ -229,7 +238,10 @@
                                                                     
                                             <div class="image-form body pt-0 pb-0">
                                                 <div class="title-container mb-3 ">
-                                                    <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
+                                                    <div class="d-flex flex-row p-0 mb-3">
+                                                        <div class="blue-accent me-2"></div>
+                                                        <p class="{{formTextColor}} fw-bold fs-5 m-0">Add Images</p>
+                                                    </div>
                                                 </div>
                                                 
                                                 <div class="title-container mb-3 ">
@@ -264,8 +276,8 @@
                             
                         <hr class="divider border-white ">
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-dark cancel-btn rounded-3 me-2"  (click)="cancelAction()">Cancel</button>
-                            <button type="submit" class="btn btn-primary" (click)="onProductAddSubmit()">Confirm</button>
+                            <button type="button" class="btn btn-admin-outline me-2"  (click)="cancelAction()">Cancel</button>
+                            <button type="submit" class="btn btn-primary glow-primary" (click)="onProductAddSubmit()">Confirm</button>
                         </div>
                         
                     </div>
