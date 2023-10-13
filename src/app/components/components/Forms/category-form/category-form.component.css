@@ -1,3 +1,7 @@
+body{
+    font-family: Mulish, sans-serif;
+}
+
 .item-list{
     width: fit-content;
 }
@@ -19,7 +23,7 @@
     height: 21.3rem;
 }
 .attribute-list-container{
-    height: 18rem;
+    height: 21.3rem;
 }
 
 .attribute-list{

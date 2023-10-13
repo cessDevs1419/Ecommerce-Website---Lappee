@@ -15,7 +15,7 @@
         
         [addBtn]="true"
         addbtnName="Add New"
-
+        addBtnclass="me-2"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
         [tableHeader]="['ID','Name', 'Products']"
@@ -31,6 +31,7 @@
         modalTitle="Add Attributes"
         modalClass="modal-md"
         [modalHideIcon]="true"
+        [modalHideCloseBtn]="true"
         modalIcon="add"
         
         [modalAddAttribute]="true"

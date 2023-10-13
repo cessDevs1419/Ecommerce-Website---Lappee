@@ -450,6 +450,14 @@ export class ProductFormComponent {
 
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
             variantsArray.push(newVariantControl);
+        
+            const productSuccess = {
+                head: 'Add Variant',
+                sub: 'Successfully Add Variant'
+            };
+        
+            this.RefreshTable.emit();
+            this.ProductSuccess.emit(productSuccess);
 
             for (let i = variantsArray.length - 1; i >= 0; i--) {
                 if (variantsArray.at(i).value === null) {
@@ -514,9 +522,10 @@ export class ProductFormComponent {
         console.log(this.addProductForm)
 
         const productFormData: FormData = new FormData();
-
+        let productName = this.addProductForm.get('name')?.value;
+        const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
         // Add Product Fields
-        productFormData.append('name', this.addProductForm.get('name')?.value);
+        productFormData.append('name', capitalizedName)
         productFormData.append('category', this.addProductForm.get('category')?.value);
         productFormData.append('description', this.addProductForm.get('description')?.value);
 

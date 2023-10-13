@@ -19,7 +19,7 @@ export class AdminCategoriesComponent {
 
     
     
-    size = "w-100"
+    size = "w-100 me-2"
     selectedRowData: any;
     selectedRowDataForDelete: any;
     categories!: Observable<AdminCategory[]>;

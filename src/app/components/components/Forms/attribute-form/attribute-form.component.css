@@ -10,3 +10,9 @@
   ::-ms-input-placeholder { /* Microsoft Edge */
     color: #959BA5;
   }
+
+  .attr-btn{
+    max-width: 16px;
+    height: 24px;
+    width: 100%;
+  }

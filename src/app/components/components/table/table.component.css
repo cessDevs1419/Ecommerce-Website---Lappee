@@ -19,6 +19,9 @@
   max-height: calc(100vh - 230px);
 }
 
+.table-container{
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
 .header-sub-title{
     color: #C1C1C1;
@@ -32,14 +35,43 @@
     background: #16181F;
 }
 
+
+
+.linear-gradient-border {
+  border-radius: 20px; 
+  border: 5px solid transparent; 
+  background: linear-gradient(100deg,#2E303D,#1E2029) border-box; /*3*/
+
+}
+.table-border-color{
+  border: 1px solid rgba(255, 255, 255, 0.40);
+}
+
+
+
 table th:first-child{
     border-radius: 16px 0 0 16px;
-
 }
 
 table th:last-child{
     border-radius:0 16px 16px 0;
+    /* border-style: solid;
+    border-width: 3px;
+    border-image: linear-gradient(156deg, #2E303D, #1E2029) 2;
+    border-top-right-radius: 16px;
+    border-left: none;
+    border-right: none; */
+}
 
+table th{
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+
+td{
+  padding-top: .8rem;
+  padding-bottom: .8rem;
 }
 
 .custom-checkbox{
@@ -122,9 +154,15 @@ table th:last-child{
     background: #1C92FF;
     color: #fff;
   }
-  
+  table>tbody>tr:nth-child(odd)>td,
+  table>tbody>tr:nth-child(even)>td
+  {
+    background-color: transparent;
+    border: none;
+    color: white;
+  }
 
-  .table-striped>tbody>tr:nth-child(odd)>td,
+  /* .table-striped>tbody>tr:nth-child(odd)>td,
   .table-striped>tbody>tr:nth-child(odd)>th {
     background-color: transparent;
     border: none;
@@ -132,11 +170,16 @@ table th:last-child{
   }
   .table-striped>tbody>tr:nth-child(even)>td,
   .table-striped>tbody>tr:nth-child(even)>th {
-    background-color: #3F4154;
+
+    background-color: transparent;
     border: none;
     color: white;
-  }
+  } */
+
   
+  .table-search{
+    border: 1px solid rgba(255, 255, 255, 0.40);
+  }
 
   td:first-child {
       border-left-style: solid;
@@ -149,7 +192,11 @@ table th:last-child{
       border-top-right-radius: 16px; 
   }
 
+
   
+
+
+
   @keyframes fadeInAnimation {
     from {
         transform: translate3d(0,40px,0)

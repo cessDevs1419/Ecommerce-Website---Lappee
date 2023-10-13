@@ -26,7 +26,6 @@ export class SidebarComponent {
   
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
-    
   }
 
 
@@ -41,7 +40,8 @@ export class SidebarComponent {
   ngOnInit(): void {
 
   }
-  
+
+
   closeContent(){
     this.ContentMenu = false
     this.toggleContent = false

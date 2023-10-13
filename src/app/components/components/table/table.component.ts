@@ -35,7 +35,8 @@ export class TableComponent {
 	btncolor: string = 'dark-subtle-btn'
 	tableHeaderbg: string = 'bg-header-dark'
 	actionbarbtnbg: string = 'item-selected'
-	bordercolor: string = 'dark-border-table'
+	bordercolor: string = 'table-border-color'
+	tablebordercolor: string = 'linear-gradient-border'
 	checkboxcolor: string = 'dark-border-checkbox'
 	public searchString: string;
 	
@@ -209,6 +210,16 @@ export class TableComponent {
 		selectAllCheckbox.checked = false;
 		this.selectedIds.forEach(id => (this.checkedState[id] = false));
 		this.selectedIds = [];
+
+		const areAllUnSelected = this.selectedIds.length === 0;
+		
+		if (areAllUnSelected) {
+			selectAllCheckbox.checked = false;
+			this.showMinus = false
+		}else{
+			selectAllCheckbox.checked = true;
+			this.showMinus = true
+		}
 	}
 
 	

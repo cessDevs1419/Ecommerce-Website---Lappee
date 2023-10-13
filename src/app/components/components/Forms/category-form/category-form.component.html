@@ -8,11 +8,12 @@
         </form>
         
 <!-- Attribute List   -->
-        <div class=" w-100 px-1 mt-3">
-            <div class="row">
-                <div class="col-lg-4">
-                    <form [formGroup]="addAttributeForm">
-                        <p class="text-start mb-1 {{formTextColor}}">Add New Attributes</p>
+        <div class=" w-100 px-1 pt-0">
+            <p class="text-start mt-3 mb-0 fw-bold  {{formTextColor}}">Attributes</p>
+            <div class="row pt-0">
+                <div class="col-lg-4 pt-3">
+                    <!-- <form [formGroup]="addAttributeForm">
+                        
                         <div class="input-group mb-3">
                             <input type="text" formControlName="name" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control   border-end-0" placeholder="Add Attribute" >
                             <button 
@@ -23,9 +24,10 @@
                                 <i class="bi bi-plus-lg {{formTextColor}}"></i>
                             </button>
                         </div>
-                    </form>
+                    </form> -->
 
-                    <div  class="attribute-list-container overflow-hidden border border-dark-subtle rounded-2">
+                    
+                    <div  class="attribute-list-container overflow-hidden border border-dark-subtle rounded-3">
                         
                         <div class="input-group mb-3">
                             <input type="text" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control border-start-0 border-top-0 border-end-0" placeholder="Search..." [(ngModel)]="searchString">
@@ -39,7 +41,7 @@
                                 <li class="text-decoration-none mb-2 d-flex" *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
                                     <label >
                                         <div class="input-group d-flex align-items-center">
-                                            <input class="form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
+                                            <input class="d-none form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
                                                 type="checkbox" 
                                                 [checked]="isChecked(item)"
                                                 (change)="onCheckboxChange(item)"
@@ -53,11 +55,10 @@
 
                     </div>
                 </div>
-                
-                <div class="col-lg-8 ps-0">
-                    <p class="text-start  mb-1 {{formTextColor}}">Selected Attributes</p>
-                    <div class="selected-attribute-list p-0 border border-dark-subtle rounded-2">
-                        <ul class="d-flex p-0 flex-wrap">
+                <div class="col-lg-8 ps-0 pt-3 position-relative">
+                    <p class="text-start top-0 position-absolute ms-3 mt-1 px-1 fw-bold {{formTheme}} {{formTextColor}}">Selected Attributes</p>
+                    <div class="selected-attribute-list p-0 border border-dark-subtle rounded-3">
+                        <ul class="d-flex p-0 flex-wrap pt-2">
                             <li class="mx-2 mt-2" *ngFor="let item of checkedItems">
                                 <div class="item-list h-auto border rounded-4 p-1 px-2 d-flex justify-content-between align-items-center">
                                     <label class="{{formTextColor}} me-2">{{item.name}}</label>
@@ -76,7 +77,7 @@
             <button 
                 type="button" 
                 data-bs-dismiss="modal"
-                class="btn btn-primary bg-light-primary rounded-3" 
+                class="btn btn-dark cancel-btn rounded-3" 
             >
                 Cancel
             </button>

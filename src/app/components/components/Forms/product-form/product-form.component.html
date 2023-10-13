@@ -34,14 +34,6 @@
 
                                     <div class="title-container d-flex ">
                                         <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
-                                        <button 
-                                            type="btn"
-                                            class=" productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#add"
-                                        >
-                                        <i class="bi bi-plus-lg"></i>
-                                        </button>
                                     </div>
                                     <select 
                                         class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
@@ -70,15 +62,10 @@
                                 ></textarea>
                             </div>
                         </div>
-                                                
 
-                        
                         <hr class="divider border-white mt-4 mb-3">
                         
                         <div class="body pt-0 pb-0 mt-3 ">
-
-                        
-
                             <div class="title-container mb-2 d-flex ">
                                 <h3 class="{{formTextColor}} fs-5">Product Variants</h3>
                                 <button 
@@ -97,9 +84,7 @@
                             >
                                 <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
                             </div>
-                            
 
-                            
 <!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
 <!-- variant list   -->
 
@@ -211,47 +196,59 @@
                                             
 <!-- Attribute List   -->
                                             <!-- Assuming this is inside your component's template -->
+                                            <div class="title-container mb-2 d-flex ">
+                                                <h3 class="{{formTextColor}} fs-5">Attributes</h3>
+                                                <button 
+                                                    type="btn"
+                                                    class="productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
+                                                >
+                                                <i class="bi bi-question"></i>
+                                                </button>
+                                            </div>
                                             <form [formGroup]="addAttributeForm">
                                                 <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                   <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes ">
                                                         <div class="position-relative d-flex align-items-center">
-                                                            <input
-                                                            [type]="item.name === 'color' ? 'color' : 'text'"
-                                                            [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
-                                                            [placeholder]="item.name"
-                                                            [formControlName]="item.category_attribute_id"
-                                                            required
-                                                            >
+                                                            <div class="w-100 mb-3">
+                                                                <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                <input
+                                                                    [type]="item.name === 'color' ? 'color' : 'text'"
+                                                                    [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
+                                                                    [placeholder]="'Enter value for '+item.name"
+                                                                    [formControlName]="item.category_attribute_id"
+                                                                    required
+                                                                >
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </form>
 
 <!-- Image Form -->
-                                        <hr class="divider border-white mt-4 mb-3">
-                                                                
-                                        <div class="image-form body pt-0 pb-0">
-                                            <div class="title-container mb-3 ">
-                                                <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
-                                            </div>
-                                            
-                                            <div class="title-container mb-3 ">
-                                                <p class="{{formTextColor}}">Add Images</p>
-                                            </div>
-                                            
-                                            <div class="d-flex flex-wrap justify-content-start w-100">
-                                                <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
-                                                    <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
-                                                        <i class="bi bi-x text-white"></i>
-                                                    </button>
-                                                    <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                            <hr class="divider border-white mt-4 mb-3">
+                                                                    
+                                            <div class="image-form body pt-0 pb-0">
+                                                <div class="title-container mb-3 ">
+                                                    <h3 class="{{formTextColor}} fs-5" >Product Images</h3>
                                                 </div>
-                                                <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                                    <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
-                                                    <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
-                                                </button>
+                                                
+                                                <div class="title-container mb-3 ">
+                                                    <p class="{{formTextColor}}">Add Images</p>
+                                                </div>
+                                                
+                                                <div class="d-flex flex-wrap justify-content-start w-100">
+                                                    <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
+                                                        <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
+                                                            <i class="bi bi-x text-white"></i>
+                                                        </button>
+                                                        <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                    </div>
+                                                    <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                        <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
+                                                        <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
 
                                             <div class="modal-footer mt-4">
                                                 <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>
@@ -267,7 +264,7 @@
                             
                         <hr class="divider border-white ">
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary me-2" (click)="cancelAction()">Cancel</button>
+                            <button type="button" class="btn btn-dark cancel-btn rounded-3 me-2"  (click)="cancelAction()">Cancel</button>
                             <button type="submit" class="btn btn-primary" (click)="onProductAddSubmit()">Confirm</button>
                         </div>
                         

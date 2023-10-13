@@ -26,7 +26,8 @@ export class CategoryFormComponent {
     public searchString: string;
     //theme
     formTextColor: string = 'text-light-subtle'
-
+    formTheme: string = 'table-bg-dark';
+    
     @Output() CategorySuccess: EventEmitter<any> = new EventEmitter();
     @Output() CategoryWarn: EventEmitter<any> = new EventEmitter();
 	@Output() CategoryError: EventEmitter<any> = new EventEmitter();
@@ -270,6 +271,7 @@ export class CategoryFormComponent {
             let formData: any = new FormData();
             let categoriesName = this.addCategoryForm.get('category')?.value;
             let attributeArray = this.attribute_service.getSelectedAttribute().map(item => (item.id))
+            const capitalizedName = categoriesName.charAt(0).toUpperCase() + categoriesName.slice(1).toLowerCase();
             // let categoriesArray: any[] = [];
             
             // let categoryObject = {
@@ -279,9 +281,8 @@ export class CategoryFormComponent {
 
             // categoriesArray.push(categoryObject);
 
-            formData.append('name', categoriesName);
+            formData.append('name', capitalizedName);
             formData.append('attributes[]', attributeArray);
-
 
 
             formData.forEach((value: any, key: number) => {

@@ -1,9 +1,15 @@
 <div class="d-flex ">
 
     <header  class=" dashboard-header z-3 position-fixed d-flex align-items-center {{admin_bg}}" >
-        <div class="container-fluid h-100 d-flex align-items-center">
+        <div class="container-fluid header-container h-100 d-flex align-items-center">
+            <div [class.active-header]="isClassToggled" class="burger-container header-tools h-auto px-3 ">
+                <div [class.change]="isClassToggled" class="burger" (click)="toggleClass()">
+                    <div class="bar1"></div>
+                    <div class="bar2"></div>
+                    <div class="bar3"></div>
+                </div>
+            </div>
             <div class="header-tools h-auto d-none d-md-flex justify-content-between px-1 ">
-
                 <div [title]="'Notifications'" class="header-icon-container mx-1 position-relative rounded-circle sidebar-bg-dark d-flex justify-content-center align-items-center cursor-pointer">
                     <i class="bi bi-bell-fill text-white fs-6"></i>
                     <span class="position-absolute top-0 start-50 ms-2 mt-2 translate-middle p-1 bg-primary border border-light rounded-circle">

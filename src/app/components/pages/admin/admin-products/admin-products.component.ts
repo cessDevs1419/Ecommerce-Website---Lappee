@@ -24,7 +24,7 @@ export class AdminProductsComponent {
     selectedRowData: any;
     /*classes*/
 	margin = "mx-lg-2"
-	size = "w-100"
+	size = "w-100 me-2"
     
     //theme
     counter_bg: string = 'table-bg-dark'

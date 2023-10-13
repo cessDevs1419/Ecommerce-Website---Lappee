@@ -24,7 +24,7 @@ export class AttributeFormComponent {
     @Input() formMultipleDeleteAttribute!: boolean;
     
     textcolor: string = 'text-light-subtle'
-    
+    bordercolor: string = 'dark-subtle-borders'
     addAttributeForm: FormGroup;
     editAttributeForm: FormGroup;
     deleteAttributeForm: FormGroup;
@@ -38,7 +38,8 @@ export class AttributeFormComponent {
         private cdr: ChangeDetectorRef
     ){
         this.addAttributeForm = new FormGroup({
-            name: new FormControl('', Validators.required)
+            name: new FormControl('', Validators.required),
+            attribute_value: this.formBuilder.array([])
         });
         this.editAttributeForm = new FormGroup({
             name: new FormControl('', Validators.required)
@@ -58,60 +59,76 @@ export class AttributeFormComponent {
         this.refreshData$.next();
     }
     
+    get attributeValueControls() {
+        return (this.addAttributeForm.get('attribute_value') as FormArray).controls;
+    }
+
+    addAttributeValue(){
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray
+        attributeArray.push(new FormControl(''));
+    }   
+
+    removeAttributeValue(index: number) {
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        attributeArray.removeAt(index);
+    }
+
     onAttributeAddSubmit(): void {
         if(this.addAttributeForm.valid){
 
+            const nameValue = this.addAttributeForm.get('name')?.value; 
+            const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1).toLowerCase();
             
             let formData: any = new FormData();
-            formData.append('name', this.addAttributeForm.get('name')?.value);
+            formData.append('name', capitalizedName);
             
-            this.attribute_service.postAttribute(formData).subscribe({
-                next: (response: any) => { 
-                    const successMessage = {
-                        head: 'Category ' + this.addAttributeForm.get('name')?.value,
-                        sub: response?.message
-                    };
+            // this.attribute_service.postAttribute(formData).subscribe({
+            //     next: (response: any) => { 
+            //         const successMessage = {
+            //             head: 'Category ' + this.addAttributeForm.get('name')?.value,
+            //             sub: response?.message
+            //         };
                     
-                    this.RefreshTable.emit();
-                    this.refreshTableData();
-                    this.ProductSuccess.emit(successMessage);
-                    this.addAttributeForm.reset();
+            //         this.RefreshTable.emit();
+            //         this.refreshTableData();
+            //         this.ProductSuccess.emit(successMessage);
+            //         this.addAttributeForm.reset();
 
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
+            //     },
+            //     error: (error: HttpErrorResponse) => {
+            //         if (error.error?.data?.error) {
+            //             const fieldErrors = error.error.data.error;
+            //             const errorsArray = [];
                     
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
+            //             for (const field in fieldErrors) {
+            //                 if (fieldErrors.hasOwnProperty(field)) {
+            //                     const messages = fieldErrors[field];
+            //                     let errorMessage = messages;
+            //                     if (Array.isArray(messages)) {
+            //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
+            //                     }
+            //                     errorsArray.push(errorMessage);
+            //                 }
+            //             }
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
-                        };
+            //             const errorDataforProduct = {
+            //                 errorMessage: 'Error Invalid Inputs',
+            //                 suberrorMessage: errorsArray,
+            //             };
                     
-                        this.ProductWarning.emit(errorDataforProduct);
-                    } else {
+            //             this.ProductWarning.emit(errorDataforProduct);
+            //         } else {
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
-                        };
-                        this.ProductError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
+            //             const errorDataforProduct = {
+            //                 errorMessage: 'Error Invalid Inputs',
+            //                 suberrorMessage: 'Please Try Another One',
+            //             };
+            //             this.ProductError.emit(errorDataforProduct);
+            //         }
+            //         return throwError(() => error);
                     
-                }
-            });
+            //     }
+            // });
         
             
         }else{
@@ -132,7 +149,10 @@ export class AttributeFormComponent {
             
         }
 
-console.log(this.addAttributeForm.get('name')?.value)
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        const attributeValues = attributeArray.value;
+
+        console.log(attributeValues);
     }
     
     onAttributeEditSubmit(): void {
