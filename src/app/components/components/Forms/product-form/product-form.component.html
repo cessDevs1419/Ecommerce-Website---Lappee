@@ -1,290 +1,343 @@
 
 <!--ADD PRODUCT FORM-->
+
 <div class="addProductForm " *ngIf="formAddProduct">
-    <form [formGroup]="addProductForm" >
-        <div class="row px-0 w-100 m-auto" >
-            <div class="col-lg-6 ">
-                    <div class="container {{formColor}} p-4 rounded-4  m-auto mt-0">
-                        <div class="form-title text-start mb-4">
-                            <h1 class="modal-title {{formTextColor}} fs-4 fw-bolder mb-0" >Manage Products</h1>
-                            <div class="modal-sub-title dark-form-subtitle fs-6 mt-0">Product Management</div>
-                            <hr class="divider border-white">
-                        </div>
-                        
-<!-- Product Form -->
-                        <div class="product-form body pt-0 pb-0">
-                            <div class="d-flex flex-row p-0 mb-3">
-                                <div class="blue-accent me-2"></div>
-                                <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Details</p>
+        <form [formGroup]="addProductForm" >
+            <div class="products px-0 w-100 m-auto " >
+                <div class="product-container">
+                        <div class="container {{formColor}} p-4 rounded-4  m-auto mt-0">
+                            <div class="form-title text-start mb-4">
+                                <h1 class="modal-title {{formTextColor}} fs-4 fw-bolder mb-0" >Manage Products</h1>
+                                <div class="modal-sub-title dark-form-subtitle fs-6 mt-0">Product Management</div>
+                                <hr class="divider border-white">
                             </div>
                             
-                            <div class="w-100 mb-3">
-                                <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                    id="addproductName" 
-                                    name="addproductName" 
-                                    formControlName="name"
-                                    placeholder="One Love"
-                                    required
-                                >
-    
-                            </div>
-                                        
-                            <div class="row">
-                                <div class="col-sm-6 mb-3">    
-
-                                    <div class="title-container d-flex ">
-                                        <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
-                                    </div>
-                                    <select 
-                                        class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                        id="addproductCategory"
-                                        name="addproductCategory" 
-                                        formControlName="category" 
-                                        (change)="onCategorySelect($event)"
+    <!-- Product Form -->
+                            <div class="product-form body pt-0 pb-0">
+                                <div class="d-flex flex-row p-0 mb-3">
+                                    <div class="blue-accent me-2"></div>
+                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Details</p>
+                                </div>
+                                
+                                <div class="w-100 mb-3">
+                                    <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                        id="addproductName" 
+                                        name="addproductName" 
+                                        formControlName="name"
+                                        placeholder="One Love"
                                         required
                                     >
         
-                                        <option *ngFor="let category of categories | async" [value]=" category.id ">{{ category.name }}</option>
-                                    </select>
                                 </div>
-                                
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
-                                <textarea 
-                                    class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                    id="addproductDescription" 
-                                    name="addproductPriceDescription" 
-                                    rows="3" 
-                                    formControlName="description"
-                                    required
-                                ></textarea>
-                            </div>
-                        </div>
-
-                        <hr class="divider border-white mt-4 mb-3">
-                        
-                        <div class="body pt-0 pb-0 mt-3 ">
-                            <div class="title-container my-4 d-flex align-items-center">
-                                <div class="d-flex flex-row p-0">
-                                    <div class="blue-accent me-2"></div>
-                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Variants</p>
-                                </div>
-                                <button 
-                                    type="btn"
-                                    class=" productBtnOpener d-flex align-items-center justify-content-center btn btn-primary text-white mx-3 rounded-0 fw-bold glow-primary" 
-                                    (click)="showVariantForms()"
-                                >
-                                    <i class="bi bi-plus-lg "></i>
-                                </button>
-                            </div>
-                            
-<!-- hide this validation when variantsList is empty or when the button on the top is click-->
-                            <div 
-                                class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
-                                *ngIf="hideVariantValidationContainer"
-                            >
-                                <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
-                            </div>
-
-<!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
-<!-- variant list   -->
-
-                            <div class="accordion border-0">
-                                <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
-                                    <div class="border-0 p-0" *ngIf="!form.isVisible">
-                                        <div class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
-                                            <div class="m-auto row d-flex align-items-center w-100 ">
-                                                <div class="col-sm-2 me-2">
-                                                    <div class="color-container border rounded-3" >
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
-                                                    <div class="data w-100">
-                                                        <div class="row ms-0 m-auto w-100 ">
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
-                                                                <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">variant name</h1>
-                                                            </div>
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
-                                                                <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">green</h1>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row ms-0 m-auto w-100">
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
-                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Size: large sya</p>
-                                                            </div>
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
-                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Stock Limit: medium ata</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="actions d-flex">
-                                                <button 
-                                                    type="button" 
-                                                    class=" btn bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                                    [attr.data-bs-target]="'#collapse' + i" 
-                                                    [attr.aria-expanded]="form.isVisible" 
-                                                    (click)="editVariant(i)"
-                                                >
-                                                    <i class="bi bi-pencil-square fs-5"></i>
-                                                </button>
-                                                <button 
-                                                    type="button" 
-                                                    class="btn btn-primary bg-white text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#removeVariants"
-                                                    (click)="selectVariantItem(form, i)"
-                                                >
-                                                    <i class="bi bi-trash fs-5"></i>
-                                                </button>
-                                            </div>
+                                            
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">    
+    
+                                        <div class="title-container d-flex ">
+                                            <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
                                         </div>
+                                        <select 
+                                            class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                            id="addproductCategory"
+                                            name="addproductCategory" 
+                                            formControlName="category" 
+                                            (change)="onCategorySelect($event)"
+                                            
+                                            required
+                                        >
+            
+                                            <option *ngFor="let category of categories | async" [value]=" category.id ">{{ category.name }}</option>
+                                        </select>
                                     </div>
                                     
-                                    <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible}" >
-                                        <div class="accordion-body p-3">
-                                            <form [formGroup]="addVariantForm">
-                                                <div class="w-100 mb-3">
-                                                    <label class="form-label {{formTextColor}}">Variant Name</label>
-                                                    <input 
-                                                        type="text" 
-                                                        class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                                        name="addVariantName" 
-                                                        formControlName="name"
-                                                        placeholder="Variant name"
-                                                        required
-                                                    >
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
+                                    <textarea 
+                                        class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                        id="addproductDescription" 
+                                        name="addproductPriceDescription" 
+                                        rows="5" 
+                                        formControlName="description"
+                                        required
+                                    ></textarea>
+                                </div>
+                            </div>
+    
+                            <hr class="divider border-white mt-4 mb-3">
+                            
+                            <div class="body pt-0 pb-0 mt-3 ">
+                                <div class="title-container my-4 d-flex align-items-center">
+                                    <div class="d-flex flex-row p-0">
+                                        <div class="blue-accent me-2"></div>
+                                        <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Variants</p>
+                                    </div>
+                                </div>
+                                
+    <!-- hide this validation when variantsList is empty or when the button on the top is click-->
+                                <!-- <div 
+                                    class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
+                                    *ngIf="hideVariantValidationContainer"
+                                >
+                                    <h1 class="m-auto fw-bold">NO VARIANTS LISTED</h1>
+                                </div> -->
+    
+    <!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
+    <!-- variant list   -->
+                            
+
+                                <div class="accordion border-0">
+                                    <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
+                                        <div class="border-0 p-0" *ngIf="!form.isVisible">
+                                            <div class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                                                <div class="m-auto row d-flex align-items-center w-100 ">
+                                                    <div class="col-sm-2 me-2">
+                                                        <div class="color-container border rounded-3" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                                        <div class="data w-100">
+                                                            <div class="row ms-0 m-auto w-100 ">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">variant name</h1>
+                                                                </div>
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">green</h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row ms-0 m-auto w-100">
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                    <p class="fs-6 m-0 mx-0 {{formTextColor}}">Size: large sya</p>
+                                                                </div>
+                                                                <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                    <p class="fs-6 m-0 mx-0 {{formTextColor}}">Stock Limit: medium ata</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-6 mb-3">
-                                                        <label for="addvariantQty" class="form-label {{formTextColor}}">Quantity</label>
+                                                <div class="actions position-relative">
+                                                    <div class=" m-auto d-flex align-items-center p-2 position-relative">
+                                                        <button 
+                                                            id="actionBtn" 
+                                                            class="dark-theme-border actionbtn btn btn-primary m-auto position-relative bg-none rounded-3 d-flex align-items-center justify-content-center p-2 {{formTextColor}}"
+                                                            [class.activebtn]="activeButtonIndex === i"
+                                                            (click)="showAction(i)"
+                                
+                                                            > 
+                                                            <i class="bi bi-three-dots fs-3 lh-1 dark-theme-color"></i> 
+                                                        </button>
+                                                    </div>
+                                                    <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0">
+                                                        <div class="action-container border m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
+                                                            <button 
+                                                                type="button"
+                                                                class="edit-btn w-100 mt-0 rounded-3 rounded-bottom-0"
+                                                                [attr.data-bs-target]="'#collapse' + i" 
+                                                                [attr.aria-expanded]="form.isVisible" 
+                                                                (click)="editVariant(i)"
+                                                            > 
+                                                                Edit
+                                                            </button>
+                                                            <!-- 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#edit"
+                                                            data-bs-target="#removeVariants" -->
+                                                            <button 
+                                                                type="button"
+                                                                class="edit-btn w-100 rounded-3 rounded-top-0"
+                                                                (click)="selectVariantItem(form, i)"
+                                                            > 
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        
+                                        <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible}" >
+                                            <div class="accordion-body p-3">
+                                                <form [formGroup]="addVariantForm">
+                                                    <div class="w-100 mb-3">
+                                                        <label class="form-label {{formTextColor}}">Variant Name</label>
                                                         <input 
-                                                            type="number" 
+                                                            type="text" 
                                                             class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                                            id="addvariantQty" 
-                                                            name="addvariantQty" 
-                                                            formControlName="stock" 
-                                                            [value]="1"
-                                                            
+                                                            name="addVariantName" 
+                                                            formControlName="name"
+                                                            placeholder="Variant name"
                                                             required
                                                         >
                                                     </div>
                                                     
-                                                    <div class="col-sm-6 mb-3">
-                                                        <label for="addvariantPrice" class="form-label {{formTextColor}}">Price</label>
-                                                        <input 
-                                                            type="number" 
-                                                            class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                                            name="addvariantPrice" 
-                                                            formControlName="price" 
-                                                            [value]="1"
-                                                            
-                                                            required
-                                                            step="0.01"
-                                                            [placeholder]="01.01"
-                                                            
-                                                        >
-                                                        <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
-                                                            price must be 2 decimal places, 00.00
-                                                            [class.border]="isDecimal(addVariantForm.get('price')?.value)"
-                                                            [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
-                                                        </p> (click)="addVariantForm.get('price')?.setValue(null)"-->
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            
-<!-- Attribute List   -->
-                                            <!-- Assuming this is inside your component's template -->
-                                            <div class="title-container mb-2 d-flex ">
-                                                <div class="d-flex flex-row p-0 mb-3">
-                                                    <div class="blue-accent me-2"></div>
-                                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Attributes</p>
-                                                </div>
-                                                <button 
-                                                    type="btn"
-                                                    class="productBtnOpener d-flex align-items-center justify-content-center btn btn-admin-outline-primary mx-2 glow-primary" 
-                                                >
-                                                    <i class="bi bi-info"></i>
-                                                </button>
-                                            </div>
-                                            <form [formGroup]="addAttributeForm">
-                                                <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
-                                                  <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes ">
-                                                        <div class="position-relative d-flex align-items-center">
-                                                            <div class="w-100 mb-3">
-                                                                <label class="form-label {{formTextColor}}">{{item.name}}</label>
-                                                                <input
-                                                                    [type]="item.name === 'color' ? 'color' : 'text'"
-                                                                    [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
-                                                                    [placeholder]="'Enter value for '+item.name"
-                                                                    [formControlName]="item.category_attribute_id"
+                                                    <div class="row mb-3">
+                                                        <div class="col-sm-6 mb-3">
+                                                            <label for="addvariantQty" class="form-label {{formTextColor}}">Quantity</label>
+                                                            <div class="input-group mb-3">
+                                                                <input 
+                                                                    type="number" 
+                                                                    class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                    id="addvariantQty" 
+                                                                    name="addvariantQty" 
+                                                                    formControlName="stock" 
+                                                                    [value]="1"
+                                                                    
                                                                     required
                                                                 >
+                                                                <span class="input-group-text" id="basic-addon2">QTY</span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-6 mb-3">
+                                                            <label for="addvariantPrice" class="form-label {{formTextColor}}">Price</label>
+                                                            <div class="input-group mb-3">
+                                                                <input 
+                                                                    type="number" 
+                                                                    class="form-control {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                    name="addvariantPrice" 
+                                                                    formControlName="price" 
+                                                                    [value]="1"
+                                                                    
+                                                                    required
+                                                                    step="0.01"
+                                                                    [placeholder]="01.01"
+                                                                    
+                                                                >
+                                                                <span class="input-group-text" id="basic-addon2">PHP</span>
+                                                            </div>
+                                                            <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
+                                                                price must be 2 decimal places, 00.00
+                                                                [class.border]="isDecimal(addVariantForm.get('price')?.value)"
+                                                                [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
+                                                            </p> (click)="addVariantForm.get('price')?.setValue(null)"-->
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                
+    <!-- Attribute List   -->
+                                                <!-- Assuming this is inside your component's template -->
+                                                <div class="title-container mb-2 d-flex ">
+                                                    <div class="d-flex flex-row p-0 mb-3">
+                                                        <div class="blue-accent me-2"></div>
+                                                        <p class="{{formTextColor}} fw-bold fs-5 m-0">Attributes</p>
+                                                    </div>
+                                                    <button 
+                                                        type="btn"
+                                                        class="productBtnOpener d-flex align-items-center justify-content-center btn btn-admin-outline-primary mx-2 glow-primary" 
+                                                    >
+                                                        <i class="bi bi-info"></i>
+                                                    </button>
+                                                </div>
+                                                <form [formGroup]="addAttributeForm">
+                                                    <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
+                                                      <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes ">
+                                                            <div class="position-relative d-flex align-items-center">
+                                                                <div class="w-100 mb-3">
+                                                                    <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                    <input
+                                                                        [type]="item.name === 'color' ? 'color' : 'text'"
+                                                                        [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
+                                                                        [placeholder]="'Enter value for '+item.name"
+                                                                        [formControlName]="item.category_attribute_id"
+                                                                        required
+                                                                    >
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
-
-<!-- Image Form -->
-                                            <hr class="divider border-white mt-4 mb-3">
-                                                                    
-                                            <div class="image-form body pt-0 pb-0">
-                                                <div class="title-container mb-3 ">
-                                                    <div class="d-flex flex-row p-0 mb-3">
-                                                        <div class="blue-accent me-2"></div>
-                                                        <p class="{{formTextColor}} fw-bold fs-5 m-0">Add Images</p>
+                                                </form>
+    
+    <!-- Image Form -->
+                                                <hr class="divider border-white mt-4 mb-3">
+                                                                        
+                                                <div class="image-form body pt-0 pb-0">
+                                                    <div class="title-container mb-3 ">
+                                                        <div class="d-flex flex-row p-0 mb-3">
+                                                            <div class="blue-accent me-2"></div>
+                                                            <p class="{{formTextColor}} fw-bold fs-5 m-0">Add Images</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                
-                                                <div class="title-container mb-3 ">
-                                                    <p class="{{formTextColor}}">Add Images</p>
-                                                </div>
-                                                
-                                                <div class="d-flex flex-wrap justify-content-start w-100">
-                                                    <div *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn mb-2 me-3 d-flex justify-content-end align-items-start rounded-0">
-                                                        <button type="button" class="position-absolute mt-1 me-1 btn bg-dark rounded-circle w-25 h-25 d-flex justify-content-center align-items-center" (click)="removeImage(i)">
-                                                            <i class="bi bi-x text-white"></i>
+                                                    
+                                                    <!-- <div class="title-container mb-3 ">
+                                                        <p class="{{formTextColor}}">Add Images</p>
+                                                    </div> -->
+                                                    
+                                                    <div class="d-flex justify-content-start w-100">
+                                                        <div [ngClass]="{'image-resolution-shadow': true, invalidResolutionClass: hasInvalidResolution}" *ngFor="let file of getFileKeys(); let i = index" class="p-0 position-relative image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0">
+                                                            
+                                                            <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(i)">
+                                                                <i class="bi bi-x text-white"></i>
+                                                            </button>
+                                                            <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                        
+                                                        </div>
+                                                        <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                            <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                            <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                                            <div class="container p-3">
+                                                                <ng-container *ngIf="getFileKeys().length <= 2">
+                                                                    <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
+                                                                    <p class="fs-5 lh-sm mb-0 {{formTextColor}}">images up to 2560x1440</p>
+                                                                    <p class="fs-6 lh-sm mb-0 {{formTextColor}}">(.png, .jpeg, .jpg)</p>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="getFileKeys().length >= 3 ">
+                                                                    <h4 class="fw-bolder text-white lh-sm mb-0">3 / 3</h4>
+                                                                    <p class="fs-5 lh-sm mb-0 {{formTextColor}}">MAX</p>
+                                                                </ng-container>                                                            
+                                                            </div>
                                                         </button>
-                                                        <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
                                                     </div>
-                                                    <button type="button" (click)="selectFileForAdding()" class=" border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                                        <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span>
-                                                        <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
-                                                    </button>
                                                 </div>
+    
+                                                <div class="modal-footer mt-4">
+                                                    <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>
+                                                    <button 
+                                                        type="submit" 
+                                                        class="btn btn-primary" 
+                                                        (click)="saveVariant(i)"
+                                                        [disabled]="disableButton()"
+                                                    >Save</button>
+                                                </div>
+    
                                             </div>
-
-                                            <div class="modal-footer mt-4">
-                                                <button type="button" class="btn btn-secondary me-2" (click)="removeVariant(i)" >Cancel</button>
-                                                <button type="submit" class="btn btn-primary" (click)="saveVariant(i)">Save</button>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
+                                <button 
+                                    type="btn"
+                                    class="w-100 border-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+                                    (click)="showVariantForms()"
+                                    *ngIf="hideVariantValidationContainer"
+                                >
+                                    <h1 class="text-dark-subtle-grey fs-3 lh-1 fw-bolder">+</h1>
+                                    <h4 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Variant</h4>
+                                </button>
+                            </div>
+                        
+                                
+                            <hr class="divider border-white ">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-admin-outline me-2"  (click)="cancelAction()">Cancel</button>
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary glow-primary" 
+                                    (click)="onProductAddSubmit()"
+                                    [disabled]="disableProductButton()"
+                                >Confirm</button>
                             </div>
                         </div>
-                        
-                            
-                        <hr class="divider border-white ">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-admin-outline me-2"  (click)="cancelAction()">Cancel</button>
-                            <button type="submit" class="btn btn-primary glow-primary" (click)="onProductAddSubmit()">Confirm</button>
-                        </div>
-                        
-                    </div>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 </div>
+
         
 <!-- <ng-container *ngIf="formSelectAttribute" >
     <div  class="attribute-list border border-dark-subtle rounded-2 mx-3">

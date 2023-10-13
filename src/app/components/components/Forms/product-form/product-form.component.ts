@@ -33,6 +33,7 @@ export class ProductFormComponent {
     formTextColor: string = "dark-theme-text-color"
     formInputColor: string = "text-white"
     formBorderColor: string = "dark-theme-border-color"
+    pagebordercolor: string = 'linear-gradient-border'
 
     private refreshData$ = new Subject<void>();
 	public searchString: string;
@@ -94,6 +95,7 @@ export class ProductFormComponent {
     cancel: boolean = true; 
     selectedImages: string[] = [];
 
+
     selectedAttribute: Attributes[] = [];
     addedAttributes: Attributes[] = [];
     originalSelectedAttribute: Attributes[] = [];
@@ -105,6 +107,11 @@ export class ProductFormComponent {
     hideVariantValidationContainer: boolean = true;
     showVariantFormContainer: boolean = false;
     fileUrlMap: Map<File, string> = new Map();
+    rowActionVisibility: boolean[] = [];
+	activeButtonIndex: number | null = null;
+    hasInvalidResolution: boolean = false;
+    invalidResolutionClass: string = 'invalid-resolution';
+
     private attributeServiceData: any[] = [];
 
     constructor(
@@ -155,7 +162,9 @@ export class ProductFormComponent {
         this.selectedAttributeForms.forEach((item) => {
             this.addAttributeForm.addControl(item.id, this.formBuilder.control('', Validators.required));
         });
-
+        
+        // this.variantForms.push({ index: 0, isVisible: true });
+        // this.isFormSave = false
     }
     
     ngOnInit(): void{
@@ -193,19 +202,80 @@ export class ProductFormComponent {
         console.log(variant, index)
     }
     
+
+
+    showAction(rowIndex: number) {
+		this.rowActionVisibility[rowIndex] = !this.rowActionVisibility[rowIndex];
+
+		for (let i = 0; i < this.rowActionVisibility.length; i++) {
+			if (i !== rowIndex) {
+				this.rowActionVisibility[i] = false;
+			}
+		}
+		
+		if (this.activeButtonIndex === rowIndex) {
+
+			this.activeButtonIndex = null;
+		} else {
+			this.activeButtonIndex = rowIndex;
+		}
+	}
+
+    disableButton() {
+        return this.attributeFormsArray.length < 1;
+    }
+
+    disableProductButton() {
+        return this.addProductForm.get('variants')?.value.length < 1;
+    }
+
+    disableCategorySelect() {
+        return this.addProductForm.get('variants')?.value.length > 0;
+    }
+
+    checkImageResolution(file: File, callback: (width: number, height: number) => void) {
+        const img = new Image();
+    
+        img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+
+            if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
+                this.hasInvalidResolution = true;
+            }
+            
+            callback(width, height);
+        };
+    
+        img.src = URL.createObjectURL(file);
+    }
     
 //Get Image Value to Array
     selectFileForAdding() {
-        const addInput = document.getElementById('addimages');
-        addInput?.click();
+        const imageArray = this.getFileKeys().length
+        if(imageArray >= 3){
+            const errorDataforProduct = {
+                errorMessage: 'Add Image',
+                suberrorMessage: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+        }else{
+            const addInput = document.getElementById('addimages');
+            addInput?.click();
+        }
+
     }
+
     selectFileForEditing() {
         const editInput = document.getElementById('editimages');
         editInput?.click();
     }
+
     getFileKeys(): File[] {
         return Array.from(this.fileUrlMap.keys());
     }
+
     convertFileToUrl(file: File) {
         const reader = new FileReader();
 
@@ -219,14 +289,54 @@ export class ProductFormComponent {
     handleFileInput(event: any) {
         const imagesArray = this.addVariantForm.get('images') as FormArray;
         const files = event.target.files;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const fileControl = this.formBuilder.control(file);
-            imagesArray.push(this.formBuilder.control(file));
-            this.product_service.addImageToList(fileControl);
-            this.convertFileToUrl(file);
+
+        if (files.length > 3) {
+            const errorDataforProduct = {
+                errorMessage: 'Add Image',
+                suberrorMessage: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+
+            for (let i = 0; i < Math.min(files.length, 3); i++) {
+                const file = files[i];
+
+                const currentIndex = i;
+
+                this.checkImageResolution(file, (width, height) => {
+                    // if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
+                    //     this.hasInvalidResolution = true; 
+                    // }
+                });
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrl(file);
+            }
+
+        }else{
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                const currentIndex = i;
+
+                this.checkImageResolution(file, (width, height) => {
+                    // if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
+                    //     this.hasInvalidResolution = true; 
+                    // }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrl(file);
+            }
+
         }
+
     }
+    
     removeImage(index: number) {
         this.product_service.removeImg(index);
         const files = this.getFileKeys();
@@ -260,6 +370,7 @@ export class ProductFormComponent {
     
         return null;
     }
+
     isHexColor(color: string | null): boolean { 
         if (!color) return false;
         const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
@@ -296,10 +407,7 @@ export class ProductFormComponent {
     
     }
     
-    handleResponse(
-        response: any,
-        
-    ): void {
+    handleResponse(response: any): void {
         const productSuccess = {
             head: 'Edit Product',
             sub: response.message
@@ -348,7 +456,7 @@ export class ProductFormComponent {
     showVariantForms(){
         if(this.attributeFormsArray.length > 0)
         {
-            if (!this.isFormSave) {
+            if (!this.isFormSave || this.variantForms.length < 1) {
                 const newIndex = this.variantForms.length; 
                 this.variantForms.push({ index: newIndex, isVisible: true }); 
                 
@@ -450,7 +558,8 @@ export class ProductFormComponent {
 
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
             variantsArray.push(newVariantControl);
-        
+            this.hideVariantValidationContainer = true;
+
             const productSuccess = {
                 head: 'Add Variant',
                 sub: 'Successfully Add Variant'
@@ -485,6 +594,7 @@ export class ProductFormComponent {
         if(this.variantForms.length < 1){
             this.hideVariantValidationContainer = true
         }
+        this.isFormSave = false;
     }
 
     getVariantIndex(index: any) {

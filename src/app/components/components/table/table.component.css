@@ -37,12 +37,7 @@
 
 
 
-.linear-gradient-border {
-  border-radius: 20px; 
-  border: 5px solid transparent; 
-  background: linear-gradient(100deg,#2E303D,#1E2029) border-box; /*3*/
 
-}
 .table-border-color{
   border: 1px solid rgba(255, 255, 255, 0.40);
 }
