@@ -32,10 +32,6 @@ export class CategoriesService {
     return this.categoryCache;
   }
 
-  public getProductByCategory(id: string): Observable<any> {
-    return this.http.get('../../assets/sampleData/category-product.json')
-  }
-
   public getAdminCategories(): Observable<AdminCategoryList> {
     return this.http.get<AdminCategoryList>(GETAdminCategories);
   }

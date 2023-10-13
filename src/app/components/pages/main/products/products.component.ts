@@ -5,7 +5,7 @@ import { Product, ColorVariant, Variant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj } from 'src/app/utilities/response-utils';
 import { Gallery, GalleryItem, GalleryRef, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -25,7 +25,7 @@ export class ProductsComponent {
   Number = Number;
   isFaved: boolean = false;
   productId!: string;
-  product!: Observable<Product[]>;
+  product!: Observable<Product>;
   imgArray: GalleryItem[] = [];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
@@ -139,17 +139,17 @@ export class ProductsComponent {
     })
     
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
-    this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProducts(response)));
+    this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProductObj(response)));
 
     // get local array copy of product observable
-    this.product.subscribe((product: Product[]) => {
-      if(product.length > 0){
-        this.currentProduct = product[0];
+    this.product.subscribe((product: Product) => {
+      if(product){
+        this.currentProduct = product;
         this.selectedPrice = Number(this.currentProduct.variants[0].price);
         
         // initialize gallerize
         this.galleryRef.reset();
-        product[0].variants.forEach((variant: Variant) => {
+        product.variants.forEach((variant: Variant) => {
           let url = variant.images[0];
           this.galleryRef.addImage({src: url, thumb: url});
         });

@@ -46,6 +46,19 @@ export interface Attribute {
     value: string,
 }
 
+export interface CategoryProductList {
+    success: string,
+    message: string,
+    data: CategoryProduct[]
+}
+
+export interface CategoryProduct {
+    product_id: string,
+    name: string,
+    price: number,
+    preview_image: string
+}
+
 export interface CartItem {
     product: Product,
     variant: string,

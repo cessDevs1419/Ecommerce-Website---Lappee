@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { CategoryProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -75,6 +75,28 @@ export function formatProducts(response: ProductList): Product[] {
     variants: data.variants,
   }));
 }
+
+// returns a Product object
+export function formatProductObj(response: any): Product {
+  let data = response.data
+  return {
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    variants: data.variants,
+  };
+}
+
+export function formatCategoryProduct(response: any): CategoryProduct[] {
+  return response.data.map((data: CategoryProduct) => ({
+    product_id: data.product_id,
+    name: data.name,
+    price: data.price,
+    preview_image: data.preview_image
+  }))
+}
+
 
 // returns Attributes array from a ProductList
 export function formatAttributes(response: AttributeList): Attributes[] {
@@ -342,14 +364,14 @@ export function findDeliveryInfo(userID: string, DeliveryInfoObservable: Observa
 
 /* Sorting Functions */
 
-export function productSortByName(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+export function productSortByName(productObservable: Observable<CategoryProduct[]>, mode: string): Observable<CategoryProduct[]> {
   if (mode == "normal"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => a.name.localeCompare(b.name));
     }));
   }
   if (mode == "inverse"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => b.name.localeCompare(a.name));
     }));
   }
@@ -357,14 +379,14 @@ export function productSortByName(productObservable: Observable<Product[]>, mode
   return productObservable;
 }
 
-export function productSortByPrice(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+export function productSortByPrice(productObservable: Observable<CategoryProduct[]>, mode: string): Observable<CategoryProduct[]> {
   if (mode == "ascending"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => a.product_variants[0].price - b.product_variants[0].price);
     }));
   }
   if (mode == "descending"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => b.product_variants[0].price - a.product_variants[0].price);
     }));
   }

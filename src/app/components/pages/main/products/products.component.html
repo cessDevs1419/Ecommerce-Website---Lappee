@@ -14,7 +14,7 @@
             </ng-template>
         </div>
 
-        <div *ngFor="let match of product | async"  class="col-lg-6 content-column">
+        <div *ngIf="product | async as match"  class="col-lg-6 content-column">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
                     <h3>{{match.name}}</h3>

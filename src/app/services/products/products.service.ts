@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETProductDetails, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETProductDetails, GETProducts, GETProductsByCategory, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -48,13 +48,20 @@ export class ProductsService {
   }
   
   getProducts(): Observable<any>{
-    //return this.http.get<ProductList>(GETProducts);
-    return this.http.get<ProductList>('../../assets/sampleData/products.json');
+    console.log(this.http.get<ProductList>(GETProducts))
+    return this.http.get<ProductList>(GETProducts);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
 
   getProductDetails(id: string): Observable<any> {
-    //return this.http.get(GETProductDetails + id);
-    return this.http.get<ProductList>('../../assets/sampleData/products.json');
+    console.log(this.http.get(GETProductDetails + id))
+    return this.http.get(GETProductDetails + id);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
+
+  public getProductByCategory(id: string): Observable<any> {
+    console.log(this.http.get(GETProductsByCategory + id))
+    return this.http.get(GETProductsByCategory + id)
   }
   
   getNewProducts(): Observable<any> {

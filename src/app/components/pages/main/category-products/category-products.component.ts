@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, map } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatProducts, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
-import { Product } from 'src/assets/models/products';
+import { formatCategoryProduct, formatProducts, productSortByName, productSortByPrice } from 'src/app/utilities/response-utils';
+import { CategoryProduct, Product } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-category-products',
@@ -15,8 +15,8 @@ export class CategoryProductsComponent {
   
   categorySubscription!: Subscription;
   categoryId!: string;
-  products!: Observable<Product[]>;
-  productsFiltered!: Observable<Product[]>;
+  products!: Observable<CategoryProduct[]>;
+  productsFiltered!: Observable<CategoryProduct[]>;
   sortOption: string = "name-normal";
 
   constructor(private route: ActivatedRoute, private categoriesService: CategoriesService, private productsService: ProductsService) {}
@@ -29,7 +29,7 @@ export class CategoryProductsComponent {
   }
 
   filterProducts(): void{
-    this.products = this.categoriesService.getProductByCategory(this.categoryId).pipe(map((response: any) => formatProducts(response)));
+    this.products = this.productsService.getProductByCategory(this.categoryId).pipe(map((response: any) => formatCategoryProduct(response)));
     this.productSort();
   }
 

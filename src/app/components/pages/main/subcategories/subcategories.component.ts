@@ -43,36 +43,38 @@ export class SubcategoriesComponent {
   }
 
   productSort(): void {
-    let option = this.sortOption;
 
-    switch(option){
-      case 'name-normal': {
-        this.productsFiltered = productSortByName(this.productsFiltered, "normal");
-        break;
-      }
 
-      case 'name-inverse': {
-        this.productsFiltered = productSortByName(this.productsFiltered, "inverse");
-        break;
-      }
+    // let option = this.sortOption;
 
-      case 'price-asc': {
-        this.productsFiltered = productSortByPrice(this.productsFiltered, "ascending");
-        break;
-      }
+    // switch(option){
+    //   case 'name-normal': {
+    //     this.productsFiltered = productSortByName(this.productsFiltered, "normal");
+    //     break;
+    //   }
 
-      case 'price-desc': {
-        this.productsFiltered = productSortByPrice(this.productsFiltered, "descending");
-        break;
-      }
+    //   case 'name-inverse': {
+    //     this.productsFiltered = productSortByName(this.productsFiltered, "inverse");
+    //     break;
+    //   }
 
-      default: {
-        console.warn(option + ' not found');
-        break;
-      }
-    }
+    //   case 'price-asc': {
+    //     this.productsFiltered = productSortByPrice(this.productsFiltered, "ascending");
+    //     break;
+    //   }
 
-    console.log(option);
+    //   case 'price-desc': {
+    //     this.productsFiltered = productSortByPrice(this.productsFiltered, "descending");
+    //     break;
+    //   }
+
+    //   default: {
+    //     console.warn(option + ' not found');
+    //     break;
+    //   }
+    // }
+
+    // console.log(option);
   }
   
   

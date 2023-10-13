@@ -1,7 +1,7 @@
 <div *ngFor="let product of products | async | searchFilter: searchString" class="col-6 col-lg-4 col-xl-3 mb-3">
-    <a [routerLink]="['/products', product.id]" class="text-reset text-decoration-none">
+    <a [routerLink]="['/products', product.product_id]" class="text-reset text-decoration-none">
         <div class="card product-card h-100">
-            <div class="card-img-container d-flex align-items-center" [ngStyle]=" product.variants[0].images[0] ? { 'background-image': 'url(' + product.variants[0].images[0] + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
+            <div class="card-img-container d-flex align-items-center" [ngStyle]=" product.preview_image ? { 'background-image': 'url(' + product.preview_image + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
                 <!-- <span class="card-image-overlay px-2 py-1 mt-3">- 69%</span> -->
                 <!-- <img [src]="product.images[0] ? product.images[0] : 'https://picsum.photos/700'"> -->
             </div>
@@ -10,7 +10,7 @@
                 <div class="d-flex flex-column flex-md-row justify-content-between">
                     <div class="d-inline-flex align-items-center">
                         <div class="product-price fs-5 fw-bold">
-                            {{product.variants[0].price | currency}}
+                            {{product.price | currency}}
                         </div>
                         <!-- <div class="muted-text text-decoration-line-through">
                             {{product.price | currency}}
