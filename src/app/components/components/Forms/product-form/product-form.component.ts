@@ -109,8 +109,8 @@ export class ProductFormComponent {
     fileUrlMap: Map<File, string> = new Map();
     rowActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
-    hasInvalidResolution: boolean = false;
-    invalidResolutionClass: string = 'invalid-resolution';
+
+    imageResolutionStates: { [fileName: string]: boolean } = {};
 
     private attributeServiceData: any[] = [];
 
@@ -233,18 +233,14 @@ export class ProductFormComponent {
         return this.addProductForm.get('variants')?.value.length > 0;
     }
 
-    checkImageResolution(file: File, callback: (width: number, height: number) => void) {
+    checkImageResolution(file: File, callback: (width: number, height: number, fileName: string) => void) {
         const img = new Image();
     
         img.onload = () => {
             const width = img.width;
             const height = img.height;
-
-            if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
-                this.hasInvalidResolution = true;
-            }
             
-            callback(width, height);
+            callback(width, height, file.name);
         };
     
         img.src = URL.createObjectURL(file);
@@ -303,11 +299,7 @@ export class ProductFormComponent {
 
                 const currentIndex = i;
 
-                this.checkImageResolution(file, (width, height) => {
-                    // if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
-                    //     this.hasInvalidResolution = true; 
-                    // }
-                });
+
                 const fileControl = this.formBuilder.control(file);
                 imagesArray.push(this.formBuilder.control(file));
                 this.product_service.addImageToList(fileControl);
@@ -321,10 +313,12 @@ export class ProductFormComponent {
 
                 const currentIndex = i;
 
-                this.checkImageResolution(file, (width, height) => {
-                    // if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
-                    //     this.hasInvalidResolution = true; 
-                    // }
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
                 });
 
                 const fileControl = this.formBuilder.control(file);
@@ -590,9 +584,20 @@ export class ProductFormComponent {
     }
     
     removeVariant(index: any){
+        const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
+
         this.variantForms.splice(index, 1);
+        this.addAttributeForm.reset();
+        this.fileUrlMap.clear();
         if(this.variantForms.length < 1){
             this.hideVariantValidationContainer = true
+        }
+        while (attributesArray .length !== 0) {
+            attributesArray .removeAt(0);
+        }
+        while (imagesArray.length !== 0) {
+            imagesArray.removeAt(0);
         }
         this.isFormSave = false;
     }

@@ -24,6 +24,11 @@
     color: #d2d2d2;
 }
 
+.border-dashed{
+    border: dashed 2px;
+    padding: 20px;
+}
+
 .cancel-btn{
     background: #BBB;
 }

@@ -6,13 +6,6 @@
         </div> 
         <div class="title-container mb-2 d-flex align-items-center">
             <h3 class=" fs-5 position-relative mt-1 {{textcolor}}">Attribute Values</h3>
-            <button 
-                type="button"
-                class="attr-btn d-flex align-items-center justify-content-center btn btn-primary text-white mx-2" 
-                (click)="addAttributeValue()"
-            >
-            <i class="bi bi-plus-lg"></i>
-            </button>
         </div>
         <div class="attribute-values w-100">
             <div formArrayName="attribute_value" *ngIf="addAttributeForm.get('attribute_value')">
@@ -24,8 +17,17 @@
                         </button>
                     </div>
                 </div>
+                <button 
+                    type="button"
+                    class="w-100 p-1 border-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+                    (click)="addAttributeValue()"
+                >
+                    <h1 class="text-dark-subtle-grey fs-4 lh-1 fw-bolder">+</h1>
+                    <h5 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Values</h5>
+                </button>
             </div>
         </div>
+
 
 
 

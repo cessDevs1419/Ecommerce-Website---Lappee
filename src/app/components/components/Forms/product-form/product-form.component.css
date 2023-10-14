@@ -19,9 +19,13 @@
 }
 
 .image-resolution-shadow{
-    border: 1px solid;
-    box-shadow: 0 0 3px 3px #F00;
+    box-shadow: 0px 0px 20px 0px #F00;
 }
+
+.image-resolution-shadow:hover{
+    border: 2px solid #F00;
+}
+
 
 
 .img-remove-btn{
@@ -41,11 +45,6 @@
 
 .actionbtn i:hover{
     color: #ffffff;
-}
-
-.border-dashed{
-    border: dashed 2px;
-    padding: 20px;
 }
 
 select option {
@@ -78,7 +77,32 @@ select option {
 .accordion-body {
     border: 1px solid var(--adm-light-gray);
     border-radius: 10px;
+
+}
+
+.slide-up-enter-active, .slide-down-leave-active {
+    transition: all 1s;
+}
+
+.slide-up-enter, .slide-down-leave-to /* .slide-down-leave-active in <2.1.8 */ {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.slide-down-enter-active, .slide-up-leave-active {
+    transition: all 1s;
+}
+
+.slide-down-enter, .slide-up-leave-to /* .slide-up-leave-active in <2.1.8 */ {
+    max-height: 1000px; /* Adjust this value as needed to suit your content */
+    opacity: 1;
 }
 
 
-
+@media screen and (max-width: 992px) {
+    .product-container{
+        max-width: 100%;
+        width: 100%;
+    }
+}
