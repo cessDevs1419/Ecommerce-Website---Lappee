@@ -99,6 +99,33 @@ select option {
     opacity: 1;
 }
 
+.tooltip-container{
+    max-width: 330px;
+    min-width: auto;
+    width: auto;
+}
+.tooltips{
+    width: auto;
+    background-color: #9D0000;
+}
+
+.tooltip-tail{
+    border-top: 8px solid #9D0000;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    margin-top: 2rem;
+}
+
+.tooltip-inner {
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+.tooltip-inner {
+    background-color: #FF5733;
+    color: white;
+    border: 1px solid #E94E77;
+}
 
 @media screen and (max-width: 992px) {
     .product-container{

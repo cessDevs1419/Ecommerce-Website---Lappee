@@ -257,7 +257,7 @@
     <!-- Image Form -->
                                                 <hr class="divider border-white mt-4 mb-3">
                                                                         
-                                                <div class="image-form body pt-0 pb-0 position-relative">
+                                                <div class="image-form body pt-0 pb-0 position-relative">  
                                                     <div class="title-container mb-3 ">
                                                         <div class="d-flex flex-row p-0 mb-3">
                                                             <div class="blue-accent me-2"></div>
@@ -267,19 +267,30 @@
                                                     
                                                     <!----> 
 
-                                                    <p class="tooltiptext {{formTextColor}}">Add Images</p>
                                                     
                                                     
                                                     <div class="d-flex justify-content-start w-100 ">
-                                                        <div *ngFor="let file of getFileKeys(); let ind = index" >
-                                                            <div  [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
-                                                            class="img-container p-0 position-relative image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0">
+                                                        <div *ngFor="let file of getFileKeys(); let ind = index">
+                                                            <div 
+                                                                data-toggle="'tooltip'"  [title]="imageMessageMap[file.name]" data-placement="'top'"
+                                                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                                                                class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                            >
                                                                 <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
                                                                     <i class="bi bi-x text-white"></i>
                                                                 </button>
                                                                 <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                                
+                                                                <!-- Tooltip container for a specific item -->
+                                                                <!-- <div class="tooltip-container position-absolute" *ngIf="imageResolutionStates[file.name]" >
+                                                                    <div class="tooltips text-center rounded-2 mb-0">
+                                                                        <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessageMap[file.name]}}</p>
+                                                                    </div>
+                                                                    <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div>
+                                                                </div> -->
                                                             </div>
                                                         </div>
+                                                        
                                                         <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
                                                             <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
                                                             <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
@@ -322,7 +333,7 @@
                                     <h4 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Variant</h4>
                                 </button>
                             </div>
-                        
+                            
                                 
                             <hr class="divider border-white ">
                             <div class="modal-footer">

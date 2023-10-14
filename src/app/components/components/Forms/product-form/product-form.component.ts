@@ -109,7 +109,8 @@ export class ProductFormComponent {
     fileUrlMap: Map<File, string> = new Map();
     rowActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
-
+    imageMessage: string
+    imageMessageMap: { [fileName: string]: string } = {};
     imageResolutionStates: { [fileName: string]: boolean } = {};
 
     private attributeServiceData: any[] = [];
@@ -296,9 +297,18 @@ export class ProductFormComponent {
 
             for (let i = 0; i < Math.min(files.length, 3); i++) {
                 const file = files[i];
-
-                const currentIndex = i;
-
+                
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                        this.imageMessage = "The image must be at least 720px x 1080p."
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                        this.imageMessage = "Images up to 1440px x 2560px only."
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
 
                 const fileControl = this.formBuilder.control(file);
                 imagesArray.push(this.formBuilder.control(file));
@@ -311,13 +321,16 @@ export class ProductFormComponent {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
-                const currentIndex = i;
-
                 this.checkImageResolution(file, (width, height, fileName) => {
-                    if (width < 720 || height < 1080 || width > 2560 || height > 1440) {
+                    if (width < 720 || height < 1080) {
                         this.imageResolutionStates[fileName] = true;
+                        this.imageMessageMap[fileName] = "The image must be at least 720px x 1080p."
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                        this.imageMessageMap[fileName] = "Images up to 1440px x 2560px only."
                     } else {
                         this.imageResolutionStates[fileName] = false;
+                        this.imageMessageMap[fileName] = ""
                     }
                 });
 
