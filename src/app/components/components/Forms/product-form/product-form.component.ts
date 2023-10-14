@@ -71,10 +71,12 @@ export class ProductFormComponent {
     addVariantForm: FormGroup;
     selectedAttributeForms: any[] = [];
     addAttributeForm: FormGroup;
+    editAttributeForm: FormGroup;
     editVariantForm: FormGroup;
 	deleteProductForm: FormGroup;
     selectedAttributeForm: FormGroup;
-    
+    editAttributes:boolean = false;
+    editImages:boolean = false
     
     categories!: Observable<AdminCategory[]>;
 	attributes!: Observable<NewAdminCategory[]>;
@@ -93,9 +95,12 @@ export class ProductFormComponent {
     variant_id: string;
     done: boolean;
     cancel: boolean = true; 
+    addBtn: boolean = false; 
+    editBtn: boolean = false; 
+
     selectedImages: string[] = [];
 
-
+    hidevariantheader: boolean[] = [];
     selectedAttribute: Attributes[] = [];
     addedAttributes: Attributes[] = [];
     originalSelectedAttribute: Attributes[] = [];
@@ -112,6 +117,9 @@ export class ProductFormComponent {
     imageMessage: string
     imageMessageMap: { [fileName: string]: string } = {};
     imageResolutionStates: { [fileName: string]: boolean } = {};
+    variantsArray: FormArray;
+    newvariantsArray: FormArray = this.formBuilder.array([]);
+    attributesArrays: FormArray;
 
     private attributeServiceData: any[] = [];
 
@@ -149,8 +157,23 @@ export class ProductFormComponent {
             description: ['', Validators.required],
             variants: this.formBuilder.array([]), 
         });
+
+        this.editProductForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            category: ['', Validators.required],
+            description: ['', Validators.required],
+            variants: this.formBuilder.array([]), 
+        });
         
         this.addVariantForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            stock: ['', Validators.required],
+            price: ['', Validators.required],
+            images: this.formBuilder.array([]),
+            attributes: this.formBuilder.array([]),
+        });
+
+        this.editVariantForm = this.formBuilder.group({
             name: ['', Validators.required],
             stock: ['', Validators.required],
             price: ['', Validators.required],
@@ -164,6 +187,8 @@ export class ProductFormComponent {
             this.addAttributeForm.addControl(item.id, this.formBuilder.control('', Validators.required));
         });
         
+
+        this.variantsArray = this.addProductForm.get('variants') as FormArray;
         // this.variantForms.push({ index: 0, isVisible: true });
         // this.isFormSave = false
     }
@@ -469,6 +494,10 @@ export class ProductFormComponent {
                 
                 this.hideVariantValidationContainer = false
                 this.isFormSave = true;
+                this.addBtn = true;
+                this.editBtn = false;
+                this.editAttributes = true
+                this.editImages = true
                 this.addVariantForm.reset()
             }else{
                 const productWarn = {
@@ -498,14 +527,17 @@ export class ProductFormComponent {
 
     }
     
-    selectVariantItem(variant: string, index: number){
+    selectVariantItem( index: number){
         this.removeVariant(index)
     }
     
     editVariant(index: any){
-
         this.toggleAccordion(index) 
-        //this.currentlyEditedFormIndex = index;
+        this.hideVariantValidationContainer = false
+        this.addBtn = false;
+        this.editBtn = true;
+        this.editAttributes = false
+        this.editImages = false
     }
 
     get attributesArray() {
@@ -526,8 +558,85 @@ export class ProductFormComponent {
         console.log('Updated selectedAttributeForms:', this.selectedAttributeForms);
     }
     
+    
 
     saveVariant(index: any){
+        const variantsArray = this.addProductForm.get('variants') as FormArray;
+        const addVariantForm = this.addVariantForm;
+        const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
+
+        if (addVariantForm) {
+            const formControls = this.addAttributeForm.controls;
+            const attributeFormsArray = this.attributeFormsArray;
+
+            Object.keys(formControls).forEach((controlName: string) => {
+                const controlValue = formControls[controlName].value;
+                const attributeIndex = attributeFormsArray.findIndex((attributeForm: any) => attributeForm.id === controlName);
+            
+                if (attributeIndex !== -1) {
+                    attributeFormsArray[attributeIndex].value = controlValue;
+                }
+            });
+
+            this.attributeFormsArray.forEach((attributeForm) => {
+                const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
+
+                if (existingIndex !== -1) {
+                    // If the ID already exists, update the existing form group
+                    const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
+                    existingFormGroup.get('value')?.setValue(attributeForm.value);
+                } else {
+                    // If the ID doesn't exist, create a new form group
+                    const newAttributeFormGroup = this.formBuilder.group({
+                        id: [attributeForm.id],
+                        name: [attributeForm.name],
+                        value: [attributeForm.value],
+                    });
+                    attributesArray.push(newAttributeFormGroup);
+                }
+            });
+
+            const newVariantControl = this.formBuilder.control(addVariantForm.value);
+            const newVariantVisible = this.formBuilder.group({
+                ...addVariantForm.value,
+                isVisible: true, 
+            });
+
+            this.hideVariantValidationContainer = true
+            this.newvariantsArray.push(newVariantVisible);
+            variantsArray.push(newVariantControl);
+
+            const productSuccess = {
+                head: 'Add Variant',
+                sub: 'Successfully Add Variant'
+            };
+        
+            this.RefreshTable.emit();
+            this.ProductSuccess.emit(productSuccess);
+
+            for (let i = variantsArray.length - 1; i >= 0; i--) {
+                if (variantsArray.at(i).value === null) {
+                    variantsArray.removeAt(i);
+                }
+            }
+            this.addAttributeForm.reset();
+            this.fileUrlMap.clear();
+            while (attributesArray .length !== 0) {
+                attributesArray .removeAt(0);
+            }
+            while (imagesArray.length !== 0) {
+                imagesArray.removeAt(0);
+            }
+            this.product_service.removeAllImg();
+            this.isFormSave = false;
+        }
+        
+        this.toggleAccordion(index);
+    
+    }
+
+    saveEditedVariant(index: any){
         const variantsArray = this.addProductForm.get('variants') as FormArray;
         const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
@@ -564,8 +673,15 @@ export class ProductFormComponent {
             });
 
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
+            const newVariantVisible = this.formBuilder.group({
+                ...addVariantForm.value,
+                isVisible: true, 
+            });
+
+            this.hideVariantValidationContainer = true
+            this.newvariantsArray.push(newVariantVisible);
+            this.editImages = true
             variantsArray.push(newVariantControl);
-            this.hideVariantValidationContainer = true;
 
             const productSuccess = {
                 head: 'Add Variant',
@@ -580,6 +696,8 @@ export class ProductFormComponent {
                     variantsArray.removeAt(i);
                 }
             }
+            this.addBtn = true;
+            this.editBtn = false;
             this.addAttributeForm.reset();
             this.fileUrlMap.clear();
             while (attributesArray .length !== 0) {
@@ -599,7 +717,7 @@ export class ProductFormComponent {
     removeVariant(index: any){
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
-
+        this.newvariantsArray.removeAt(index)
         this.variantForms.splice(index, 1);
         this.addAttributeForm.reset();
         this.fileUrlMap.clear();
@@ -624,7 +742,7 @@ export class ProductFormComponent {
     
     onCategorySelect(event: any) {
         const selectedValue = event.target.value;
-        
+        this.editAttributes = true
         this.categoryAttributes = this.category_service.getCategoryAttribute(selectedValue).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
         this.categoryAttributes.subscribe((data: NewAdminCategory) => {
             if (data && data.attributes) {
@@ -634,7 +752,7 @@ export class ProductFormComponent {
                         id: attribute.category_attribute_id,
                         name: attribute.name,
                         value: '',
-                    };
+                    }; 
                     this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
                     this.attributeFormsArray.push(addAttributeForm);
                 }
@@ -702,10 +820,15 @@ export class ProductFormComponent {
                     this.addProductForm.reset();
                     this.addVariantForm.reset();
                     this.addAttributeForm.reset();
+                    this.variantsArray.reset();
                     this.variantsList.clear();
+                    this.variantForms.splice(0);
                     this.attributeFormsArray.splice(0);
+                    this.newvariantsArray.clear()
                     this.imageList.clear();
-
+                    this.addBtn = true;
+                    this.editBtn = false;
+                    this.editAttributes = true
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {
