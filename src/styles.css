@@ -10,14 +10,13 @@
     --light-gray: #EFF0F5;
     --adm-dark-gray: #787878;
     --adm-light-gray: #BBBBBB;
+    --adm-primary: #2E303D;
+    --adm-primary-dark: #1E2029;
+    --adm-light: #959BA5;
 }
 
 * {
     font-family: Mulish, sans-serif;
-}
-
-.table-border-linear-dark {
-
 }
 
 .text-light-subtle{

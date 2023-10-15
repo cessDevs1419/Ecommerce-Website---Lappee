@@ -85,6 +85,8 @@ import { ConfirmDialogComponent } from './components/components/modal-forms-clie
 import { EditCartItemComponent } from './components/components/modal-forms-client/edit-cart-item/edit-cart-item.component';
 import { VariantAttributesComponent } from './components/components/variant-attributes/variant-attributes.component';
 import { CategoryProductsComponent } from './components/pages/main/category-products/category-products.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { ColorPickerComponent } from './components/components/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -160,6 +162,7 @@ import { CategoryProductsComponent } from './components/pages/main/category-prod
     EditCartItemComponent,
     VariantAttributesComponent,
     CategoryProductsComponent,
+    ColorPickerComponent,
 
   ],
   imports: [
@@ -243,7 +246,8 @@ import { CategoryProductsComponent } from './components/pages/main/category-prod
       animationDuration: 300,
     }),
     LightboxModule,
-    NgxImageZoomModule
+    NgxImageZoomModule,
+    ColorPickerModule
   ],
   providers: [
     {

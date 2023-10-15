@@ -27,6 +27,7 @@
     "ng-circle-progress": "^1.7.1",
     "ng-gallery": "^8.0.3",
     "ngx-chartjs": "^0.0.1",
+    "ngx-color-picker": "^15.0.0",
     "ngx-cookie-service": "^16.0.1",
     "ngx-image-zoom": "^2.1.0",
     "rxjs": "~7.8.0",

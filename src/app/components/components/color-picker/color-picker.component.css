@@ -1,0 +1,58 @@
+p {
+    color: #ffffff
+}
+
+.form-label {
+    color: var(--adm-light-gray)
+}
+
+.color-preview {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .25rem;
+    border: 1px solid var(--adm-light-gray)
+}
+
+.input-field {
+    border: 1px solid var(--adm-light-gray);
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+::ng-deep color-picker .color-picker {
+    border: 1px solid var(--adm-light);
+    border-radius: 10px;
+    background-color: var(--adm-primary);
+    color: var(--adm-light)
+}
+
+::ng-deep color-picker .color-picker .hue-alpha {
+    background-color: var(--adm-primary) !important;
+}
+
+::ng-deep color-picker .color-picker .hue-alpha {
+    background-color: var(--adm-primary) !important;
+}
+
+::ng-deep .color-picker .hex-text .box div {
+    color: var(--adm-light) !important;
+}
+::ng-deep color-picker .color-picker .hex-text .box {
+    padding: .25rem 1rem;
+}
+
+::ng-deep color-picker .color-picker .type-policy {
+    display: none;
+}
+
+::ng-deep .hex-text .box {
+    background-color: var(--adm-primary);
+}
+
+::ng-deep .hex-text .box input  {
+    background-color: var(--adm-primary);
+    color: var(--adm-light);
+    border-radius: 10px;
+
+}
+

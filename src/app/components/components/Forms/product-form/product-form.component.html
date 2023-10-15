@@ -289,6 +289,14 @@
                                                                         <option selected >Select value for {{item.name}}</option>
                                                                         <option *ngFor="let item of item.values" [value]="item">{{ item }}</option>
                                                                     </select>
+
+                                                                    <app-color-picker
+                                                                        [showLabel]="false"
+                                                                        [placeholder]="'Pick color...'"
+                                                                        [formControlName]="item.category_attribute_id"
+                                                                        required>
+
+                                                                    </app-color-picker>
                                                                 </div>
                                                             </div>
                                                         </div>
