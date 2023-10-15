@@ -20,6 +20,7 @@ import * as bootstrap from 'bootstrap';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { ThisReceiver } from '@angular/compiler';
 import { Attributes } from 'src/assets/models/attributes';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-product-form',
@@ -121,6 +122,7 @@ export class ProductFormComponent {
     newvariantsArray: FormArray = this.formBuilder.array([]);
     attributesArrays: FormArray;
 
+
     private attributeServiceData: any[] = [];
 
     constructor(
@@ -136,7 +138,8 @@ export class ProductFormComponent {
 	    private attributeService: AttributesService,
 	    private location: Location,
 	    private route: ActivatedRoute,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) 
     {
         
@@ -197,7 +200,7 @@ export class ProductFormComponent {
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
-
+        
         // this.attributes = this.refreshData$.pipe(
         //     startWith(undefined), 
         //     switchMap(() => this.attribute_service.getAttribute()),
@@ -205,6 +208,11 @@ export class ProductFormComponent {
         // );
 	
     }
+    getSafeImageUrl(file: File) {
+        const objectURL = URL.createObjectURL(file);
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+    
 
     refreshTableData(): void {
         this.refreshData$.next();
@@ -227,7 +235,6 @@ export class ProductFormComponent {
         this.index = index
         console.log(variant, index)
     }
-    
 
 
     showAction(rowIndex: number) {
@@ -274,6 +281,7 @@ export class ProductFormComponent {
     
 //Get Image Value to Array
     selectFileForAdding() {
+
         const imageArray = this.getFileKeys().length
         if(imageArray >= 3){
             const errorDataforProduct = {
@@ -283,15 +291,34 @@ export class ProductFormComponent {
         
             this.ProductWarning.emit(errorDataforProduct);
         }else{
+
             const addInput = document.getElementById('addimages');
             addInput?.click();
         }
 
     }
 
-    selectFileForEditing() {
-        const editInput = document.getElementById('editimages');
-        editInput?.click();
+    selectFileForEditing(index: number) {
+        const variantArray =  this.variantsArray
+        const variant = variantArray.controls[index]
+        const imageArrays = variant.value.images
+
+        const imageArray = this.getFileKeys().length
+        if(imageArray + imageArrays.length >= 3){
+            const errorDataforProduct = {
+                errorMessage: 'Add Image',
+                suberrorMessage: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+        }else{
+
+            const addInput = document.getElementById('addimages');
+            addInput?.click();
+        }
+        
+        // const editInput = document.getElementById('editimages');
+        // editInput?.click();
     }
 
     getFileKeys(): File[] {
@@ -377,6 +404,22 @@ export class ProductFormComponent {
             this.fileUrlMap.delete(fileToRemove);
         }
     }
+
+    removeImageFromEditForm(index: number, variantIndex: number) {
+        const variantArray = this.addProductForm.get('variants') as FormArray;
+        const variant = variantArray.at(variantIndex) as FormGroup; 
+        const imagesArray = variant.get('images') as FormArray;
+    
+        console.log(variantArray);
+        console.log(variant);
+        console.log(imagesArray);
+
+        // if (images && images.length > index) {
+        //     images.removeAt(index);
+        //     console.log(images)
+        // }
+    }
+
     extractFileName(url: string): string {
         const parts = url.split('/'); 
         return parts[parts.length - 1]; 
@@ -751,8 +794,10 @@ export class ProductFormComponent {
                     const addAttributeForm = {
                         id: attribute.category_attribute_id,
                         name: attribute.name,
-                        value: '',
+                        value: ''
                     }; 
+                        
+                    console.log(attribute.values)
                     this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
                     this.attributeFormsArray.push(addAttributeForm);
                 }

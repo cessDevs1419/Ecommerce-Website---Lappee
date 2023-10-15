@@ -78,57 +78,70 @@ export class AttributeFormComponent {
 
             const nameValue = this.addAttributeForm.get('name')?.value; 
             const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1).toLowerCase();
-            
-            let formData: any = new FormData();
-            formData.append('name', capitalizedName);
-            
-            // this.attribute_service.postAttribute(formData).subscribe({
-            //     next: (response: any) => { 
-            //         const successMessage = {
-            //             head: 'Category ' + this.addAttributeForm.get('name')?.value,
-            //             sub: response?.message
-            //         };
-                    
-            //         this.RefreshTable.emit();
-            //         this.refreshTableData();
-            //         this.ProductSuccess.emit(successMessage);
-            //         this.addAttributeForm.reset();
+            const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
 
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         if (error.error?.data?.error) {
-            //             const fieldErrors = error.error.data.error;
-            //             const errorsArray = [];
+            let formData: FormData = new FormData(); 
+            formData.append('name', capitalizedName);
+           
+
+            for (let val of attributeArray.value) {
+                let index = 0;
+                formData.append('values[]', val);
+                index++;
+            }
+
+            formData.forEach((value, key) => {
+                console.log(`${key}: ${value}`);
+            });
+            
+            this.attribute_service.postAttribute(formData).subscribe({
+                next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.addAttributeForm.get('name')?.value,
+                        sub: response?.message
+                    };
                     
-            //             for (const field in fieldErrors) {
-            //                 if (fieldErrors.hasOwnProperty(field)) {
-            //                     const messages = fieldErrors[field];
-            //                     let errorMessage = messages;
-            //                     if (Array.isArray(messages)) {
-            //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
-            //                     }
-            //                     errorsArray.push(errorMessage);
-            //                 }
-            //             }
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.ProductSuccess.emit(successMessage);
+                    this.addAttributeForm.reset();
+                    attributeArray.clear()
+
+                },
+                error: (error: HttpErrorResponse) => {
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
                     
-            //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: errorsArray,
-            //             };
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
                     
-            //             this.ProductWarning.emit(errorDataforProduct);
-            //         } else {
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
                     
-            //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: 'Please Try Another One',
-            //             };
-            //             this.ProductError.emit(errorDataforProduct);
-            //         }
-            //         return throwError(() => error);
+                        this.ProductWarning.emit(errorDataforProduct);
+                    } else {
                     
-            //     }
-            // });
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.ProductError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
+                    
+                }
+            });
         
             
         }else{
@@ -149,10 +162,6 @@ export class AttributeFormComponent {
             
         }
 
-        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
-        const attributeValues = attributeArray.value;
-
-        console.log(attributeValues);
     }
     
     onAttributeEditSubmit(): void {

@@ -189,7 +189,8 @@
                                                                     name="addvariantQty" 
                                                                     formControlName="stock" 
                                                                     [value]="1"
-                                                                    
+                                                                    min="0"  
+                                                                    step="1"
                                                                     required
                                                                 >
                                                                 <span class="input-group-text" id="basic-addon2">QTY</span>
@@ -205,7 +206,7 @@
                                                                     name="addvariantPrice" 
                                                                     formControlName="price" 
                                                                     [value]="1"
-                                                                    
+                                                                    min="0"  
                                                                     required
                                                                     step="0.01"
                                                                     [placeholder]="01.01"
@@ -267,13 +268,24 @@
                                                             <div class="position-relative d-flex align-items-center">
                                                                 <div class="w-100 mb-3">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
-                                                                    <input
+                                                                    <!-- <input
                                                                         [type]="item.name === 'color' ? 'color' : 'text'"
                                                                         [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
                                                                         [placeholder]="'Enter value for '+item.name"
                                                                         [formControlName]="item.category_attribute_id"
                                                                         required
+                                                                    > -->
+                                                                    <select 
+                                                                        class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                        id="addproductCategory"
+                                                                        name="addproductCategory" 
+                                                                        [formControlName]="item.category_attribute_id" 
+                                                                        
+                                                                        required
                                                                     >
+                                                                        <option selected >Select value for {{item.name}}</option>
+                                                                        <option *ngFor="let item of item.values">{{ item }}</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -290,7 +302,7 @@
                                                             <p class="{{formTextColor}} fw-bold fs-5 m-0">Add Images</p>
                                                         </div>
                                                     </div>
-                                                    <div class="d-flex justify-content-start w-100 " *ngIf="editImages === true">
+                                                    <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === true">
                                                         <div *ngFor="let file of getFileKeys(); let ind = index">
                                                             <div 
                                                                 [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
@@ -328,36 +340,47 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="d-flex justify-content-start w-100 " *ngIf="editImages === false">
+                                                    <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
                                                         <ng-container *ngIf="variantsArray.controls[i]; let variant">
                                                             <ng-container *ngFor="let images of variant.value.images; let ind = index">
                                                                 <div 
                                                                     [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[images.name] }"
                                                                     class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
                                                                 >
-                                                                    <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
+                                                                    <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
                                                                         <i class="bi bi-x text-white"></i>
                                                                     </button>
-                                                                    <img [src]="fileUrlMap.get(images)" alt="Lappee" class="w-100 h-100 border">
+                                                                    <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
                                                                     
                                                                 </div>
                                                             </ng-container>
                                                         </ng-container>
-                                                        
+                                                        <div *ngFor="let file of getFileKeys(); let ind = index">
+                                                            <div 
+                                                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                                                                class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                            >
+                                                                <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
+                                                                    <i class="bi bi-x text-white"></i>
+                                                                </button>
+                                                                <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                                
+                                                            </div>
+                                                        </div>
 
                                                         
-                                                        <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                        <button type="button" (click)="selectFileForEditing(i)" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
                                                             <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
                                                             <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                                             <div class="container p-3">
                                                                 <ng-container *ngIf="variantsArray.controls[i]; let variant">
                                                                     <ng-container *ngIf="variant.value.images; let images" >
-                                                                        <ng-container *ngIf="images.length <= 2">
+                                                                        <ng-container *ngIf="images.length + getFileKeys().length <= 2 ">
                                                                             <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
                                                                             <p class="fs-5 lh-sm mb-0 {{formTextColor}}">images up to 2560x1440</p>
                                                                             <p class="fs-6 lh-sm mb-0 {{formTextColor}}">(.png, .jpeg, .jpg)</p>
                                                                         </ng-container>
-                                                                        <ng-container *ngIf="images.length >= 3 ">
+                                                                        <ng-container *ngIf="images.length + getFileKeys().length >= 3 ">
                                                                             <h4 class="fw-bolder text-white lh-sm mb-0">3 / 3</h4>
                                                                             <p class="fs-5 lh-sm mb-0 {{formTextColor}}">MAX</p>
                                                                         </ng-container> 

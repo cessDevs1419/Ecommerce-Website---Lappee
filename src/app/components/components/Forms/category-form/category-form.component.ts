@@ -272,6 +272,7 @@ export class CategoryFormComponent {
             let categoriesName = this.addCategoryForm.get('category')?.value;
             let attributeArray = this.attribute_service.getSelectedAttribute().map(item => (item.id))
             const capitalizedName = categoriesName.charAt(0).toUpperCase() + categoriesName.slice(1).toLowerCase();
+            const selectedAttributes = this.attribute_service.getSelectedAttribute();
             // let categoriesArray: any[] = [];
             
             // let categoryObject = {
@@ -300,6 +301,7 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
                     this.addCategoryForm.reset();
+                    selectedAttributes.splice(0)
                     this.done = true
                     this.cancel = false
                 },
