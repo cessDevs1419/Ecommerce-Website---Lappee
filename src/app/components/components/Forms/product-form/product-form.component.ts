@@ -118,6 +118,7 @@ export class ProductFormComponent {
     imageMessage: string
     imageMessageMap: { [fileName: string]: string } = {};
     imageResolutionStates: { [fileName: string]: boolean } = {};
+    imageResolutionStatesTooltip: { [fileName: string]: boolean } = {};
     variantsArray: FormArray;
     newvariantsArray: FormArray = this.formBuilder.array([]);
     attributesArrays: FormArray;
@@ -208,16 +209,42 @@ export class ProductFormComponent {
         // );
 	
     }
+    
     getSafeImageUrl(file: File) {
         const objectURL = URL.createObjectURL(file);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
-    
 
     refreshTableData(): void {
         this.refreshData$.next();
     }
     
+    showToolTip(file: File, index: number){
+        this.checkImageResolution(file, (width, height, fileName) => {
+            if (width < 720 || height < 1080) {
+                this.imageResolutionStatesTooltip[fileName] = true;
+                this.imageMessage = "The image must be at least 720px x 1080p."
+            } else if(width > 2560 || height > 1440){
+                this.imageResolutionStatesTooltip[fileName] = true;
+                this.imageMessage = "Images up to 1440px x 2560px only."
+            } else {
+                this.imageResolutionStatesTooltip[fileName] = false;
+            }
+        });
+    }
+
+    unshowToolTip(file: File){
+        this.checkImageResolution(file, (width, height, fileName) => {
+            if (width < 720 || height < 1080) {
+                this.imageResolutionStatesTooltip[fileName] =  false;
+            } else if(width > 2560 || height > 1440){
+                this.imageResolutionStatesTooltip[fileName] = false;
+            } else {
+                this.imageResolutionStatesTooltip[fileName] = false;
+            }
+        });
+    }
+
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
         return new Promise((resolve) => {
@@ -235,7 +262,6 @@ export class ProductFormComponent {
         this.index = index
         console.log(variant, index)
     }
-
 
     showAction(rowIndex: number) {
 		this.rowActionVisibility[rowIndex] = !this.rowActionVisibility[rowIndex];
@@ -313,7 +339,7 @@ export class ProductFormComponent {
             this.ProductWarning.emit(errorDataforProduct);
         }else{
 
-            const addInput = document.getElementById('addimages');
+            const addInput = document.getElementById('addimagesedit');
             addInput?.click();
         }
         
@@ -349,14 +375,12 @@ export class ProductFormComponent {
 
             for (let i = 0; i < Math.min(files.length, 3); i++) {
                 const file = files[i];
-                
+
                 this.checkImageResolution(file, (width, height, fileName) => {
                     if (width < 720 || height < 1080) {
                         this.imageResolutionStates[fileName] = true;
-                        this.imageMessage = "The image must be at least 720px x 1080p."
                     } else if(width > 2560 || height > 1440){
                         this.imageResolutionStates[fileName] = true;
-                        this.imageMessage = "Images up to 1440px x 2560px only."
                     } else {
                         this.imageResolutionStates[fileName] = false;
                     }
@@ -376,13 +400,66 @@ export class ProductFormComponent {
                 this.checkImageResolution(file, (width, height, fileName) => {
                     if (width < 720 || height < 1080) {
                         this.imageResolutionStates[fileName] = true;
-                        this.imageMessageMap[fileName] = "The image must be at least 720px x 1080p."
                     } else if(width > 2560 || height > 1440){
                         this.imageResolutionStates[fileName] = true;
-                        this.imageMessageMap[fileName] = "Images up to 1440px x 2560px only."
                     } else {
                         this.imageResolutionStates[fileName] = false;
-                        this.imageMessageMap[fileName] = ""
+                    }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrl(file);
+            }
+
+        }
+
+    }
+
+    handleFileInputForEdit(event: any) {
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const files = event.target.files;
+
+        if (files.length > 3) {
+            const errorDataforProduct = {
+                errorMessage: 'Add Image',
+                suberrorMessage: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+
+            for (let i = 0; i < Math.min(files.length, 3); i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrl(file);
+            }
+
+        }else{
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
                     }
                 });
 
@@ -424,6 +501,9 @@ export class ProductFormComponent {
         const parts = url.split('/'); 
         return parts[parts.length - 1]; 
     }
+
+    
+
 
 //Validate
     stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
@@ -684,61 +764,14 @@ export class ProductFormComponent {
         const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const attributeFormsArray = this.attributeFormsArray;
 
         if (addVariantForm) {
-            const formControls = this.addAttributeForm.controls;
-            const attributeFormsArray = this.attributeFormsArray;
-
-            Object.keys(formControls).forEach((controlName: string) => {
-                const controlValue = formControls[controlName].value;
-                const attributeIndex = attributeFormsArray.findIndex((attributeForm: any) => attributeForm.id === controlName);
             
-                if (attributeIndex !== -1) {
-                    attributeFormsArray[attributeIndex].value = controlValue;
-                }
-            });
+            console.log(variantsArray)
+            console.log(attributeFormsArray)
+            console.log(imagesArray)
 
-            this.attributeFormsArray.forEach((attributeForm) => {
-                const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
-
-                if (existingIndex !== -1) {
-                    // If the ID already exists, update the existing form group
-                    const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
-                    existingFormGroup.get('value')?.setValue(attributeForm.value);
-                } else {
-                    // If the ID doesn't exist, create a new form group
-                    const newAttributeFormGroup = this.formBuilder.group({
-                        id: [attributeForm.id],
-                        value: [attributeForm.value],
-                    });
-                    attributesArray.push(newAttributeFormGroup);
-                }
-            });
-
-            const newVariantControl = this.formBuilder.control(addVariantForm.value);
-            const newVariantVisible = this.formBuilder.group({
-                ...addVariantForm.value,
-                isVisible: true, 
-            });
-
-            this.hideVariantValidationContainer = true
-            this.newvariantsArray.push(newVariantVisible);
-            this.editImages = true
-            variantsArray.push(newVariantControl);
-
-            const productSuccess = {
-                head: 'Add Variant',
-                sub: 'Successfully Add Variant'
-            };
-        
-            this.RefreshTable.emit();
-            this.ProductSuccess.emit(productSuccess);
-
-            for (let i = variantsArray.length - 1; i >= 0; i--) {
-                if (variantsArray.at(i).value === null) {
-                    variantsArray.removeAt(i);
-                }
-            }
             this.addBtn = true;
             this.editBtn = false;
             this.addAttributeForm.reset();
@@ -796,8 +829,6 @@ export class ProductFormComponent {
                         name: attribute.name,
                         value: ''
                     }; 
-                        
-                    console.log(attribute.values)
                     this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
                     this.attributeFormsArray.push(addAttributeForm);
                 }

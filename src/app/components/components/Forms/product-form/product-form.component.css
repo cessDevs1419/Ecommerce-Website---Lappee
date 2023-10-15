@@ -103,6 +103,7 @@ select option {
     max-width: 330px;
     min-width: auto;
     width: auto;
+    top: -.5rem;
 }
 .tooltips{
     width: auto;
