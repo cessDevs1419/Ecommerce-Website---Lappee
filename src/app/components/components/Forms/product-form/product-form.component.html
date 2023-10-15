@@ -93,7 +93,7 @@
                                                         <div class="data w-100">
                                                             <div class="row ms-0 m-auto w-100 ">
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
-                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name}}</h1>
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name }}</h1>
                                                                 </div>
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
                                                                     <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">wala</h1>
@@ -228,48 +228,51 @@
                                                 </div>
 
                                                 <form [formGroup]="addAttributeForm" *ngIf="editAttributes === false">
-                                                    <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
-                                                      <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
-                                                            <div class="position-relative d-flex align-items-center">
-                                                                <ng-container *ngIf="variantsArray.controls[i]; let variant">
-                                                                    <ng-container *ngFor="let attribute of variant.value.attributes; ">
-                                                                        <div class="w-100 mb-3">
-                                                                            <label class="form-label {{formTextColor}}">{{item.name}}</label>
-                                                                            <!-- <input
-                                                                                [type]="item.name === 'color' ? 'color' : 'text'"
-                                                                                [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
-                                                                                [placeholder]="attribute.value"
-                                                                                [formControlName]="item.category_attribute_id"
-                                                                                
-                                                                                required
-                                                                            > -->
-
-                                                                            <select 
-                                                                                class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
-                                                                                id="addproductCategory"
-                                                                                name="addproductCategory" 
-                                                                                [formControlName]="item.category_attribute_id" 
-                                                                                required
-                                                                            >
-                                                                                <option class="bg-dark-subtle" [selected]="attribute.value" >{{attribute.value}}</option>
-                                                                                <ng-container *ngFor="let item of item.values" >
-                                                                                    <option  *ngIf="item !== attribute.value" [value]="item">{{ item }}</option>
+                                                            <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
+                                                                        <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  let ind = index">
+                                                                            <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                                                <ng-container *ngIf="variant.value.attributes as attribute  ">
+                                                                                    <div class="position-relative d-flex align-items-center">
+                                                                                        <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
+                                                                                            <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                                            <select 
+                                                                                                class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                                                id="addproductCategory"
+                                                                                                name="addproductCategory" 
+                                                                                                [formControlName]="item.category_attribute_id" 
+                                                                                                required
+                                                                                            >
+                                                                                                
+                                                                                                <option class="bg-dark-subtle text-dark" [selected]="attribute[ind]?.value" [value]="attribute[ind]?.value" >{{attribute[ind]?.value}}</option>
+                                                                                                <ng-container *ngFor="let item of item.values" >
+                                                                                                    <option  *ngIf="item !== attribute[ind]?.value" [value]="item">{{ item }}</option>
+                                                                                                </ng-container>
+                                                                                                
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="w-100 mb-3" *ngIf="item.name === 'Color'">
+                                                                                            <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                        
+                                                                                            <app-color-picker
+                                                                                                [showLabel]="false"
+                                                                                                [placeholder]="'Pick color...'"
+                                                                                                [formControlName]="item.category_attribute_id"
+                                                                                                required>
+                            
+                                                                                            </app-color-picker>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </ng-container>
-                                                                                
-                                                                            </select>
+                                                                            </ng-container>
                                                                         </div>
-                                                                    </ng-container>
-                                                                </ng-container>
                                                             </div>
-                                                        </div>
-                                                    </div>
                                                 </form>
 
                                                 <form [formGroup]="addAttributeForm" *ngIf="editAttributes === true">
                                                     <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                       <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
                                                             <div class="position-relative d-flex align-items-center">
-                                                                <div class="w-100 mb-3">
+                                                                <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
                                                                     <!-- <input
                                                                         [type]="item.name === 'color' ? 'color' : 'text'"
@@ -279,6 +282,7 @@
                                                                         required
                                                                     > -->
                                                                     <select 
+                                                                        
                                                                         class="form-select {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                         id="addproductCategory"
                                                                         name="addproductCategory" 
@@ -289,15 +293,20 @@
                                                                         <option selected >Select value for {{item.name}}</option>
                                                                         <option *ngFor="let item of item.values" [value]="item">{{ item }}</option>
                                                                     </select>
+    
+                                                                </div>
+                                                                <div class="w-100 mb-3" *ngIf="item.name === 'Color'">
+                                                                    <label class="form-label {{formTextColor}}">{{item.name}}</label>
 
                                                                     <app-color-picker
                                                                         [showLabel]="false"
                                                                         [placeholder]="'Pick color...'"
                                                                         [formControlName]="item.category_attribute_id"
                                                                         required>
-
+    
                                                                     </app-color-picker>
                                                                 </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -435,7 +444,6 @@
                                                         type="submit" 
                                                         class="btn btn-primary" 
                                                         (click)="saveEditedVariant(i)"
-                                                        [disabled]="!addVariantForm.valid || !addAttributeForm.valid || getFileKeys().length === 0 "
                                                     >Save</button>
                                                 </div>
     

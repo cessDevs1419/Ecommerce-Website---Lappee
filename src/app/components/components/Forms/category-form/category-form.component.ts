@@ -273,18 +273,15 @@ export class CategoryFormComponent {
             let attributeArray = this.attribute_service.getSelectedAttribute().map(item => (item.id))
             const capitalizedName = categoriesName.charAt(0).toUpperCase() + categoriesName.slice(1).toLowerCase();
             const selectedAttributes = this.attribute_service.getSelectedAttribute();
-            // let categoriesArray: any[] = [];
-            
-            // let categoryObject = {
-            //     name: categoriesName,
-            //     attributes: attributeArray
-            // };
 
-            // categoriesArray.push(categoryObject);
 
             formData.append('name', capitalizedName);
-            formData.append('attributes[]', attributeArray);
-
+            
+            for (let attr of attributeArray) {
+                let index = 0;
+                formData.append('attributes[]', attr);
+                index++;
+            }
 
             formData.forEach((value: any, key: number) => {
                 console.log(`${key}: ${value}`);

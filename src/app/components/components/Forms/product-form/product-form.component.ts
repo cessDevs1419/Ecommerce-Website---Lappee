@@ -737,7 +737,6 @@ export class ProductFormComponent {
         
             this.RefreshTable.emit();
             this.ProductSuccess.emit(productSuccess);
-
             for (let i = variantsArray.length - 1; i >= 0; i--) {
                 if (variantsArray.at(i).value === null) {
                     variantsArray.removeAt(i);
@@ -754,40 +753,75 @@ export class ProductFormComponent {
             this.product_service.removeAllImg();
             this.isFormSave = false;
         }
-        
         this.toggleAccordion(index);
     
     }
 
     saveEditedVariant(index: any){
+        const variants = this.addVariantForm;
         const variantsArray = this.addProductForm.get('variants') as FormArray;
-        const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
-        const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const formControls = this.addAttributeForm.controls;
         const attributeFormsArray = this.attributeFormsArray;
+        const attribute = variantsArray.value[index].attributes
 
-        if (addVariantForm) {
+
+        Object.keys(formControls).forEach((controlName: string) => {
+                const controlValue = formControls[controlName].value;
+                const attributeIndex = attributeFormsArray.findIndex((attributeForm: any) => attributeForm.id === controlName);
             
-            console.log(variantsArray)
-            console.log(attributeFormsArray)
-            console.log(imagesArray)
+                if (attributeIndex !== -1) {
+                    attributeFormsArray[attributeIndex].value = controlValue;
+                }
+        });
 
-            this.addBtn = true;
-            this.editBtn = false;
-            this.addAttributeForm.reset();
-            this.fileUrlMap.clear();
-            while (attributesArray .length !== 0) {
-                attributesArray .removeAt(0);
+        this.attributeFormsArray.forEach((attributeForm) => {
+            const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
+            const correspondingAttribute = attribute.find((attr: any) => attr.id === attributeForm.id);
+            
+            if (existingIndex !== -1) {
+            
+                const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
+                const existingAttributes = attribute.at(existingIndex) as FormGroup;
+
+                if (attributeForm.value === null) {
+                    existingFormGroup.get('value')?.setValue(correspondingAttribute.value);
+                }else{
+                    existingFormGroup.get('value')?.setValue(attributeForm.value);
+                }
+            } else {
+            
+                if (attributeForm.value === null) {
+                    // Create a new attribute form group with the value from correspondingAttribute
+                    const newAttributeFormGroup = this.formBuilder.group({
+                        id: [attributeForm.id],
+                        name: [attributeForm.name],
+                        value: [correspondingAttribute.value],
+                    });
+            
+                    attributesArray.push(newAttributeFormGroup);
+                } else {
+                    // Create a new attribute form group with the value from attributeForm
+                    const newAttributeFormGroup = this.formBuilder.group({
+                        id: [attributeForm.id],
+                        name: [attributeForm.name],
+                        value: [attributeForm.value],
+                    });
+                    attributesArray.push(newAttributeFormGroup);
+                }
             }
-            while (imagesArray.length !== 0) {
-                imagesArray.removeAt(0);
-            }
-            this.product_service.removeAllImg();
-            this.isFormSave = false;
-        }
+        });
         
+
+        const newVariantControl = this.formBuilder.control(variants.value);
+
+        if (index >= 0 && index < variantsArray.length) {
+            variantsArray.at(index).patchValue(newVariantControl);
+        }
+
+        console.log(this.addProductForm.value);
         this.toggleAccordion(index);
-    
+
     }
     
     removeVariant(index: any){
@@ -815,10 +849,17 @@ export class ProductFormComponent {
         
     }
 
-    
     onCategorySelect(event: any) {
         const selectedValue = event.target.value;
         this.editAttributes = true
+        this.addAttributeForm.reset()
+        this.attributeFormsArray.splice(0)
+        const formGroup = this.addAttributeForm; 
+        const controlNames = Object.keys(formGroup.controls);
+        controlNames.forEach((controlName) => {
+            formGroup.removeControl(controlName);
+        });
+
         this.categoryAttributes = this.category_service.getCategoryAttribute(selectedValue).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
         this.categoryAttributes.subscribe((data: NewAdminCategory) => {
             if (data && data.attributes) {
@@ -881,87 +922,87 @@ export class ProductFormComponent {
             console.log(`${key}: ${value}`);
         });
         
-        if(this.addProductForm.valid){
+        // if(this.addProductForm.valid){
         
-            this.product_service.postProduct(productFormData).subscribe({
-                next: (response: any) => { 
+        //     this.product_service.postProduct(productFormData).subscribe({
+        //         next: (response: any) => { 
                     
-                    const productSuccess = {
-                        head: 'Add Product',
-                        sub: response.message
-                    };
+        //             const productSuccess = {
+        //                 head: 'Add Product',
+        //                 sub: response.message
+        //             };
                 
-                    this.RefreshTable.emit();
-                    this.ProductSuccess.emit(productSuccess);
-                    this.addProductForm.reset();
-                    this.addVariantForm.reset();
-                    this.addAttributeForm.reset();
-                    this.variantsArray.reset();
-                    this.variantsList.clear();
-                    this.variantForms.splice(0);
-                    this.attributeFormsArray.splice(0);
-                    this.newvariantsArray.clear()
-                    this.imageList.clear();
-                    this.addBtn = true;
-                    this.editBtn = false;
-                    this.editAttributes = true
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
+        //             this.RefreshTable.emit();
+        //             this.ProductSuccess.emit(productSuccess);
+        //             this.addProductForm.reset();
+        //             this.addVariantForm.reset();
+        //             this.addAttributeForm.reset();
+        //             this.variantsArray.reset();
+        //             this.variantsList.clear();
+        //             this.variantForms.splice(0);
+        //             this.attributeFormsArray.splice(0);
+        //             this.newvariantsArray.clear()
+        //             this.imageList.clear();
+        //             this.addBtn = true;
+        //             this.editBtn = false;
+        //             this.editAttributes = true
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             if (error.error?.data?.error) {
+        //                 const fieldErrors = error.error.data.error;
+        //                 const errorsArray = [];
                     
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
+        //                 for (const field in fieldErrors) {
+        //                     if (fieldErrors.hasOwnProperty(field)) {
+        //                         const messages = fieldErrors[field];
+        //                         let errorMessage = messages;
+        //                         if (Array.isArray(messages)) {
+        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                         }
+        //                         errorsArray.push(errorMessage);
+        //                     }
+        //                 }
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
-                        };
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: errorsArray,
+        //                 };
                     
-                        this.ProductWarning.emit(errorDataforProduct);
-                    } else {
+        //                 this.ProductWarning.emit(errorDataforProduct);
+        //             } else {
                     
-                        const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
-                        };
-                        this.ProductError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
+        //                 const errorDataforProduct = {
+        //                     errorMessage: 'Error Invalid Inputs',
+        //                     suberrorMessage: 'Please Try Another One',
+        //                 };
+        //                 this.ProductError.emit(errorDataforProduct);
+        //             }
+        //             return throwError(() => error);
                     
-                }
-            });
+        //         }
+        //     });
 
-        } else{
+        // } else{
 
-            this.addProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addProductForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-                    const productcontrol = this.addProductForm.controls[controlName];
-                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
-            }
+        //     this.addProductForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addProductForm.controls) {
+        //         if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+        //             const productcontrol = this.addProductForm.controls[controlName];
+        //             if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                 emptyFields.push(label);
+        //             }
+        //         }
+        //     }
             
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
+        //     const errorDataforProduct = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
 
-            this.ProductError.emit(errorDataforProduct);
-        }
+        //     this.ProductError.emit(errorDataforProduct);
+        // }
         
 
     
