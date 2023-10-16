@@ -879,6 +879,14 @@ export class ProductFormComponent {
     
 //Submit Functions
 
+    // pag test ni dell sa color picker component
+    // checkValue(): void {
+    //     for(let field in this.addAttributeForm.controls){
+    //         console.log(field + " hex: " + this.addAttributeForm.get(field)?.value[1])
+    //         console.log(field + " name: " + this.addAttributeForm.get(field)?.value[0])
+    //     }
+    // }
+
 //submit products
     async onProductAddSubmit(): Promise<void> {
 

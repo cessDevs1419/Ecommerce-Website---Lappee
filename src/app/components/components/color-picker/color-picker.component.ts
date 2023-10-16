@@ -35,7 +35,7 @@ export class ColorPickerComponent implements ControlValueAccessor {
   @Input() showLabel: boolean = true;
   @Input() placeholder: string = "";
 
-  private onChange: any = (colorname: string) => { console.log(colorname)};
+  private onChange: any = (color: string[]) => {console.log(color)};
   private onTouch: any = {}
 
   color: string;
@@ -43,6 +43,6 @@ export class ColorPickerComponent implements ControlValueAccessor {
 
   matchColor(hex: string){
     this.colorname = this.colorService.matchColorName(hex)
-    this.onChange(this.colorname);
+    this.onChange([this.colorname, this.color]);
   }
 }

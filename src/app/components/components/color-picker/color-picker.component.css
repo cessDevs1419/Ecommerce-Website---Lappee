@@ -6,11 +6,26 @@ p {
     color: var(--adm-light-gray)
 }
 
+.color-container {
+    max-width: 80%;
+    overflow: hidden;
+}
+
 .color-preview {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: .25rem;
-    border: 1px solid var(--adm-light-gray)
+    border: 1px solid var(--adm-light-gray);
+}
+
+.color-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }
 
 .input-field {
