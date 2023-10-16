@@ -102,6 +102,7 @@ export class VariantAttributesComponent {
       this.selectedVariantAttributes += attr.attribute_name + ": " + attr.value + "\n";
       this.selectVariantAttrMap.set(attr.attribute_name, attr.value);
       console.log(this.selectVariantAttrMap);
+      console.log(this.selectedVariantAttributes);
     })
     this.selectedVariant = variant;
   }

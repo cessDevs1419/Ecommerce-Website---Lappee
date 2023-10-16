@@ -7,7 +7,7 @@
         </h3>
         <div class="accordion-collapse show collapse bg-light-gray" id="variantDescription" #variantAccordion>
             <div class="accordion-body white-space-pre">
-                {{this.selectedVariantAttributes}}
+                <p class="m-0">{{this.selectedVariantAttributes ? this.selectedVariantAttributes.trim() : this.selectedVariantAttributes }}</p>
             </div>
         </div>
     </div>
