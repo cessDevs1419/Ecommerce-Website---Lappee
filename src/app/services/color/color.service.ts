@@ -20,17 +20,17 @@ export class ColorService {
 
    colorList: Map<string, string> = new Map()
 
-   matchColorName(hex: string): string {
-    hex = hex.toUpperCase()
-    // console.log('checking ' + hex)
-    // console.log(this.colorList.has(hex) ? "true" : "false")
-    if(this.colorList.has(hex)){
-      return this.colorList.get(hex)!
-    }
+  matchColorName(hex: string): string {
+  hex = hex.toUpperCase()
+  // console.log('checking ' + hex)
+  // console.log(this.colorList.has(hex) ? "true" : "false")
+  if(this.colorList.has(hex)){
+    return this.colorList.get(hex)!
+  }
 
-    else {
-      return this.nearestColor(hex);
-    }
+  else {
+    return this.nearestColor(hex);
+  }
   }
 
   nearestColor(hex: string): string {

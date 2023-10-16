@@ -35,12 +35,17 @@ export class ColorPickerComponent implements ControlValueAccessor {
   @Input() showLabel: boolean = true;
   @Input() placeholder: string = "";
   @Input() presetColors: string[] = ["#ffffff", "#000000", "#f10d0d", "#6af572", "#224dab"];
+  @Input() presetColorNames: string[] = []
 
   private onChange: any = (color: string[]) => {console.log(color)};
   private onTouch: any = {}
 
   color: string;
   colorname: string
+
+  ngOnInit(): void {
+    
+  }
 
   matchColor(hex: string){
     this.colorname = this.colorService.matchColorName(hex)
