@@ -63,6 +63,7 @@ export class TableComponent {
 	
 	//enable Table Action Column && Other Buttons
 	@Input() tableAction!: boolean;
+	@Input() actionBtn!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
 	@Input() editSubBtn!: boolean;
@@ -98,6 +99,7 @@ export class TableComponent {
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
 	@Input() orderBtn: boolean;
+	@Input() bannedBtn: boolean;
 	@Input() setFirstUpper!: boolean;
 	
 	isAllChecked: boolean;

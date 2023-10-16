@@ -33,6 +33,8 @@ export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 export const GETAttributesAdmin: string = api + "api/admin/attributes";
 export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
 export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
+export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/delete";
+export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/";
 
 //Variant Admin Endpoints
 export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";

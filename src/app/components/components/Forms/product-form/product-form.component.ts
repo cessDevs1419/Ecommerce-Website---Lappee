@@ -33,7 +33,7 @@ export class ProductFormComponent {
     formColor: string = "dark-form-bg"
     formTextColor: string = "dark-theme-text-color"
     formInputColor: string = "text-white"
-    formBorderColor: string = "dark-theme-border-color"
+    formBorderColor: string = "border-grey"
     pagebordercolor: string = 'linear-gradient-border'
 
     private refreshData$ = new Subject<void>();
@@ -474,27 +474,33 @@ export class ProductFormComponent {
     }
     
     removeImage(index: number) {
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
         this.product_service.removeImg(index);
         const files = this.getFileKeys();
         if (index >= 0 && index < files.length) {
             const fileToRemove = files[index];
             this.fileUrlMap.delete(fileToRemove);
+            imagesArray.removeAt(index);
         }
     }
 
     removeImageFromEditForm(index: number, variantIndex: number) {
         const variantArray = this.addProductForm.get('variants') as FormArray;
-        const variant = variantArray.at(variantIndex) as FormGroup; 
-        const imagesArray = variant.get('images') as FormArray;
-    
-        console.log(variantArray);
-        console.log(variant);
-        console.log(imagesArray);
+        console.log(variantArray.value); 
 
-        // if (images && images.length > index) {
-        //     images.removeAt(index);
-        //     console.log(images)
-        // }
+        if (variantIndex >= 0 && variantIndex < variantArray.length) {
+            const variant = variantArray.at(variantIndex);
+        
+            if (variant.get('images')) {
+                const imagesArray = variant.get('images') as FormArray;
+        
+                if (index >= 0 && index < imagesArray.length) {
+                    imagesArray.removeAt(index); 
+                    console.log(variantArray.value); 
+                }
+            }
+        }
+
     }
 
     extractFileName(url: string): string {
@@ -816,7 +822,9 @@ export class ProductFormComponent {
         const newVariantControl = this.formBuilder.control(variants.value);
 
         if (index >= 0 && index < variantsArray.length) {
-            variantsArray.at(index).patchValue(newVariantControl);
+            this.variantsArray.removeAt(index);
+            this.variantsArray.push(newVariantControl);
+            //variantsArray.at(index).patchValue(newVariantControl);
         }
 
         console.log(this.addProductForm.value);
@@ -827,10 +835,13 @@ export class ProductFormComponent {
     removeVariant(index: any){
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const variants = this.addVariantForm.get('variants') as FormArray;
         this.newvariantsArray.removeAt(index)
         this.variantForms.splice(index, 1);
         this.addAttributeForm.reset();
         this.fileUrlMap.clear();
+        // variants.removeAt(index)
+
         if(this.variantForms.length < 1){
             this.hideVariantValidationContainer = true
         }
@@ -890,7 +901,7 @@ export class ProductFormComponent {
 //submit products
     async onProductAddSubmit(): Promise<void> {
 
-        console.log(this.addProductForm)
+        // console.log(this.addProductForm)
 
         const productFormData: FormData = new FormData();
         let productName = this.addProductForm.get('name')?.value;
@@ -927,9 +938,9 @@ export class ProductFormComponent {
         }
 
         // Display the FormData entries
-        productFormData.forEach((value, key) => {
-            console.log(`${key}: ${value}`);
-        });
+        // productFormData.forEach((value, key) => {
+        //     console.log(`${key}: ${value}`);
+        // });
         
         if(this.addProductForm.valid){
         

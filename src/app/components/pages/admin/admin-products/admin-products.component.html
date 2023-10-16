@@ -2,8 +2,8 @@
     
     <div class="row px-4">
         <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 pt-0">
-            <div class="store-container gray-gradient-border box-shadow">
-                <div class="{{counter_bg}} pt-2 store-container h-100 rounded-4 text-center d-flex flex-column justify-content-center ">
+            <div class="panel-store-container store-container  overflow-hidden gray-gradient-border box-shadow">
+                <div class="{{counter_bg}}  pt-2 store-container h-10 text-center d-flex flex-column justify-content-center ">
                     <div class="panel-body position-relative">
                         <!-- <div class="position-absolute icon-linear icon-container m-auto mx-2 d-flex justify-content-center p-0 pt-0 mt-0">
                             <div class="{{counter_bg}} rounded-4 h-100 w-100 d-flex align-items-center justify-content-center  mt-0">
@@ -20,7 +20,7 @@
             </div>
         </div> 
         <div class="col-xl-3 col-lg-4 p-2 px-0 ps-md-2 pt-0">
-            <div class="store-container gray-gradient-border box-shadow">
+            <div class="panel-store-container store-container gray-gradient-border box-shadow">
                 <div class="{{counter_bg}} pt-2 store-container h-100 rounded-4 text-center d-flex flex-column justify-content-center ">
                     <div class="panel-body position-relative">
                         <!-- <div class="position-absolute icon-linear icon-container m-auto mx-2 d-flex justify-content-center p-0 pt-0 mt-0">
@@ -65,6 +65,7 @@
         [tableHeader]="['ID','Name','Stocks','Price','Category']"
         [tableRows]="['id', 'name','stock','price','category']"
         [tableData]="products"
+        [actionBtn]="true"
         
         (rowDataSelected)="onRowDataSelected($event)"
         (ShowAddForm)="showAddForm()"

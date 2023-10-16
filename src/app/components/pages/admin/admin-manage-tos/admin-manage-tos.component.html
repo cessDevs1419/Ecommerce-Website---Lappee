@@ -21,7 +21,8 @@
       [tableData]="aboutUsSections"
       
       (rowDataSelected)="getSelectedSection($event)"
-
+      [actionBtn]="true"
+      
       [addBtn]="true"
       addbtnName="Add Section"
       (ShowAddForm)="toggleAddSectionForm()"

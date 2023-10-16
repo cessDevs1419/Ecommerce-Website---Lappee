@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GETAttributesAdmin, PostAttributeAdmin } from '../endpoints';
+import { DeleteAttributeAdmin, DeleteMultiAttributeAdmin, GETAttributesAdmin, PostAttributeAdmin } from '../endpoints';
 import { AttributeList, Attributes } from 'src/assets/models/attributes';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -39,6 +39,35 @@ export class AttributesService {
       return this.http.post<Attributes>(PostAttributeAdmin, data, this.httpOptions);
   } 
   
+  deleteMultiAttribute(attributeIds: number[]): Observable<any> {
+    return this.http.delete(DeleteMultiAttributeAdmin, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+        categories: attributeIds // Pass an array of category IDs
+      }
+    })
+  }
+
+
+  deleteAttribute(prodId: number): Observable<any> {
+    return this.http.delete(DeleteAttributeAdmin, {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      }),
+      responseType: 'json',
+      body: {
+          attributes: prodId
+        }
+    })
+  }
+
   // patchAttribute(data: FormData): Observable<any> {
   //     return this.http.patch<Attributes>(PatchAttributeAdmin, data, this.httpOptions);
   // } 

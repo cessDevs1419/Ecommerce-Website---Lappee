@@ -245,11 +245,59 @@ export class AttributeFormComponent {
     
     onAttributeDeleteSubmit(): void {
         let formData: any = new FormData();
-            formData.append('id', this.selectedRowData.id);
+            formData.append('attributes[]', this.selectedRowData.id);
             
             for (const value of formData.entries()) {
                 console.log(`${value[0]}, ${value[1]}`);
             }
+
+            this.attribute_service.deleteAttribute(this.selectedRowData.id).subscribe({
+                next: (response: any) => { 
+                    const successMessage = {
+                        head: 'Category ' + this.editAttributeForm.get('name')?.value,
+                        sub: response?.message
+                    };
+                    
+                    this.RefreshTable.emit();
+                    this.refreshTableData();
+                    this.ProductSuccess.emit(successMessage);
+
+                },
+                error: (error: HttpErrorResponse) => {
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
+                    
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: errorsArray,
+                        };
+                    
+                        this.ProductWarning.emit(errorDataforProduct);
+                    } else {
+                    
+                        const errorDataforProduct = {
+                            errorMessage: 'Error Invalid Inputs',
+                            suberrorMessage: 'Please Try Another One',
+                        };
+                        this.ProductError.emit(errorDataforProduct);
+                    }
+                    return throwError(() => error);
+                    
+                }
+            });
+        
     }
     
 }

@@ -1,6 +1,6 @@
 <!--ADD CATEGORY FORM-->    
-    <div class="container m-auto ">
-        <form *ngIf="formAddCategory" [formGroup]="addCategoryForm" >
+<div class="container m-auto " *ngIf="formAddCategory">
+        <form  [formGroup]="addCategoryForm" >
             <div class=" w-100 px-1">
                 <hr class="divider border-white mt-0 mb-4">
                 <input formControlName="category" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Category Name">
@@ -89,7 +89,7 @@
                 Confirm
             </button>
         </div> 
-    </div> 
+</div> 
 
 
 <!--EDIT CATEGORY FORM-->
