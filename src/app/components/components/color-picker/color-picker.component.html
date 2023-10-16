@@ -3,8 +3,8 @@
 <div [(colorPicker)]="color"
      [cpAlphaChannel]="'disabled'"
      [cpCmykEnabled]="false"
+     [cpPresetColors]="presetColors"
      class="cursor-pointer"
-     
      (colorPickerChange)="matchColor($event)">
     <div class="d-flex flex-row justify-content-between input-field px-3 py-2">
         <div class="d-flex flex-row me-3 color-container">

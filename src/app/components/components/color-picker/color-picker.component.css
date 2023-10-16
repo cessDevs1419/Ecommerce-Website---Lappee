@@ -60,6 +60,10 @@ p {
     display: none;
 }
 
+::ng-deep color-picker .color-picker .preset-area .preset-label {
+    color: var(--adm-light);
+}
+
 ::ng-deep .hex-text .box {
     background-color: var(--adm-primary);
 }
