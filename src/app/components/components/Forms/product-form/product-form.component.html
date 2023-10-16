@@ -272,7 +272,7 @@
                                                     <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                       <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
                                                             <div class="position-relative d-flex align-items-center">
-                                                                <div class="w-100 mb-3" *ngIf="item.name !== 'color'">
+                                                                <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
                                                                     <!-- <input
                                                                         [type]="item.name === 'color' ? 'color' : 'text'"
@@ -295,7 +295,7 @@
                                                                     </select>
     
                                                                 </div>
-                                                                <div class="w-100 mb-3" *ngIf="item.name === 'color'">
+                                                                <div class="w-100 mb-3" *ngIf="item.name === 'Color'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
 
                                                                     <app-color-picker
