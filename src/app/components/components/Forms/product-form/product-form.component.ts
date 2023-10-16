@@ -911,17 +911,18 @@ export class ProductFormComponent {
             productFormData.append(`variants[${i}][stock]`, variant.stock);
             productFormData.append(`variants[${i}][price]`, variant.price.toFixed(2));
 
+            let imageIndex = 0;
+            let attributeIndex = 0;
+
             for (let image of variant.images) {
-                let index = 0;
-                productFormData.append(`variants[${i}][images][${index}]`, image);
-                index++;
+                productFormData.append(`variants[${i}][images][${imageIndex}]`, image);
+                imageIndex++;
             }
 
             for (let attribute of variant.attributes) {
-                let index = 0;
-                productFormData.append(`variants[${i}][attributes][${index}][category_attribute_id]`, attribute.id);
-                productFormData.append(`variants[${i}][attributes][${index}][value]`, attribute.value);
-                index++;
+                productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
+                productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, attribute.value);
+                attributeIndex++;
             }
         }
 
