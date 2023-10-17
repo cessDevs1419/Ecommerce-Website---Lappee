@@ -1,4 +1,8 @@
 <div class="container-fluid m-auto h-auto text-center" >
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
+    
     <app-table
         tableTitle="Category Management"
         subTitle="Product Management"
@@ -22,7 +26,7 @@
         
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
-        (ShowEditForm)="showEditCategoryForm()"
+
     ></app-table>
 
     <!--MAIN-->
@@ -33,6 +37,9 @@
         [modalHideIcon]="true"
         [modalHideCloseBtn]="true"
         modalIcon="add"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
 
         [modalAddCategory]="true"
         [selectedRowData]="selectedRowData"
@@ -45,7 +52,10 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="edit"
-    
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalEditCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
@@ -57,7 +67,10 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="delete"
-    
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
@@ -70,7 +83,10 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="delete"
-    
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalMultipleDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"

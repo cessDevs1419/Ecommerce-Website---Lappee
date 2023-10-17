@@ -3,8 +3,8 @@
 </div>
 
 <div *ngIf="!showAddForm">
-  <div class="container-fluid m-auto h-auto p-2 pb-4" >
-    <div class="row mb-5 row-cols-1 row-cols-lg-2 gy-5">
+  <div class="container-fluid m-auto h-auto p-2 pb-4 " >
+    <div class="row mb-5 row-cols-1 row-cols-lg-2 gy-5 gy-lg-0 w-100 pt-0 m-auto ">
       <div class="col col-lg-4">
         <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
           <h1 class="fw-bold fs-4 mb-0">Edit Website Logo</h1>
@@ -86,7 +86,7 @@
       [tableData]="banners"
       
       [viewBtn]="true"
-      [addBtn]="true"
+      [addProdBtn]="true"
       addbtnName="Add New"
       [addBtnclass]="size"
       [deleteBtn]="true"

@@ -33,7 +33,11 @@ export class ModalComponent {
 	@Output() confirm: EventEmitter<any> = new EventEmitter();
     @Output() ship: EventEmitter<any> = new EventEmitter();
 	@Output() deliver: EventEmitter<any> = new EventEmitter();
-	
+    @Output() SuccessToast: EventEmitter<any> = new EventEmitter();
+	@Output() ErrorToasts: EventEmitter<any> = new EventEmitter();
+    @Output() WarningToasts: EventEmitter<any> = new EventEmitter();
+
+
 	@Input() modalId!: string;
     @Input() modalTitle!: string;
 	@Input() modalSubTitle!: string;
@@ -139,38 +143,23 @@ export class ModalComponent {
 
     
 	deleteSuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
 	banSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Banned";
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
 	unbanSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully UnBanned";
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
     WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
+        this.WarningToasts.emit(value)
     }
     
 	ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
+        this.ErrorToasts.emit(value)
     }
     
     

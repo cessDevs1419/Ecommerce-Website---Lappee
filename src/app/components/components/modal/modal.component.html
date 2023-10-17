@@ -1,9 +1,5 @@
 <div class="modal fade" id={{modalId}} data-bs-backdrop="static"  tabindex="-1" #modalRef>
     
-    <div class="position-relative w-100 mt-3">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
-    
     <div class="modal-dialog modal-dialog-centered rounded-0  {{modalClass}}" >
         <div class="modal-content rounded-4 p-2 {{modalClass}} {{modalTheme}}">
 
@@ -58,7 +54,7 @@
                     *ngIf="modalDeleteAttribute"
                     [formDeleteAttribute]="true"
                     [selectedRowData]="selectedRowData"
-                    [selectedRowDataForDelete]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (ProductError)="ErrorToast($event)"

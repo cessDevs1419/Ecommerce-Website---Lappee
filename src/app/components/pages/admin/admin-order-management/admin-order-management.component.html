@@ -1,4 +1,9 @@
 <div class="container-fluid m-auto h-auto" >
+
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
+
     <app-table
         tableTitle="Track Orders"
         subTitle="Status & Track Order List"
@@ -51,7 +56,9 @@
     [modalHideCloseBtn]="true"
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
-
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
     [selectedRowData]="selectedRowData"
 
 ></app-modal>
@@ -68,7 +75,9 @@
 
     [modalShip]="true"
     (RefreshTable)="refreshTableData()"
-
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
     [selectedRowData]="selectedRowData"
 
 ></app-modal>
@@ -85,8 +94,10 @@
     
     [modalDeliver]="true"
     (RefreshTable)="refreshTableData()"
-    (deliver)="deliverPackage()"
     [selectedRowData]="selectedRowData"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
 
 ></app-modal>
 
@@ -97,4 +108,3 @@
 
 
 
- 

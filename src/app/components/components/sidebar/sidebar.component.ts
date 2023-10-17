@@ -109,7 +109,8 @@ export class SidebarComponent {
     return (
       this.router.url === '/admin/site-settings' ||
       this.router.url === '/admin/manage-about-us' ||
-      this.router.url === '/admin/manage-tos' 
+      this.router.url === '/admin/manage-tos' ||
+      this.router.url === '/admin/site-settings/add'
     );
   }
   
@@ -122,12 +123,13 @@ export class SidebarComponent {
   }
   
   isManageAccountsActive(): boolean {
-    return this.router.url === '/admin/accounts-management' 
+    return this.router.url === '/admin/accounts-management'
   }
   
   
   isSiteSettingsActive(): boolean {
-    return this.router.url === '/admin/site-settings';
+    return (this.router.url === '/admin/site-settings'||
+    this.router.url === '/admin/site-settings/add');
   }
   isAboutSiteActive(): boolean {
     return this.router.url === '/admin/manage-about-us';

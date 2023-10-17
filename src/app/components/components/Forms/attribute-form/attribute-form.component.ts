@@ -42,7 +42,8 @@ export class AttributeFormComponent {
             attribute_value: this.formBuilder.array([])
         });
         this.editAttributeForm = new FormGroup({
-            name: new FormControl('', Validators.required)
+            name: new FormControl('', Validators.required),
+            attribute_value: this.formBuilder.array([])
         });
 
         // this.deleteAttributeForm = new FormGroup({
@@ -105,8 +106,8 @@ export class AttributeFormComponent {
                     this.refreshTableData();
                     this.ProductSuccess.emit(successMessage);
                     this.addAttributeForm.reset();
-                    attributeArray.clear()
-
+                    attributeArray.clear();
+                    this.CloseModal.emit();
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {
@@ -244,14 +245,23 @@ export class AttributeFormComponent {
     }
     
     onAttributeDeleteSubmit(): void {
-        let formData: any = new FormData();
-            formData.append('attributes[]', this.selectedRowData.id);
-            
+            let formData: any = new FormData();
+            const selectedId: any[] = []
+            if(this.selectedRowData){
+                selectedId.push(this.selectedRowData.id)
+            }else{
+
+                for(let id of this.selectedRowDataForDelete){
+                    selectedId.push(id)
+                }
+                
+            }
+
             for (const value of formData.entries()) {
                 console.log(`${value[0]}, ${value[1]}`);
             }
 
-            this.attribute_service.deleteAttribute(this.selectedRowData.id).subscribe({
+            this.attribute_service.deleteAttributes(selectedId).subscribe({
                 next: (response: any) => { 
                     const successMessage = {
                         head: 'Category ' + this.editAttributeForm.get('name')?.value,

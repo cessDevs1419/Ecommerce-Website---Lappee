@@ -1,5 +1,8 @@
 
 <div class="container-fluid m-auto h-auto text-center" >
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
     <app-table
         tableTitle="Attribute Management"
         subTitle="Product Management"
@@ -34,7 +37,10 @@
         [modalHideIcon]="true"
         [modalHideCloseBtn]="true"
         modalIcon="add"
-        
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalAddAttribute]="true"
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
@@ -48,6 +54,10 @@
         [modalHideIcon]="true"
         modalIcon="edit"
         [modalEditAttribute]="true"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
@@ -59,7 +69,10 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="delete"
-        
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalDeleteAttribute]="true"
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
@@ -72,6 +85,9 @@
         modalClass="modal-md"
         [modalHideIcon]="true"
         modalIcon="delete"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
         
         [modalMultipleDeleteAttribute]="true"
         [selectedRowData]="selectedRowData"

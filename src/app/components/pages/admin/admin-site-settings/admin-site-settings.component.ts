@@ -98,7 +98,7 @@ export class AdminSiteSettingsComponent {
 
   ngAfterViewInit()
   {
-    this.modal = new bootstrap.Modal(this.confirmDeleteModal.nativeElement);
+    //this.modal = new bootstrap.Modal(this.confirmDeleteModal.nativeElement);
   }
 
   closeModal()

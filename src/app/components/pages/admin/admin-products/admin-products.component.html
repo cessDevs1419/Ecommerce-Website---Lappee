@@ -1,4 +1,7 @@
 <div class="container-fluid m-auto "  >
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
     
     <div class="row px-4">
         <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 pt-0">
@@ -62,8 +65,8 @@
         [editBtn]="true"
         [deleteBtn]="true"
 
-        [tableHeader]="['ID','Name','Stocks','Price','Category']"
-        [tableRows]="['id', 'name','stock','price','category']"
+        [tableHeader]="['ID','Name','Price']"
+        [tableRows]="['product_id', 'name','price']"
         [tableData]="products"
         [actionBtn]="true"
         
@@ -82,6 +85,9 @@
     modalTitle="DELETE PRODUCT"
     modalSubTitle="PRODUCT CONTROL"
     modalClass="modal-md"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
     
     [modalDeleteProduct]="true"
     (RefreshTable)="refreshTableData()"

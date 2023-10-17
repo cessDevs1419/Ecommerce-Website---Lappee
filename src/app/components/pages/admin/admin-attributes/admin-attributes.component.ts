@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
@@ -12,10 +13,17 @@ import { AdminCategory } from 'src/assets/models/categories';
 })
 export class AdminAttributesComponent {
 	
-	
+	@ViewChild(ToastComponent) toast: ToastComponent;
+  
+
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
+
+  backdrop: string = 'true';
+	toastContent: string = "";
+  toastHeader: string = "";
+  toastTheme: string = "default";  
 
   private refreshData$ = new Subject<void>();
   
@@ -48,5 +56,27 @@ onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
 
 }
+
+SuccessToast(value: any): void {
+  this.toastHeader = value.head;
+  this.toastContent = value.sub;
+  this.toast.switchTheme('default');
+  this.toast.show();
+}
+
+WarningToast(value: any): void {
+  this.toastHeader = value.errorMessage;
+  this.toastContent = value.suberrorMessage;
+  this.toast.switchTheme('warn');
+  this.toast.show();
+}
+
+ErrorToast(value: any): void {
+  this.toastHeader = value.errorMessage;
+  this.toastContent = value.suberrorMessage;
+  this.toast.switchTheme('negative');
+  this.toast.show();
+}
+
 
 }

@@ -1,4 +1,8 @@
 <div class="container-fluid m-auto h-auto" >
+    <div class="position-relative w-100 mt-3">
+        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+    </div>
+
     <app-table
         tableTitle="REGISTERED USERS"
         subTitle="VALUED CUSTOMERS"
@@ -30,6 +34,9 @@
         [modalBanAccounts]="modalBanAccounts"
         [modalUnBanAccounts]="modalUnBanAccounts"
         [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
     ></app-modal>
 
 

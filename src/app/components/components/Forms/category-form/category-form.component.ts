@@ -299,6 +299,7 @@ export class CategoryFormComponent {
                     this.CategorySuccess.emit(successMessage);
                     this.addCategoryForm.reset();
                     selectedAttributes.splice(0)
+                    this.CloseModal.emit();
                     this.done = true
                     this.cancel = false
                 },

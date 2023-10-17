@@ -54,8 +54,8 @@ export class AttributesService {
   }
 
 
-  deleteAttribute(prodId: number): Observable<any> {
-    return this.http.delete(DeleteAttributeAdmin, {
+  deleteAttributes(prodIds: number[]): Observable<any> {
+    return this.http.request('delete', DeleteAttributeAdmin, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -63,10 +63,11 @@ export class AttributesService {
       }),
       responseType: 'json',
       body: {
-          attributes: prodId
-        }
-    })
+        attributes: prodIds
+      }
+    });
   }
+  
 
   // patchAttribute(data: FormData): Observable<any> {
   //     return this.http.patch<Attributes>(PatchAttributeAdmin, data, this.httpOptions);

@@ -12,6 +12,19 @@ export interface Product {
     variants: Variant[],
 }
 
+export interface AdminProductList {
+    success: string,
+    message: string,
+    data: AdminProduct[]
+}
+
+export interface AdminProduct {
+    product_id: string,
+    name: string,
+    price: string,  
+    preview_image: string
+}
+
 export interface Variant {
     variant_id: string,
     variant_name: string,
@@ -79,3 +92,7 @@ export interface Order {
     variant_id: string,
     quantity: number
 }
+
+
+
+

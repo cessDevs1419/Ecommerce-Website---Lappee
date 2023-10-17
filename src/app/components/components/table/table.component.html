@@ -249,10 +249,16 @@
                                 </div>
                             </td>
                             
-                            <td colspan="2" class="m-auto " *ngFor="let row of tableRows">
-                                <div class=" m-auto d-flex align-items-center justify-content-center p-2 text-nowrap max-text text-truncate overflow-hidden">
-                                    <label [ngClass]="row === 'id' ? 'text-uppercase':'' " class="{{textcolor}} ">{{ item[row] }}</label>
-                                </div>
+                            <td colspan="2" class="m-auto text-center" *ngFor="let row of tableRows">
+                                <ng-container *ngIf="row === 'preview_image'; else notImage">
+                                    <img [src]="item[row]" alt="Product Image" class="img-thumbnail" />
+                                </ng-container>
+                                <ng-template #notImage>
+                                    <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="text-center mt-1 {{textcolor}}">
+                                        <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
+                                        <ng-template #notPrice>{{ item[row] }}</ng-template>
+                                    </label>
+                                </ng-template>
                             </td>
                             
                             <!--Enable this table Actions-->
@@ -314,8 +320,9 @@
                                         <i class="bi bi-truck fs-5"></i>
                                     </button>
                                     
-                                </ng-container>    
+                                </ng-container>   
 
+                                <!--ACCOUNT STATUS BTN-->
                                 <ng-container *ngIf="bannedBtn">
                                     <button
                                         (click)="sendRowData(item)"
@@ -329,21 +336,22 @@
                                     </button>
                                 </ng-container>
                             </td>
-                            <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0">
-                                <div class="action-container border m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
+
+                            <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0 me-1">
+                                <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
                                     <button 
                                         type="button"
                                         data-bs-toggle="modal" data-bs-target="#edit"
-                                        class="edit-btn w-100 mt-0 rounded-3 rounded-bottom-0"
+                                        class="edit-btn px-4 py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
                                         (click)="sendRowData(item)"
                                         > 
                                         Edit
                                     </button>
-                                    
+                                    <div class="action-border"></div>
                                     <button 
                                         type="button"
                                         data-bs-toggle="modal" data-bs-target="#delete"
-                                        class="edit-btn w-100 rounded-3 rounded-top-0"
+                                        class="delete-btn px-4 py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
                                         (click)="sendRowData(item)"
                                         > 
                                         Delete

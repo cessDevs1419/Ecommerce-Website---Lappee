@@ -18,7 +18,13 @@ import { Router } from '@angular/router';
 export class AdminCategoriesComponent {
 
     
-    
+    @ViewChild(ToastComponent) toast: ToastComponent;
+
+    backdrop: string = 'true';
+    toastContent: string = "";
+    toastHeader: string = "";
+    toastTheme: string = "default";  
+
     size = "w-100 me-2"
     selectedRowData: any;
     selectedRowDataForDelete: any;
@@ -56,26 +62,33 @@ export class AdminCategoriesComponent {
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
     }
+
     onRowDataForDelete(rowData: any){
         this.selectedRowDataForDelete = rowData;
         console.log(rowData)
     }
     
-	showAddCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','category','add']);
-	}
-	
-    showEditCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','category','edit',this.selectedRowData.id]);
-	}
-	
-    showAddSubCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','subcategory','add']);
-	}
-	
-    showEditSubCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','subcategory','edit',this.selectedRowData.id]);
-	}
+    SuccessToast(value: any): void {
+        this.toastHeader = value.head;
+        this.toastContent = value.sub;
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
+    
+    WarningToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('warn');
+        this.toast.show();
+    }
+    
+    ErrorToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('negative');
+        this.toast.show();
+    }
+    
 
 
 

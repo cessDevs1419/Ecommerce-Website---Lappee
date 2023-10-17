@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
@@ -15,7 +16,13 @@ import { Order } from 'src/assets/models/products';
 })
 export class AdminOrderManagementComponent {
     
-    
+    @ViewChild(ToastComponent) toast: ToastComponent;
+
+    backdrop: string = 'true';
+    toastContent: string = "";
+    toastHeader: string = "";
+    toastTheme: string = "default";  
+
     orders!: Observable<AdminOrder[]>;
 	ordersDetails!: Observable<AdminOrderDetail>;
     ordersContents$: Observable<AdminOrderContent[]>;
@@ -62,8 +69,25 @@ export class AdminOrderManagementComponent {
 
     }
         
-    deliverPackage(){
+    SuccessToast(value: any): void {
+        this.toastHeader = value.head;
+        this.toastContent = value.sub;
+        this.toast.switchTheme('default');
+        this.toast.show();
+    }
     
+    WarningToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('warn');
+        this.toast.show();
+    }
+    
+    ErrorToast(value: any): void {
+        this.toastHeader = value.errorMessage;
+        this.toastContent = value.suberrorMessage;
+        this.toast.switchTheme('negative');
+        this.toast.show();
     }
     
 }

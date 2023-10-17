@@ -138,6 +138,20 @@ td{
     width: 2rem;
     height: 1.3rem;
   }
+
+  .actn-btn{
+    background: #F1F1F1;
+  }
+
+  .actn-btn:hover{
+    color: #272A36;
+    font-weight: 700;
+  }
+
+  .action-border{
+    border: 1px solid #D8D8D8;
+  }
+
   
   .hover-div {
     max-width: 90px;
@@ -155,6 +169,12 @@ td{
     background-color: transparent;
     border: none;
     color: white;
+  }
+
+  .img-thumbnail{
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
   }
 
   /* .table-striped>tbody>tr:nth-child(odd)>td,

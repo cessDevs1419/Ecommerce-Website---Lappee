@@ -284,7 +284,9 @@ export class TableComponent {
 	}
 	
 	sendRowData(row: any) {
-	    this.rowDataSelected.emit(row);
+		this.rowDataSelected.emit(row);
+		// this.selectedIds.push(row.id);
+		// this.rowDataForDelete.emit(this.selectedIds);
 	}
 	
 	showAddForm(): void{

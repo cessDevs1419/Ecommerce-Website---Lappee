@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { CategoryProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductList, CategoryProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -75,6 +75,16 @@ export function formatProducts(response: ProductList): Product[] {
     variants: data.variants,
   }));
 }
+
+export function formatAdminProducts(response: AdminProductList): AdminProduct[] {
+  return response.data.map((data: AdminProduct) => ({
+    product_id: data.product_id,
+    name: data.name,
+    price: data.price,
+    preview_image: data.preview_image
+  }));
+}
+
 
 // returns a Product object
 export function formatProductObj(response: any): Product {
