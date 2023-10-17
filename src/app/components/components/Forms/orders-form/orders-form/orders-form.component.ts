@@ -19,7 +19,8 @@ export class OrdersFormComponent {
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
 
 
-    
+    textcolor: string = 'text-light-subtle'
+    bordercolor: string = 'dark-subtle-borders'
     @Input() selectedRowData!: any;
     @Input() formConfirm!: boolean;
     @Input() formShip!: boolean;

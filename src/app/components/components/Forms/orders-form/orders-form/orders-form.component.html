@@ -19,7 +19,7 @@
 <div class="container m-auto p-2 overflow-y-auto" *ngIf="formShip">
     <form  (ngSubmit)="shipPackage()" >
         <div class="modal-body text-center pt-0 pb-0">
-            <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as ship?</p>
+            <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to this order to mark as ship?</p>
             <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
         </div>
         
@@ -27,7 +27,7 @@
             <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
             <button 
                 type="submit" 
-                class="btn btn-primary bg-light-primary "
+                class="btn btn-primary bg-light-primary glow-primary"
 
             >
                 CONFIRM
@@ -39,7 +39,7 @@
 <div class="container m-auto p-2 overflow-y-auto" *ngIf="formDelivered">
     <form  (ngSubmit)="delivered()" >
         <div class="modal-body text-center pt-0 pb-0">
-            <p class="fs-5 fw-bold mb-1">Are you sure you want to this order to mark as delivered?</p>
+            <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to this order to mark as delivered?</p>
             <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
         </div>
         
@@ -47,7 +47,7 @@
             <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
             <button 
                 type="submit" 
-                class="btn btn-primary bg-light-primary "
+                class="btn btn-primary bg-light-primary glow-primary"
 
             >
                 CONFIRM

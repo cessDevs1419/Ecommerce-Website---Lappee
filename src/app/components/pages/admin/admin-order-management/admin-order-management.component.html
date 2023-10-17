@@ -47,8 +47,8 @@
     modalTitleClass="mb-0"
     modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog modal-md "
-        
+    modalClass="modal-md "
+    [modalHideCloseBtn]="true"
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
 
@@ -63,8 +63,9 @@
     modalTitleClass="mb-0"
     modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
-        
+    modalClass=" modal-md "
+    [modalHideCloseBtn]="true"
+
     [modalShip]="true"
     (RefreshTable)="refreshTableData()"
 
@@ -79,8 +80,9 @@
     modalTitleClass="mb-0"
     modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
-        
+    modalClass=" modal-md "
+    [modalHideCloseBtn]="true"
+    
     [modalDeliver]="true"
     (RefreshTable)="refreshTableData()"
     (deliver)="deliverPackage()"

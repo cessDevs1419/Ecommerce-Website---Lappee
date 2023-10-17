@@ -27,7 +27,7 @@
                         </div>
                     </div>  
                     
-                    <button *ngIf="modalHideCloseBtn" type="button" class="btn-close btn-close-white " data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
+                    <button [ngClass]="{'visually-hidden': modalHideCloseBtn}" type="button" class="btn-close btn-close-white " data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                 
                 </div>
             </div>
