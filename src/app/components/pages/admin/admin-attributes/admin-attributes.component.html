@@ -17,15 +17,17 @@
         [Btntools]="true"
         
         [addBtn]="true"
+        [showMinus]="false"
         addbtnName="Add New"
         addBtnclass="me-2"
         [actionBtn]="true"
+        [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
         [tableHeader]="['ID','Name', 'Products']"
         [tableRows]="['id', 'name', 'products']"
         [tableData]="attributes"
-    
+        #triggerFunction
     ></app-table>
 
     <!--MAIN-->
@@ -77,6 +79,8 @@
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
+
     ></app-modal>  
     
     <app-modal
@@ -90,6 +94,7 @@
         (ErrorToasts)="ErrorToast($event)"
         
         [modalMultipleDeleteAttribute]="true"
+        (hideMinus)="showMinusFunction()"
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"

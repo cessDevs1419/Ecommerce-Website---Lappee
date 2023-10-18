@@ -15,7 +15,8 @@ export class AttributeFormComponent {
     @Output() ProductWarning: EventEmitter<any> = new EventEmitter();
     @Output() CloseModal: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
-    
+    @Output() hideMinus: EventEmitter<void> = new EventEmitter();
+
     @Input() selectedRowData: any;
     @Input() selectedRowDataForDelete: any[] = [];
     @Input() formAddAttribute!: boolean;
@@ -257,21 +258,22 @@ export class AttributeFormComponent {
                 
             }
 
-            for (const value of formData.entries()) {
-                console.log(`${value[0]}, ${value[1]}`);
-            }
+            // for (const value of formData.entries()) {
+            //     console.log(`${value[0]}, ${value[1]}`);
+            // }
 
             this.attribute_service.deleteAttributes(selectedId).subscribe({
                 next: (response: any) => { 
                     const successMessage = {
-                        head: 'Category ' + this.editAttributeForm.get('name')?.value,
+                        head: 'Delete Attribute ',
                         sub: response?.message
                     };
-                    
+                    this.CloseModal.emit();
                     this.RefreshTable.emit();
                     this.refreshTableData();
+                    this.hideMinus.emit()
                     this.ProductSuccess.emit(successMessage);
-
+                
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {

@@ -8,6 +8,7 @@ import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { Router } from '@angular/router';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
     selector: 'app-admin-categories',
@@ -19,7 +20,9 @@ export class AdminCategoriesComponent {
 
     
     @ViewChild(ToastComponent) toast: ToastComponent;
-
+    @ViewChild('triggerFunction') childComponent: TableComponent;
+    
+    showMinus: boolean
     backdrop: string = 'true';
     toastContent: string = "";
     toastHeader: string = "";
@@ -58,14 +61,17 @@ export class AdminCategoriesComponent {
     refreshTableData(): void {
         this.refreshData$.next();
     }
-    
+
+    showMinusFunction(){
+        this.childComponent.removeAllSelected();
+    }
+
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
     }
 
     onRowDataForDelete(rowData: any){
         this.selectedRowDataForDelete = rowData;
-        console.log(rowData)
     }
     
     SuccessToast(value: any): void {

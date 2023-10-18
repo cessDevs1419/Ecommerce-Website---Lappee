@@ -87,6 +87,7 @@ import { VariantAttributesComponent } from './components/components/variant-attr
 import { CategoryProductsComponent } from './components/pages/main/category-products/category-products.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerComponent } from './components/components/color-picker/color-picker.component';
+import { NotificationDropdownComponent } from './components/components/notification-dropdown/notification-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +164,7 @@ import { ColorPickerComponent } from './components/components/color-picker/color
     VariantAttributesComponent,
     CategoryProductsComponent,
     ColorPickerComponent,
+    NotificationDropdownComponent,
 
   ],
   imports: [

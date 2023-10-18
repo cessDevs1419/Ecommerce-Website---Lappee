@@ -54,15 +54,17 @@ export class ProductFormComponent {
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
     @Output() DeleteVariant: EventEmitter<any> = new EventEmitter<any>();
     @Output() SendAttribute: EventEmitter<any> = new EventEmitter<any>();
-
+    @Output() hideMinus: EventEmitter<void> = new EventEmitter();
+    
     @Input() selectedRowData: any;
     @Input() selectedAttributeData: any;
     @Input() selectedRowDataForDelete: any;
     @Input() formAddProduct!: boolean;
     @Input() formEditProduct!: boolean;
     @Input() formSelectAttribute!: boolean;
-    @Input() formDeleteProduct!: boolean;
     @Input() formDeleteVariant!: boolean;
+    @Input() formDeleteProduct!: boolean;
+    @Input() formMultipleDeleteProduct!: boolean;
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
@@ -1028,8 +1030,74 @@ export class ProductFormComponent {
     
     }
     
+    onProductDeleteSubmit(){
 
+        const selectedId: any[] = []
+        if(this.selectedRowData){
+            selectedId.push(this.selectedRowData.product_id)
+        }else{
+
+            for(let id of this.selectedRowDataForDelete){
+                selectedId.push(id)
+            }
+            
+        }
+
+        // for (const value of formData.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
+        // }
+
+        this.product_service.deleteProduct(selectedId).subscribe({
+            next: (response: any) => { 
+                const successMessage = {
+                    head: 'Delete Attribute ',
+                    sub: response?.message
+                };
+                this.CloseModal.emit();
+                this.RefreshTable.emit();
+                this.refreshTableData();
+                this.hideMinus.emit()
+                this.ProductSuccess.emit(successMessage);
+            
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: errorsArray,
+                    };
+                
+                    this.ProductWarning.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: 'Please Try Another One',
+                    };
+                    this.ProductError.emit(errorDataforProduct);
+                }
+                return throwError(() => error);
+                
+            }
+        });
+    }
 }
+
+
 
 //Get and remove attributes
     // isSelected(id: string): boolean {

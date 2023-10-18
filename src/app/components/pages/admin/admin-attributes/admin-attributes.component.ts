@@ -1,5 +1,6 @@
 import { Component, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
@@ -14,7 +15,8 @@ import { AdminCategory } from 'src/assets/models/categories';
 export class AdminAttributesComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
-  
+	@ViewChild('triggerFunction') childComponent: TableComponent;
+  showMinus: boolean = false
 
   selectedRowData: any;
   selectedRowDataForDelete: any;
@@ -55,6 +57,10 @@ onRowDataForDelete(rowData: any){
 onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
 
+}
+
+showMinusFunction(){
+  this.childComponent.removeAllSelected();
 }
 
 SuccessToast(value: any): void {

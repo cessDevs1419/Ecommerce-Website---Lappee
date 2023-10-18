@@ -9,6 +9,7 @@ import { SubcategoriesService } from 'src/app/services/subcategories/subcategori
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
     selector: 'app-admin-products',
@@ -18,19 +19,21 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 export class AdminProductsComponent {
 
     @ViewChild(ToastComponent) toast: ToastComponent;
+    @ViewChild('triggerFunction') childComponent: TableComponent;
 
     products!: Observable<AdminProduct[]>;
     sub_categories: Observable<AdminSubcategory[]>;
 	private refreshData$ = new Subject<void>();
 
     selectedRowData: any;
+    selectedRowDataForDelete: any;
     /*classes*/
 	margin = "mx-lg-2"
 	size = "w-100 me-2"
     
     //theme
 
-
+    showMinus: boolean
     backdrop: string = 'true';
     toastContent: string = "";
     toastHeader: string = "";
@@ -60,7 +63,12 @@ export class AdminProductsComponent {
         this.selectedRowData = rowData;
         
     }
-    
+    onRowDataForDelete(rowData: any){
+        this.selectedRowDataForDelete = rowData;
+    }
+    showMinusFunction(){
+        this.childComponent.removeAllSelected();
+    }
 	
     showAddForm(): void{
         this.router.navigate(['/admin/product-management','product','add']);

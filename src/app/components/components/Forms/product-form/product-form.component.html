@@ -23,7 +23,7 @@
                                     <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
                                     <input 
                                         type="text" 
-                                        class="form-control py-3 px-3 rounded-3 fs-5  {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                        class="form-control py-3 px-3 rounded-3  {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                         id="addproductName" 
                                         name="addproductName" 
                                         formControlName="name"
@@ -40,7 +40,7 @@
                                             <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
                                         </div>
                                         <select 
-                                            class="form-select py-3 px-3 rounded-3 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                            class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                             id="addproductCategory"
                                             name="addproductCategory" 
                                             formControlName="category" 
@@ -58,7 +58,7 @@
                                 <div class="mb-4">
                                     <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
                                     <textarea 
-                                        class="form-control py-3 px-3 rounded-3 fs-5 bg-transparent border  {{formInputColor}} {{formBorderColor}}" 
+                                        class="form-control py-3 px-3 rounded-3 bg-transparent border  {{formInputColor}} {{formBorderColor}}" 
                                         id="addproductDescription" 
                                         name="addproductPriceDescription" 
                                         rows="5" 
@@ -159,7 +159,7 @@
                                                         <label class="form-label {{formTextColor}}">Variant Name</label>
                                                         <input 
                                                             type="text" 
-                                                            class="form-control py-3 px-3 rounded-3 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                            class="form-control py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                             name="addVariantName" 
                                                             formControlName="name"
                                                             placeholder="Variant name"
@@ -173,7 +173,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
-                                                                    class="form-control py-3 px-3 rounded-3 rounded-end-0 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                    class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     id="addvariantQty" 
                                                                     name="addvariantQty" 
                                                                     formControlName="stock" 
@@ -191,7 +191,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
-                                                                    class="form-control py-3 px-3 rounded-3 rounded-end-0 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                    class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     name="addvariantPrice" 
                                                                     formControlName="price" 
                                                                     [value]="1"
@@ -236,7 +236,7 @@
                                                                                         <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
                                                                                             <label class="form-label {{formTextColor}}">{{item.name}}</label>
                                                                                             <select 
-                                                                                                class="form-select py-3 px-3 rounded-3 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                                                class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                                                 id="addproductCategory"
                                                                                                 name="addproductCategory" 
                                                                                                 [formControlName]="item.category_attribute_id" 
@@ -283,7 +283,7 @@
                                                                     > -->
                                                                     <select 
                                                                         
-                                                                        class="form-select py-3 px-3 rounded-3 fs-5 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                        class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                         id="addproductCategory"
                                                                         name="addproductCategory" 
                                                                         [formControlName]="item.category_attribute_id" 
@@ -531,4 +531,27 @@
         <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
     </div>
 </form>
+
+<form *ngIf="formDeleteProduct" (ngSubmit)="onProductDeleteSubmit()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to delete this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name }}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-dark cancel-btn rounded-3"  data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
+
+<form *ngIf="formMultipleDeleteProduct" (ngSubmit)="onProductDeleteSubmit()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to delete this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-dark cancel-btn rounded-3"  data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
+
         

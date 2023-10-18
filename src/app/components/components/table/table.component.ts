@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component,ElementRef,EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component,ElementRef,EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
@@ -62,6 +62,7 @@ export class TableComponent {
 	@Input() addSubtnName!: string;
 	
 	//enable Table Action Column && Other Buttons
+	@Input() showMultipleSelection!: boolean;
 	@Input() tableAction!: boolean;
 	@Input() actionBtn!: boolean;
 	@Input() restockBtn!: boolean;
@@ -101,13 +102,14 @@ export class TableComponent {
 	@Input() orderBtn: boolean;
 	@Input() bannedBtn: boolean;
 	@Input() setFirstUpper!: boolean;
+	@Input() showMinus!: boolean;
 	
+	showCheckboxMinus: boolean;
 	isAllChecked: boolean;
 	selectedIds: number[] = [];
 	checkedState: { [key: number]: boolean } = {};
 	rowActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
-	showMinus: boolean;
 	showTooltip: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
@@ -119,11 +121,13 @@ export class TableComponent {
 	searchFilter: string = '';
 
 	constructor(private cdr: ChangeDetectorRef) {} 
+	
 	ngAfterViewInit() {
 		// Access the checkboxInput element after it's available in the DOM
-		const selectAllCheckbox = this.checkboxInput.nativeElement as HTMLInputElement;
+		// const selectAllCheckbox = this.checkboxInput.nativeElement as HTMLInputElement;
 		// Now you can use selectAllCheckbox as needed
 	}
+
 	
 	
 	showAction(rowIndex: number) {
@@ -155,41 +159,42 @@ export class TableComponent {
 					this.selectedIds = [];
 					this.rowDataForDelete.emit(this.selectedIds);
 					data.forEach((item: any) => (this.checkedState[item.id] = false));
+					data.forEach((item: any) => (this.checkedState[item.product_id] = false));
 				} else {
-					this.selectedIds = data.map((item: any) => item.id);
+					this.selectedIds = data.map((item: any) => item.id || item.product_id);
 					this.rowDataForDelete.emit(this.selectedIds);
 					data.forEach((item: any) => (this.checkedState[item.id] = true));
+					data.forEach((item: any) => (this.checkedState[item.product_id] = true))
 				}
 			}else{
 				this.showMinus = false
 				this.selectedIds = [];
 				this.rowDataForDelete.emit(this.selectedIds);
-				data.forEach((item: any) => (this.checkedState[item.id] = false));
+				data.forEach((item: any) => (this.checkedState[item.id || item.product_id] = false));
+				data.forEach((item: any) => (this.checkedState[item.product_id] = false));
 			}
 			
 
-			
 			this.cdr.detectChanges();
 		});
 	}
-
 
 	toggleSelection(item: any, event: any) {
 		const target = event.target as HTMLInputElement;
 		const checked = target.checked;
 	
 		if (checked) {
-			this.selectedIds.push(item.id);
+			this.selectedIds.push(item.id || item.product_id);
 			this.rowDataForDelete.emit(this.selectedIds);
 		} else {
-			const index = this.selectedIds.indexOf(item.id);
+			const index = this.selectedIds.indexOf(item.id || item.product_id);
 			if (index !== -1) {
 				this.selectedIds.splice(index, 1);
 				
 			}
 			this.rowDataForDelete.emit(this.selectedIds);
 		}
-		this.checkedState[item.id] = checked;
+		this.checkedState[item.id || item.product_id] = checked;
 		
 		// Check if all checkboxes are unchecked and uncheck the "Select All" checkbox
 		const areAllUnSelected = this.selectedIds.length === 0;
@@ -201,15 +206,18 @@ export class TableComponent {
 			selectAllCheckbox.checked = true;
 			this.showMinus = true
 		}
+		
+
 	}
 	
 	isChecked(id: number): boolean {
-		return this.checkedState[id] || false;
+		return this.checkedState[id] || false ;
 	}
 	
 	removeAllSelected() {
 		const selectAllCheckbox = this.checkboxInput.nativeElement as HTMLInputElement;
 		selectAllCheckbox.checked = false;
+		this.selectedIds.forEach(product_id => (this.checkedState[product_id] = false));
 		this.selectedIds.forEach(id => (this.checkedState[id] = false));
 		this.selectedIds = [];
 
@@ -222,6 +230,7 @@ export class TableComponent {
 			selectAllCheckbox.checked = true;
 			this.showMinus = true
 		}
+		
 	}
 
 	

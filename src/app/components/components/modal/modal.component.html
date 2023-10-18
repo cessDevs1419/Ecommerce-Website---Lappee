@@ -60,6 +60,7 @@
                     (ProductError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 ></app-attribute-form>
         
                 <app-attribute-form 
@@ -72,6 +73,7 @@
                     (ProductError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 ></app-attribute-form>
             
                 <app-category-form 
@@ -106,6 +108,7 @@
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 ></app-category-form>
                 
                 <app-category-form 
@@ -120,18 +123,7 @@
                     (CloseModal)="closeModal()"
                 ></app-category-form>
 
-                <app-product-form
-                    *ngIf="modalDeleteProduct"
-                    [formDeleteProduct]="true"
-                    [selectedRowData]="selectedRowData"
-                    [selectedRowDataForDelete]="selectedRowData"
-                    (ProductSuccess)="deleteSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                    (CloseModal)="closeModal()"
-                >
-                </app-product-form> 
+
                 
                 <app-product-form
                     *ngIf="modalSelectAttribute"
@@ -153,14 +145,43 @@
                     *ngIf="modalDeleteVariant"
                     [formDeleteVariant]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                >
+                </app-product-form> 
+
+                <app-product-form
+                    *ngIf="modalDeleteProduct"
+                    [formDeleteProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 >
                 </app-product-form> 
                 
+                <app-product-form
+                    *ngIf="modalMultipleDeleteProduct"
+                    [formMultipleDeleteProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                ></app-product-form>
+        
                 <app-accounts-form
                     *ngIf="modalBanAccounts"
                     [formBanAccount]="true"

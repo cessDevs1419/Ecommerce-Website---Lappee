@@ -56,6 +56,7 @@
         [Btntools]="true"
         [addProdBtn]="true"
         addbtnName="Add New"
+        [showMinus]="showMinus"
         
         [searchBarclass]="margin"
         [addBtnclass]="size"
@@ -69,10 +70,12 @@
         [tableRows]="['product_id', 'name','price']"
         [tableData]="products"
         [actionBtn]="true"
-        
+        [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
+        (rowDataForDelete)="onRowDataForDelete($event)"
         (ShowAddForm)="showAddForm()"
         (ShowEditForm)="showEditForm()"
+        #triggerFunction
     ></app-table>
     
     
@@ -82,17 +85,40 @@
 
 <app-modal
     modalId="delete"
-    modalTitle="DELETE PRODUCT"
-    modalSubTitle="PRODUCT CONTROL"
+    modalTitle="Delete Product"
     modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="delete"
     (SuccessToast)="SuccessToast($event)"
     (WarningToasts)="WarningToast($event)"
     (ErrorToasts)="ErrorToast($event)"
-    
-    [modalDeleteProduct]="true"
+    (hideMinus)="showMinusFunction()"
     (RefreshTable)="refreshTableData()"
+    [modalDeleteProduct]="true"
+    
     [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+
 ></app-modal>
+
+<app-modal
+    modalId="deleteMultiple"
+    modalTitle="Delete Product"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="delete"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    (hideMinus)="showMinusFunction()"
+    (RefreshTable)="refreshTableData()"
+    [modalMultipleDeleteProduct]="true"
+
+    [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+
+
+></app-modal>  
 
 
 

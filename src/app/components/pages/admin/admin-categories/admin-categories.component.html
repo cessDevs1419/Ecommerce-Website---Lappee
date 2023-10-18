@@ -19,14 +19,15 @@
         [addBtnclass]="size"
         [tableAction]="true"
         [actionBtn]="true"
+        [showMinus]="showMinus"
         
         [tableHeader]="['ID', 'Name']"
         [tableRows]="['id','name']"
         [tableData]="categories"
-        
+        [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
-
+        #triggerFunction
     ></app-table>
 
     <!--MAIN-->
@@ -74,6 +75,7 @@
         [modalDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
     ></app-modal> 
 
 

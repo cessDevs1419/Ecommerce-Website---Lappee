@@ -204,7 +204,7 @@
                 <table class="table " *ngIf="paginate === false">
                     <thead >
                         <tr class="border border-dark">
-                            <th colspan="1"  class=" {{tableHeaderbg}} " >
+                            <th *ngIf="showMultipleSelection" colspan="1"  class=" {{tableHeaderbg}} " >
     
                                 <div  class="container position-relative cursor-pointer d-flex align-content-center justify-content-center">
                                     <label class="position-relative p-0 cursor-pointer m-auto">
@@ -234,17 +234,17 @@
                     
                     <tbody class="">
                         <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
-                            <td colspan="1" class="{{textcolor}} ">
+                            <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
                                 <div class=" m-auto d-flex align-items-center justify-content-center p-2">
                                     <label class="position-relative p-0 cursor-pointer">
                                         <input 
-                                            [checked]="isChecked(item.id)" 
+                                            [checked]="isChecked(item.id || item.product_id)" 
                                             (change)="toggleSelection(item, $event)" 
                                             class="visually-hidden form-check-input rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}" 
                                             type="checkbox"  
                                         />
                                         <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
-                                        <span class="check position-absolute" ><i *ngIf="isChecked(item.id)" class="bi bi-check"></i></span>
+                                        <span class="check position-absolute" ><i *ngIf="isChecked(item.id || item.product_id)" class="bi bi-check"></i></span>
                                     </label>
                                 </div>
                             </td>

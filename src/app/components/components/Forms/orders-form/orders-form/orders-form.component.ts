@@ -52,7 +52,6 @@ export class OrdersFormComponent {
     
     ngOnInit(): void{
         this.imageSrc = 'https://picsum.photos/200/300';
-        console.log(this.selectedRowData)
 	}
 	
     asyncTask(): Promise<void> {

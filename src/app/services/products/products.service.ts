@@ -88,8 +88,22 @@ export class ProductsService {
   } 
   
 
-  deleteProduct(prodId: number): Observable<any> {
-    return this.http.delete(DELETEProductsAdmin, {
+  // deleteProduct(prodId: number): Observable<any> {
+  //   return this.http.delete(DELETEProductsAdmin, {
+  //     headers: new HttpHeaders({
+  //       'Accept': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Access-Control-Allow-Credentials': 'true'
+  //     }),
+  //     responseType: 'json',
+  //     body: {
+  //         id: prodId
+  //       }
+  //   })
+  // }
+  
+  deleteProduct(prodIds: number[]): Observable<any> {
+    return this.http.request('delete', DELETEProductsAdmin, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -97,10 +111,9 @@ export class ProductsService {
       }),
       responseType: 'json',
       body: {
-          id: prodId
-        }
-    })
+        products: prodIds
+      }
+    });
   }
-  
 
 }

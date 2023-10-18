@@ -33,12 +33,12 @@
 }
 
 .header-tools{
-    max-width: 100px;
+    max-width: 120px;
 }
 
 .header-icon-container{
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
 }
 
 .icon-container{
@@ -149,7 +149,7 @@ img{
     }
 
     .header-container{
-        justify-content: space-between;
+        justify-content: space-between !important;
     }
     .sidebar{
         transform: translateX(-100%);

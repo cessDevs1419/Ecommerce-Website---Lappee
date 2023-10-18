@@ -36,6 +36,7 @@ export class ModalComponent {
     @Output() SuccessToast: EventEmitter<any> = new EventEmitter();
 	@Output() ErrorToasts: EventEmitter<any> = new EventEmitter();
     @Output() WarningToasts: EventEmitter<any> = new EventEmitter();
+    @Output() hideMinus: EventEmitter<any> = new EventEmitter();
 
 
 	@Input() modalId!: string;
@@ -62,6 +63,7 @@ export class ModalComponent {
 	@Input() modalDeleteCategory!: boolean;
 	@Input() modalDeleteSubCategory!: boolean;
 	@Input() modalDeleteProduct!: boolean; 
+	@Input() modalMultipleDeleteProduct!: boolean; 
 	@Input() modalDeleteVariant!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
@@ -120,7 +122,9 @@ export class ModalComponent {
     deliverPackage(){
         this.deliver.emit()
     }
-    
+    hideMinusFunction() {
+        this.hideMinus.emit();
+    }
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
         return new Promise((resolve) => {

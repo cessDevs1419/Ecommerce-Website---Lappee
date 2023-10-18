@@ -146,6 +146,22 @@
     background: #BBB;
 }
 
+.bg-notification-dark{
+    background-color: #282A37;
+}
+
+.bg-notification-tip{
+    background-color: #1C92FF;
+}
+
+.text-primary-subtle{
+    color: #1C92FF;;
+}
+.text-notification-grey
+{
+    color: #C1C1C1;
+}
+
 .border-grey{
     border: 1px solid #BBB;
 }
