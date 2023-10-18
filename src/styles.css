@@ -130,6 +130,10 @@
     background-color: #FFFFFF;
 }
 
+.bgcolor-primary {
+    background-color: var(--primary);
+}
+
 .bg-banned{
     background-color: #FB5757;
 }
