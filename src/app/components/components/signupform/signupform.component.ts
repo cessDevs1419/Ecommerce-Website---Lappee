@@ -18,9 +18,9 @@ export class SignupformComponent {
   constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
 
   signUpForm = this.fb.group ({
-    signUpFirstName: ['', Validators.required],
+    signUpFirstName: ['',],
     signUpMiddleName: [''],
-    signUpLastName: ['', Validators.required],
+    signUpLastName: ['',],
     signUpSuffix: [''],
     signUpEmail: ['', [Validators.required, Validators.email]],
     signUpPassword: ['', [Validators.required, Validators.minLength(7), uppercaseValidator(), numberValidator(), lowercaseValidator(), symbolValidator()]],
@@ -46,10 +46,10 @@ export class SignupformComponent {
       console.warn(this.signUpForm.value);
 
       let formData: any = new FormData();
-      formData.append('first_name', this.signUpForm.get('signUpFirstName')?.value);
-      formData.append('middle_name', this.signUpForm.get('signUpMiddleName')?.value);
-      formData.append('last_name', this.signUpForm.get('signUpLastName')?.value);
-      formData.append('suffix', this.signUpForm.get('signUpSuffix')?.value);
+      // formData.append('first_name', this.signUpForm.get('signUpFirstName')?.value);
+      // formData.append('middle_name', this.signUpForm.get('signUpMiddleName')?.value);
+      // formData.append('last_name', this.signUpForm.get('signUpLastName')?.value);
+      // formData.append('suffix', this.signUpForm.get('signUpSuffix')?.value);
       formData.append('email', this.signUpForm.get('signUpEmail')?.value);
       formData.append('password', this.signUpForm.get('signUpPassword')?.value);
       formData.append('password_confirmation', this.signUpForm.get('signUpConfirmPassword')?.value);
