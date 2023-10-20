@@ -88,6 +88,7 @@ import { CategoryProductsComponent } from './components/pages/main/category-prod
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerComponent } from './components/components/color-picker/color-picker.component';
 import { NotificationDropdownComponent } from './components/components/notification-dropdown/notification-dropdown.component';
+import { VerifyEmailComponent } from './components/pages/main/verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -165,6 +166,7 @@ import { NotificationDropdownComponent } from './components/components/notificat
     CategoryProductsComponent,
     ColorPickerComponent,
     NotificationDropdownComponent,
+    VerifyEmailComponent,
 
   ],
   imports: [
@@ -191,6 +193,7 @@ import { NotificationDropdownComponent } from './components/components/notificat
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
       {path: 'tos', component: TosComponent, title: 'Terms of Service'},
+      {path: 'verify-email/:id/:token', component: VerifyEmailComponent, title: 'Email Verification'},
 
       //admin
       {

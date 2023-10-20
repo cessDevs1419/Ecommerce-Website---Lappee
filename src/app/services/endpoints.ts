@@ -63,6 +63,9 @@ export const GETDeliveryInfo: string = api + "api/client/user-info/delivery-info
 export const POSTDeliveryInfo: string = api + "api/client/user-info/delivery-info/store";
 export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-info/edit";
 
+//Email Endpoints
+export const GETVerifyEmail: string = api + "api/client/user-info/verify-email"
+
 //Order Endpoints
 //Admin
 export const GETOrder: string = api + "api/admin/products/orders";

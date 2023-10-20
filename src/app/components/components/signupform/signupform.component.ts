@@ -18,10 +18,10 @@ export class SignupformComponent {
   constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
 
   signUpForm = this.fb.group ({
-    signUpFirstName: ['',],
-    signUpMiddleName: [''],
-    signUpLastName: ['',],
-    signUpSuffix: [''],
+    // signUpFirstName: ['',],
+    // signUpMiddleName: [''],
+    // signUpLastName: ['',],
+    // signUpSuffix: [''],
     signUpEmail: ['', [Validators.required, Validators.email]],
     signUpPassword: ['', [Validators.required, Validators.minLength(7), uppercaseValidator(), numberValidator(), lowercaseValidator(), symbolValidator()]],
     signUpConfirmPassword: ['', [Validators.required]],
