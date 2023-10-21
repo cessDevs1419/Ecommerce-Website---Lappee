@@ -21,6 +21,7 @@ import { AttributesService } from 'src/app/services/attributes/attributes.servic
 import { ThisReceiver } from '@angular/compiler';
 import { Attributes } from 'src/assets/models/attributes';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RichTextEditorComponent } from '../../rich-text-editor/rich-text-editor.component';
 
 @Component({
     selector: 'app-product-form',
@@ -41,6 +42,7 @@ export class ProductFormComponent {
     private isFormSave = false
 	
 	@ViewChild('attributeIdInput') attributeIdInput: ElementRef;
+	@ViewChild('rte') childComponent: RichTextEditorComponent;
     @ViewChild('priceInput', { static: false }) priceInputRef!: ElementRef<HTMLInputElement>;
     @ViewChild('openModalBtn') openModalBtn!: ElementRef;
     @ViewChild('modalRef') modalRef!: ElementRef;
@@ -124,8 +126,8 @@ export class ProductFormComponent {
     variantsArray: FormArray;
     newvariantsArray: FormArray = this.formBuilder.array([]);
     attributesArrays: FormArray;
-
-
+    rtfValue: string;
+    variantsLists: any[] =[]
     private attributeServiceData: any[] = [];
 
     constructor(
@@ -160,7 +162,7 @@ export class ProductFormComponent {
         this.addProductForm = this.formBuilder.group({
             name: ['', Validators.required],
             category: ['', Validators.required],
-            description: ['', Validators.required],
+            description: [''],
             variants: this.formBuilder.array([]), 
         });
 
@@ -176,7 +178,7 @@ export class ProductFormComponent {
             stock: ['', Validators.required],
             price: ['', Validators.required],
             images: this.formBuilder.array([]),
-            attributes: this.formBuilder.array([]),
+            attributes: this.formBuilder.array([])
         });
 
         this.editVariantForm = this.formBuilder.group({
@@ -213,7 +215,8 @@ export class ProductFormComponent {
     }
     
     getRTFValue(value: any){
-        console.log(value)
+        // console.log(value)
+        this.rtfValue = value
     }
     
     getSafeImageUrl(file: File) {
@@ -372,6 +375,7 @@ export class ProductFormComponent {
         const files = event.target.files;
 
         if (files.length > 3) {
+        
             const errorDataforProduct = {
                 errorMessage: 'Add Image',
                 suberrorMessage: 'Image must be no more than 3',
@@ -490,24 +494,21 @@ export class ProductFormComponent {
         }
     }
 
-    removeImageFromEditForm(index: number, variantIndex: number) {
-        const variantArray = this.addProductForm.get('variants') as FormArray;
-        console.log(variantArray.value); 
-
-        if (variantIndex >= 0 && variantIndex < variantArray.length) {
-            const variant = variantArray.at(variantIndex);
-        
-            if (variant.get('images')) {
-                const imagesArray = variant.get('images') as FormArray;
-        
-                if (index >= 0 && index < imagesArray.length) {
-                    imagesArray.removeAt(index); 
-                    console.log(variantArray.value); 
-                }
+    removeImageFromEditForm(imageIndex: number, variantIndex: number) {
+        const variantFormGroup = this.variantsLists.at(variantIndex) as FormGroup;
+    
+        if (variantFormGroup) {
+            const variantImages = variantFormGroup.get('images') as FormArray;
+    
+            if (variantImages) {
+                variantImages.removeAt(imageIndex);
+                console.log(variantImages); 
             }
         }
-
     }
+    
+    
+    
 
     extractFileName(url: string): string {
         const parts = url.split('/'); 
@@ -692,8 +693,6 @@ export class ProductFormComponent {
     
         console.log('Updated selectedAttributeForms:', this.selectedAttributeForms);
     }
-    
-    
 
     saveVariant(index: any){
         const variantsArray = this.addProductForm.get('variants') as FormArray;
@@ -701,7 +700,8 @@ export class ProductFormComponent {
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
 
-        if (addVariantForm) {
+        
+        if (addVariantForm.valid && this.addAttributeForm) {
             const formControls = this.addAttributeForm.controls;
             const attributeFormsArray = this.attributeFormsArray;
 
@@ -741,7 +741,10 @@ export class ProductFormComponent {
             this.hideVariantValidationContainer = true
             this.newvariantsArray.push(newVariantVisible);
             variantsArray.push(newVariantControl);
+            this.toggleAccordion(index);
+            this.variantsLists.push(newVariantControl);
 
+            
             const productSuccess = {
                 head: 'Add Variant',
                 sub: 'Successfully Add Variant'
@@ -764,8 +767,27 @@ export class ProductFormComponent {
             }
             this.product_service.removeAllImg();
             this.isFormSave = false;
+        }else{
+            addVariantForm.markAllAsTouched();
+            const emptyFields = [];
+            for (const controlName in addVariantForm.controls) {
+                if ( addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const productcontrol = addVariantForm.controls[controlName];
+                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                    }
+                }
+            }
+            
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            this.ProductError.emit(errorDataforProduct);
         }
-        this.toggleAccordion(index);
+
     
     }
 
@@ -824,15 +846,27 @@ export class ProductFormComponent {
             }
         });
         
+        // const imagesControlValues: any[] = [];
 
+        // // Iterate through the variants and collect the 'images' control values
+        // for (let i = 0; i < variantsArray.length; i++) {
+        //     const variantControl = variantsArray.at(i) as FormGroup;
+        //     const imagesArray = variantControl.get('images') as FormArray;
+            
+        //     const imagesControlValue = imagesArray.value;
+        //     imagesControlValues.push(imagesControlValue);
+        // }
+    
+        // const newVariantControl = this.formBuilder.control({ images: imagesControlValues });
         const newVariantControl = this.formBuilder.control(variants.value);
+
 
         if (index >= 0 && index < variantsArray.length) {
             this.variantsArray.removeAt(index);
             this.variantsArray.push(newVariantControl);
-            //variantsArray.at(index).patchValue(newVariantControl);
+            console.log(newVariantControl)
         }
-
+        
         console.log(this.addProductForm.value);
         this.toggleAccordion(index);
 
@@ -894,7 +928,7 @@ export class ProductFormComponent {
         });
     }
     
-//Submit Functions
+    //Submit Functions
 
     // pag test ni dell sa color picker component
     // checkValue(): void {
@@ -915,10 +949,10 @@ export class ProductFormComponent {
         // Add Product Fields
         productFormData.append('name', capitalizedName)
         productFormData.append('category', this.addProductForm.get('category')?.value);
-        productFormData.append('description', this.addProductForm.get('description')?.value);
+        productFormData.append('description', this.rtfValue);
 
         // Get Variants
-        const variantsList = this.addProductForm.get('variants') as FormArray;
+        const variantsList = this.variantsLists;
 
         for (let i = 0; i < variantsList.length; i++) {
             const variantFormGroup = variantsList.at(i) as FormGroup;
@@ -944,9 +978,9 @@ export class ProductFormComponent {
         }
 
         // Display the FormData entries
-        // productFormData.forEach((value, key) => {
-        //     console.log(`${key}: ${value}`);
-        // });
+        productFormData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
         
         if(this.addProductForm.valid){
         
@@ -972,6 +1006,8 @@ export class ProductFormComponent {
                     this.addBtn = true;
                     this.editBtn = false;
                     this.editAttributes = true
+                    this.variantsLists.splice(0)
+                    this.childComponent.editorReset();
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {

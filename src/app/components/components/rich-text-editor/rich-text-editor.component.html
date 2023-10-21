@@ -1,4 +1,6 @@
 <div class="NgxEditor__Wrapper">
-    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" > </ngx-editor-menu>
-    <ngx-editor [editor]="editor" [(ngModel)]="html" [disabled]="false" [placeholder]="'Type here...'" (ngModelChange)="onEditorInput($event)"></ngx-editor>
+    <ngx-editor-menu [editor]="editor"  [toolbar]="toolbar">
+    </ngx-editor-menu>
+    <ngx-editor [editor]="editor" [(ngModel)]="html" [disabled]="false" [placeholder]="'Type here...'" (ngModelChange)="onEditorInput($event)">
+    </ngx-editor>
 </div>

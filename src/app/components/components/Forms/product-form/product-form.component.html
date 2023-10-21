@@ -65,7 +65,11 @@
                                         formControlName="description"
                                         required
                                     ></textarea> -->
-                                    <app-rich-text-editor (value)="getRTFValue($event)"></app-rich-text-editor>
+                                    <app-rich-text-editor 
+                                        (value)="getRTFValue($event)"
+                                        #rte
+                                    >
+                                    </app-rich-text-editor>
                                 </div>
                             </div>
     
@@ -83,21 +87,25 @@
                                 <div class="accordion border-0">
                                     <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
                                         <div  class="border-0 p-0" *ngIf="!form.isVisible">
-                                            <div *ngIf="variantsArray.controls[i]; let variantControl; "
+                                            <div *ngIf="variantsLists[i]; let variantControl; "
                                                 class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
                                                 <div class="m-auto row d-flex align-items-center w-100 ">
                                                     <div class="col-sm-2 me-2">
-                                                        <div class="color-container border rounded-3" >
+                                                        <div class="color-container border rounded-3 overflow-hidden" *ngIf="variantControl.value.images[0]">
+                                                            <img ng [src]="getSafeImageUrl(variantControl.value.images[0])" class="w-100 h-100 border" alt="">
+                                                        </div>
+                                                        <div class="color-container border rounded-3 overflow-hidden" *ngIf="variantControl.value.attributes.name === 'Color'" >
+                                                            tite
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
                                                         <div class="data w-100">
                                                             <div class="row ms-0 m-auto w-100 ">
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
-                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name }}</h1>
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name}}</h1>
                                                                 </div>
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
-                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">wala</h1>
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.attributes[0].name}} : {{variantControl.value.attributes[0].value}}</h1>
                                                                 </div>
                                                             </div>
                                                             <div class="row ms-0 m-auto w-100">
@@ -231,10 +239,10 @@
                                                 <form [formGroup]="addAttributeForm" *ngIf="editAttributes === false">
                                                             <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                                         <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  let ind = index">
-                                                                            <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                                            <ng-container *ngIf="variantsLists[i]; let variant">
                                                                                 <ng-container *ngIf="variant.value.attributes as attribute  ">
                                                                                     <div class="position-relative d-flex align-items-center">
-                                                                                        <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
+                                                                                        <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
                                                                                             <label class="form-label {{formTextColor}}">{{item.name}}</label>
                                                                                             <select 
                                                                                                 class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
@@ -251,7 +259,7 @@
                                                                                                 
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="w-100 mb-3" *ngIf="item.name === 'Color'">
+                                                                                        <div class="w-100 mb-3" *ngIf="item.name === 'Color' || item.name === 'Colors'">
                                                                                             <label class="form-label {{formTextColor}}">{{item.name}}</label>
                         
                                                                                             <app-color-picker
@@ -273,7 +281,7 @@
                                                     <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                       <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
                                                             <div class="position-relative d-flex align-items-center">
-                                                                <div class="w-100 mb-3" *ngIf="item.name !== 'Color'">
+                                                                <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
                                                                     <!-- <input
                                                                         [type]="item.name === 'color' ? 'color' : 'text'"
@@ -296,7 +304,7 @@
                                                                     </select>
     
                                                                 </div>
-                                                                <div class="w-100 mb-3" *ngIf="item.name === 'Color'">
+                                                                <div class="w-100 mb-3" *ngIf="item.name === 'Color' || item.name === 'Colors'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
 
                                                                     <app-color-picker
@@ -364,13 +372,12 @@
                                                     </div>
 
                                                     <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
-                                                        <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                        <ng-container *ngIf="variantsLists[i]; let variant">
                                                             <ng-container *ngFor="let images of variant.value.images; let ind = index">
                                                                 <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
                                                                     <div class="tooltips text-center rounded-2 mb-0 px-2">
                                                                         <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
                                                                     </div>
-                                                                    <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
                                                                 </div>
                                                                 <div 
                                                                     (mouseenter)="showToolTip(images, ind)"
@@ -386,6 +393,27 @@
                                                                 </div>
                                                             </ng-container>
                                                         </ng-container>
+                                                        <!-- <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                            <ng-container *ngFor="let images of variant.value.images; let ind = index">
+                                                                <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
+                                                                    <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                        <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div 
+                                                                    (mouseenter)="showToolTip(images, ind)"
+                                                                    (mouseleave)="unshowToolTip(images)"
+                                                                    [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[images.name] }"
+                                                                    class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                                >
+                                                                    <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
+                                                                        <i class="bi bi-x text-white"></i>
+                                                                    </button>
+                                                                    <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
+                                                                    
+                                                                </div>
+                                                            </ng-container>
+                                                        </ng-container> -->
                                                         <div *ngFor="let file of getFileKeys(); let ind = index">
                                                             <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
                                                                 <div class="tooltips text-center rounded-2 mb-0 px-2">

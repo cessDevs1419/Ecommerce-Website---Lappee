@@ -1,0 +1,33 @@
+
+
+::ng-deep .NgxEditor {
+    overflow-y: scroll;
+}
+
+::ng-deep .NgxEditor__MenuBar {
+    background: #1E2029 !important;
+    color: #fff;
+    border: 1px solid #BBB;
+    border-radius: 8px 8px 0 0 ;
+}
+
+::ng-deep .NgxEditor__Content {
+    min-height: 200px; 
+    color: #fff;
+    background: #1E2029;
+    border: 1px solid #BBB;
+    border-radius: 0 0 8px 8px;
+}
+
+::ng-deep .NgxEditor__Dropdown--Item{
+    background: #1E2029 ;
+}
+
+::ng-deep .NgxEditor__Popup{
+    background: #1E2029 !important;
+}
+
+::ng-deep .NgxEditor{
+    background: #1E2029 !important;
+    border: none !important;
+}
