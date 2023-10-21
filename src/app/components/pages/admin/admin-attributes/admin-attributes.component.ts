@@ -52,11 +52,10 @@ refreshTableData(): void {
   this.refreshData$.next();
 }
 onRowDataForDelete(rowData: any){
-  this.selectedRowDataForDelete = rowData;
+  this.selectedRowDataForDelete = rowData; 
 }
 onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
-
 }
 
 showMinusFunction(){

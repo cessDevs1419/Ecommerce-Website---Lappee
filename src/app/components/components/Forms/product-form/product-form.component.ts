@@ -212,6 +212,10 @@ export class ProductFormComponent {
 	
     }
     
+    getRTFValue(value: any){
+        console.log(value)
+    }
+    
     getSafeImageUrl(file: File) {
         const objectURL = URL.createObjectURL(file);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);

@@ -89,6 +89,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ColorPickerComponent } from './components/components/color-picker/color-picker.component';
 import { NotificationDropdownComponent } from './components/components/notification-dropdown/notification-dropdown.component';
 import { VerifyEmailComponent } from './components/pages/main/verify-email/verify-email.component';
+import { RichTextEditorComponent } from './components/components/rich-text-editor/rich-text-editor.component';
+import { NgxEditorModule } from 'ngx-editor';
 
 @NgModule({
   declarations: [
@@ -167,7 +169,7 @@ import { VerifyEmailComponent } from './components/pages/main/verify-email/verif
     ColorPickerComponent,
     NotificationDropdownComponent,
     VerifyEmailComponent,
-
+    RichTextEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -178,6 +180,7 @@ import { VerifyEmailComponent } from './components/pages/main/verify-email/verif
       headerName: 'X-XSRF-TOKEN'
     }),
     AppRoutingModule,
+    NgxEditorModule,
     RouterModule.forRoot([
       
       //client
