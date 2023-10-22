@@ -42,8 +42,8 @@
                             </button>
                         </h3>
                         <div class="accordion-collapse collapse show product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
-                            <div class="accordion-body">
-                                {{match.description}} 
+                            <div class="accordion-body" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(match.description)">
+                                
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,8 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
 
     return loginState$.pipe(
       switchMap((loginState: any) => {
-        if (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin')) {
+        console.log(route.url);
+        if (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin') || route.url[0].toString() === 'verify-email') {
           // redirect users not logged in
           console.log("Please log-in.");
           return of(router.parseUrl('/account'));

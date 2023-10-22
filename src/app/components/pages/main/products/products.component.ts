@@ -15,6 +15,7 @@ import { Review, ReviewItem } from 'src/assets/models/reviews';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/assets/models/user';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products',
@@ -69,7 +70,8 @@ export class ProductsComponent {
               private cdr: ChangeDetectorRef,
               private gallery: Gallery,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {}
+              private activatedRoute: ActivatedRoute,
+              public domSanitizer: DomSanitizer) {}
 
   colorCurrent = {
     name: '',
