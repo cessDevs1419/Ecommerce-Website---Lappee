@@ -292,7 +292,36 @@ export class ProductFormComponent {
     disableButton() {
         return this.attributeFormsArray.length < 1;
     }
-
+    disableSaveByImageSizeButton(): boolean {
+        let warningEmitted = false; // Initialize the flag as false
+    
+        for (const file of this.addVariantForm.value.images) {
+            this.checkImageResolution(file, (width, height, fileName) => {
+                const productWarn = {
+                    errorMessage: 'Add Variant',
+                    suberrorMessage: 'One of the Images Doesnt follow image rules'
+                };
+                switch (true) {
+                    case width < 720 || height < 1080:
+                        this.ProductWarning.emit(productWarn);
+                        warningEmitted = true;
+                        break;
+    
+                    case width > 2560 || height > 1440:
+                        this.ProductWarning.emit(productWarn);
+                        warningEmitted = true;
+                        break;
+                }
+            });
+    
+            if (warningEmitted) {
+                return true; 
+            }
+        }
+    
+        return false; 
+    }
+    
     disableProductButton() {
         return this.addProductForm.get('variants')?.value.length < 1;
     }
@@ -498,18 +527,17 @@ export class ProductFormComponent {
         const variantFormGroup = this.variantsLists.at(variantIndex) as FormGroup;
     
         if (variantFormGroup) {
-            const variantImages = variantFormGroup.get('images') as FormArray;
-    
-            if (variantImages) {
-                variantImages.removeAt(imageIndex);
-                console.log(variantImages); 
+            const imagesControl = variantFormGroup.get('images');
+            
+            if (imagesControl instanceof FormArray) {
+                if (imageIndex >= 0 && imageIndex < imagesControl.length) {
+                    imagesControl.removeAt(imageIndex);
+
+                } 
             }
-        }
+        } 
     }
     
-    
-    
-
     extractFileName(url: string): string {
         const parts = url.split('/'); 
         return parts[parts.length - 1]; 
@@ -699,7 +727,7 @@ export class ProductFormComponent {
         const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
-
+        let warningEmitted = false;
         
         if (addVariantForm.valid && this.addAttributeForm) {
             const formControls = this.addAttributeForm.controls;
@@ -731,20 +759,61 @@ export class ProductFormComponent {
                     attributesArray.push(newAttributeFormGroup);
                 }
             });
-
+            
             const newVariantControl = this.formBuilder.control(addVariantForm.value);
+            const newVariantGroup = this.formBuilder.group({
+                name: [addVariantForm.value.name],
+                price: [addVariantForm.value.price],
+                stock: [addVariantForm.value.stock],
+                attributes: [addVariantForm.value.attributes],
+                images: this.formBuilder.array(addVariantForm.value.images)
+            });
+            
             const newVariantVisible = this.formBuilder.group({
                 ...addVariantForm.value,
                 isVisible: true, 
             });
-
-            this.hideVariantValidationContainer = true
-            this.newvariantsArray.push(newVariantVisible);
-            variantsArray.push(newVariantControl);
-            this.toggleAccordion(index);
-            this.variantsLists.push(newVariantControl);
-
             
+            let allImagesValid = false; // Initialize the flag
+
+            // for (const file of addVariantForm.value.images) {
+            //     let warningEmitted = false; // Reset the flag for each image
+            
+            //     this.checkImageResolution(file, (width, height, fileName) => {
+            //         const productWarn = {
+            //             errorMessage: 'Add Variant',
+            //             suberrorMessage: 'One of the Images Doesnt follow image rules'
+            //         };
+            //         switch (true) {
+            //             case width < 720 || height < 1080:
+            //                 this.ProductWarning.emit(productWarn);
+            //                 warningEmitted = true;
+            //                 break;
+            
+            //             case width > 2560 || height > 1440:
+            //                 this.ProductWarning.emit(productWarn);
+            //                 warningEmitted = true;
+            //                 break;
+
+            //         }
+            
+            //         if (warningEmitted) {
+            //             return; // Exit the callback function early
+            //         }
+            //     });
+            
+            //     if (warningEmitted) {
+            //         allImagesValid = false;
+            //         break; // Exit the loop if any image triggered a warning
+            //     }
+            // }
+            
+            this.hideVariantValidationContainer = true;
+            this.newvariantsArray.push(newVariantVisible);
+            variantsArray.push(newVariantGroup);
+            this.variantsLists.push(newVariantGroup);
+            this.toggleAccordion(index);
+        
             const productSuccess = {
                 head: 'Add Variant',
                 sub: 'Successfully Add Variant'
@@ -759,14 +828,16 @@ export class ProductFormComponent {
             }
             this.addAttributeForm.reset();
             this.fileUrlMap.clear();
-            while (attributesArray .length !== 0) {
-                attributesArray .removeAt(0);
+            while (attributesArray.length !== 0) {
+                attributesArray.removeAt(0);
             }
             while (imagesArray.length !== 0) {
                 imagesArray.removeAt(0);
             }
             this.product_service.removeAllImg();
             this.isFormSave = false;
+            
+            
         }else{
             addVariantForm.markAllAsTouched();
             const emptyFields = [];
@@ -795,10 +866,11 @@ export class ProductFormComponent {
         const variants = this.addVariantForm;
         const variantsArray = this.addProductForm.get('variants') as FormArray;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
         const formControls = this.addAttributeForm.controls;
         const attributeFormsArray = this.attributeFormsArray;
         const attribute = variantsArray.value[index].attributes
-
+        const variantsList = this.variantsLists
 
         Object.keys(formControls).forEach((controlName: string) => {
                 const controlValue = formControls[controlName].value;
@@ -846,28 +918,81 @@ export class ProductFormComponent {
             }
         });
         
-        // const imagesControlValues: any[] = [];
+        const newVariantGroup = this.formBuilder.group({
+            name: [variants.value.name],
+            price: [variants.value.price],
+            stock: [variants.value.stock],
+            attributes: [variants.value.attributes],
+            images: this.formBuilder.array([])
+        });
 
-        // // Iterate through the variants and collect the 'images' control values
-        // for (let i = 0; i < variantsArray.length; i++) {
-        //     const variantControl = variantsArray.at(i) as FormGroup;
-        //     const imagesArray = variantControl.get('images') as FormArray;
-            
-        //     const imagesControlValue = imagesArray.value;
-        //     imagesControlValues.push(imagesControlValue);
-        // }
-    
-        // const newVariantControl = this.formBuilder.control({ images: imagesControlValues });
-        const newVariantControl = this.formBuilder.control(variants.value);
+        if (Array.isArray(imagesArray.value)) {
+            const imagesArrays = newVariantGroup.get('images') as FormArray;
+            imagesArrays.clear();
 
-
-        if (index >= 0 && index < variantsArray.length) {
-            this.variantsArray.removeAt(index);
-            this.variantsArray.push(newVariantControl);
-            console.log(newVariantControl)
+            for (const item of variantsList[index].value.images) {
+                newVariantGroup.value.images?.push(item);
+            }
+            for (const item of imagesArray.value) {
+                newVariantGroup.value.images?.push(item);
+            }
         }
+
+
+        for (const file of (newVariantGroup.value.images || []) as File[]) {
+            this.checkImageResolution(file, (width, height, fileName) => {
+                if (width < 720 || height < 1080) {
+                    const productWarn = {
+                        errorMessage: 'Add Variant',
+                        suberrorMessage: 'One of Images is Too Small'
+                    };
+                    this.ProductWarning.emit(productWarn);
+                } else if (width > 2560 || height > 1440) {
+                    const productWarn = {
+                        errorMessage: 'Add Variant',
+                        suberrorMessage: 'One of Images is Too Large'
+                    };
+                    this.ProductWarning.emit(productWarn);
+                } else {
+                    this.hideVariantValidationContainer = true
+                    if (index >= 0 && index < variantsArray.length) {
+                        this.variantsArray.removeAt(index);
+                        this.variantsArray.push(newVariantGroup);
+                    }
+                    
+                    if (this.variantsLists) {
+                        this.variantsLists.splice(index);
+                        this.variantsLists.push(newVariantGroup);
+                    }
+                    
+                    const productSuccess = {
+                        head: 'Edit Variant',
+                        sub: 'Successfully Edit Variant'
+                    };
+                
+                    this.RefreshTable.emit();
+                    this.ProductSuccess.emit(productSuccess);
+                    for (let i = variantsArray.length - 1; i >= 0; i--) {
+                        if (variantsArray.at(i).value === null) {
+                            variantsArray.removeAt(i);
+                        }
+                    }
+                    this.addAttributeForm.reset();
+                    this.fileUrlMap.clear();
+                    while (attributesArray .length !== 0) {
+                        attributesArray .removeAt(0);
+                    }
+                    while (imagesArray.length !== 0) {
+                        imagesArray.removeAt(0);
+                    }
+                    this.product_service.removeAllImg();
+                    this.isFormSave = false;
+                }
+            });
+        }
+
+
         
-        console.log(this.addProductForm.value);
         this.toggleAccordion(index);
 
     }
@@ -885,11 +1010,13 @@ export class ProductFormComponent {
         if(this.variantForms.length < 1){
             this.hideVariantValidationContainer = true
         }
-        while (attributesArray .length !== 0) {
-            attributesArray .removeAt(0);
+        while (attributesArray.length !== 0) {
+            attributesArray.removeAt(0);
         }
+        this.variantsLists.splice(index);
         while (imagesArray.length !== 0) {
             imagesArray.removeAt(0);
+            imagesArray.clear();
         }
         this.isFormSave = false;
     }
