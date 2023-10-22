@@ -196,7 +196,7 @@ import { NgxEditorModule } from 'ngx-editor';
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
       {path: 'tos', component: TosComponent, title: 'Terms of Service'},
-      {path: 'verify-email/:id/:token', component: VerifyEmailComponent, title: 'Email Verification'},
+      {path: 'verify-email/:id/:token', component: VerifyEmailComponent, canActivate: [authGuard], title: 'Email Verification'},
 
       //admin
       {
