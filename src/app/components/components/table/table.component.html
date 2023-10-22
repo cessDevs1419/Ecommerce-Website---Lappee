@@ -262,7 +262,7 @@
                             </td>
                             
                             <!--Enable this table Actions-->
-                            <td colspan="1" *ngIf="tableAction" class="{{textcolor}} position-relative ">
+                            <td colspan="1" *ngIf="tableAction" class="{{textcolor}} position-relative d-flex justify-content-center">
                                 <div *ngIf="actionBtn" class=" m-auto d-flex align-items-center p-2">
                                     <button 
                                         id="actionBtn" 
@@ -321,7 +321,30 @@
                                     </button>
                                     
                                 </ng-container>   
-
+                                
+                                <ng-container class="d-flex">
+                                    <button
+                                        (click)="sendRowData(item)"
+                                        *ngIf="viewBtn"
+                                        type="button" 
+                                        class="{{viewBtnclass}} btn btn-primary bg-none text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                        data-bs-toggle="modal" data-bs-target="#view"
+                                        [title]="'View'"
+                                    >
+                                        <i class="bi bi-eye fs-5"></i>
+                                    </button>
+                                    
+                                    <button
+                                        (click)="sendRowData(item)"
+                                        *ngIf="viewBtn2"
+                                        type="button" 
+                                        class="{{viewBtnclass}} btn btn-primary bg-none text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
+                                        data-bs-toggle="modal" data-bs-target="#view2"
+                                        [title]="'View'"
+                                    >
+                                        <i class="bi bi-eye fs-5"></i>
+                                    </button>
+                                </ng-container>
                                 <!--ACCOUNT STATUS BTN-->
                                 <ng-container *ngIf="bannedBtn">
                                     <button

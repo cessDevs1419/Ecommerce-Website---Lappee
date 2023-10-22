@@ -14,12 +14,12 @@
                             </ng-container>
                             <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
                         </div>
-                        <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
-                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="allowAnotherSub">
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                        <div class="modal-sub-title fs-6 fw-bold {{modalTitleColor}}">{{modalSubTitle}}</div>
+                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " *ngIf="allowAnotherSub">
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
                         </div>
                     </div>  
                     
@@ -201,27 +201,28 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalData">
-                    <h1 class="form-title fs-4 fw-bolder mb-4" >Order Summarry</h1>
+                <div class="container m-auto p-2" *ngIf="modalData">
+                    <hr class="divider  {{modalBorderColor}}">
+                    <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Order Summarry</h1>
                     <ul class="list-unstyled" *ngFor="let item of modalSubData | async">
-                        <li class="text-decoration-none row">
+                        <li class="text-decoration-none row mb-2">
                             <div class="col-sm-8 text-start">
-                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate">{{item.product_id}}</p>
-                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">variant</p>
-                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">x{{item.quantity}}</p>
+                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">{{item.product_id}}</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">variant</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">x{{item.quantity}}</p>
                             </div>
                             <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                <h1 class="product_price fs-4 fw-bolder" >₱{{item.sub_price}}</h1>
+                                <h1 class="product_price fs-4 fw-bolder {{modalTitleColor}}" >₱{{item.sub_price}}</h1>
                             </div>
                         </li>
                     </ul>
-                    <hr class="divider mb-4">
+                    <hr class="divider mb-4 {{modalBorderColor}}">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="fs-5 fw-bold">Subtotal</h3>
+                            <h3 class="fs-5 fw-bold {{modalTitleColor}}">Subtotal</h3>
                         </div>
                         <div class="col-sm-6 d-flex justify-content-end align-content-center">
-                            <h1 class="form-title fs-2 fw-bolder mb-4" >₱{{selectedRowData?.total_price}}</h1>
+                            <h1 class="form-title fs-2 fw-bolder mb-4 {{modalTitleColor}}" >₱{{selectedRowData?.total_price}}</h1>
                         </div>
                     </div>
                 </div>

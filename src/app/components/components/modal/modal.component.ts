@@ -78,7 +78,9 @@ export class ModalComponent {
 	//modal theme
 	modalTheme: string = 'table-bg-dark';
 	modalTitleColor : string = 'dark-theme-text-color';
-	
+	modalBorderColor: string = 'border-grey';
+	modalHeaderColor: string = 'text-white';
+	modalitemColor: string = 'text-white-50';
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
     
