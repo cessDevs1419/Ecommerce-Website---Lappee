@@ -8,9 +8,14 @@
             <div>
                 <img src="https://picsum.photos/200" class="user-image">
             </div>
-            <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4" *ngIf="this.user | async; let user">
-                <a [routerLink]="['/profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">{{this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "")}}</p></a>
-                <p class="text-muted m-0 text-center text-lg-start">{{ this.user.email }}</p>
+            <div *ngIf="this.user | async; let user">
+                <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4" *ngIf="this.user.fname && this.user.lname">
+                    <a [routerLink]="['/profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">{{this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "")}}</p></a>
+                    <p class="text-muted m-0 text-center text-lg-start">{{ this.user.email }}</p>
+                </div>
+                <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4" *ngIf="!this.user.fname || !this.user.lname">
+                    <a [routerLink]="['/profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">{{this.user.email}}</p></a>
+                </div>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ import { User } from 'src/assets/models/user';
 export class ProfileComponent {
   isEditMode: boolean = false;
   isSubmitEdit: boolean = false; 
+  isNameEditable: boolean = true;
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
@@ -25,6 +26,10 @@ export class ProfileComponent {
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
   
   editProfileForm = new FormGroup({
+    editFirstName: new FormControl('', Validators.required),
+    editMiddleName: new FormControl(''),
+    editLastName: new FormControl('', Validators.required),
+    editSuffix: new FormControl(''),
     editProvince: new FormControl('', Validators.required),
     editCity: new FormControl('', Validators.required),
     editAddressLine: new FormControl('', Validators.required),
@@ -37,6 +42,10 @@ export class ProfileComponent {
   get editAddressLine() { return this.editProfileForm.get('editAddressLine')}
   get editZipCode() { return this.editProfileForm.get('editZipCode')}
   get editPhoneNumber() { return this.editProfileForm.get('editPhoneNumber')}
+  get editFirstName() { return this.editProfileForm.get('editFirstName') }
+  get editMiddleName() { return this.editProfileForm.get('editMiddleName') }
+  get editLastName() { return this.editProfileForm.get('editLastName') }
+  get editSuffix() { return this.editProfileForm.get('editSuffix') }
 
   toastTheme!: string;
   toastHeader!: string;
@@ -71,6 +80,18 @@ export class ProfileComponent {
                       editZipCode: info[0].zip_code.toString(),
                       editPhoneNumber: info[0].number
                     })
+                    if(response.fname && response.lname) {
+                      this.editProfileForm.patchValue({
+                        editFirstName: response.fname,
+                        editLastName: response.lname,
+                        editMiddleName: response.mname,
+                        editSuffix: response.suffix
+                      })
+                      this.editFirstName?.disable();
+                      this.editLastName?.disable();
+                      this.editMiddleName?.disable();
+                      this.editSuffix?.disable();
+                    }
                   }
                   else {
                     this.isSubmitEdit = false;
@@ -108,6 +129,11 @@ export class ProfileComponent {
       console.log(formData);
 
       if(!this.isSubmitEdit) {
+        formData.append('first_name', this.editFirstName?.value);
+        formData.append('middle_name', this.editMiddleName?.value ? this.editMiddleName?.value : '');
+        formData.append('last_name', this.editLastName?.value);
+        formData.append('suffix', this.editSuffix?.value ? this.editSuffix?.value : '');
+
         this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
           next: (response: any) => {
             this.toastHeader = "Successfully added!";
