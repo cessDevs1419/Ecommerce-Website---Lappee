@@ -13,7 +13,8 @@ export interface User {
     suffix: string,
     created_at: string,
     last_login: string,
-    user_type: number
+    user_type: number,
+    email_verified_at: string
     
 }
 

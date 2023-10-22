@@ -25,6 +25,7 @@ export class AccountsService {
     created_at: '',
     last_login: '',
     user_type: 0,
+    email_verified_at: ''
   }
   
   tempaddress = {
@@ -101,7 +102,8 @@ export class AccountsService {
         suffix: response.data.suffix,
         created_at: response.data.created_at,
         last_login: response.data.last_login,
-        user_type: response.data.user_type
+        user_type: response.data.user_type,
+        email_verified_at: response.data.email_verified_at
     });
   }
 
@@ -118,6 +120,7 @@ export class AccountsService {
           created_at: '',
           last_login: '',
           user_type: 0,
+          email_verified_at: ''
         };
         this.isLoggedIn = false;
         this.loggedUser = of({
@@ -129,7 +132,8 @@ export class AccountsService {
           suffix: '',
           created_at: '',
           last_login: '',
-          user_type: 0
+          user_type: 0,
+          email_verified_at: ''
         })
       })
     ); 

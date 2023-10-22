@@ -5,37 +5,45 @@
 
     <app-profile-banner></app-profile-banner>
 
-    <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="this.isEditMode">
+    <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="this.isEditMode" *ngIf="this.user | async; let user">
         <div class="pb-2 border-bottom d-flex justify-content-between align-items-center">
             <p class="fs-2 fw-bold m-0">My Profile</p>
-            <button (click)="this.isEditMode = !this.isEditMode" class="button-primary rounded-0">Edit Profile <i class="bi bi-pencil-fill ms-3"></i></button>
+            <button *ngIf="this.user.fname && this.user.lname" (click)="this.isEditMode = !this.isEditMode" class="button-primary rounded-0">Edit Profile <i class="bi bi-pencil-fill ms-3"></i></button>
         </div>
         <div class="row mt-3">
-            <div class="col fs-4" *ngIf="this.user | async; let user">
-                <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
-                <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
-                <div *ngIf="!(this.filteredInfo | async)">
-                    <span class="text-muted pe-3">Phone Number:</span>Loading...
-                </div>
-                <div *ngIf="this.filteredInfo | async as info">
-                    <p *ngIf="info.length === 0">
-                        <span class="text-muted pe-3">Phone Number:</span>Not Set
-                    </p>
-                    <p *ngIf="info.length > 0">
-                        <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
-                    </p>
-                </div>
+            <div *ngIf="!this.user.fname || !this.user.lname" class="d-flex flex-column align-items-center text-center">
+                <p ><i class="bi bi-emoji-frown-fill fs-1"></i></p>
+                <p class="fw-bold fs-5 m-0">Looks like some of your details are missing.</p>
+                <p class="">Complete your account details through the Edit Profile button.</p>
+                <button class="button-primary" (click)="this.isEditMode = true">Edit Profile</button>
             </div>
-            <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
-                <p class="text-muted">Loading...</p>
-            </div>
-            <div class="col border-start fs-4 ps-4" *ngIf="(this.filteredInfo | async) as info">
-                <div *ngIf="info.length === 0">
-                    Setup your address through the edit profile form.
+            <div class="row mt-3" *ngIf="this.user.fname && this.user.lname">
+                <div class="col fs-4">
+                    <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
+                    <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
+                    <div *ngIf="!(this.filteredInfo | async)">
+                        <span class="text-muted pe-3">Phone Number:</span>Loading...
+                    </div>
+                    <div *ngIf="this.filteredInfo | async as info">
+                        <p *ngIf="info.length === 0">
+                            <span class="text-muted pe-3">Phone Number:</span>Not Set
+                        </p>
+                        <p *ngIf="info.length > 0">
+                            <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
+                        </p>
+                    </div>
                 </div>
-                <div *ngIf="info.length > 0">
-                    <p class="text-muted">Address:</p>
-                    <p class="m-0">{{info[0].address}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</p>
+                <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
+                    <p class="text-muted">Loading...</p>
+                </div>
+                <div class="col border-start fs-4 ps-4" *ngIf="(this.filteredInfo | async) as info">
+                    <div *ngIf="info.length === 0">
+                        Setup your address through the edit profile form.
+                    </div>
+                    <div *ngIf="info.length > 0">
+                        <p class="text-muted">Address:</p>
+                        <p class="m-0">{{info[0].address}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,17 +55,51 @@
         </div>
         <div class="mt-3">
             <form [formGroup]="editProfileForm">
-                <!-- <div class="row mb-3">
+                <p class="fw-bold fs-4">Personal Information</p>
+                
+                <div class="row mb-4">
                     <div class="col">
-                        <label for="edit-fullname" class="form-label">Full Name</label>
-                        <input type="text" class="form-control form-control-lg rounded-0" id="edit-fullname" />
+                        <label for="editFirstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editFirstName" formControlName="editFirstName" />
+                        <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
+                            <div *ngIf="editFirstName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="edit-username" class="form-label">Username</label>
-                        <input type="text" class="form-control form-control-lg rounded-0" id="edit-username" />
-                    </div>
-                </div> -->
 
+                    <div class="col">
+                        <label for="editMiddleName" class="form-label">Middle Name (Optional)</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editMiddleName" formControlName="editMiddleName" />
+                        <!-- <div *ngIf="editMiddleName?.invalid && (editMiddleName?.dirty || editMiddleName?.touched)"> 
+                            <div *ngIf="editMiddleName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="col">
+                        <label for="editLastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editLastName" formControlName="editLastName" />
+                        <div *ngIf="editLastName?.invalid && (editLastName?.dirty || editLastName?.touched)"> 
+                            <div *ngIf="editLastName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <label for="editSuffix" class="form-label">Suffix (Optional)</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editSuffix" formControlName="editSuffix" />
+                        <!-- <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
+                            <div *ngIf="editFirstName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                
+                <p class="fw-bold fs-4">Contact Information</p>
                 <div class="row mb-3">
                     <label for="edit-phonenumber" class="form-label">Phone Number</label>
                     <div class="input-group">
