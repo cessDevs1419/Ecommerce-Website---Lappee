@@ -115,12 +115,13 @@
         </div>
         <hr class="mb-4 w-75 w-md-100 mx-auto">
         <div class="row mb-3 px-3">
-            <button type="submit" class="button-primary rounded-0 mb-3">REGISTER</button>
+            <button type="submit" class="button-primary rounded-0 mb-3">REGISTER <app-outline-circle-spinner class="ms-3" *ngIf="isLoading"></app-outline-circle-spinner></button>
+            <p class="m-0 text-center">Have an account? Log-in <a [routerLink]="['/login']">here</a>.</p> 
         </div>
-        <div *ngFor="let item of response | async">
+        <!-- <div *ngFor="let item of response | async">
             <p>{{item.success}}</p>
             <p>{{item.message}}</p>
             <p>{{item.data}}</p>
-        </div>
+        </div> -->
     </form>
 </div>

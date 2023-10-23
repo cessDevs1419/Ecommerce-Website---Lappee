@@ -1,0 +1,25 @@
+#entryDiv {
+    gap: 2rem;
+}
+
+.entry-form {
+    max-width: 492px;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+.active-shown {
+    border-bottom: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.inactive-hidden {
+    border-bottom: none;
+    color: #000000;
+}

@@ -91,6 +91,9 @@ import { NotificationDropdownComponent } from './components/components/notificat
 import { VerifyEmailComponent } from './components/pages/main/verify-email/verify-email.component';
 import { RichTextEditorComponent } from './components/components/rich-text-editor/rich-text-editor.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { LoginComponent } from './components/pages/main/login/login.component';
+import { RegisterComponent } from './components/pages/main/register/register.component';
+import { OutlineCircleSpinnerComponent } from './components/components/loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +173,9 @@ import { NgxEditorModule } from 'ngx-editor';
     NotificationDropdownComponent,
     VerifyEmailComponent,
     RichTextEditorComponent,
+    LoginComponent,
+    RegisterComponent,
+    OutlineCircleSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -185,7 +191,9 @@ import { NgxEditorModule } from 'ngx-editor';
       
       //client
       {path: 'home', component: HomeComponent, title: 'Home'},
-      {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
+      //{path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
+      {path:'login', component: LoginComponent, canActivate: [authGuard], title: 'Log In'},
+      {path: 'register', component: RegisterComponent, canActivate: [authGuard], title: 'Register'},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'category/:categoryId' , component: CategoryProductsComponent},
       {path: 'products/:productId', component: ProductsComponent},

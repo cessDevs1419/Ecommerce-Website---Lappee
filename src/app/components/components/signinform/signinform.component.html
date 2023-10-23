@@ -19,14 +19,19 @@
                 </div>
             </div>
         </div>
-        <div class="mb-4 form-check">
-            <input type="checkbox" value="" class="form-check-input" id="signInRememberMe" formControlName="signInRememberMe"> 
-            <label for="signInRememberMe" class="form-check-label">Remember me</label>
+        <div class="mb-4 d-flex justify-content-between">
+            <div class="form-check">
+                <input type="checkbox" value="" class="form-check-input" id="signInRememberMe" formControlName="signInRememberMe"> 
+                <label for="signInRememberMe" class="form-check-label">Remember me</label>
+            </div>
+            <div>
+                <a href="#" class="text-reset text-center forgot-pass">Forgot your password?</a>
+            </div>
         </div>
         <hr class="mb-4 w-75 w-md-100 mx-auto">
         <div class="row mb-3 px-3">
-            <button type="submit" class="button-primary rounded-0 mb-3">SIGN IN</button> 
-            <a href="#" class="text-reset text-center forgot-pass">Forgot your password?</a>
+            <button type="submit" class="button-primary rounded-0 mb-3">SIGN IN</button>
+            <p class="m-0 text-center">No account yet? Register <a [routerLink]="['/register']">here</a>.</p> 
         </div>
     </form>
 </div>

@@ -4,6 +4,7 @@ import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValida
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { OutlineCircleSpinnerComponent } from '../loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 
 @Component({
   selector: 'app-signupform',
@@ -12,8 +13,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignupformComponent {
 
-  @Output() registerSuccess: EventEmitter<any> = new EventEmitter(); 
+  circleLoader = OutlineCircleSpinnerComponent;
+  @Output() registerSuccess: EventEmitter<string> = new EventEmitter(); 
   response!: Observable<any>;
+  isLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
 
@@ -42,6 +45,7 @@ export class SignupformComponent {
   
 
     if(this.signUpForm.valid){
+      this.isLoading = true;
       // submit
       console.warn(this.signUpForm.value);
 
@@ -61,8 +65,9 @@ export class SignupformComponent {
     this.accountsService.postRegisterUser(formData).subscribe({
         next: (response: any) => { 
           console.log(response);
+          this.registerSuccess.emit(this.signUpEmail?.value!);
+          this.isLoading = false;
           this.signUpForm.reset();
-          this.registerSuccess.emit();
         },
         error: (error: HttpErrorResponse) => {
           return throwError(() => error)

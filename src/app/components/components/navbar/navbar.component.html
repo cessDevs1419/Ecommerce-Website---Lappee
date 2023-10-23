@@ -12,7 +12,7 @@
             <p class="fs-6 my-2" *ngIf="this.accountService.getLoggedUser() | async"><a href="#" class="text-reset" (click)="this.gotoaccount()"><i class="bi bi-bell"></i> Notifications</a></p> 
             -->
             <p class="fs-6 my-2" *ngIf="!this.accountService.getIsLoggedIn()">
-                <a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a>
+                <a title="Log In" [routerLink]="['/login']" class="text-reset">Login</a> | <a title="Register" [routerLink]="['/register']" class="text-reset">Register</a>
             </p>
 
             <div class="fs-6 my-2 d-flex align-items-center" *ngIf="this.accountService.getIsLoggedIn()">
