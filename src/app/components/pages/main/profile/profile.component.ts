@@ -170,6 +170,7 @@ export class ProfileComponent {
             this.toast.show();
           },
           complete: () => {
+            this.user = this.accountService.getLoggedUser();
             this.isEditMode = false;
             this.checkAddress();
           }

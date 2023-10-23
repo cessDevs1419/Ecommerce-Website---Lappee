@@ -16,6 +16,13 @@
                 <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4" *ngIf="!this.user.fname || !this.user.lname">
                     <a [routerLink]="['/profile']" class="text-decoration-none"><p class="color-primary fw-bold fs-3 m-0">{{this.user.email}}</p></a>
                 </div>
+                <div class="d-flex flex-column align-items-center align-items-lg-start justify-content-center m-0 mt-3 mt-lg-0 ms-lg-4">
+                    <span class="badge" [ngClass]="this.user.email_verified_at ? 'bg-success' : 'bg-danger'">
+                        <i class="bi me-2" [ngClass]="this.user.email_verified_at ? 'bi-check' : 'bi-x'"></i>
+                        {{this.user.email_verified_at ? 'Verified Email' : 'Unverified Email'}}    
+                    </span>
+                </div>
+                
             </div>
         </div>
     </div>

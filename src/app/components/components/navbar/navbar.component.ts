@@ -46,6 +46,7 @@ export class NavbarComponent {
 
   siteLogo: Observable<SiteLogo>;
   isInfoRegistered: boolean;
+  setupDetailsResolved: boolean = false;
   
   // 3/23/2023 - use Renderer2 to handle clicks
   constructor(private CategoriesService: CategoriesService, 
@@ -132,6 +133,7 @@ export class NavbarComponent {
                   if(match) {
                     console.log('has matching address')
                     this.isInfoRegistered = true;
+                    this.setupDetailsResolved = true;
                   }
                   else {
                     console.log('no matching address')
