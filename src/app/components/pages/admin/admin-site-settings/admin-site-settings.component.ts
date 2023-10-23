@@ -17,8 +17,12 @@ import * as bootstrap from 'bootstrap';
   styleUrls: ['./admin-site-settings.component.css']
 })
 export class AdminSiteSettingsComponent {
-
-  btncolor: string = 'dark-subtle-btn'
+  
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
   size: string = 'w-100';
 
   // To know whether to show or hide add banner form.

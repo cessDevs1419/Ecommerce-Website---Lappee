@@ -42,10 +42,7 @@ export class AdminAttributesComponent {
         switchMap(() => this.attribute_service.getAttribute()),
         map((Response: any) => formatAttributes(Response))
     );
-  
-    
-    
-    
+
   }
 
 refreshTableData(): void {

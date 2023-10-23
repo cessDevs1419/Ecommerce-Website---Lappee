@@ -23,7 +23,7 @@
       
       (rowDataSelected)="getSelectedSection($event)"
 
-      [addBtn]="true"
+      [addProdBtn]="true"
       addbtnName="Add Section"
       (ShowAddForm)="toggleAddSectionForm()"
       
@@ -38,7 +38,7 @@
       <div class="modal-content ">
         <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
             <div class="modal-title text-start">
-                <h1 class="modal-title fs-4 fw-bolder" >DELETE SECTION {{ this.selectedSection.title | uppercase }}</h1>
+                <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >DELETE SECTION {{ this.selectedSection.title | uppercase }}</h1>
                 <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #confirmDeleteModal></button>
@@ -58,26 +58,26 @@
 </div>
 
 <div *ngIf="showAddSectionForm">
-  <div class="container-md h-auto p-2">
+  <div class="container-md h-auto p-2 {{borderColor}} {{backGround}}">
     <div class="row">
       <div class="col-xxl-6">
         <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
-          <h1 class="fw-bold fs-4 mb-0">ADD SECTION</h1>
+          <h1 class="fw-bold fs-4 mb-0 ">ADD SECTION</h1>
           <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
 
           <form [formGroup]="aboutUsAddSectionForm" (ngSubmit)="submitAddSectionForm()">
             <div class="row row-cols-1 gy-3">
               <div class="col">
-                <label for="sectionHeader" class="form-label mb-1">Section Header*</label>
-                <input type="text" class="form-control" id="sectionHeader" formControlName="sectionHeader" placeholder="Section Title">
+                <label for="sectionHeader" class="form-label mb-1 {{textColor}}">Section Header*</label>
+                <input type="text" class="form-control bg-transparent border-1 {{textColor}}" id="sectionHeader" formControlName="sectionHeader" placeholder="Section Title">
               </div>
               <div class="col">
-                <label for="sectionContent" class="form-label mb-1">Section Content*</label>
-                <textarea id="sectionContent" cols="30" rows="10" formControlName="sectionContent" class="form-control" placeholder="Enter text here..."></textarea>
+                <label for="sectionContent" class="form-label mb-1 {{textColor}}">Section Content*</label>
+                <textarea id="sectionContent" cols="30" rows="10" formControlName="sectionContent" class="form-control bg-transparent border-1 {{textColor}}" placeholder="Enter text here..."></textarea>
               </div>
               <div class="col d-flex justify-content-end">
                 <button type="button" class="btn btn-muted me-3" (click)="toggleAddSectionForm()">Cancel</button>
-                <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+                <button type="submit" class="bg-theme-blue btn btn-primary glow-primary px-4">Save</button>
               </div>
             </div>
           </form>
@@ -85,4 +85,5 @@
       </div>
     </div>
   </div>
+
 </div>

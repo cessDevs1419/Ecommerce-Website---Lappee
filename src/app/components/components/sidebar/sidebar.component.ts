@@ -1,6 +1,11 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnInit } from '@angular/core';
+import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
+import { AdminNotification, AdminNotificationList } from 'src/assets/models/admin-notifications';
+import { NotificationsService } from 'src/app/services/notfications-service/notifications.service';
+import { formatNotificationsResponse } from 'src/app/utilities/response-utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,20 +29,34 @@ export class SidebarComponent {
   active_link: string = "active-link";
   active_link_icon: string = "active-link-icon";
   
+  notifications: Observable<AdminNotification[]>;
+  notificationsLength: Observable<AdminNotification[]>;
+
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
   }
 
-
-  
   @Input() headerName: string;
   @Input() admin!: boolean;
   @Input() courier!: boolean;
   
-  constructor(private router: Router) {}
+  private refreshData$ = new Subject<void>();
+
+  constructor(private router: Router,
+    private notification_service: NotificationsService,
+    private cdr: ChangeDetectorRef
+    ) {
+
+    }
   
   
-  ngOnInit(): void {
+  ngOnInit(): void{
+
+    this.notifications = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.notification_service.getNotifications()),
+      map((Response: any) => formatNotificationsResponse(Response))
+    );
 
   }
 
@@ -136,5 +155,30 @@ export class SidebarComponent {
   }
   isTermsSiteActive(): boolean {
     return this.router.url === '/admin/manage-tos';
+  }
+
+  refreshTableData(): void {
+      this.refreshData$.next();
+  }
+
+  calculateUnreadCount(items: AdminNotification[]): boolean {
+    return items.some(item => !item.is_read);
+  }
+  getNotifationData(data: any){
+      switch(data.type){
+        case 'order':
+          this.router.navigate(['/admin/order-management']);
+        break;
+      }
+      
+      this.notification_service.patchNotifications(data.id).subscribe({
+          next: async(response: any) => { 
+            this.refreshTableData();
+          },
+          error: (error: HttpErrorResponse) => {
+    
+          }
+    
+      });
   }
 }

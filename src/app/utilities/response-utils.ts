@@ -11,7 +11,8 @@ import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inqu
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
 import { AttributeList, Attributes } from "src/assets/models/attributes";
-
+import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
+import { parse } from 'date-fns';
 
 // Formatting
 
@@ -116,7 +117,22 @@ export function formatAttributes(response: AttributeList): Attributes[] {
   }));
 }
 
-// returns Variant array from a ProductList
+// returns a Notifications Object
+
+export function formatNotificationsResponse(response: AdminNotificationList): AdminNotification[] {
+  return response.data.map((data: AdminNotification) => ({
+    id: data.id,
+    type: data.type,
+    content: data.content,
+    user_id: data.user_id,
+    is_read: data.is_read,
+    read_on: formatDate(data.read_on, 'medium', 'en_PH'),
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
+  }));
+}
+
+// returns Variant array from a ProductListparseFormattedDate
 /* export function formatProductVariants(response: ProductList): Variant[] {
   let variantList = response.data.flatMap((product: Product) => product.variants);
   return variantList.map((variant: Variant) => ({
@@ -417,4 +433,9 @@ export function orderSortByDate(orders: Observable<OrderDetail[]>, mode: string)
   }
 
   return orders;
+}
+
+export function parseFormattedDate(formattedDate: string): Date {
+  const parsedDate = parse(formattedDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+  return parsedDate;
 }

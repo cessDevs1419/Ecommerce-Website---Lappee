@@ -13,11 +13,15 @@
                 <div class="dropdown">
                     <div [title]="'Notifications'" data-bs-toggle="dropdown" class="header-icon-container mx-1 position-relative rounded-circle sidebar-bg-dark d-flex justify-content-center align-items-center cursor-pointer">
                         <i class="bi bi-bell-fill text-white fs-6"></i>
-                        <span class="position-absolute top-0 start-50 ms-2 mt-2 translate-middle p-1 bg-primary border border-light rounded-circle">
-                            <span class="visually-hidden">Notification</span>
-                        </span>
+                        <ng-container *ngIf="notifications | async as items">
+                            <ng-container *ngIf="calculateUnreadCount(items)">
+                                <span class="position-absolute top-0 start-50 ms-2 mt-2 translate-middle p-1 bg-primary border border-light rounded-circle">
+                                    <span class="visually-hidden">Notification</span>
+                                </span>
+                            </ng-container>
+                        </ng-container>
                     </div>
-                    <app-notification-dropdown></app-notification-dropdown>
+                    <app-notification-dropdown [data]="notifications" (getNotifationData)="getNotifationData($event)"></app-notification-dropdown>
                 </div>
                 <div [title]="'User Profile'" class="header-icon-container mx-1 position-relative rounded-circle sidebar-bg-dark d-flex justify-content-center align-items-center cursor-pointer">
                     <img src="" alt="img">
@@ -265,7 +269,8 @@
             </li> -->
             
         </ul>
-        
+
+
     </div>
     
 </div>

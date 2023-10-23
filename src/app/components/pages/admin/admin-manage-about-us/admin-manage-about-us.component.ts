@@ -14,6 +14,12 @@ import { formatAboutUsTos } from 'src/app/utilities/response-utils';
   styleUrls: ['./admin-manage-about-us.component.css']
 })
 export class AdminManageAboutUsComponent {
+  
+  // theme
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
 
   aboutUsSections: Observable<AboutUsTosSection[]>;
 

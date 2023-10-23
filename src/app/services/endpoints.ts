@@ -79,6 +79,10 @@ export const GETOrderDetail: string = api + "api/client/orders/details?order_id=
 export const GETOrderDetailByUser: string = api + "api/client/orders/user";
 export const POSTOrder: string = api + "api/client/orders/store";
 
+//Notifications 
+export const GETNotifications: string = api + "api/admin/notif";
+export const PATCHNotifications: string = api + "api/admin/notif/mark";
+
 //Inquiry Endpoints
 export const GETInquiry: string = api + "api/admin/inquiry";
 export const GETInquiryById: string = api + "api/admin/inquiry/view/";

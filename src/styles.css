@@ -173,9 +173,10 @@
 .glow{
     text-shadow: 0 0 5px #1C92FF, 0 0 15px #1C92FF, 0 0 5px #1C92FF;
 }
+
 .linear-gradient-border {
-    border-radius: 20px; 
-    border: 5px solid transparent; 
+    padding: .3rem;
+    border-radius: 20px;
     background: linear-gradient(65deg, #57596A 1.71%, rgba(87, 89, 106, 0.00) 35.01%, rgba(87, 89, 106, 0.00) 67.69%, #57596A 101.03%);
 }
 

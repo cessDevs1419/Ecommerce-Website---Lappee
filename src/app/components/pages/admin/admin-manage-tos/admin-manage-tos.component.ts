@@ -14,6 +14,12 @@ import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 })
 export class AdminManageTosComponent {
 
+
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;
