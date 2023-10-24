@@ -108,6 +108,10 @@ export class NotificationDropdownComponent {
     }
   }
   
+  calculateUnreadCount(items: any[]): number {
+    return items.filter(item => !item.is_read).length;
+  }
+  
   route(id:string, type:string){
 
     const data = {

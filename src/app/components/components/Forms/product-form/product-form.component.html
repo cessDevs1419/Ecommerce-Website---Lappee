@@ -188,10 +188,14 @@
                                                                     [value]="1"
                                                                     min="0"  
                                                                     step="1"
+                                                                    pattern="\d+"
                                                                     required
                                                                 >
                                                                 <span class="input-group-text bg-grey " id="basic-addon2">QTY</span>
                                                             </div>
+                                                            <p *ngIf="isStockZeroOrNegative(addVariantForm)" class="text-danger">
+                                                                Quantity should be greater than or equal to 1.
+                                                            </p>
                                                         </div>
                                                         
                                                         <div class="col-sm-6 mb-3">
@@ -207,15 +211,13 @@
                                                                     required
                                                                     step="0.01"
                                                                     [placeholder]="01.01"
-                                                                    
+                                                                    pattern="\d+(\.\d{2})?"
                                                                 >
                                                                 <span class="input-group-text bg-grey" id="basic-addon2">PHP</span>
                                                             </div>
-                                                            <!-- <p *ngIf="!isDecimal(addVariantForm.get('price')?.value)">
-                                                                price must be 2 decimal places, 00.00
-                                                                [class.border]="isDecimal(addVariantForm.get('price')?.value)"
-                                                                [class.border-danger]="!isDecimal(addVariantForm.get('price')?.value)"
-                                                            </p> (click)="addVariantForm.get('price')?.setValue(null)"-->
+                                                            <p *ngIf="isPriceZeroOrNegative(addVariantForm)" class="text-danger">
+                                                                Price should be greater than or equal to 0.01.
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -462,6 +464,7 @@
                                                         type="submit" 
                                                         class="btn btn-primary" 
                                                         (click)="saveVariant(i)"
+                                                        
                                                     >Save</button>
                                                 </div>
 

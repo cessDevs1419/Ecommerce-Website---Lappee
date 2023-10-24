@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef, ChangeDetectorRef, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, combineLatest, filter, first, forkJoin, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
+import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, catchError, combineLatest, debounceTime, filter, first, forkJoin, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 
 import { AdminCategory, NewAdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
@@ -175,8 +175,8 @@ export class ProductFormComponent {
         
         this.addVariantForm = this.formBuilder.group({
             name: ['', Validators.required],
-            stock: ['', Validators.required],
-            price: ['', Validators.required],
+            stock: [1 , [Validators.required]],
+            price: [1 , [Validators.required]],
             images: this.formBuilder.array([]),
             attributes: this.formBuilder.array([])
         });
@@ -213,12 +213,28 @@ export class ProductFormComponent {
         // );
 	
     }
-    
+    isStockZeroOrNegative(form: FormGroup): boolean {
+        const stockControl = form.get('stock');
+        if (stockControl?.value <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    isPriceZeroOrNegative(form: FormGroup): boolean {
+        const priceControl = form.get('price');
+        if (priceControl?.value <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     getRTFValue(value: any){
         // console.log(value)
         this.rtfValue = value
     }
-    
+
     getSafeImageUrl(file: File) {
         const objectURL = URL.createObjectURL(file);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -728,8 +744,17 @@ export class ProductFormComponent {
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
         let warningEmitted = false;
-        
-        if (addVariantForm.valid && this.addAttributeForm) {
+        if (this.isStockZeroOrNegative(addVariantForm) || this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                errorMessage: 'Invalid Input',
+                suberrorMessage: 'Stocks or Price has invalid inputs'
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        if (addVariantForm.valid) {
+
             const formControls = this.addAttributeForm.controls;
             const attributeFormsArray = this.attributeFormsArray;
 
@@ -840,6 +865,8 @@ export class ProductFormComponent {
             
         }else{
             addVariantForm.markAllAsTouched();
+            this.addAttributeForm.markAllAsTouched();
+
             const emptyFields = [];
             for (const controlName in addVariantForm.controls) {
                 if ( addVariantForm.controls.hasOwnProperty(controlName)) {
@@ -850,6 +877,29 @@ export class ProductFormComponent {
                     }
                 }
             }
+
+            // this.categoryAttributes.subscribe(category => {
+            //     const attributeIdToNameMap: { [key: string]: string } = {};
+              
+            //     category.attributes.forEach(attribute => {
+            //       attributeIdToNameMap[attribute.category_attribute_id] = attribute.name;
+            //     });
+              
+            //     const emptyFields: string[] = [];
+              
+            //     for (const controlName in this.addAttributeForm.controls) {
+            //       if (this.addAttributeForm.controls.hasOwnProperty(controlName)) {
+            //         const attributeControl = this.addAttributeForm.controls[controlName];
+            //         if (attributeControl.errors && (attributeControl.errors as any).required && attributeControl.invalid) {
+            //           const label = attributeIdToNameMap[controlName];
+            //           emptyFields.push(label);
+            //         }
+            //       }
+            //     }
+              
+            //     // Now, emptyFields should contain the names of attributes with required errors.
+            // });
+
             
             const errorDataforProduct = {
                 errorMessage: this.errorMessage,
@@ -1072,7 +1122,8 @@ export class ProductFormComponent {
 
         const productFormData: FormData = new FormData();
         let productName = this.addProductForm.get('name')?.value;
-        const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
+        const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1);
+        
         // Add Product Fields
         productFormData.append('name', capitalizedName)
         productFormData.append('category', this.addProductForm.get('category')?.value);

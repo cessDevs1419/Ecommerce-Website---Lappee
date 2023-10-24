@@ -120,7 +120,10 @@ export function formatAttributes(response: AttributeList): Attributes[] {
 // returns a Notifications Object
 
 export function formatNotificationsResponse(response: AdminNotificationList): AdminNotification[] {
-  return response.data.map((data: AdminNotification) => ({
+  const sortedData = response.data.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime(); 
+  });
+  return sortedData.map((data: AdminNotification) => ({
     id: data.id,
     type: data.type,
     content: data.content,

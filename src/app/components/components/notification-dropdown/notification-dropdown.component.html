@@ -2,10 +2,13 @@
 <div class="dropdown-menu rounded-4 overflow-auto dropdown-container p-4 mt-2 box-shadow {{bg_dark}}">
     <div class="title-container">
         <h1 class="fs-2 fw-bolder {{font_dark}}">Notifications</h1>
-        <ng-container >
-            <p class="fs-6 {{font_dark_subtle}} mt-0" *ngIf="data | async as items">
-                You have <span class="text-primary-subtle fs-6">{{items.length}} Notification<span *ngIf="items.length > 1">'s</span></span> today.
-            </p>
+
+        <ng-container *ngIf="data | async as items">
+            <ng-container *ngIf="calculateUnreadCount(items) > 0">
+                <p class="fs-6 {{font_dark_subtle}} mt-0" *ngIf="calculateUnreadCount(items) > 0">
+                    You have <span class="text-primary-subtle fs-6">{{calculateUnreadCount(items)}} Unread Notification<span *ngIf="calculateUnreadCount(items) > 1">'s</span></span>.
+                </p>
+            </ng-container>
         </ng-container>
     </div>
     <div class="realtime-sort-container mt-4" *ngIf="todayItems.length > 0">
