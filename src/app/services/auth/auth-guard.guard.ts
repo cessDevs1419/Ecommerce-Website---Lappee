@@ -39,7 +39,7 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
               // let admin users access admin page
               return true;
             }
-            else if(loginState && route.url.toString() === 'account'){
+            else if(loginState && (route.url.toString() === 'login' || route.url.toString() === 'register')){
               // redirect logged-in users from account page
               return router.parseUrl('/home');
             }

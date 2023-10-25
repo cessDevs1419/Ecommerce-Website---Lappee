@@ -61,6 +61,7 @@ export class ProfileComponent {
 
   checkAddress(): void {
     this.infos = this.deliveryinfoService.getDeliveryInfo().pipe(map((response: any) => formatDeliveryInfo(response)));
+    this.user = this.accountService.getLoggedUser();
     this.user.subscribe({
       next: (response: any) => {
         findDeliveryInfo(response.user_id, this.infos).subscribe({
@@ -149,8 +150,14 @@ export class ProfileComponent {
             this.toast.show();
           },
           complete: () => {
-            this.isEditMode = false;
-            this.checkAddress();
+            this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+              if(status){
+                this.user = this.accountService.getLoggedUser();
+                this.checkAddress();
+              }
+              
+              this.isEditMode = false;
+            })
           }
         })
       }
@@ -161,6 +168,8 @@ export class ProfileComponent {
             this.toastContent = "Your delivery information has been updated.";
             this.toast.switchTheme('default');
             this.toast.show();
+
+            this.user = this.accountService.getLoggedUser();
           },
           error: (err: HttpErrorResponse) => {
             console.log(err)
@@ -170,9 +179,16 @@ export class ProfileComponent {
             this.toast.show();
           },
           complete: () => {
-            this.user = this.accountService.getLoggedUser();
-            this.isEditMode = false;
-            this.checkAddress();
+            
+            this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+              if(status){
+                this.user = this.accountService.getLoggedUser();
+                this.checkAddress();
+              }
+
+              this.isEditMode = false;
+            })
+            
           }
         })
       }
