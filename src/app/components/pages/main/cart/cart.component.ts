@@ -89,7 +89,7 @@ export class CartComponent {
     products.subscribe({
       next: (response: any) => {
         this.products = response;
-        console.log(this.products);
+        console.log("Cart Fetch: ", this.products);
       },
       error: (err: HttpErrorResponse) => {
         console.log(err)
