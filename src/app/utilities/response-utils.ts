@@ -411,12 +411,12 @@ export function productSortByName(productObservable: Observable<CategoryProduct[
 export function productSortByPrice(productObservable: Observable<CategoryProduct[]>, mode: string): Observable<CategoryProduct[]> {
   if (mode == "ascending"){
     return productObservable.pipe(map((prods: CategoryProduct[]) => {
-      return prods.sort((a: any, b: any) => a.product_variants[0].price - b.product_variants[0].price);
+      return prods.sort((a: any, b: any) => a.price - b.price);
     }));
   }
   if (mode == "descending"){
     return productObservable.pipe(map((prods: CategoryProduct[]) => {
-      return prods.sort((a: any, b: any) => b.product_variants[0].price - a.product_variants[0].price);
+      return prods.sort((a: any, b: any) => b.price - a.price);
     }));
   }
   

@@ -40,11 +40,17 @@
             
             <app-searchbar class="flex-grow-1" searchString="searchString"></app-searchbar>
             
-            <a class="btn text-reset text-decoration-none" data-bs-toggle="dropdown">
+            <a class="btn text-reset text-decoration-none" [routerLink]="['/cart']">
                 <i class="bi bi-cart fs-1 position-relative">
                     <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>
                 </i>
             </a>
+
+            <!-- <a class="btn text-reset text-decoration-none" data-bs-toggle="dropdown">
+                <i class="bi bi-cart fs-1 position-relative">
+                    <span *ngIf="cartContents" class="position-absolute top-0 start-100 badge rounded-pill fst-normal cartBadge">{{cartContents.length}}</span>
+                </i>
+            </a> -->
             <ul class="dropdown-menu">
                 <div *ngIf="cartContents.length == 0" class="d-flex flex-column justify-content-center align-items-center mt-2">
                     <p><i class="bi bi-emoji-frown-fill fs-3"></i></p>
