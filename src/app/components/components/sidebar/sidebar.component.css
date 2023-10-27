@@ -56,8 +56,14 @@
     background: #1E2029;
 }
 .active-link{
-    background: #2E303D;
+    background: linear-gradient(to right, #1E2029 50%, #2E303D 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
     border-radius: 18px 0px 0px 18px;
+    transition: all .2s ease-in;
+}
+.item-container{
+    transition: all .2s ease-out;
 }
 
 .active-link-icon{
@@ -159,6 +165,24 @@ img{
         margin-top: 70px;
     }
 
+    .active-rounded-top{
+        border-radius: 0px ;
+    
+    }
+    
+    .active-rounded-bottom{
+        border-radius: 0px;
+    }
+
+    .sidebar{
+        padding-left: 0rem;
+    }
+    .nav-item{
+        padding-left: 1.8rem !important;
+    }
+    .active-link{
+        border-radius: 0px;
+    }
 }
 
 @media screen and (max-width: 572px) {

@@ -45,7 +45,6 @@
                                             name="addproductCategory" 
                                             formControlName="category" 
                                             (change)="onCategorySelect($event)"
-                                            
                                             required
                                         >
             
@@ -166,6 +165,7 @@
                                                     <div class="w-100 mb-3">
                                                         <label class="form-label {{formTextColor}}">Variant Name</label>
                                                         <input 
+                                                            [ngClass]="{'border-danger': name}"
                                                             type="text" 
                                                             class="form-control py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                             name="addVariantName" 
@@ -181,6 +181,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
+                                                                    [ngClass]="{'border-danger': stockBorder &&  isStockZeroOrNegative(addVariantForm)}"
                                                                     class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     id="addvariantQty" 
                                                                     name="addvariantQty" 
@@ -193,7 +194,7 @@
                                                                 >
                                                                 <span class="input-group-text bg-grey " id="basic-addon2">QTY</span>
                                                             </div>
-                                                            <p *ngIf="isStockZeroOrNegative(addVariantForm)" class="text-danger">
+                                                            <p *ngIf="stockBorder && isStockZeroOrNegative(addVariantForm)" class="text-danger">
                                                                 Quantity should be greater than or equal to 1.
                                                             </p>
                                                         </div>
@@ -203,6 +204,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
+                                                                    [ngClass]="{'border-danger': stockBorder &&  isPriceZeroOrNegative(addVariantForm)}"
                                                                     class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     name="addvariantPrice" 
                                                                     formControlName="price" 
@@ -215,7 +217,8 @@
                                                                 >
                                                                 <span class="input-group-text bg-grey" id="basic-addon2">PHP</span>
                                                             </div>
-                                                            <p *ngIf="isPriceZeroOrNegative(addVariantForm)" class="text-danger">
+
+                                                            <p *ngIf="priceBorder && isPriceZeroOrNegative(addVariantForm)" class="text-danger">
                                                                 Price should be greater than or equal to 0.01.
                                                             </p>
                                                         </div>
@@ -292,7 +295,7 @@
                                                                         required
                                                                     > -->
                                                                     <select 
-                                                                        
+                                                                        [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}"
                                                                         class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                         id="addproductCategory"
                                                                         name="addproductCategory" 
@@ -312,8 +315,10 @@
                                                                         [showLabel]="false"
                                                                         [placeholder]="'Pick color...'"
                                                                         [formControlName]="item.category_attribute_id"
-                                                                        required>
-    
+                                                                        required
+                                                                        
+                                                                        >
+                                                                        <!-- [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}" -->
                                                                     </app-color-picker>
                                                                 </div>
                                                                 

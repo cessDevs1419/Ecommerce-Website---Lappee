@@ -67,7 +67,7 @@
             <div [ngClass]=" isOverviewActive() ? admin_bg :''   " >
                 <div [ngClass]=" isManageOrderActive() ? admin_bg :''   " >
                     <div  [ngClass]="  isManageProductActive() ? active_link :'link-container' && isManageOrderActive() ? admin_bg :''">
-                        <div [ngClass]=" isOverviewActive() ?  'active-rounded-top ' + sidebar_bg : isManageOrderActive() ? 'active-rounded-bottom ' + sidebar_bg  :''   " >
+                        <div [ngClass]=" isOverviewActive() ?  'active-rounded-top item-container ' + sidebar_bg : isManageOrderActive() ? 'active-rounded-bottom ' + sidebar_bg  :''   " >
                             <div >
                                 
                                 <li (click)="showProduct()"  [ngClass]="isManageProductActive() ? ' d-flex align-items-center nav-item p-2 ps-2 mx-0 ' + active_link:'d-flex align-items-center nav-item p-2 ps-2 mx-0'   "  >
@@ -114,7 +114,7 @@
             
             <!-- Order management -->
             <div [ngClass]="isManageProductActive() ? admin_bg : isManageContentActive() ? admin_bg : '' ">  
-                <div [class]="isManageOrderActive() ? active_link : isManageProductActive() ? 'active-rounded-top border-0 ' +sidebar_bg  : isManageContentActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg :'' ">
+                <div [class]="isManageOrderActive() ? active_link : isManageProductActive() ? 'active-rounded-top border-0 item-container ' +sidebar_bg  : isManageContentActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg :'' ">
                 
                     <li  (click)="showOrders()" [ngClass]="isManageOrderActive() ? 'd-flex align-items-center nav-item p-2 ps-2 mx-0':'d-flex align-items-center nav-item p-2 ps-2 mx-0'"  >
                         <div [class]="isManageOrderActive() ? 'active-link-icon icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1':'icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1'  " >
@@ -142,7 +142,7 @@
             
             <!-- Content management -->
             <div [ngClass]="isManageOrderActive() ? admin_bg: isManageSalesReportActive() ? admin_bg :''">
-                <div [class]="isManageContentActive() ? active_link: isManageOrderActive() ? 'active-rounded-top border-0 ' + sidebar_bg : isManageSalesReportActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg :'link-container' ">
+                <div [class]="isManageContentActive() ? active_link: isManageOrderActive() ? 'active-rounded-top border-0 item-container ' + sidebar_bg : isManageSalesReportActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg :'link-container' ">
                 
                     <li  (click)="showContent()" [ngClass]="isManageContentActive() ? 'd-flex align-items-center nav-item p-2 ps-2 mx-0':'d-flex align-items-center nav-item p-2 ps-2 mx-0'"  >
                         <div [class]="isManageContentActive() ?  active_link_icon + ' icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1':'icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1' " >
@@ -190,7 +190,7 @@
             
             <!-- Sales Report -->
             <div [ngClass]="isManageContentActive() ? admin_bg : isManageInquiriesActive() ? admin_bg :''">
-                <div [class]="isManageContentActive() ? 'active-rounded-top ' + sidebar_bg : isManageInquiriesActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg : '' "  routerLinkActive="{{active_link}}">
+                <div [class]="isManageContentActive() ? 'active-rounded-top item-container ' + sidebar_bg : isManageInquiriesActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg : '' "  routerLinkActive="{{active_link}}">
                     <li [routerLink]="'/admin/sales-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
                         <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
@@ -206,7 +206,7 @@
             
             <!-- Inquiries -->
             <div [ngClass]="isManageSalesReportActive() ? admin_bg : isManageAccountsActive() ? admin_bg :'' ">
-                <div [class]="isManageSalesReportActive() ? 'active-rounded-top ' + sidebar_bg : isManageAccountsActive() ? 'active-rounded-bottom ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+                <div [class]="isManageSalesReportActive() ? 'active-rounded-top item-container ' + sidebar_bg : isManageAccountsActive() ? 'active-rounded-bottom ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
                     <li [routerLink]="'/admin/inquiry'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
                         <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
@@ -222,7 +222,7 @@
             
             <!-- Manage Accounts -->
             <div [ngClass]="isManageInquiriesActive() ? admin_bg :''">
-                <div [class]="isManageInquiriesActive() ? 'active-rounded-top ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+                <div [class]="isManageInquiriesActive() ? 'active-rounded-top item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
                     <li [routerLink]="'/admin/accounts-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
                         <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
@@ -237,7 +237,7 @@
             </div>
             
             <div [ngClass]="isManageAccountsActive() ? admin_bg :''">
-                <div [class]="isManageAccountsActive() ? 'p-3 active-rounded-top ' + sidebar_bg :''  " >
+                <div [class]="isManageAccountsActive() ? 'p-3 active-rounded-top item-container ' + sidebar_bg :''  " >
                     
                 </div>
             </div>

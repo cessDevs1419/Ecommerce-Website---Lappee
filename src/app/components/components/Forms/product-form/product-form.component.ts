@@ -103,8 +103,14 @@ export class ProductFormComponent {
     addBtn: boolean = false; 
     editBtn: boolean = false; 
 
+    stockBorder: boolean = false;
+    priceBorder: boolean = false;
+    validationStatus: { [key: string]: boolean } = {};
+    name: boolean = false;
+    
     selectedImages: string[] = [];
 
+    isSelectDisabled: boolean = false;
     hidevariantheader: boolean[] = [];
     selectedAttribute: Attributes[] = [];
     addedAttributes: Attributes[] = [];
@@ -213,6 +219,7 @@ export class ProductFormComponent {
         // );
 	
     }
+
     isStockZeroOrNegative(form: FormGroup): boolean {
         const stockControl = form.get('stock');
         if (stockControl?.value <= 0) {
@@ -559,9 +566,6 @@ export class ProductFormComponent {
         return parts[parts.length - 1]; 
     }
 
-    
-
-
 //Validate
     stockHigherThanLimitValidator(control: AbstractControl): ValidationErrors | null {
         const stockControl = control.get('stock');
@@ -738,21 +742,92 @@ export class ProductFormComponent {
         console.log('Updated selectedAttributeForms:', this.selectedAttributeForms);
     }
 
+
     saveVariant(index: any){
         const variantsArray = this.addProductForm.get('variants') as FormArray;
         const addVariantForm = this.addVariantForm;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
-        let warningEmitted = false;
-        if (this.isStockZeroOrNegative(addVariantForm) || this.isPriceZeroOrNegative(addVariantForm)) {
+        const imagesArrayValue = imagesArray.value
+
+        if (this.isStockZeroOrNegative(addVariantForm) && this.isPriceZeroOrNegative(addVariantForm)) {
             const errorDataforProduct = {
                 errorMessage: 'Invalid Input',
-                suberrorMessage: 'Stocks or Price has invalid inputs'
+                suberrorMessage: 'Stocks and Price has invalid inputs'
+            };
+            this.stockBorder = true
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isStockZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                errorMessage: 'Invalid Input',
+                suberrorMessage: 'Stocks has invalid inputs'
+            };
+            this.stockBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                errorMessage: 'Invalid Input',
+                suberrorMessage: 'Price has invalid inputs'
+            };
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }else{
+            this.priceBorder = false
+        }
+        
+        if (imagesArray.value.length === 0) {
+            const errorDataforProduct = {
+                errorMessage: 'Add Image',
+                suberrorMessage: 'Please Add Image'
             };
 
             this.ProductError.emit(errorDataforProduct);
             return;
         }
+        
+        if(!this.addAttributeForm.valid){
+
+            const invalidControls = [];
+            const emptyFields: any[] = [];
+            for (const controlName in this.addAttributeForm.controls) {
+                if (this.addAttributeForm.controls.hasOwnProperty(controlName)) {
+                const control = this.addAttributeForm.get(controlName);
+                    if (control && control.invalid) {
+                        invalidControls.push(controlName);
+                    }
+                }
+            }
+
+            invalidControls.forEach((controlName) => {
+                this.validationStatus[controlName] = true;
+            });
+
+            invalidControls.forEach((invalidControlName) => {
+                const matchingAttribute = this.attributeFormsArray.find(attribute => attribute.id === invalidControlName);
+                if (matchingAttribute) {
+                    emptyFields.push(matchingAttribute.name)
+                }
+            });
+
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+        
+            this.ProductError.emit(errorDataforProduct);
+
+            return
+        }
+
+
         if (addVariantForm.valid) {
 
             const formControls = this.addAttributeForm.controls;
@@ -799,40 +874,6 @@ export class ProductFormComponent {
                 isVisible: true, 
             });
             
-            let allImagesValid = false; // Initialize the flag
-
-            // for (const file of addVariantForm.value.images) {
-            //     let warningEmitted = false; // Reset the flag for each image
-            
-            //     this.checkImageResolution(file, (width, height, fileName) => {
-            //         const productWarn = {
-            //             errorMessage: 'Add Variant',
-            //             suberrorMessage: 'One of the Images Doesnt follow image rules'
-            //         };
-            //         switch (true) {
-            //             case width < 720 || height < 1080:
-            //                 this.ProductWarning.emit(productWarn);
-            //                 warningEmitted = true;
-            //                 break;
-            
-            //             case width > 2560 || height > 1440:
-            //                 this.ProductWarning.emit(productWarn);
-            //                 warningEmitted = true;
-            //                 break;
-
-            //         }
-            
-            //         if (warningEmitted) {
-            //             return; // Exit the callback function early
-            //         }
-            //     });
-            
-            //     if (warningEmitted) {
-            //         allImagesValid = false;
-            //         break; // Exit the loop if any image triggered a warning
-            //     }
-            // }
-            
             this.hideVariantValidationContainer = true;
             this.newvariantsArray.push(newVariantVisible);
             variantsArray.push(newVariantGroup);
@@ -878,29 +919,6 @@ export class ProductFormComponent {
                 }
             }
 
-            // this.categoryAttributes.subscribe(category => {
-            //     const attributeIdToNameMap: { [key: string]: string } = {};
-              
-            //     category.attributes.forEach(attribute => {
-            //       attributeIdToNameMap[attribute.category_attribute_id] = attribute.name;
-            //     });
-              
-            //     const emptyFields: string[] = [];
-              
-            //     for (const controlName in this.addAttributeForm.controls) {
-            //       if (this.addAttributeForm.controls.hasOwnProperty(controlName)) {
-            //         const attributeControl = this.addAttributeForm.controls[controlName];
-            //         if (attributeControl.errors && (attributeControl.errors as any).required && attributeControl.invalid) {
-            //           const label = attributeIdToNameMap[controlName];
-            //           emptyFields.push(label);
-            //         }
-            //       }
-            //     }
-              
-            //     // Now, emptyFields should contain the names of attributes with required errors.
-            // });
-
-            
             const errorDataforProduct = {
                 errorMessage: this.errorMessage,
                 suberrorMessage: emptyFields.join(', ')
@@ -1100,6 +1118,7 @@ export class ProductFormComponent {
                     }; 
                     this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
                     this.attributeFormsArray.push(addAttributeForm);
+                    
                 }
             }
         });
@@ -1149,8 +1168,9 @@ export class ProductFormComponent {
             }
 
             for (let attribute of variant.attributes) {
+                let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
                 productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
-                productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, attribute.value);
+                productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
                 attributeIndex++;
             }
         }
@@ -1243,8 +1263,6 @@ export class ProductFormComponent {
 
             this.ProductError.emit(errorDataforProduct);
         }
-        
-
     
     }
     
