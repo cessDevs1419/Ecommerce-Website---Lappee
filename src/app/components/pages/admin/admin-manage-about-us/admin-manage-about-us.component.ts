@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
+import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 
 @Component({
   selector: 'app-admin-manage-about-us',
@@ -33,8 +34,10 @@ export class AdminManageAboutUsComponent {
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
+  rtfValue: string;
+  
   @ViewChild(ToastComponent) toast: ToastComponent;
-
+  @ViewChild('rte') childComponent: RichTextEditorComponent;
   selectedSection: AboutUsTosSection = {
     id: '',
     title: '',
@@ -60,7 +63,10 @@ export class AdminManageAboutUsComponent {
       map((response: any) => formatAboutUsTos(response)),
     );
   }
-
+  getRTFValue(value: any){
+      // console.log(value)
+      this.rtfValue = value
+  }
   refreshTableData(): void {
     this.refreshData$.next();
   }
@@ -86,7 +92,7 @@ export class AdminManageAboutUsComponent {
 
       let formData: any = new FormData();
       formData.append('title', this.aboutUsAddSectionForm.get('sectionHeader')?.value);
-      formData.append('content', this.aboutUsAddSectionForm.get('sectionContent')?.value);
+      formData.append('content', this.rtfValue);
 
       console.log(formData);
 

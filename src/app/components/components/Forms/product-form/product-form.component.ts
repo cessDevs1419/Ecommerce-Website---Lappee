@@ -915,7 +915,10 @@ export class ProductFormComponent {
                     if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
                         const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
                         emptyFields.push(label);
+                        
                     }
+                    
+                    
                 }
             }
 

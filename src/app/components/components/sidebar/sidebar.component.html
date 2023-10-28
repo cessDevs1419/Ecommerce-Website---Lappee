@@ -1,6 +1,6 @@
 <div class="d-flex ">
 
-    <header  class=" dashboard-header z-3 position-fixed d-flex align-items-center {{admin_bg}}" >
+    <header  class="dashboard-header z-3 position-fixed d-flex align-items-center {{header_bg}}" >
         <div class="container-fluid header-container h-100 d-flex align-items-center justify-content-end">
             <div [class.active-header]="isClassToggled" class="burger-container header-tools h-auto px-3 ">
                 <div [class.change]="isClassToggled" class="burger" (click)="toggleClass()">
@@ -49,7 +49,7 @@
             </div> -->
             <!-- Overview -->
             <div [ngClass]="isManageProductActive() ? admin_bg :''">
-                <div [class]="isManageProductActive() ? 'active-rounded-bottom ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+                <div [class]="isManageProductActive() ? 'active-rounded-bottom item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
                     <li [routerLink]="'/admin/overview'" (click)="closeAllMenu()"  class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
                         
                         <div routerLinkActive="{{active_link_icon}}" class="icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >

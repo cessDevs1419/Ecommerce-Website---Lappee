@@ -94,6 +94,7 @@ import { NgxEditorModule } from 'ngx-editor';
 import { LoginComponent } from './components/pages/main/login/login.component';
 import { RegisterComponent } from './components/pages/main/register/register.component';
 import { OutlineCircleSpinnerComponent } from './components/components/loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
+import { ChatsComponent } from './components/components/chats/chats.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { OutlineCircleSpinnerComponent } from './components/components/loader/ge
     LoginComponent,
     RegisterComponent,
     OutlineCircleSpinnerComponent,
+    ChatsComponent,
   ],
   imports: [
     BrowserModule,

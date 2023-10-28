@@ -10,13 +10,14 @@
         [tableHead]="true"
         tableContainerClass="p-4 table-container"
         tableChildContainer="table-child-container"
+        searchBarclass="me-0"
         [paginate]="false"
         
-        [tableTools]="true"
-        [searchBar]="true"
+        addbtnName="Add New"
         [tableAction]="true"
         [viewBtn]="true"
         [orderBtn]="true"
+        [tableHeaderActions]="true"
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
@@ -30,6 +31,10 @@
 </div>
 
 
+<app-modal
+    modalId="add"
+
+></app-modal>
 
 <app-modal
     modalId="view"

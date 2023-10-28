@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
@@ -23,12 +24,12 @@ export class AdminManageTosComponent {
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;
-
+  rtfValue: string;
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
   @ViewChild(ToastComponent) toast: ToastComponent;
-
+  @ViewChild('rte') childComponent: RichTextEditorComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
 
   modal: bootstrap.Modal;
@@ -63,7 +64,10 @@ export class AdminManageTosComponent {
   refreshTableData(): void {
     this.refreshData$.next();
   }
-
+  getRTFValue(value: any){
+      // console.log(value)
+      this.rtfValue = value
+  }
   closeModal()
   {
     this.confirmDeleteModal.nativeElement.click();
@@ -85,7 +89,7 @@ export class AdminManageTosComponent {
 
       let formData: any = new FormData();
       formData.append('title', this.tosAddSectionForm.get('sectionHeader')?.value);
-      formData.append('content', this.tosAddSectionForm.get('sectionContent')?.value);
+      formData.append('content', this.rtfValue);
 
       console.log(formData);
 

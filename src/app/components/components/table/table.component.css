@@ -1,18 +1,18 @@
 
 .table-container{
-  min-height: calc(100vh - 100px);
+  min-height: calc(97vh - 100px);
 }
 
 .table-container-lg{
-  min-height: calc(88vh - 100px);
+  min-height: calc(79.4vh - 100px);
 }
 
 .table-container-md{
-  min-height: calc(73vh - 100px);
+  min-height: calc(72vh - 100px);
 }
 
 .table-container-sm{
-  min-height: calc(55vh - 100px);
+  min-height: calc(55.3vh - 100px);
 }
 
 .table-child-container{

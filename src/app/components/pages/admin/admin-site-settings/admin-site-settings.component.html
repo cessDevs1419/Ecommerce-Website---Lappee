@@ -3,67 +3,71 @@
 </div>
 
 <div *ngIf="!showAddForm">
-  <div class="container-fluid m-auto h-auto p-2 pb-4 " >
-    <div class="row mb-5 row-cols-1 row-cols-lg-2 gy-5 gy-lg-0 w-100 pt-0 m-auto ">
+  <div class="container-fluid m-auto h-auto pb-4 pt-3" >
+    <div class="row mb-3 row-cols-1 row-cols-lg-2 gy-5 gy-lg-0 w-100 pt-0 m-auto ">
       <div class="col col-lg-4">
-        <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
-          <h1 class="fw-bold fs-4 mb-0">Edit Website Logo</h1>
-          <h3 class="fw-bold fs-6 mt-0 sub-title text-secondary">Content Management</h3>
-  
-          <form (ngSubmit)="editSiteLogo()">
-            <div class="row row-cols-1 gy-3">
-              <div class="col d-flex justify-content-center">
-                <div>
-                  <div class="logo-container">
-                    <div *ngIf="siteLogo | async as logo">
-                      <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'url(' + logo.site_logo + ')'}">
-                      </div>
-                    </div>
-                    <div *ngIf="!(siteLogo | async)">
-                      <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'none'}">
-                      </div>
-                    </div>
-                    <label for="logoUpload" class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
-                      <i class="bi bi-upload fs-5"></i>
-                    </label>
-
-                    <input type="file" name="" id="logoUpload" class="d-none" accept="image/png,image/jpeg" (change)="onFileChanged($event)" >
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="row">
-                  <div class="col d-flex justify-content-center">
-                    <button type="reset" class="btn-cancel btn btn-muted me-3" (click)="cancelEditSiteLogo()">Cancel</button>
-                    <button type="submit" class="btn-save bg-theme-blue btn px-4 {{btncolor}} text-light ">Save</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="col col-lg-4 d-flex align-items-end">
-        <div class="w-100">
+        <div class="card-container linear-gradient-border">
           <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
-            <h1 class="fw-bold fs-4 mb-0">Edit Website Name</h1>
+            <h1 class="fw-bold fs-4 mb-0">Edit Website Logo</h1>
             <h3 class="fw-bold fs-6 mt-0 sub-title text-secondary">Content Management</h3>
+    
+            <form (ngSubmit)="editSiteLogo()">
+              <div class="row row-cols-1 gy-3">
+                <div class="col d-flex justify-content-center">
+                  <div>
+                    <div class="logo-container">
+                      <div *ngIf="siteLogo | async as logo">
+                        <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'url(' + logo.site_logo + ')'}">
+                        </div>
+                      </div>
+                      <div *ngIf="!(siteLogo | async)">
+                        <div class="logo-holder position-absolute overflow-hidden" [ngStyle]=" url ? { 'background-image': 'url(' + url + ')' } : { 'background-image': 'none'}">
+                        </div>
+                      </div>
+                      <label for="logoUpload" class="logo-upload position-absolute bottom-0 end-0 me-3 d-flex justify-content-center align-items-center" (click)="showUploadLogo()">
+                        <i class="bi bi-upload fs-5"></i>
+                      </label>
   
-            <form (ngSubmit)="editSiteName()" [formGroup]="siteNameForm">
-              <div class="row row-cols-1 gy-3 mt-3">
-                <div class="col">
-                  <input type="text" name="" id="" class="form-control bg-transparent border-1 {{textColor}}" formControlName="siteName">
+                      <input type="file" name="" id="logoUpload" class="d-none" accept="image/png,image/jpeg" (change)="onFileChanged($event)" >
+                    </div>
+                  </div>
                 </div>
                 <div class="col">
                   <div class="row">
                     <div class="col d-flex justify-content-center">
-                      <button type="reset" class="btn-cancel btn btn-muted me-3">Cancel</button>
-                      <button type="submit" class="btn-save btn px-4 {{btncolor}} text-light ">Save</button>
+                      <button type="reset" class="btn-cancel btn btn-muted me-3" (click)="cancelEditSiteLogo()">Cancel</button>
+                      <button type="submit" class="btn-save bg-theme-blue btn px-4 {{btncolor}} text-light ">Save</button>
                     </div>
                   </div>
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-4 d-flex align-items-end">
+        <div class="w-100">
+          <div class="card-container linear-gradient-border">
+            <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
+              <h1 class="fw-bold fs-4 mb-0">Edit Website Name</h1>
+              <h3 class="fw-bold fs-6 mt-0 sub-title text-secondary">Content Management</h3>
+    
+              <form (ngSubmit)="editSiteName()" [formGroup]="siteNameForm">
+                <div class="row row-cols-1 gy-3 mt-3">
+                  <div class="col">
+                    <input type="text" name="" id="" class="form-control bg-transparent border-1 {{textColor}}" formControlName="siteName">
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col d-flex justify-content-center">
+                        <button type="reset" class="btn-cancel btn btn-muted me-3">Cancel</button>
+                        <button type="submit" class="btn-save btn px-4 {{btncolor}} text-light ">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -144,44 +148,46 @@
 </div>
 
 <div *ngIf="showAddForm">
-  <div class="container-md m-auto h-auto p-2 pb-4">
-    <div class="d-flex">
-      <div class="content-form p-4 rounded-4">
-        <h1 class="fw-bold fs-4 mb-0">ADD BANNER</h1>
-        <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
-
-        <form [formGroup]="addBannerForm" (ngSubmit)="uploadBanner()">
-          <div class="row row-cols-1 gy-3">
-            <div class="col">
-              <label for="bannerLabel" class="form-label mb-1 text-secondary">Banner Label*</label>
-              <input type="text" class="form-control bg-transparent border-1 {{textColor}}" id="bannerLabel" formControlName="bannerLabel">
-            </div>
-            <div class="col">
-              <label class="form-label mb-1 text-secondary">Banner Image*</label>
-              <label 
-              for="bannerUpload" 
-              [ngClass]="bannerUrl ? 'd-none' : 'd-flex'" 
-              class="upload-banner justify-content-center align-items-center border border-3" 
-              (click)="showBannerFileDialog()">
-                <i class="bi bi-plus-lg display-1"></i>
-              </label>
+  <div class="container-fluid m-auto h-auto pb-4 pt-3">
+    <div class="d-flex px-2">
+      <div class="card-container linear-gradient-border mx-1">
+        <div class="content-form p-4 rounded-4">
+          <h1 class="fw-bold fs-4 mb-0">ADD BANNER</h1>
+          <h3 class="fw-bold fs-6 mt-0 sub-title">MANAGE CONTENT</h3>
   
-              <div 
-                [ngStyle]=" bannerUrl ? { 'background-image': 'url(' + bannerUrl + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}"
-                class="banner-preview d-flex justify-content-end align-items-start"
-                [ngClass]="bannerUrl ? 'd-flex' : 'd-none'" >
-                <button type="button" class="d-flex justify-content-center align-items-center me-2 mt-2" (click)="resetBannerForm()">
-                  <i class="bi bi-x fs-4"></i>
-                </button>
+          <form [formGroup]="addBannerForm" (ngSubmit)="uploadBanner()">
+            <div class="row row-cols-1 gy-3">
+              <div class="col">
+                <label for="bannerLabel" class="form-label mb-1 text-secondary">Banner Label*</label>
+                <input type="text" class="form-control bg-transparent border-1 {{textColor}}" id="bannerLabel" formControlName="bannerLabel">
+              </div>
+              <div class="col">
+                <label class="form-label mb-1 text-secondary">Banner Image*</label>
+                <label 
+                for="bannerUpload" 
+                [ngClass]="bannerUrl ? 'd-none' : 'd-flex'" 
+                class="upload-banner justify-content-center align-items-center border border-3" 
+                (click)="showBannerFileDialog()">
+                  <i class="bi bi-plus-lg display-1"></i>
+                </label>
+    
+                <div 
+                  [ngStyle]=" bannerUrl ? { 'background-image': 'url(' + bannerUrl + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}"
+                  class="banner-preview d-flex justify-content-end align-items-start"
+                  [ngClass]="bannerUrl ? 'd-flex' : 'd-none'" >
+                  <button type="button" class="d-flex justify-content-center align-items-center me-2 mt-2" (click)="resetBannerForm()">
+                    <i class="bi bi-x fs-4"></i>
+                  </button>
+                </div>
+              </div>
+              <input type="file" formControlName="bannerImage" id="bannerUpload" class="d-none" accept="image/png,image/jpeg" (change)="onBannerFileChanged($event)" >
+              <div class="col d-flex justify-content-end">
+                <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
+                <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
               </div>
             </div>
-            <input type="file" formControlName="bannerImage" id="bannerUpload" class="d-none" accept="image/png,image/jpeg" (change)="onBannerFileChanged($event)" >
-            <div class="col d-flex justify-content-end">
-              <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
-              <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>

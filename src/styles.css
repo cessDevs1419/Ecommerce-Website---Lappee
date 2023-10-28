@@ -186,8 +186,9 @@
 
 .icon-linear{
     border-radius: 9px;
-    border: 5px solid transparent; 
-    background: linear-gradient(105deg, rgba(28, 146, 255, 0.56) 22.02%, rgba(97, 105, 173, 0.44) 44.43%, rgba(88, 94, 149, 0.31) 66.41%, #1C92FF 88.85%);
+    padding: .2rem;
+    background: linear-gradient(135deg, rgba(28, 146, 255, 0.56) 18.73%, rgba(97, 105, 173, 0.44) 42.66%, rgba(88, 94, 149, 0.31) 66.14%, #1C92FF 90.1%);
+
 }
 
 .gray-gradient-border{

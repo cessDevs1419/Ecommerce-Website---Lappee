@@ -51,7 +51,7 @@ export class TableComponent {
 	@Input() paginate!: boolean;
 	@Input() searchBar!: boolean;
 	@Input() Btntools!: boolean;
-	
+	@Input() tableHeaderActions!: boolean;
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addProdBtn!: boolean;

@@ -5,7 +5,7 @@
     
         <div class="{{tableContainerClass}} table-container overflow-hidden w-100 position-relative rounded-4  {{table_container_bg}}  ">
         
-            <div class="table-header d-flex justify-content-between align-items-center pb-2 pt-2 mb-3" *ngIf="tableHead">
+            <div class="table-header  justify-content-between align-items-center pb-2 pt-2 mb-3" *ngIf="tableHead">
                 <div class="row w-100 mx-0 ">
                     <div class="col-lg-5 px-0">
                         <div class="table-title text-start">
@@ -23,7 +23,7 @@
                                 <button
                                     *ngIf="addProdBtn"
                                     type="button" 
-                                    class="add-btn btn btn-primary text-nowrap rounded-4 text-white mx-2 border-0 py-2 px-4 {{btncolor}} {{addBtnclass}}" 
+                                    class="add-btn btn btn-primary text-nowrap rounded-4 text-white mx-2 border-0 py-2 px-4 glow-primary bg-light-primary {{addBtnclass}}" 
                                     (click)="showAddForm()"
                                     >
                                     <i class="bi bi-plus-lg fw-bold"></i>
@@ -32,7 +32,7 @@
                                 <button
                                     *ngIf="addBtn"
                                     type="button" 
-                                    class="add-btn btn btn-primary text-nowrap rounded-4 p-3  text-white mx-1 border-0 py-2 px-3 {{btncolor}} {{addBtnclass}}" 
+                                    class="add-btn btn btn-primary text-nowrap rounded-4 p-3  text-white mx-1 border-0 py-2 px-4 glow-primary bg-light-primary {{addBtnclass}}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#add"
                                     >
@@ -59,13 +59,13 @@
                             <div class="searchbar-container w-auto px-0 {{searchBarclass}}" *ngIf="searchBar">
                                 <div  class="input-group mx-1 bg-transparent" >
                                     
-                                    <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-4 rounded-end-0 border border-1 border-end-0  {{borders}}" id="basic-addon2">
+                                    <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-4 rounded-end-0 border border-2 border-secondary border-end-0  {{borders}}" id="basic-addon2">
                                         <i class="bi bi-search"></i>
                                     </span>
                                     
                                     <input 
                                     
-                                        class="form-control search-field {{textcolor}} rounded-4 rounded-start-0 border border-1 border-start-0 p-2 {{borders}} bg-transparent" 
+                                        class="form-control search-field {{textcolor}} rounded-4 rounded-start-0 border border-2 border-secondary border-start-0 p-2 text-white {{borders}} bg-transparent" 
                                         name="searchString" 
                                         type="search" 
                                         placeholder="Search Items Here"
@@ -76,7 +76,7 @@
                                     
                                     <input 
                                     
-                                        class="table-search form-control {{textcolor}} search-field rounded-4 rounded-start-0 border border-1 border-start-0 bg-transparent p-2 {{borders}}" 
+                                        class="table-search form-control {{textcolor}} text-white search-field rounded-4 rounded-start-0 border border-2 border-secondary border-start-0 bg-transparent p-2 {{borders}}" 
                                         name="searchString" 
                                         type="search" 
                                         placeholder="Search Items Here"
@@ -90,6 +90,62 @@
                             
     
                         
+                        </div>
+                    </div>
+                </div>
+                <div class="row w-100 mt-4" *ngIf="tableHeaderActions">
+                    <div class="col-lg-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6 class="{{tablesubtitlecolor}} me-2 fw-bold text-nowrap">Filter by:</h6>
+                            <select class="form-select bg-none border border-2 border-secondary mx-2 rounded-4 {{textcolor}}" >
+                                <option class="{{textcolor}}" value="Status" selected>Status</option>
+                            </select> 
+                            <select class="form-select bg-none border border-2 border-secondary mx-2 rounded-4 {{textcolor}}" >
+                                <option class="{{textcolor}}" value="Order Date" selected>Order Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class=" pe-1 col-lg-6 px-0 d-flex align-items-center justify-content-end ">          
+                        <button
+                            type="button" 
+                            class="add-btn btn btn-primary text-nowrap rounded-4 px-4 py-2 text-white mx-1 border-0 py-2 px-3 glow-primary bg-light-primary {{addBtnclass}}" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#add"
+                            >
+                            <i class="bi bi-plus-lg fw-bold"></i>
+                            {{addbtnName}}
+                        </button>
+
+                        <div class="searchbar-container w-auto px-0 {{searchBarclass}}" >
+                            <div  class="input-group mx-1 bg-transparent" >
+                                
+                                <span class="input-group-text {{textcolor}} searchbar-btn bg-transparent rounded-4 rounded-end-0 border border-2 border-secondary border-end-0  {{borders}}" id="basic-addon2">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                
+                                <input 
+                                
+                                    class="form-control text-white search-field {{textcolor}} rounded-4 rounded-start-0 border border-2 border-secondary border-start-0 p-2 {{borders}} bg-transparent" 
+                                    name="searchString" 
+                                    type="search" 
+                                    placeholder="Search Items Here"
+                                    [(ngModel)]="searchFilter"
+                                    (ngModelChange)="applySearchFilter()"
+                                    *ngIf="paginate === true"
+                                >
+                                
+                                <input 
+                                
+                                    class="table-search form-control text-white {{textcolor}} search-field rounded-4 rounded-start-0 border border-2 border-secondary border-start-0 bg-transparent p-2 {{borders}}" 
+                                    name="searchString" 
+                                    type="search" 
+                                    placeholder="Search Items Here"
+                                    [(ngModel)]="searchString"
+                                    *ngIf="paginate === false"
+                                >
+                                    
+    
+                            </div>
                         </div>
                     </div>
                 </div>

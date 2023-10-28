@@ -181,7 +181,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
-                                                                    [ngClass]="{'border-danger': stockBorder &&  isStockZeroOrNegative(addVariantForm)}"
+                                                                    [ngClass]="{'image-resolution-shadow': stockBorder &&  isStockZeroOrNegative(addVariantForm)}"
                                                                     class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     id="addvariantQty" 
                                                                     name="addvariantQty" 
@@ -204,7 +204,7 @@
                                                             <div class="input-group mb-3">
                                                                 <input 
                                                                     type="number" 
-                                                                    [ngClass]="{'border-danger': stockBorder &&  isPriceZeroOrNegative(addVariantForm)}"
+                                                                    [ngClass]="{'image-resolution-shadow': stockBorder &&  isPriceZeroOrNegative(addVariantForm)}"
                                                                     class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                     name="addvariantPrice" 
                                                                     formControlName="price" 
@@ -295,7 +295,7 @@
                                                                         required
                                                                     > -->
                                                                     <select 
-                                                                        [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}"
+                                                                        [ngClass]="{'image-resolution-shadow': validationStatus[item.category_attribute_id]}"
                                                                         class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
                                                                         id="addproductCategory"
                                                                         name="addproductCategory" 
@@ -310,16 +310,17 @@
                                                                 </div>
                                                                 <div class="w-100 mb-3" *ngIf="item.name === 'Color' || item.name === 'Colors'">
                                                                     <label class="form-label {{formTextColor}}">{{item.name}}</label>
-
-                                                                    <app-color-picker
-                                                                        [showLabel]="false"
-                                                                        [placeholder]="'Pick color...'"
-                                                                        [formControlName]="item.category_attribute_id"
-                                                                        required
-                                                                        
-                                                                        >
-                                                                        <!-- [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}" -->
-                                                                    </app-color-picker>
+                                                                    <div [ngClass]="{'image-resolution-shadow rounded-3 ': validationStatus[item.category_attribute_id]}">
+                                                                        <app-color-picker
+                                                                            [showLabel]="false"
+                                                                            [placeholder]="'Pick color...'"
+                                                                            [formControlName]="item.category_attribute_id"
+                                                                            required
+                                                                            
+                                                                            >
+                                                                            <!-- [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}" -->
+                                                                        </app-color-picker>
+                                                                    </div>
                                                                 </div>
                                                                 
                                                             </div>

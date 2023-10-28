@@ -36,7 +36,8 @@ export class ColorPickerComponent implements ControlValueAccessor {
   @Input() placeholder: string = "";
   @Input() presetColors: string[] = ["#ffffff", "#000000", "#f10d0d", "#6af572", "#224dab"];
   @Input() presetColorNames: string[] = []
-
+  @Input() invalid: boolean = true;
+  
   private onChange: any = (color: string[]) => {console.log(color)};
   private onTouch: any = {}
 

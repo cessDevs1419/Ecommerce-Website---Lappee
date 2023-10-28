@@ -1,0 +1,22 @@
+.img-container{
+    width: 3rem;
+    height: 3rem;
+}
+.chat-body-xl{
+    min-height: calc(100vh - 100px);
+}
+.chat-body-lg{
+    height: calc(81.5vh - 100px);
+}
+.chat-body-md{
+    min-height: calc(55.3vh - 100px);
+}
+
+
+
+.chat-body-container {
+    max-height: 40rem; 
+    padding: 0;
+    overflow-y: auto;
+}
+

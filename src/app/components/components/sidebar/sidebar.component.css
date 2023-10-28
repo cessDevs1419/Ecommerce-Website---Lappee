@@ -63,6 +63,9 @@
     transition: all .2s ease-in;
 }
 .item-container{
+    /* background: linear-gradient(to left, #2E303D 50%, #1E2029 50%);
+    background-size: 200% 100%;
+    background-position: left bottom; */
     transition: all .2s ease-out;
 }
 
@@ -162,7 +165,7 @@ img{
     }
 
     .nav{
-        margin-top: 70px;
+        margin-top: 75px;
     }
 
     .active-rounded-top{
