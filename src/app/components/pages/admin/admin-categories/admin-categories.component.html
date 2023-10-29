@@ -1,7 +1,4 @@
-<div class="container-fluid m-auto h-auto text-center" >
-    <div class="position-relative w-100 mt-3">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
+<div class="container-fluid position-relative m-auto h-auto text-center" >
     
     <app-table
         tableTitle="Category Management"
@@ -29,6 +26,12 @@
         (rowDataForDelete)="onRowDataForDelete($event)"
         #triggerFunction
     ></app-table>
+
+    <div class="position-absolute w-50 end-0 bottom-0 mb-5 mx-4 h-auto">
+        <div class="position-relative mb-5">
+            <app-toast toastClass="end-0" [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+        </div>
+    </div>
 
     <!--MAIN-->
     <app-modal

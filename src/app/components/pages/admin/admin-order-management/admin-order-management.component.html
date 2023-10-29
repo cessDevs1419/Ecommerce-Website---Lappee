@@ -1,8 +1,4 @@
-<div class="container-fluid m-auto h-auto" >
-
-    <div class="position-relative w-100 mt-3">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
+<div class="container-fluid position-relative m-auto h-auto" >
 
     <app-table
         tableTitle="Track Orders"
@@ -12,11 +8,11 @@
         tableChildContainer="table-child-container"
         searchBarclass="me-0"
         [paginate]="false"
-        
+        (DateValue)="getDate($event)"
+        (FilterValue)="getStatus($event)"
         addbtnName="Add New"
         [tableAction]="true"
-        [viewBtn]="true"
-        [orderBtn]="true"
+        [actionForOrderBtn]="true"
         [tableHeaderActions]="true"
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
@@ -28,6 +24,12 @@
 
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
+
+    <div class="position-absolute w-50 end-0 bottom-0 mb-5 mx-4 h-auto">
+        <div class="position-relative mb-5">
+            <app-toast toastClass="end-0" [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+        </div>
+    </div>
 </div>
 
 
@@ -57,7 +59,7 @@
     modalTitleClass="mb-0"
     modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-md"
+    modalClass="modal-lg"
     [modalHideCloseBtn]="true"
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
@@ -106,7 +108,9 @@
 
 ></app-modal>
 
-
+<app-modal
+    modalId="delete"
+></app-modal>
 
 
 

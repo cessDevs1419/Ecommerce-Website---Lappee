@@ -93,19 +93,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="row w-100 mt-4" *ngIf="tableHeaderActions">
-                    <div class="col-lg-6">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h6 class="{{tablesubtitlecolor}} me-2 fw-bold text-nowrap">Filter by:</h6>
-                            <select class="form-select bg-none border border-2 border-secondary mx-2 rounded-4 {{textcolor}}" >
-                                <option class="{{textcolor}}" value="Status" selected>Status</option>
-                            </select> 
-                            <select class="form-select bg-none border border-2 border-secondary mx-2 rounded-4 {{textcolor}}" >
-                                <option class="{{textcolor}}" value="Order Date" selected>Order Date</option>
-                            </select>
+                <div class="row w-100 mt-4 flex-xl-row flex-column-reverse mx-auto" *ngIf="tableHeaderActions">
+                    <div class="col-xl-6 mx-0 mt-4 mt-xl-0 p-0">
+                        <div class="d-flex align-items-center ">
+                            
+                            <div class="row w-100 p-0 mx-0 ">
+                                <div class="col-sm-2 px-0 pe-sm-1 d-flex align-items-center">
+                                    <h6 class="{{tablesubtitlecolor}} fw-bold me-2 text-nowrap ">Filter by:</h6>
+                                </div>
+                                <div class="col-sm-5 px-0 pe-sm-1">
+                                    <select class="form-select text-nowrap text-truncate pe-5 border border-2 border-secondary rounded-4 w-100 {{textcolor}}  {{table_container_bg}}" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+                                        <option class="bg-none {{textcolor}}" value="Status" selected>Status</option>
+                                        <option class="bg-none {{textcolor}}" value="100" >To Pack</option>
+                                        <option class="bg-none {{textcolor}}" value="150" >Packed</option>
+                                        <option class="bg-none {{textcolor}}" value="175" >Shipping</option>
+                                        <option class="bg-none {{textcolor}}" value="200" >Delivered</option>
+                                    </select> 
+                                </div>
+                                <div class="col-sm-5 px-0 ps-sm-1">
+                                    <div class="input-group position-relative cursor-pointer border border-2 border-secondary rounded-4 w-100" (click)="selectDate()">
+                                        <input type="date" class="visually-hidden " (change)="getDateValue($event)" #date>
+                                        <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  {{table_container_bg}}">
+                                            <label class="text-nowrap text-truncate mb-0  {{textcolor}}">Order By Date</label>
+                                        </div>
+                                        <button (click)="selectDate()" class="input-group-text bg-none border-0  {{textcolor}}  {{table_container_bg}}" >
+                                            <i class="bi bi-caret-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class=" pe-1 col-lg-6 px-0 d-flex align-items-center justify-content-end ">          
+                    <div class=" col-xl-6 px-0 d-flex align-items-center justify-content-end mb-4 mb-md-0">          
                         <button
                             type="button" 
                             class="add-btn btn btn-primary text-nowrap rounded-4 px-4 py-2 text-white mx-1 border-0 py-2 px-3 glow-primary bg-light-primary {{addBtnclass}}" 
@@ -312,7 +331,10 @@
                                 <ng-template #notImage>
                                     <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="text-center mt-1 {{textcolor}}">
                                         <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
-                                        <ng-template #notPrice>{{ item[row] }}</ng-template>
+                                        <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                                        <ng-template #notPrice>
+                                            {{ item[row] }}
+                                        </ng-template>
                                     </label>
                                 </ng-template>
                             </td>
@@ -330,6 +352,18 @@
                                         <i class="bi bi-three-dots fs-5"></i> 
                                     </button>
                                 </div>
+                                <div *ngIf="actionForOrderBtn" class=" m-auto d-flex align-items-center p-2">
+                                    <button 
+                                        id="actionBtn" 
+                                        class="actionbtn m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                                        [class.activebtn]="activeOrderButtonIndex === i"
+                                        (click)="showOrderAction(i)"
+            
+                                        > 
+                                        <i class="bi bi-three-dots fs-5"></i> 
+                                    </button>
+                                </div>
+                                
 
                                 <!--SHIPPED STATUS BTN-->
                                 <ng-container *ngIf="orderBtn">
@@ -437,8 +471,61 @@
                                     </button>
                                 </div>
                             </div>
+                            <div (mouseleave)="showOrderAction(i)" *ngIf="rowOrderActionVisibility[i]" class="z-3  bg-none rounded-3 position-absolute  p-0 end-0 me-3">
+                                <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0  hover-div">
+                                    <button 
+                                        *ngIf="item.status === paymentStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#confirm"
+                                        [title]="'Confirm Payment'"
+                                        class="edit-btn text-center  py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        Process
+                                    </button>
+                                    <button 
+                                        *ngIf="item.status === shipStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#ship"
+                                        [title]="'Ship Order'"
+                                        class="edit-btn text-center  py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        Process
+                                    </button>
+                                    <button 
+                                        *ngIf="item.status === deliverStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#deliver"
+                                        [title]="'Deliver Order'"
+                                        class="edit-btn text-center  py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        Process
+                                    </button>
+                                    <button
+                                        (click)="sendRowData(item)"
+                                        *ngIf="item.status === 200"
+                                        type="button"
+                                        class="edit-btn text-center  py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
+                                        data-bs-toggle="modal" data-bs-target="#deliver"
+                                        [title]="'Delivered'"
+                                    >
+                                        Process
+                                    </button>
+                                    <div class="action-border"></div>
+                                    <button 
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#delete"
+                                        class="delete-btn py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
+                                        (click)="sendRowData(item)"
+                                        [title]="'Delete Order'"
+                                        > 
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
                         </tr>
-                        
                     </tbody>
                 </table>
                 

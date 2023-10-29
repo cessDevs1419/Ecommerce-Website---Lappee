@@ -3,13 +3,11 @@
 
 
 </div> -->
-<div class="parent-form-container">
-    <div class="position-relative w-100">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
-    
-    <div class="container-fluid px-3 form-container overflow-auto">
-                
+<div class="parent-form-container position-relative  overflow-visible">
+
+
+        <div class=" px-4 form-container ">
+            <div class="">
             <!--categories-->
                 <!-- <app-category-form 
                     *ngIf="AddCategory"
@@ -135,8 +133,15 @@
                     (RefreshTable)="triggerRefreshTable()"
                 >
                 </app-product-form> -->
-    </div>
+            </div>
+        </div>
+
     
+    <div class="position-absolute w-50 end-0 bottom-0 mb-5 mx-4 h-auto">
+        <div class="position-relative mb-5">
+            <app-toast toastClass="end-0" [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+        </div>
+    </div>
 </div>
 
 <app-modal

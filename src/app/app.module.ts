@@ -95,6 +95,8 @@ import { LoginComponent } from './components/pages/main/login/login.component';
 import { RegisterComponent } from './components/pages/main/register/register.component';
 import { OutlineCircleSpinnerComponent } from './components/components/loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 import { ChatsComponent } from './components/components/chats/chats.component';
+import { ToggleswitchComponent } from './components/components/toggleswitch/toggleswitch.component';
+import { ToastNotificationComponent } from './components/components/toast-notification/toast-notification.component';
 
 @NgModule({
   declarations: [
@@ -178,6 +180,8 @@ import { ChatsComponent } from './components/components/chats/chats.component';
     RegisterComponent,
     OutlineCircleSpinnerComponent,
     ChatsComponent,
+    ToggleswitchComponent,
+    ToastNotificationComponent,
   ],
   imports: [
     BrowserModule,

@@ -46,8 +46,6 @@ export class AdminOrderManagementComponent {
             switchMap(() => this.service.getAdminOrders()),
             map((Response: any) => formatAdminOrder(Response))
         );
-        console.log(this.orders)
-        
 	}
 
     refreshTableData(): void {
@@ -88,6 +86,17 @@ export class AdminOrderManagementComponent {
         this.toastContent = value.suberrorMessage;
         this.toast.switchTheme('negative');
         this.toast.show();
+    }
+    
+    getDate(event: any){
+        console.log(event)
+        // this.service.getAdminOrders().subscribe((data: any) => {
+        //     this.orders = data.filter((item: any) => item.created_at === event);
+        // });
+    }
+    
+    getStatus(event: any){
+        console.log(event)
     }
     
 }

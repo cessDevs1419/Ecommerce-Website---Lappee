@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ToastComponent {
   // Set toast header
   @Input() toastTitle: string;
-
+  @Input() toastClass: string;
   // Set toast message
   @Input() toastContent: string;
 

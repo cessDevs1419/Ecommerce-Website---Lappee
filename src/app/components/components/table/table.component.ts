@@ -17,6 +17,7 @@ interface TableItem {
 export class TableComponent {
 	
 	@ViewChild('checkboxDiv') checkboxDiv: ElementRef;
+	@ViewChild('date') date: ElementRef;
 	@ViewChild('checkboxInput', { static: false }) checkboxInput: ElementRef;
 	
 	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
@@ -25,6 +26,8 @@ export class TableComponent {
 	@Output() ShowEditForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowAddSubForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowEditSubForm: EventEmitter<any> = new EventEmitter<any>();
+	@Output() FilterValue: EventEmitter<any> = new EventEmitter<any>();
+	@Output() DateValue: EventEmitter<any> = new EventEmitter<any>();
 
 	//table theme
 	table_container_bg: string = 'table-bg-dark'
@@ -39,7 +42,8 @@ export class TableComponent {
 	tablebordercolor: string = 'linear-gradient-border'
 	checkboxcolor: string = 'dark-border-checkbox'
 	public searchString: string;
-	
+	selectedStatus: string = 'Status';
+	sortedData: any[] = [];
 
 	//Table Title 
 	@Input() tableTitle: string;
@@ -65,6 +69,7 @@ export class TableComponent {
 	@Input() showMultipleSelection!: boolean;
 	@Input() tableAction!: boolean;
 	@Input() actionBtn!: boolean;
+	@Input() actionForOrderBtn!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
 	@Input() editSubBtn!: boolean;
@@ -109,7 +114,9 @@ export class TableComponent {
 	selectedIds: number[] = [];
 	checkedState: { [key: number]: boolean } = {};
 	rowActionVisibility: boolean[] = [];
+	rowOrderActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
+	activeOrderButtonIndex: number | null = null;
 	showTooltip: boolean;
 	currentPage: number = 1;
 	pageSizeOptions: number[] = [5, 10, 25, 50];
@@ -117,8 +124,9 @@ export class TableComponent {
 	totalItems: number;
 	totalPages: number;
 	displayedItems$: Observable<any[]>;
-
+	selectedDate: string;
 	searchFilter: string = '';
+	sortedTableData: any[];
 
 	constructor(private cdr: ChangeDetectorRef) {} 
 	
@@ -146,6 +154,37 @@ export class TableComponent {
 			this.activeButtonIndex = rowIndex;
 		}
 	}
+
+	showOrderAction(rowIndex: number) {
+		this.rowOrderActionVisibility[rowIndex] = !this.rowOrderActionVisibility[rowIndex];
+
+		for (let i = 0; i < this.rowOrderActionVisibility.length; i++) {
+			if (i !== rowIndex) {
+				this.rowOrderActionVisibility[i] = false;
+			}
+		}
+		
+		if (this.activeOrderButtonIndex === rowIndex) {
+
+			this.activeOrderButtonIndex = null;
+		} else {
+			this.activeOrderButtonIndex = rowIndex;
+		}
+	}
+	
+	selectDate(){
+		this.date.nativeElement.showPicker()
+	}
+	
+	onStatusChange() {
+		this.FilterValue.emit(this.selectedStatus)
+	}
+
+	getDateValue(event: any) {
+		// this.selectedDate = event.target.value;
+		this.DateValue.emit(event.target.value)
+	}
+
 	
 	selectAll() {
 		this.tableData.subscribe((data) => {
@@ -237,6 +276,7 @@ export class TableComponent {
 	ngOnInit() {
 	    this.calculatePagination();
 	}
+	
 
 	
 	applySearchFilter(): void {
