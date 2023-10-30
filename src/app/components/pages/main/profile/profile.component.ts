@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
 import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
@@ -50,7 +51,7 @@ export class ProfileComponent {
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService) {}
   
@@ -137,17 +138,13 @@ export class ProfileComponent {
 
         this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
           next: (response: any) => {
-            this.toastHeader = "Successfully added!";
-            this.toastContent = "Your delivery information has been updated.";
-            this.toast.switchTheme('default');
-            this.toast.show();
+
+            this.toaster.showToast("Successfully added!", "Your delivery information has been updated.")
           },
           error: (err: HttpErrorResponse) => {
             console.log(err)
-            this.toastHeader = "Action failed!";
-            this.toastContent = "Please try again in a few moments.";
-            this.toast.switchTheme('negative');
-            this.toast.show();
+
+            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
           },
           complete: () => {
             this.accountService.checkLoggedIn().subscribe((status: boolean) => {
@@ -164,19 +161,14 @@ export class ProfileComponent {
       else {
         this.deliveryinfoService.patchDeliveryInfo(formData).subscribe({
           next: (response: any) => {
-            this.toastHeader = "Successfully edited!";
-            this.toastContent = "Your delivery information has been updated.";
-            this.toast.switchTheme('default');
-            this.toast.show();
+
+            this.toaster.showToast("Successfully edited!", "Your delivery information has been updated.")
 
             this.user = this.accountService.getLoggedUser();
           },
           error: (err: HttpErrorResponse) => {
-            console.log(err)
-            this.toastHeader = "Action failed!";
-            this.toastContent = "Please try again in a few moments.";
-            this.toast.switchTheme('negative');
-            this.toast.show();
+
+            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
           },
           complete: () => {
             

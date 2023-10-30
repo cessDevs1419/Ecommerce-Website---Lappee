@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { OutlineCircleSpinnerComponent } from 'src/app/components/components/loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class RegisterComponent {
   lastEmail: string = '';
   registerDone: boolean = false;
 
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   constructor(private cookieService: CookieService, public accountService: AccountsService){
     

@@ -3,6 +3,7 @@ import * as bootstrap from 'bootstrap';
 import { OrderContent } from 'src/assets/models/order-details';
 import { ToastComponent } from '../toast/toast.component';
 import { CartItem } from 'src/assets/models/products';
+import { ToasterComponent } from '../toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-modal-client',
@@ -23,7 +24,7 @@ export class ModalClientComponent {
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   modalEl: bootstrap.Modal;
 
@@ -86,10 +87,7 @@ export class ModalClientComponent {
   }
 
   activateToast(data: string[]): void {
-    this.toastHeader = data[0];
-    this.toastContent = data[1];
-    this.toast.switchTheme(data[2]);
-    this.toast.show()
+    this.toaster.showToast(data[0], data[1], data[2])
   }
  
 }
