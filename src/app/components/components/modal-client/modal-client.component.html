@@ -1,6 +1,7 @@
 <div class="modal fade" id="modal-client" tabindex="-1" #modal>
+    <app-toaster [positionClasses]="''"></app-toaster>
     <div class="position-fixed vh-100 pe-none z-3 toast-container-parent m-5">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+        
     </div>
     <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered" [ngClass]="modalSize">
         <div class="modal-content">

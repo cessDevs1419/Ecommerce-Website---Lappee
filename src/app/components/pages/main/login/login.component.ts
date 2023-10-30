@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginComponent {
 
   isSignIn: boolean = true;
 
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   constructor(private cookieService: CookieService, public accountService: AccountsService){
     
@@ -29,25 +30,12 @@ export class LoginComponent {
     this.isSignIn = false;
   }
 
-  registerSuccessToast(): void {
-    this.toastHeader = "Registration successful!";
-    this.toastContent = "You may now login using your account.";
-    this.toast.switchTheme('default');
-    this.toast.show();
-  }
-
   loginSuccessToast(): void {
-    this.toastHeader = "Login successful!";
-    this.toastContent = "You are now logged in.";
-    this.toast.switchTheme('default');
-    this.toast.show();
+    this.toaster.showToast("Login successful!", "You are now logged in.", 'default');
   }
 
   invalidCredentialsToast(): void {
-    this.toastHeader = "Login unsuccessful.";
-    this.toastContent = "Your credentials may be incorrect.";
-    this.toast.switchTheme('negative');
-    this.toast.show();
-    console.log(this.toastTheme);
+    
+    this.toaster.showToast("Login failed.", "Your credentials may be incorrect.", 'negative');
   }
 }

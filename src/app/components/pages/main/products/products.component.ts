@@ -16,6 +16,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/assets/models/user';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-products',
@@ -51,7 +52,7 @@ export class ProductsComponent {
 
   galleryRef: GalleryRef = this.gallery.ref('product-images');
 
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild("itemTemplate", {static: true}) itemTemplate: TemplateRef<any>;
 
   //pagination
@@ -276,10 +277,7 @@ export class ProductsComponent {
     console.warn('added to cart');
     console.log(this.cart.items);
 
-    this.toastHeader = "Successful!";
-    this.toastContent = "The item has been added to your cart.";
-    this.toast.switchTheme('default');
-    this.toast.show();
+    this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default');
   }
 
   orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
@@ -384,10 +382,8 @@ export class ProductsComponent {
       console.log(this.postComment.value);
       this.reviewService.postReview(formData).subscribe({
         next: (response: any) => {
-          this.toastHeader = "Successful!";
-          this.toastContent = "Your review has been added.";
-          this.toast.switchTheme('default');
-          this.toast.show();
+
+          this.toaster.showToast("Successful!", "Your review has been submitted.")
 
           let reviewData = this.reviewService.getReviews(this.currentProduct.id);
           reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
@@ -415,20 +411,16 @@ export class ProductsComponent {
 
     this.reviewService.deleteReview(formData).subscribe({
       next: (response: any) => {
-        this.toastHeader = "Successful!";
-        this.toastContent = "Your review has been deleted.";
-        this.toast.switchTheme('default');
-        this.toast.show();
+
+        this.toaster.showToast("Successful!", "Your review has been deleted.")
 
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
         reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
         this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
       },
       error: (err: HttpErrorResponse) => {
-        this.toastHeader = "Error!";
-        this.toastContent = "Please try again in a few moments.";
-        this.toast.switchTheme('negative');
-        this.toast.show();
+
+        this.toaster.showToast("Error!", "Please try again in a few moments.", 'negative')
       }
     })
   }
