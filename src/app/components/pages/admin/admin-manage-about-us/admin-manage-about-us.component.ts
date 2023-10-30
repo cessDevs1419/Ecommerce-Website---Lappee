@@ -8,6 +8,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-admin-manage-about-us',
@@ -36,7 +37,7 @@ export class AdminManageAboutUsComponent {
   toastTheme: string = "default"; 
   rtfValue: string;
   
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild('rte') childComponent: RichTextEditorComponent;
   selectedSection: AboutUsTosSection = {
     id: '',
@@ -99,7 +100,7 @@ export class AdminManageAboutUsComponent {
       this.aboutUsToSService.postAddAboutUs(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully added section', 'Added a section to about us.');
-
+          
           this.aboutUsAddSectionForm.reset();
 
           this.refreshTableData();
@@ -117,30 +118,22 @@ export class AdminManageAboutUsComponent {
       this.showWarnToast('Missing required fields.', 'Please fill up the form completely.');
     }
   }
-
-  private showWarnToast(header: string, content: string)
-  {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('warn');
-    this.toast.show();
-  }
-
   private showSuccessToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('default');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'default', '', )
   }
 
   private showFailedToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('negative');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'negative', '', )
   }
+  
+  private showWarnToast(header: string, content: string)
+  {
+    this.toaster.showToast(header, content, 'warn', '', )
+  }
+
+
 
   public deleteAboutUsSection()
   {

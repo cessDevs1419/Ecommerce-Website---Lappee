@@ -2,6 +2,7 @@ import { Component, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
@@ -15,6 +16,7 @@ import { AdminCategory } from 'src/assets/models/categories';
 export class AdminAttributesComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
+	@ViewChild(ToasterComponent) toaster: ToasterComponent;
 	@ViewChild('triggerFunction') childComponent: TableComponent;
   showMinus: boolean = false
 
@@ -59,25 +61,18 @@ showMinusFunction(){
   this.childComponent.removeAllSelected();
 }
 
+
+
 SuccessToast(value: any): void {
-  this.toastHeader = value.head;
-  this.toastContent = value.sub;
-  this.toast.switchTheme('default');
-  this.toast.show();
+  this.toaster.showToast(value.head, value.sub, 'default', '', )
 }
 
 WarningToast(value: any): void {
-  this.toastHeader = value.errorMessage;
-  this.toastContent = value.suberrorMessage;
-  this.toast.switchTheme('warn');
-  this.toast.show();
+  this.toaster.showToast(value.head, value.sub, 'warn', '', )
 }
 
 ErrorToast(value: any): void {
-  this.toastHeader = value.errorMessage;
-  this.toastContent = value.suberrorMessage;
-  this.toast.switchTheme('negative');
-  this.toast.show();
+  this.toaster.showToast(value.head, value.sub, 'negative', '', )
 }
 
 

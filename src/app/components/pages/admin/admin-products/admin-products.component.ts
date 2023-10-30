@@ -10,6 +10,7 @@ import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
     selector: 'app-admin-products',
@@ -18,7 +19,7 @@ import { TableComponent } from 'src/app/components/components/table/table.compon
 })
 export class AdminProductsComponent {
 
-    @ViewChild(ToastComponent) toast: ToastComponent;
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
     @ViewChild('triggerFunction') childComponent: TableComponent;
 
     products!: Observable<AdminProduct[]>;
@@ -79,26 +80,18 @@ export class AdminProductsComponent {
         this.router.navigate(['/admin/product-management','product','edit',this.selectedRowData.id]);
 	}
 	
-	SuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
+    SuccessToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
     }
     
     WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
     }
     
     ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
+    
 	
 
 	

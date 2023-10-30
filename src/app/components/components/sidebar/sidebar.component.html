@@ -242,7 +242,7 @@
                 </div>
             </div>
             
-            <li [routerLink]="'/account'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="position-absolute bottom-0 d-flex align-items-center nav-item p-2 ps-2 mx-0">
+            <li (click)="closeAllMenu()" data-bs-toggle="modal" data-bs-target="#confirmLogout" class="position-absolute bottom-0 d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
                 <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
                     <i routerLinkActive=" text-white" class="bi bi-box-arrow-right text-dark-subtle-grey"></i>
@@ -270,11 +270,14 @@
             <!-- <app-toggleswitch></app-toggleswitch> -->
         </ul>
 
-
     </div>
     
     <div class=" w-100 h-100" [class.dim]="isClassToggled">
 
     </div>
+    
+
 </div>
+
+
 

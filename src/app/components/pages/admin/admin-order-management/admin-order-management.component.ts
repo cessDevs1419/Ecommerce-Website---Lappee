@@ -4,6 +4,7 @@ import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/co
 import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
@@ -16,7 +17,8 @@ import { Order } from 'src/assets/models/products';
 })
 export class AdminOrderManagementComponent {
     
-    @ViewChild(ToastComponent) toast: ToastComponent;
+
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
     backdrop: string = 'true';
     toastContent: string = "";
@@ -67,36 +69,26 @@ export class AdminOrderManagementComponent {
 
     }
         
-    SuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-    WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
-    }
-    
-    ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
-    }
-    
     getDate(event: any){
         console.log(event)
-        // this.service.getAdminOrders().subscribe((data: any) => {
-        //     this.orders = data.filter((item: any) => item.created_at === event);
-        // });
     }
     
     getStatus(event: any){
         console.log(event)
     }
+    
+    SuccessToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
+    }
+    
+    WarningToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
+    }
+    
+    ErrorToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
+    }
+    
+
     
 }

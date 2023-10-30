@@ -9,6 +9,7 @@ import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { Router } from '@angular/router';
 import { TableComponent } from 'src/app/components/components/table/table.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
     selector: 'app-admin-categories',
@@ -19,7 +20,7 @@ import { TableComponent } from 'src/app/components/components/table/table.compon
 export class AdminCategoriesComponent {
 
     
-    @ViewChild(ToastComponent) toast: ToastComponent;
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
     @ViewChild('triggerFunction') childComponent: TableComponent;
     
     showMinus: boolean
@@ -75,24 +76,15 @@ export class AdminCategoriesComponent {
     }
     
     SuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
     }
     
     WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
     }
     
     ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
     
 

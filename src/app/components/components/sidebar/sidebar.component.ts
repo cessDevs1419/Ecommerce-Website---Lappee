@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
@@ -6,6 +6,8 @@ import { AdminNotification, AdminNotificationList } from 'src/assets/models/admi
 import { NotificationsService } from 'src/app/services/notfications-service/notifications.service';
 import { formatNotificationsResponse } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { EchoService } from 'src/app/services/echo/echo.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,11 +34,12 @@ export class SidebarComponent {
   
   notifications: Observable<AdminNotification[]>;
   notificationsLength: Observable<AdminNotification[]>;
-
+  notif: boolean = false;
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
   }
 
+  @Output() confirm: EventEmitter<any>
   @Input() headerName: string;
   @Input() admin!: boolean;
   @Input() courier!: boolean;
@@ -45,7 +48,8 @@ export class SidebarComponent {
 
   constructor(private router: Router,
     private notification_service: NotificationsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private echo: EchoService
     ) {
 
     }
@@ -59,6 +63,9 @@ export class SidebarComponent {
       map((Response: any) => formatNotificationsResponse(Response))
     );
 
+    this.echo.listen('channel-name', 'SampleEvent', (data: any) => {
+      this.refreshTableData();
+    })
   }
 
 

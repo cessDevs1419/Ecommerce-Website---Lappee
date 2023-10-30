@@ -192,9 +192,6 @@
     </div>
   </div>
   
-  <div class="position-absolute w-50 end-0 bottom-0 mb-5 mx-4 h-auto px-0 px-sm-3">
-    <div class="position-relative mb-5">
-        <app-toast toastClass="end-0" [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
-  </div>
+  <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
 </div>

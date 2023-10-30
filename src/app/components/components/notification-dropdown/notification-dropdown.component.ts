@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { NotificationsService } from 'src/app/services/notfications-service/notifications.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EchoService } from 'src/app/services/echo/echo.service';
 @Component({
   selector: 'app-notification-dropdown',
   templateUrl: './notification-dropdown.component.html',
@@ -49,9 +50,10 @@ export class NotificationDropdownComponent {
   earlierThisWeekItems: any[] = [];
 
   constructor(
-    private router: Router
+    private router: Router,
+
   ) {
-    
+
     
   }
 
@@ -74,6 +76,8 @@ export class NotificationDropdownComponent {
         }
       });
     });
+    
+
   }
   
   getRelativeTime(createdDate: string): string {

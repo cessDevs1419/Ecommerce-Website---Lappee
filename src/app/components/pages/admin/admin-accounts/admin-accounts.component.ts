@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { UsersService } from 'src/app/services/users/users.service';
 
 import { formatBannedUser, formatUser } from 'src/app/utilities/response-utils';
@@ -14,7 +15,8 @@ import { BannedUser, User } from 'src/assets/models/user';
 })
 export class AdminAccountsComponent implements OnInit {
     @ViewChild(ToastComponent) toast: ToastComponent;
-  
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
+    
     backdrop: string = 'true';
     toastContent: string = "";
     toastHeader: string = "";
@@ -90,24 +92,16 @@ export class AdminAccountsComponent implements OnInit {
     }
 
     SuccessToast(value: any): void {
-      this.toastHeader = value.head;
-      this.toastContent = value.sub;
-      this.toast.switchTheme('default');
-      this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
     }
     
     WarningToast(value: any): void {
-      this.toastHeader = value.errorMessage;
-      this.toastContent = value.suberrorMessage;
-      this.toast.switchTheme('warn');
-      this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
     }
     
     ErrorToast(value: any): void {
-      this.toastHeader = value.errorMessage;
-      this.toastContent = value.suberrorMessage;
-      this.toast.switchTheme('negative');
-      this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
+    
 
 }

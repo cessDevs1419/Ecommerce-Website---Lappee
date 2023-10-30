@@ -52,6 +52,7 @@ export class ModalComponent {
 	
 	@Input() selectedRowData: any;
 	@Input() selectedRowDataForDelete: any;
+	@Input() modalLogout!: boolean;
 	@Input() modalAddAttribute!: boolean;
 	@Input() modalEditAttribute!: boolean;
     @Input() modalDeleteAttribute!: boolean;
@@ -135,10 +136,15 @@ export class ModalComponent {
             }, 2500); 
         });
     }
+    onLogout(){
+        this.confirm.emit()
+        this.closeModal()
+    }
     
     sendAttribute(value: any){
         this.selectedAttributeData = value
     }
+    
     async closeModal() {
         this.dismiss.nativeElement.click();
     }
