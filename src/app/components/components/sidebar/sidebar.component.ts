@@ -25,7 +25,7 @@ export class SidebarComponent {
   overviewClass: boolean = false;
 
   admin_bg: string = "admin-bg-dark";
-  header_bg: string = "bg-transparent";
+  header_bg: string = "admin-bg-dark";
   sidebar_bg: string = "sidebar-bg-dark";
   active_link: string = "active-link";
   active_link_icon: string = "active-link-icon";

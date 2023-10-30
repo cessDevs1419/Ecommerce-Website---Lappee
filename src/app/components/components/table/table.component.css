@@ -264,5 +264,8 @@ input:checked + .custom-checkbox  {
 } */
 
 
-
-
+@media screen and (max-width: 509px) {
+  .searchbar-container{
+    margin-top: 1rem;
+  }
+}

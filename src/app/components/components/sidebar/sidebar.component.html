@@ -1,4 +1,4 @@
-<div class="d-flex ">
+<div class="d-flex position-relative">
 
     <header  class="dashboard-header z-3 position-fixed d-flex align-items-center {{header_bg}}" >
         <div class="container-fluid header-container h-100 d-flex align-items-center justify-content-end">
@@ -38,14 +38,15 @@
     
 
     <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 start-0 position-fixed h-100 ">
+        <div [class.active-header]="isClassToggled" class="burger-container header-tools h-auto px-4 pt-2 ms-2">
+            <div [class.change]="isClassToggled" class="burger" (click)="toggleClass()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </div>
         
         <ul class="nav flex-column mb-auto " *ngIf="admin">
-
-            <!-- <div [ngClass]="isOverviewActive() ? admin_bg  :''">
-                <div [class]="isOverviewActive() ? 'p-3  active-rounded-bottom' + sidebar_bg :''  " >
-                    
-                </div>
-            </div> -->
             <!-- Overview -->
             <div [ngClass]="isManageProductActive() ? admin_bg :''">
                 <div [class]="isManageProductActive() ? 'active-rounded-bottom item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
@@ -272,4 +273,8 @@
 
     </div>
     
+    <div class=" w-100 h-100" [class.dim]="isClassToggled">
+
+    </div>
 </div>
+

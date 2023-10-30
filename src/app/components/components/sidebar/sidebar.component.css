@@ -83,7 +83,16 @@
     border-radius: 0px 0px 25px 0px;
 
 }
-
+.dim{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 60;
+}
 
 li, a{
     cursor: pointer;
@@ -125,9 +134,9 @@ img{
 .burger {
     display: inline-block;
     cursor: pointer;
-  }
-  
-  .bar1, .bar2, .bar3 {
+}
+
+.bar1, .bar2, .bar3 {
     width: 35px;
     height: 5px;
     background-color: rgba(255, 255, 255, 0.70);
@@ -144,10 +153,16 @@ img{
   .change .bar3 {
     transform: translate(0, -11px) rotate(45deg);
   }
+@media screen and (max-width: 1250px) {
+    .dashboard-header{
+        background-color: #2E303D !important;
+    }
+}
 
 @media screen and (max-width: 992px) {
     .burger-container{
         display: flex;
+        z-index: 99 !important;
     }
     .dashboard-header{
         width: 100%;
@@ -162,10 +177,11 @@ img{
     }
     .sidebar{
         transform: translateX(-100%);
+        z-index: 90 !important;
     }
 
     .nav{
-        margin-top: 75px;
+        margin-top: 1rem;
     }
 
     .active-rounded-top{
@@ -187,6 +203,7 @@ img{
         border-radius: 0px;
     }
 }
+
 
 @media screen and (max-width: 572px) {
     .burger-container{
