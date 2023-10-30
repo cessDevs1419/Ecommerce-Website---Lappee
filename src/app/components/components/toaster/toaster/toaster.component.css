@@ -1,0 +1,5 @@
+.toast-container-custom {
+    position: absolute;
+    z-index: 2500;
+    gap: 1rem;
+}

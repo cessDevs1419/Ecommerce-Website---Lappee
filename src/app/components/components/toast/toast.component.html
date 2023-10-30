@@ -1,4 +1,4 @@
-<div class="toast-container-custom p-2 bg-white top-0 {{toastClass}}" [style.opacity]="this.opacity">
+<div class="toast-custom bg-white top-0 p-3" [style.opacity]="this.opacity" role="button" (click)="navigate()">
     <div class="d-flex flex-row justify-content-between">
         <div class="d-flex flex-row">
             <div [ngClass]="this.accent" class="toast-stripe me-3 ">
@@ -12,7 +12,7 @@
                     <strong>{{this.toastTitle}}</strong>
                 </div>
                 <div class="toast-body">
-                    {{this.toastContent}}
+                    <p class="m-0">{{this.toastContent}}</p>
                 </div>
             </div>
         </div>

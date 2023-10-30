@@ -1,9 +1,9 @@
-.toast-container-custom {
-    position: absolute;
-    z-index: 2500;
+.toast-custom {
     box-shadow: 0 0.5rem 1rem rgba(0,0,0, 0.15);
-    opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    opacity: 0;
 }
 
 .toast-stripe {

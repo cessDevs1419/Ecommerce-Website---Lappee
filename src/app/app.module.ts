@@ -97,6 +97,7 @@ import { OutlineCircleSpinnerComponent } from './components/components/loader/ge
 import { ChatsComponent } from './components/components/chats/chats.component';
 import { ToggleswitchComponent } from './components/components/toggleswitch/toggleswitch.component';
 import { ToastNotificationComponent } from './components/components/toast-notification/toast-notification.component';
+import { ToasterComponent } from './components/components/toaster/toaster/toaster.component';
 
 @NgModule({
   declarations: [
@@ -182,6 +183,7 @@ import { ToastNotificationComponent } from './components/components/toast-notifi
     ChatsComponent,
     ToggleswitchComponent,
     ToastNotificationComponent,
+    ToasterComponent,
   ],
   imports: [
     BrowserModule,
