@@ -22,7 +22,9 @@ export class AdminManageAboutUsComponent {
   textColor: string = 'text-secondary';
   borderColor: string = '';
   backGround: string = '';
-
+  btncolor: string = 'btn-primary glow-primary'
+  
+  size: string = 'w-100';
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;

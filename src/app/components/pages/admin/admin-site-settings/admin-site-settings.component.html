@@ -181,8 +181,8 @@
                 </div>
                 <input type="file" formControlName="bannerImage" id="bannerUpload" class="d-none" accept="image/png,image/jpeg" (change)="onBannerFileChanged($event)" >
                 <div class="col d-flex justify-content-end">
-                  <button type="button" class="btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
-                  <button type="submit" class="bg-theme-blue btn btn-primary px-4">Save</button>
+                  <button type="button" class="btn-cancel btn btn-muted me-3" (click)="hideAddBanner()">Cancel</button>
+                  <button type="submit" class="btn-save bg-theme-blue btn px-4 {{btncolor}} text-light ">Save</button>
                 </div>
               </div>
             </form>

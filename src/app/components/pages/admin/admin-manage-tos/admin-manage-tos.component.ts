@@ -21,6 +21,7 @@ export class AdminManageTosComponent {
   textColor: string = 'text-secondary';
   borderColor: string = '';
   backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
   
   aboutUsSections: Observable<AboutUsTosSection[]>;
 

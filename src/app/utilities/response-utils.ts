@@ -123,6 +123,7 @@ export function formatNotificationsResponse(response: AdminNotificationList): Ad
   const sortedData = response.data.sort((a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime(); 
   });
+  
   return sortedData.map((data: AdminNotification) => ({
     id: data.id,
     type: data.type,

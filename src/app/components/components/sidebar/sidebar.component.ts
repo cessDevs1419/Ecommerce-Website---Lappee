@@ -8,6 +8,7 @@ import { formatNotificationsResponse } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { EchoService } from 'src/app/services/echo/echo.service';
+import { NotificationDropdownComponent } from '../notification-dropdown/notification-dropdown.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,14 +39,14 @@ export class SidebarComponent {
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
   }
-
+  
+  @ViewChild(NotificationDropdownComponent) notifs: NotificationDropdownComponent;
   @Output() confirm: EventEmitter<any>
   @Input() headerName: string;
   @Input() admin!: boolean;
   @Input() courier!: boolean;
   
   private refreshData$ = new Subject<void>();
-
   constructor(private router: Router,
     private notification_service: NotificationsService,
     private cdr: ChangeDetectorRef,
@@ -57,14 +58,20 @@ export class SidebarComponent {
   
   ngOnInit(): void{
 
+    // this.echo.listen('channel-name', 'SampleEvent', (data: any) => {
+    // })
+    
     this.notifications = this.refreshData$.pipe(
       startWith(undefined),
       switchMap(() => this.notification_service.getNotifications()),
       map((Response: any) => formatNotificationsResponse(Response))
     );
-
-    this.echo.listen('channel-name', 'SampleEvent', (data: any) => {
-      this.refreshTableData();
+    
+    this.echo.listen('admin.notifications.orders', 'OrderPlaced', (data: any) => {
+      this.notifications.subscribe((notifications: AdminNotification[]) => {
+        this.refreshTableData()
+      });
+      this.refreshTableData()
     })
   }
 
@@ -168,6 +175,8 @@ export class SidebarComponent {
   refreshTableData(): void {
       this.refreshData$.next();
   }
+  
+
 
   calculateUnreadCount(items: AdminNotification[]): boolean {
     return items.some(item => !item.is_read);

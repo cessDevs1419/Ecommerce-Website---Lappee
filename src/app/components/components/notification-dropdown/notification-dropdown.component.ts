@@ -58,8 +58,10 @@ export class NotificationDropdownComponent {
   }
 
   ngOnInit(){
+
     this.data.subscribe((items) => {
       const today = new Date();
+      
       
       this.todayItems = []
       this.earlierThisWeekItems = []
@@ -71,15 +73,39 @@ export class NotificationDropdownComponent {
   
         if (daysAgo === 0) {
           this.todayItems.push(item);
+
         } else if (daysAgo <= 7) {
           this.earlierThisWeekItems.push(item);
         }
       });
     });
-    
 
   }
   
+  
+  refreshData(){
+    console.log('meron')
+    this.data.subscribe((items) => {
+      const today = new Date();
+      
+      
+      this.todayItems = []
+      this.earlierThisWeekItems = []
+
+      items.forEach((item) => {
+        const createdDate = new Date(item.created_at);
+        const timeDifference = today.getTime() - createdDate.getTime();
+        const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  
+        if (daysAgo === 0) {
+          this.todayItems.push(item);
+
+        } else if (daysAgo <= 7) {
+          this.earlierThisWeekItems.push(item);
+        }
+      });
+    });
+  }
   getRelativeTime(createdDate: string): string {
     const now = new Date();
     const createdDateObj = new Date(createdDate);

@@ -31,13 +31,13 @@ export class AdminRoutingComponent {
   }
 
   ngOnInit(): void{
-    this.echo.listen('channel-name', 'SampleEvent', (data: any) => {
-      this.toaster.showToast('New Notification', data.message, 'default', '', )
-    })
-
-    // this.echo.listen('admin.notifications.orders', 'UnprocessedOrdersDetected', (data: any) => {
+    // this.echo.listen('channel-name', 'SampleEvent', (data: any) => {
     //   this.toaster.showToast('New Notification', data.message, 'default', '', )
     // })
+
+    this.echo.listen('admin.notifications.orders', 'OrderPlaced', (data: any) => {
+      this.toaster.showToast('New Notification', data.message, 'default', '', )
+    })
   }
   
   logout(): void {
