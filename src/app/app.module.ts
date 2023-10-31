@@ -98,6 +98,7 @@ import { ChatsComponent } from './components/components/chats/chats.component';
 import { ToggleswitchComponent } from './components/components/toggleswitch/toggleswitch.component';
 import { ToastNotificationComponent } from './components/components/toast-notification/toast-notification.component';
 import { ToasterComponent } from './components/components/toaster/toaster/toaster.component';
+import { ProductCarouselComponent } from './components/components/product-carousel/product-carousel/product-carousel.component';
 
 @NgModule({
   declarations: [
@@ -184,6 +185,7 @@ import { ToasterComponent } from './components/components/toaster/toaster/toaste
     ToggleswitchComponent,
     ToastNotificationComponent,
     ToasterComponent,
+    ProductCarouselComponent,
   ],
   imports: [
     BrowserModule,
