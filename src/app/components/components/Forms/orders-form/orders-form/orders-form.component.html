@@ -1,14 +1,14 @@
 <div class="container m-auto p-2 h-auto" *ngIf="formConfirm">
     <form class="w-100" (ngSubmit)="confirmPayment()" >
         
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
+        <div class="container px-1">
+            <div class="row p-0">
+                <div class="col-lg-6 ">
                     <img [src]="imageSrc" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" alt="Confirm Payment" srcset="">
                 </div>
                 
-                <div class="col-lg-6 mt-lg-0 mt-4">
-                    <div class="container overflow-y-auto m-auto p-0" *ngIf="modalData; let items" >
+                <div class="col-lg-6 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
+                    <div class="w-100 m-auto p-0  " *ngIf="modalData; let items" >
                         <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
                         <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
                         <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
@@ -19,58 +19,7 @@
                         </div>
                         <hr class="divider border {{bordercolor}}">
                         <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Order Summarry</h1>
-                        <ul class="list-unstyled" *ngFor="let item of modalConfirmData | async">
-                            <li class="text-decoration-none row mb-2">
-                                <div class="col-sm-8 text-start">
-                                    <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
-                                </div>
-                                <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                    <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
-                                </div>
-                            </li>
-                            <li class="text-decoration-none row mb-2">
-                                <div class="col-sm-8 text-start">
-                                    <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
-                                </div>
-                                <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                    <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
-                                </div>
-                            </li>
-                            <li class="text-decoration-none row mb-2">
-                                <div class="col-sm-8 text-start">
-                                    <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
-                                </div>
-                                <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                    <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
-                                </div>
-                            </li>
-
-                            <li class="text-decoration-none row mb-2">
-                                <div class="col-sm-8 text-start">
-                                    <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
-                                </div>
-                                <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                    <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
-                                </div>
-                            </li>
-                            <li class="text-decoration-none row mb-2">
-                                <div class="col-sm-8 text-start">
-                                    <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
-                                    <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
-                                </div>
-                                <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                    <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
-                                </div>
-                            </li>
+                        <ul class="list-unstyled w-100" *ngFor="let item of modalConfirmData | async">
                             <li class="text-decoration-none row mb-2">
                                 <div class="col-sm-8 text-start">
                                     <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
@@ -83,7 +32,7 @@
                             </li>
                         </ul>
                         <hr class="divider mb-4 border {{bordercolor}}">
-                        <div class="row">
+                        <div class="row w-100">
                             <div class="col-sm-6">
                                 <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
                             </div>

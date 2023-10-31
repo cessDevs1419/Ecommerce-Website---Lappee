@@ -68,9 +68,6 @@ export class SidebarComponent {
     );
     
     this.echo.listen('admin.notifications.orders', 'OrderPlaced', (data: any) => {
-      this.notifications.subscribe((notifications: AdminNotification[]) => {
-        this.refreshTableData()
-      });
       this.refreshTableData()
     })
   }
