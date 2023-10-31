@@ -340,7 +340,7 @@
                             </td>
                             
                             <!--Enable this table Actions-->
-                            <td colspan="1" *ngIf="tableAction" class="{{textcolor}} position-relative d-flex justify-content-center">
+                            <td colspan="1" *ngIf="tableAction" class="{{textcolor}} position-relative d-flex justify-content-center align-items-center">
                                 <div *ngIf="actionBtn" class=" m-auto d-flex align-items-center p-2">
                                     <button 
                                         id="actionBtn" 
@@ -352,19 +352,71 @@
                                         <i class="bi bi-three-dots fs-5"></i> 
                                     </button>
                                 </div>
-                                <div *ngIf="actionForOrderBtn" class=" m-auto d-flex align-items-center p-2">
+                                <div *ngIf="actionForOrderBtn" class="m-auto d-flex align-items-center justify-content-center">
+                                    
                                     <button 
+                                        *ngIf="elipsesActionBtn"
                                         id="actionBtn" 
-                                        class="actionbtn m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                                        class="actionbtn  m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
                                         [class.activebtn]="activeOrderButtonIndex === i"
                                         (click)="showOrderAction(i)"
             
                                         > 
                                         <i class="bi bi-three-dots fs-5"></i> 
                                     </button>
+                                    <button 
+                                        *ngIf="item.status === paymentStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#confirm"
+                                        [title]="'Confirm Payment'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        <i class="bi bi-check fs-4 {{textcolor}}"></i>
+                                    </button>
+                                    <button 
+                                        *ngIf="item.status === shipStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#ship"
+                                        [title]="'Ship Order'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        <i class="bi bi-box fs-4 {{textcolor}}"></i>
+                                    </button>
+                                    <button 
+                                        *ngIf="item.status === deliverStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#deliver"
+                                        [title]="'Deliver Order'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        <i class="bi bi-truck fs-4 {{textcolor}}"></i>
+                                    </button>
+                                    <button
+                                        (click)="sendRowData(item)"
+                                        *ngIf="item.status === 200"
+                                        type="button"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#deliver"
+                                        [title]="'Delivered'"
+                                    >
+                                    <i class="bi bi-box fs-4 {{textcolor}}"></i>
+                                    </button>
+
+
+                                    <button
+                                        (click)="sendRowData(item)"
+                                        type="button" 
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#view"
+                                        [title]="'View'"
+                                    >
+                                        <i class="bi bi-eye fs-4 {{textcolor}}"></i>
+                                    </button>
                                 </div>
                                 
-
                                 <!--SHIPPED STATUS BTN-->
                                 <ng-container *ngIf="orderBtn">
                                     <button

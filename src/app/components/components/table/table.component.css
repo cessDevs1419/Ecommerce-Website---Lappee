@@ -112,7 +112,14 @@ td{
     color: #959BA5;
   }
   
-
+  .order-btn{
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .order-btn:hover{
+    background: #1C92FF;
+    box-shadow: 0px 0px 10px 1px #1C92FF;
+  }
   .bar{
     max-width: 600px;
     width: 100%;

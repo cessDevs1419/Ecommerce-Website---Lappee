@@ -41,6 +41,8 @@ export class TableComponent {
 	bordercolor: string = 'table-border-color'
 	tablebordercolor: string = 'linear-gradient-border'
 	checkboxcolor: string = 'dark-border-checkbox'
+	btnborders: string = 'border-dark-subtle'
+	
 	public searchString: string;
 	selectedStatus: string = 'Status';
 	sortedData: any[] = [];
@@ -70,6 +72,7 @@ export class TableComponent {
 	@Input() tableAction!: boolean;
 	@Input() actionBtn!: boolean;
 	@Input() actionForOrderBtn!: boolean;
+	@Input() elipsesActionBtn!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
 	@Input() editSubBtn!: boolean;
