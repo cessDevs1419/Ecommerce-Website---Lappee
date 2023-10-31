@@ -471,6 +471,7 @@
                                     </button>
                                 </div>
                             </div>
+                            
                             <div (mouseleave)="showOrderAction(i)" *ngIf="rowOrderActionVisibility[i]" class="z-3  bg-none rounded-3 position-absolute  p-0 end-0 me-3">
                                 <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0  hover-div">
                                     <button 
@@ -514,7 +515,7 @@
                                         Process
                                     </button>
                                     <div class="action-border"></div>
-                                    <button 
+                                    <!-- <button 
                                         type="button"
                                         data-bs-toggle="modal" data-bs-target="#delete"
                                         class="delete-btn py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
@@ -522,6 +523,16 @@
                                         [title]="'Delete Order'"
                                         > 
                                         Delete
+                                    </button> -->
+                                    <button
+                                        (click)="sendRowData(item)"
+
+                                        type="button" 
+                                        class="delete-btn py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
+                                        data-bs-toggle="modal" data-bs-target="#view"
+                                        [title]="'View'"
+                                    >
+                                        View
                                     </button>
                                 </div>
                             </div>

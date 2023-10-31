@@ -21,10 +21,14 @@ export class OrdersFormComponent {
 
     textcolor: string = 'text-light-subtle'
     bordercolor: string = 'dark-subtle-borders'
+    titleColor : string = 'dark-theme-text-color';
+	itemColor: string = 'text-white-50';
     @Input() selectedRowData!: any;
     @Input() formConfirm!: boolean;
     @Input() formShip!: boolean;
     @Input() formDelivered!: boolean;
+    @Input() modalConfirmData!: any;
+    @Input() modalData!: any;
     
     imageSrc: string;
     tobePack: FormGroup;

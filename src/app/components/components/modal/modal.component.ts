@@ -74,6 +74,7 @@ export class ModalComponent {
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;
+	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
 	selectedAttributeData: any;
 	//modal theme
@@ -105,7 +106,7 @@ export class ModalComponent {
 	ngOnInit(): void{
 
 	}
-	
+
     refreshTableData(): void {
         this.RefreshTable.emit();
     }

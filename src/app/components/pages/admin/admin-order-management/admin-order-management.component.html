@@ -30,10 +30,7 @@
 </div>
 
 
-<app-modal
-    modalId="add"
 
-></app-modal>
 
 <app-modal
     modalId="view"
@@ -64,7 +61,8 @@
     (WarningToasts)="WarningToast($event)"
     (ErrorToasts)="ErrorToast($event)"
     [selectedRowData]="selectedRowData"
-
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
 ></app-modal>
 
 
