@@ -49,8 +49,6 @@
 table th:first-child{
     border-radius: 16px 0 0 16px;
     border: 1px solid #3F4154;
-    border-image: linear-gradient(1turn, rgba(255,249,34), rgba(255,0,128), rgba(56,2,155,0));
-    border-image-slice: 1;
     border-right: 0;
     border-bottom: 0;
 }
