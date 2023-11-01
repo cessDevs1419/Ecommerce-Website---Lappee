@@ -67,7 +67,7 @@ export class SidebarComponent {
       map((Response: any) => formatNotificationsResponse(Response))
     );
     
-    this.echo.listen('admin.notifications.orders', 'OrderPlaced', (data: any) => {
+    this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
       this.refreshTableData()
     })
   }
@@ -197,15 +197,14 @@ export class SidebarComponent {
   }
   getAllNotifationIds(data: any){
 
-    console.log(data)
-    // this.notification_service.patchNotifications(data.id).subscribe({
-    //     next: async(response: any) => { 
-    //       this.refreshTableData();
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-  
-    //     }
-  
-    // });
+    this.notification_service.patchMarkAllReadNotifications().subscribe({
+      next: async(response: any) => { 
+        this.refreshTableData();
+      },
+      error: (error: HttpErrorResponse) => {
+
+      }
+
+  });
 }
 }

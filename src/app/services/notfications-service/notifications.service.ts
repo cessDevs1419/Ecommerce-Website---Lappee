@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminNotification, AdminNotificationList } from 'src/assets/models/admin-notifications';
-import { GETNotifications, PATCHNotifications } from '../endpoints';
+import { GETNotifications, PATCHMarkAllReadNotifications, PATCHNotifications } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +53,17 @@ export class NotificationsService {
     });
   
     return this.http.patch(PATCHNotifications, body, { headers: headers });
+  }
+  
+  patchMarkAllReadNotifications(): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true'
+    });
+  
+    return this.http.patch(PATCHMarkAllReadNotifications, { headers: headers });
   }
   
 }

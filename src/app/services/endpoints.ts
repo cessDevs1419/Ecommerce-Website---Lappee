@@ -82,6 +82,7 @@ export const POSTOrder: string = api + "api/client/orders/store";
 //Notifications 
 export const GETNotifications: string = api + "api/admin/notif";
 export const PATCHNotifications: string = api + "api/admin/notif/mark";
+export const PATCHMarkAllReadNotifications: string = api + "api/admin/notif/markAll";
 
 //Inquiry Endpoints
 export const GETInquiry: string = api + "api/admin/inquiry";
