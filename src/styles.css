@@ -19,6 +19,14 @@
     font-family: Mulish, sans-serif;
 }
 
+.font-grey{
+    color: #BBBBBB
+}
+
+.sub-font-grey{
+    color: var(--adm-dark-gray)
+}
+
 .text-light-subtle{
     color: #d2d2d2;
 }

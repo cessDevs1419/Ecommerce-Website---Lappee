@@ -13,12 +13,13 @@ import { EchoService } from 'src/app/services/echo/echo.service';
 export class NotificationDropdownComponent {
 
   @Output() getNotifationData: EventEmitter<any> = new EventEmitter();
+  @Output() markAllRead: EventEmitter<any> = new EventEmitter();
   @Input() data: Observable<any[]>;
   
   bg_dark: string = 'bg-notification-dark'
   font_dark: string = 'text-white'
   font_dark_subtle: string = 'text-notification-grey'
-
+  bordercolor: string = 'table-border-color'
   // Sampledata: any = 
   // [
   //   {
@@ -84,7 +85,6 @@ export class NotificationDropdownComponent {
   
   
   refreshData(){
-    console.log('meron')
     this.data.subscribe((items) => {
       const today = new Date();
       
@@ -106,6 +106,7 @@ export class NotificationDropdownComponent {
       });
     });
   }
+  
   getRelativeTime(createdDate: string): string {
     const now = new Date();
     const createdDateObj = new Date(createdDate);
@@ -140,6 +141,12 @@ export class NotificationDropdownComponent {
   
   calculateUnreadCount(items: any[]): number {
     return items.filter(item => !item.is_read).length;
+  }
+  
+  markallasRead(items: any[]){
+    const unreadItems = items.filter(item => !item.is_read);
+    const unreadItemIds = unreadItems.map(item => item.id);
+    this.markAllRead.emit(unreadItemIds)
   }
   
   route(id:string, type:string){

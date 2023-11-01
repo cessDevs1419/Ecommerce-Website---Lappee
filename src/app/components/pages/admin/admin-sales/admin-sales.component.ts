@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progress';
 
 @Component({
@@ -9,7 +9,16 @@ import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progre
 export class AdminSalesComponent {
 
   @ViewChild('circleProgress') circleProgress: CircleProgressComponent;
+  @ViewChild('selectBox', { static: true }) selectBox: ElementRef;
   
+  bgColor: string = 'table-bg-dark';
+  fontColor: string = 'font-grey';
+  titleColor: string = 'font-grey';
+  itemColor: string = 'font-grey';
+  subitemColor: string = 'sub-font-grey';
+  
+  outerColor: string = '#1C92FF'
+  innerColor: string = '#094175'
   outerData: number = 300;
   innerData: number = 100;
   
@@ -34,7 +43,7 @@ export class AdminSalesComponent {
     outerStrokeWidth: 12,
     innerStrokeWidth: 12,
     space: -12,
-    outerStrokeColor: "#4882c2",
+    outerStrokeColor: this.outerColor,
     innerStrokeColor: "#3C3C3C",
     showBackground: false,
     animateTitle: false,
@@ -45,7 +54,7 @@ export class AdminSalesComponent {
     animationDuration: 500,
     startFromZero: false,
     outerStrokeGradient: true,
-    outerStrokeGradientStopColor: '#53a9ff',
+    outerStrokeGradientStopColor: this.outerColor,
     lazy: true,
     subtitleFormat: (percent: number): string => {
       return `${percent}%`;
@@ -92,7 +101,7 @@ export class AdminSalesComponent {
     outerStrokeWidth: 12,
     innerStrokeWidth: 12,
     space: -12,
-    outerStrokeColor: "#58AFFF",
+    outerStrokeColor: this.innerColor,
     innerStrokeColor: "#3C3C3C",
     showBackground: false,
     animateTitle: false,
@@ -103,7 +112,7 @@ export class AdminSalesComponent {
     animationDuration: 500,
     startFromZero: false,
     outerStrokeGradient: true,
-    outerStrokeGradientStopColor: '#00F0FF',
+    outerStrokeGradientStopColor: this.innerColor,
     lazy: true,
     subtitleFormat: (percent: number): string => {
       return `${percent}%`;
@@ -143,5 +152,8 @@ export class AdminSalesComponent {
     showZeroOuterStroke: false
   }
   
+  select(){
+    this.selectBox.nativeElement.click()
+  }
   
 }

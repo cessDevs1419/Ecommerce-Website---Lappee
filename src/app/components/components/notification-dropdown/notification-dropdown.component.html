@@ -1,8 +1,21 @@
 
 <div class="dropdown-menu rounded-4 overflow-auto dropdown-container p-4 mt-2 box-shadow {{bg_dark}}">
     <div class="title-container">
-        <h1 class="fs-2 fw-bolder {{font_dark}}">Notifications</h1>
-
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fs-2 fw-bolder {{font_dark}}">Notifications</h1>
+            <ng-container *ngIf="data | async as items">
+                <div class="dropdown-start border-0">
+                    <button type="button" class="actionbtn rounded-3 m-auto position-relative btn d-flex align-items-center justify-content-center  {{font_dark}}" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots fs-5"></i> 
+                    </button>
+                    <ul class="dropdown-menu box-shadow dropdown-menu-dark px-1 mt-3 me-5">
+                        <li class="dropdown-item d-flex align-items-center p-1"><i class="bi bi-check fs-4 me-1 {{font_dark}}"></i><a class="cursor-pointer text-decoration-none bg-none {{font_dark}}" (click)="markallasRead(items)">Mark all as read</a></li>
+                    </ul>
+                </div>
+            </ng-container>
+        </div>
+        
+        
         <ng-container *ngIf="data | async as items">
             <ng-container *ngIf="calculateUnreadCount(items) > 0">
                 <p class="fs-6 {{font_dark_subtle}} mt-0" *ngIf="calculateUnreadCount(items) > 0">

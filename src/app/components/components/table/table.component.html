@@ -171,7 +171,7 @@
             </div>
     
         
-            <div class="{{tableChildContainer}} overflow-x-auto  ">
+            <div class="{{tableChildContainer}} overflow-x-auto ">
                 <!--With Pagination-->
                 <table class="table table-striped" *ngIf="paginate === true">
                     <thead>
@@ -277,8 +277,9 @@
                 
                 <!--Without Pagination -->
                 <table class="table " *ngIf="paginate === false">
+                    
                     <thead >
-                        <tr class="border border-dark">
+                        <tr class="">
                             <th *ngIf="showMultipleSelection" colspan="1"  class=" {{tableHeaderbg}} " >
     
                                 <div  class="container position-relative cursor-pointer d-flex align-content-center justify-content-center">
@@ -306,7 +307,7 @@
                             </th>
                         </tr>
                     </thead>
-                    
+
                     <tbody class="">
                         <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
                             <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
@@ -342,15 +343,40 @@
                             <!--Enable this table Actions-->
                             <td colspan="1" *ngIf="tableAction" class="{{textcolor}} position-relative d-flex justify-content-center align-items-center">
                                 <div *ngIf="actionBtn" class=" m-auto d-flex align-items-center p-2">
-                                    <button 
-                                        id="actionBtn" 
-                                        class="actionbtn m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
-                                        [class.activebtn]="activeButtonIndex === i"
-                                        (click)="showAction(i)"
-            
-                                        > 
-                                        <i class="bi bi-three-dots fs-5"></i> 
-                                    </button>
+                                    <div class="dropdown-center">
+                                        <button 
+                                            id="actionBtn" 
+                                            class="actionbtn m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                                            (click)="showAction(i)"
+                                            data-bs-toggle="dropdown"
+                                            > 
+                                            <i class="bi bi-three-dots fs-5"></i> 
+                                        </button>
+                                        <ul class="z-3 action-button dropdown-menu border-0 bg-none rounded-3" >
+                                            <li class="action-item">
+                                                <button 
+                                                    type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#edit"
+                                                    class="edit-btn px-2 py-1 border-0 actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                    (click)="sendRowData(item)"
+                                                    > 
+                                                    Edit
+                                                </button>
+                                                <div class="action-border"></div>
+                                            </li>
+                                            <li class="action-item">
+                                                <button 
+                                                    type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#delete"
+                                                    class="delete-btn px-2 py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
+                                                    (click)="sendRowData(item)"
+                                                    > 
+                                                    Delete
+                                                </button>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div *ngIf="actionForOrderBtn" class="m-auto d-flex align-items-center justify-content-center">
                                     
@@ -502,7 +528,7 @@
                                 </ng-container>
                             </td>
 
-                            <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0 me-1">
+                            <!-- <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0 me-1">
                                 <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
                                     <button 
                                         type="button"
@@ -522,7 +548,7 @@
                                         Delete
                                     </button>
                                 </div>
-                            </div>
+                            </div> -->
                             
                             <div (mouseleave)="showOrderAction(i)" *ngIf="rowOrderActionVisibility[i]" class="z-3  bg-none rounded-3 position-absolute  p-0 end-0 me-3">
                                 <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0  hover-div">

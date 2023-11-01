@@ -195,4 +195,17 @@ export class SidebarComponent {
     
       });
   }
+  getAllNotifationIds(data: any){
+
+    console.log(data)
+    // this.notification_service.patchNotifications(data.id).subscribe({
+    //     next: async(response: any) => { 
+    //       this.refreshTableData();
+    //     },
+    //     error: (error: HttpErrorResponse) => {
+  
+    //     }
+  
+    // });
+}
 }

@@ -8,7 +8,7 @@
 }
 
 .table-container-md{
-  height: calc(72vh - 100px);
+  height: calc(69.7vh - 100px);
 }
 
 .table-container-sm{
@@ -36,7 +36,9 @@
 }
 
 
-
+.linear-border{
+  background-color: rgba(255, 255, 255, 0.40);
+}
 
 .table-border-color{
   border: 1px solid rgba(255, 255, 255, 0.40);
@@ -46,23 +48,40 @@
 
 table th:first-child{
     border-radius: 16px 0 0 16px;
+    border: 1px solid #3F4154;
+    border-right: 0;
+    border-bottom: 0;
 }
 
 table th:last-child{
     border-radius:0 16px 16px 0;
-    /* border-style: solid;
-    border-width: 3px;
-    border-image: linear-gradient(156deg, #2E303D, #1E2029) 2;
-    border-top-right-radius: 16px;
-    border-left: none;
-    border-right: none; */
+    border: 1px solid #3F4154;
+    border-left: 0;
+    border-bottom: 0;
 }
+
+
 
 table th{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  background: linear-gradient(180deg, #16181F 0%, rgba(22, 24, 31, 0.00) 100%);
+  border: 1px solid #3F4154;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+
 }
 
+table{
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 16px;
+  border: 1px solid #3F4154;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
 
 td{
   padding-top: .8rem;
@@ -145,9 +164,22 @@ td{
     width: 2rem;
     height: 1.3rem;
   }
+  
 
+  .action-item{
+    width: 6rem ;
+  }
+  
+  .actionbtn:hover{
+    background: #1C92FF;
+    box-shadow: 0px 0px 10px 1px #1C92FF;
+  }
+  .actionbtn:focus{
+    background: #1C92FF;
+    box-shadow: 0px 0px 10px 1px #1C92FF;
+  }
+  
   .actn-btn{
-    width: 4rem;
     padding: 0 1.1rem;
     background: #F1F1F1;
   }
