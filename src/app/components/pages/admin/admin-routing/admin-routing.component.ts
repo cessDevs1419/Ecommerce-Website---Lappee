@@ -35,7 +35,7 @@ export class AdminRoutingComponent {
     //   this.toaster.showToast('New Notification', data.message, 'default', '', )
     // })
 
-    this.echo.listen('admin.notifications.orders', 'OrderPlaced', (data: any) => {
+    this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
       this.toaster.showToast('New Notification', data.message, 'default', '', )
     })
   }
