@@ -18,6 +18,7 @@
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
+        [packStatus]="packStatus"
         [setFirstUpper]="true"
         [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
         [tableRows]="['id', 'created_at', 'status' ]"
@@ -40,6 +41,8 @@
     modalSubTitle="{{selectedRowData?.user_id}}"
     modalSubTitleClass="mt-3 fs-5 fw-bold"
     modalClass="modal-md "
+    [modalHideIcon]="true"
+    modalIcon="view"
     [allowAnotherSub]="true"
     [modalViewOrders]="true"
     (RefreshTable)="refreshTableData()"
@@ -50,11 +53,12 @@
 
 <app-modal
     modalId="confirm"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Order"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
     modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
     [modalHideCloseBtn]="true"
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
@@ -66,14 +70,33 @@
     [modalSubData]="ordersContents$"
 ></app-modal>
 
+<app-modal
+    modalId="packed"
+    modalTitle="Confrim Packed"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="packed"
+    [modalHideCloseBtn]="true"
+    [modalConfirm]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+></app-modal>
 
 <app-modal
     modalId="ship"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Shipping"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
     modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="ship"
     [modalHideCloseBtn]="true"
 
     [modalShip]="true"
@@ -88,11 +111,12 @@
 
 <app-modal
     modalId="deliver"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Delivered"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
     modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="delivered"
     [modalHideCloseBtn]="true"
     
     [modalDeliver]="true"

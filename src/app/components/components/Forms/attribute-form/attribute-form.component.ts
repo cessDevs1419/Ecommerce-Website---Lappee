@@ -79,22 +79,24 @@ export class AttributeFormComponent {
         if(this.addAttributeForm.valid){
 
             const nameValue = this.addAttributeForm.get('name')?.value; 
-            const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1).toLowerCase();
+            const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1);
+           
             const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
 
             let formData: FormData = new FormData(); 
             formData.append('name', capitalizedName);
-           
-
+        
+            
             for (let val of attributeArray.value) {
                 let index = 0;
-                formData.append('values[]', val);
+                const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
+                formData.append('values[]', capitalizedAttributeValue);
                 index++;
             }
 
-            formData.forEach((value, key) => {
-                console.log(`${key}: ${value}`);
-            });
+            // formData.forEach((value, key) => {
+            //     console.log(`${key}: ${value}`);
+            // });
             
             this.attribute_service.postAttribute(formData).subscribe({
                 next: (response: any) => { 

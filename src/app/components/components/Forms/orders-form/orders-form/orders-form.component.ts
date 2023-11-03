@@ -25,6 +25,7 @@ export class OrdersFormComponent {
 	itemColor: string = 'text-white-50';
     @Input() selectedRowData!: any;
     @Input() formConfirm!: boolean;
+    @Input() formPacked!: boolean;
     @Input() formShip!: boolean;
     @Input() formDelivered!: boolean;
     @Input() modalConfirmData!: any;
@@ -33,6 +34,7 @@ export class OrdersFormComponent {
     imageSrc: string;
     tobePack: FormGroup;
     tobeShip: FormGroup;
+    tobeDelivered: FormGroup;
     Delivered: FormGroup;
     
     constructor(
@@ -40,18 +42,21 @@ export class OrdersFormComponent {
     ){
         
         this.tobePack = new FormGroup({
-            tobepack: new FormControl(150)
+            tobepack: new FormControl(100)
         });
         
         this.tobeShip = new FormGroup({
-            tobeship: new FormControl(175)
+            tobeship: new FormControl(150)
+        });
+        
+        this.tobeDelivered = new FormGroup({
+            todliver: new FormControl(175)
         });
         
         this.Delivered = new FormGroup({
             todliver: new FormControl(200)
         });
     }
-    
     
     
     ngOnInit(): void{
@@ -128,11 +133,70 @@ export class OrdersFormComponent {
         
     }
     
-    shipPackage(){
+    packed(){
         
         let formData: any = new FormData();
         formData.append('order_id',  this.selectedRowData.id);
         formData.append('tracking_no',  this.tobeShip.get('tobeship')?.value);
+        
+        for (const value of formData.entries()) {
+            console.log(`${value[0]}, ${value[1]}`);
+        } 
+        
+        this.orderService.patchShip(formData).subscribe({
+            next: async(response: any) => { 
+                const successMessage = {
+                    head: 'Package To be Ship',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                this.OrderSuccess.emit(successMessage);
+
+                await this.asyncTask();
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); 
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: errorsArray,
+                    };
+                
+                    this.OrderWarn.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: 'Please Try Another One',
+                    };
+                    this.OrderError.emit(errorDataforProduct);
+                }
+                return throwError(() => error);
+            }
+
+        });
+    }
+    
+    shipPackage(){
+        
+        let formData: any = new FormData();
+        formData.append('order_id',  this.selectedRowData.id);
+        formData.append('tracking_no',  this.tobeDelivered.get('todliver')?.value);
         
         for (const value of formData.entries()) {
             console.log(`${value[0]}, ${value[1]}`);

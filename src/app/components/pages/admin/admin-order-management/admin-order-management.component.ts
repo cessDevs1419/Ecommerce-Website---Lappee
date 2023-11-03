@@ -30,10 +30,11 @@ export class AdminOrderManagementComponent {
     ordersContents$: Observable<AdminOrderContent[]>;
 
     
-    paymentStatus: number = 100;
+    paymentStatus: number = 50;
+    packStatus: number = 100; 
 	shipStatus: number = 150;
 	deliverStatus: number = 175; 
-	
+
 	private refreshData$ = new Subject<void>();
     selectedRowData!: any;
     

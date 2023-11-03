@@ -271,7 +271,7 @@ export class CategoryFormComponent {
             let formData: any = new FormData();
             let categoriesName = this.addCategoryForm.get('category')?.value;
             let attributeArray = this.attribute_service.getSelectedAttribute().map(item => (item.id))
-            const capitalizedName = categoriesName.charAt(0).toUpperCase() + categoriesName.slice(1).toLowerCase();
+            const capitalizedName = categoriesName.charAt(0).toUpperCase() + categoriesName.slice(1);
             const selectedAttributes = this.attribute_service.getSelectedAttribute();
 
 

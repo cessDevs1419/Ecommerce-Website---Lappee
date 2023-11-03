@@ -103,7 +103,14 @@
                                                                     <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name}}</h1>
                                                                 </div>
                                                                 <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
-                                                                    <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}">{{variantControl.value.attributes[0].value[0]}}</h1>
+                                                                    <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}">
+                                                                        <ng-container *ngIf="variantControl.value.attributes.name === 'Color' || variantControl.value.attributes.name === 'Colors'; else notcolor">
+                                                                            {{variantControl.value.attributes[0].value[0]}}
+                                                                        </ng-container>
+                                                                        <ng-template #notcolor >
+                                                                            {{variantControl.value.attributes[0].value}}
+                                                                        </ng-template>
+                                                                    </h1>
                                                                 </div>
                                                             </div>
                                                             <div class="row ms-0 m-auto w-100">
@@ -517,6 +524,528 @@
         </form>
 </div>
 
+<div class="addProductForm pb-4" *ngIf="formEditProduct">
+    <form [formGroup]="addProductForm" >
+        <div class="products px-0 w-100 m-auto " >
+            <div class="product-container  p-1 rounded-4  ">
+                    <div class="container {{formColor}} p-4 rounded-4 box-shadow m-auto mt-0">
+                        <div class="form-title text-start mb-4">
+                            <h1 class="modal-title {{formTextColor}} fs-4 fw-bolder mb-0" >Manage Products</h1>
+                            <div class="modal-sub-title dark-form-subtitle fs-6 mt-0">Product Management</div>
+                            <hr class="divider border-white">
+                        </div>
+                        
+<!-- Product Form -->
+                        <div class="product-form body pt-0 pb-0">
+                            <div class="d-flex flex-row p-0 mb-3">
+                                <div class="blue-accent me-2"></div>
+                                <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Details</p>
+                            </div>
+                            
+                            <div class="w-100 mb-3">
+                                <label for="addproductName" class="form-label {{formTextColor}}">Product Name</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control py-3 px-3 rounded-3  {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                    id="addproductName" 
+                                    name="addproductName" 
+                                    formControlName="name"
+                                    placeholder="One Love"
+                                    required
+                                >
+    
+                            </div>
+                                        
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">    
+
+                                    <div class="title-container d-flex ">
+                                        <label for="addproductCategory" class="form-label {{formTextColor}}">Category</label>
+                                    </div>
+                                    <select 
+                                        class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                        id="addproductCategory"
+                                        name="addproductCategory" 
+                                        formControlName="category" 
+                                        (change)="onCategorySelect($event)"
+                                        required
+                                    >
+        
+                                        <option *ngFor="let category of categories | async" [value]=" category.id ">{{ category.name }}</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
+                                <!-- <textarea 
+                                    class="form-control py-3 px-3 rounded-3 bg-transparent border  {{formInputColor}} {{formBorderColor}}" 
+                                    id="addproductDescription" 
+                                    name="addproductPriceDescription" 
+                                    rows="5" 
+                                    formControlName="description"
+                                    required
+                                ></textarea> -->
+                                <app-rich-text-editor 
+                                    (value)="getRTFValue($event)"
+                                    #rte
+                                >
+                                </app-rich-text-editor>
+                            </div>
+                        </div>
+
+                        <hr class="divider border-white mt-4 mb-3">
+                        
+                        <div class="body pt-0 pb-0 mt-3 ">
+                            <div class="title-container my-4 d-flex align-items-center">
+                                <div class="d-flex flex-row p-0">
+                                    <div class="blue-accent me-2"></div>
+                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Variants</p>
+                                </div>
+                            </div>
+<!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
+<!-- variant list   -->
+                            <div class="accordion border-0">
+                                <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
+                                    <div  class="border-0 p-0" *ngIf="!form.isVisible">
+                                        <div *ngIf="variantsLists[i]; let variantControl; "
+                                            class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                                            <div class="m-auto row d-flex align-items-center w-100 ">
+                                                <div class="col-sm-2 me-2">
+                                                    <div class="color-container border rounded-3 overflow-hidden" *ngIf="variantControl.value.images[0]">
+                                                        <img ng [src]="getSafeImageUrl(variantControl.value.images[0])" class="w-100 h-100 border" alt="">
+                                                    </div>
+                                                    <div class="color-container border rounded-3 overflow-hidden" *ngIf="variantControl.value.attributes.name === 'Color'" >
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                                    <div class="data w-100">
+                                                        <div class="row ms-0 m-auto w-100 ">
+                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
+                                                                <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{variantControl.value.name}}</h1>
+                                                            </div>
+                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
+                                                                <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}">
+                                                                    <ng-container *ngIf="variantControl.value.attributes.name === 'Color' || variantControl.value.attributes.name === 'Colors'; else notcolor">
+                                                                        {{variantControl.value.attributes[0].value[0]}}
+                                                                    </ng-container>
+                                                                    <ng-template #notcolor >
+                                                                        {{variantControl.value.attributes[0].value}}
+                                                                    </ng-template>
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row ms-0 m-auto w-100">
+                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Price: {{variantControl.value.price}}</p>
+                                                            </div>
+                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
+                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Stock: {{variantControl.value.stock}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="actions position-relative">
+                                                <div class=" m-auto d-flex align-items-center p-2 position-relative">
+                                                    <button 
+                                                        id="actionBtn" 
+                                                        class="dark-theme-border actionbtn btn btn-primary m-auto position-relative bg-none rounded-3 d-flex align-items-center justify-content-center p-2 {{formTextColor}}"
+                                                        [class.activebtn]="activeButtonIndex === i"
+                                                        (click)="showAction(i)"
+                            
+                                                        > 
+                                                        <i class="bi bi-three-dots fs-3 lh-1 dark-theme-color"></i> 
+                                                    </button>
+                                                </div>
+                                                <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0">
+                                                    <div class="action-container border m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
+                                                        <button 
+                                                            type="button"
+                                                            class="edit-btn w-100 mt-0 rounded-3 rounded-bottom-0"
+                                                            [attr.data-bs-target]="'#collapse' + i" 
+                                                            [attr.aria-expanded]="form.isVisible" 
+                                                            (click)="editVariant(i)"
+                                                        > 
+                                                            Edit
+                                                        </button>
+                                                        <!-- 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#edit"
+                                                        data-bs-target="#removeVariants" -->
+                                                        <button 
+                                                            type="button"
+                                                            class="edit-btn w-100 rounded-3 rounded-top-0"
+                                                            (click)="selectVariantItem(i)"
+                                                        > 
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible, 'slide-up': !form.isVisible, 'slide-down': form.isVisible}" >
+                                        <div class="accordion-body p-3">
+                                            <form [formGroup]="addVariantForm">
+                                                <div class="w-100 mb-3">
+                                                    <label class="form-label {{formTextColor}}">Variant Name</label>
+                                                    <input 
+                                                        [ngClass]="{'border-danger': name}"
+                                                        type="text" 
+                                                        class="form-control py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                        name="addVariantName" 
+                                                        formControlName="name"
+                                                        placeholder="Variant name"
+                                                        required
+                                                    >
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-6 mb-3">
+                                                        <label for="addvariantQty" class="form-label {{formTextColor}}">Quantity</label>
+                                                        <div class="input-group mb-3">
+                                                            <input 
+                                                                type="number" 
+                                                                [ngClass]="{'image-resolution-shadow': stockBorder &&  isStockZeroOrNegative(addVariantForm)}"
+                                                                class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                id="addvariantQty" 
+                                                                name="addvariantQty" 
+                                                                formControlName="stock" 
+                                                                [value]="1"
+                                                                min="0"  
+                                                                step="1"
+                                                                pattern="\d+"
+                                                                required
+                                                            >
+                                                            <span class="input-group-text bg-grey " id="basic-addon2">QTY</span>
+                                                        </div>
+                                                        <p *ngIf="stockBorder && isStockZeroOrNegative(addVariantForm)" class="text-danger">
+                                                            Quantity should be greater than or equal to 1.
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-6 mb-3">
+                                                        <label for="addvariantPrice" class="form-label {{formTextColor}}">Price</label>
+                                                        <div class="input-group mb-3">
+                                                            <input 
+                                                                type="number" 
+                                                                [ngClass]="{'image-resolution-shadow': stockBorder &&  isPriceZeroOrNegative(addVariantForm)}"
+                                                                class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                name="addvariantPrice" 
+                                                                formControlName="price" 
+                                                                [value]="1"
+                                                                min="0"  
+                                                                required
+                                                                step="0.01"
+                                                                [placeholder]="01.01"
+                                                                pattern="\d+(\.\d{2})?"
+                                                            >
+                                                            <span class="input-group-text bg-grey" id="basic-addon2">PHP</span>
+                                                        </div>
+
+                                                        <p *ngIf="priceBorder && isPriceZeroOrNegative(addVariantForm)" class="text-danger">
+                                                            Price should be greater than or equal to 0.01.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            
+<!-- Attribute List   -->
+                                            <!-- Assuming this is inside your component's template -->
+                                            <div class="title-container mb-2 d-flex ">
+                                                <div class="d-flex flex-row p-0 mb-3">
+                                                    <div class="blue-accent me-2"></div>
+                                                    <p class="{{formTextColor}} fw-bold fs-5 m-0">Attributes</p>
+                                                </div>
+                                                <button 
+                                                    type="btn"
+                                                    class="productBtnOpener d-flex align-items-center justify-content-center btn btn-admin-outline-primary mx-2 glow-primary" 
+                                                >
+                                                    <i class="bi bi-info"></i>
+                                                </button>
+                                            </div>
+
+                                            <form [formGroup]="addAttributeForm" *ngIf="editAttributes === false">
+                                                        <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
+                                                                    <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  let ind = index">
+                                                                        <ng-container *ngIf="variantsLists[i]; let variant">
+                                                                            <ng-container *ngIf="variant.value.attributes as attribute  ">
+                                                                                <div class="position-relative d-flex align-items-center">
+                                                                                    <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
+                                                                                        <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                                        <select 
+                                                                                            class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                                            id="addproductCategory"
+                                                                                            name="addproductCategory" 
+                                                                                            [formControlName]="item.category_attribute_id" 
+                                                                                            required
+                                                                                        >
+                                                                                            
+                                                                                            <option class="bg-dark-subtle text-dark" [selected]="attribute[ind]?.value" [value]="attribute[ind]?.value" >{{attribute[ind]?.value}}</option>
+                                                                                            <ng-container *ngFor="let item of item.values" >
+                                                                                                <option  *ngIf="item !== attribute[ind]?.value" [value]="item">{{ item }}</option>
+                                                                                            </ng-container>
+                                                                                            
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="w-100 mb-3" *ngIf="item.name === 'Color' || item.name === 'Colors'">
+                                                                                        <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                    
+                                                                                        <app-color-picker
+                                                                                            [showLabel]="false"
+                                                                                            [placeholder]="'Pick color...'"
+                                                                                            [formControlName]="item.category_attribute_id"
+                                                                                            required>
+                        
+                                                                                        </app-color-picker>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                    </div>
+                                                        </div>
+                                            </form>
+
+                                            <form [formGroup]="addAttributeForm" *ngIf="editAttributes === true">
+                                                <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
+                                                  <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
+                                                        <div class="position-relative d-flex align-items-center">
+                                                            <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
+                                                                <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                <!-- <input
+                                                                    [type]="item.name === 'color' ? 'color' : 'text'"
+                                                                    [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
+                                                                    [placeholder]="'Enter value for '+item.name"
+                                                                    [formControlName]="item.category_attribute_id"
+                                                                    required
+                                                                > -->
+                                                                <select 
+                                                                    [ngClass]="{'image-resolution-shadow': validationStatus[item.category_attribute_id]}"
+                                                                    class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                                                    id="addproductCategory"
+                                                                    name="addproductCategory" 
+                                                                    [formControlName]="item.category_attribute_id" 
+                                                                    
+                                                                    required
+                                                                >
+                                                                    <option selected >Select value for {{item.name}}</option>
+                                                                    <option *ngFor="let item of item.values" [value]="item">{{ item }}</option>
+                                                                </select>
+
+                                                            </div>
+                                                            <div class="w-100 mb-3" *ngIf="item.name === 'Color' || item.name === 'Colors'">
+                                                                <label class="form-label {{formTextColor}}">{{item.name}}</label>
+                                                                <div [ngClass]="{'image-resolution-shadow rounded-3 ': validationStatus[item.category_attribute_id]}">
+                                                                    <app-color-picker
+                                                                        [showLabel]="false"
+                                                                        [placeholder]="'Pick color...'"
+                                                                        [formControlName]="item.category_attribute_id"
+                                                                        required
+                                                                        
+                                                                        >
+                                                                        <!-- [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}" -->
+                                                                    </app-color-picker>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+<!-- Image Form -->
+                                            <hr class="divider border-white mt-4 mb-3">
+                                                                    
+                                            <div class="image-form body pt-0 pb-0 position-relative">  
+                                                <div class="title-container mb-3 ">
+                                                    <div class="d-flex flex-row p-0 mb-3">
+                                                        <div class="blue-accent me-2"></div>
+                                                        <p class="{{formTextColor}} fw-bold fs-5 m-0">Add Images</p>
+                                                    </div>
+                                                </div>
+                                                <div class="images-container d-flex justify-content-start w-100 position relative" *ngIf="editImages === true">
+                                                    
+                                                    <div *ngFor="let file of getFileKeys(); let ind = index">
+                                                        <!-- Tooltip container for a specific item -->
+                                                        <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
+                                                            <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                            </div>
+                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                        </div>
+                                                        <div
+                                                            (mouseenter)="showToolTip(file, ind)"
+                                                            (mouseleave)="unshowToolTip(file)"
+                                                            [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                                                            class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                        >
+                                                            <button type="button" class="z-2 img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
+                                                                <i class="bi bi-x text-white"></i>
+                                                            </button>
+                                                            <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                        <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
+                                                        <div class="container p-3">
+                                                            <ng-container *ngIf="getFileKeys().length <= 2">
+                                                                <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
+                                                                <p class="fs-5 lh-sm mb-0 {{formTextColor}}">images up to 2560x1440</p>
+                                                                <p class="fs-6 lh-sm mb-0 {{formTextColor}}">(.png, .jpeg, .jpg)</p>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="getFileKeys().length >= 3 ">
+                                                                <h4 class="fw-bolder text-white lh-sm mb-0">3 / 3</h4>
+                                                                <p class="fs-5 lh-sm mb-0 {{formTextColor}}">MAX</p>
+                                                            </ng-container>                                                            
+                                                        </div>
+                                                    </button>
+                                                </div>
+
+                                                <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
+                                                    <ng-container *ngIf="variantsLists[i]; let variant">
+                                                        <ng-container *ngFor="let images of variant.value.images; let ind = index">
+                                                            <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
+                                                                <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                    <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div 
+                                                                (mouseenter)="showToolTip(images, ind)"
+                                                                (mouseleave)="unshowToolTip(images)"
+                                                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[images.name] }"
+                                                                class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                            >
+                                                                <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
+                                                                    <i class="bi bi-x text-white"></i>
+                                                                </button>
+                                                                <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
+                                                                
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <!-- <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                        <ng-container *ngFor="let images of variant.value.images; let ind = index">
+                                                            <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
+                                                                <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                    <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div 
+                                                                (mouseenter)="showToolTip(images, ind)"
+                                                                (mouseleave)="unshowToolTip(images)"
+                                                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[images.name] }"
+                                                                class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                            >
+                                                                <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
+                                                                    <i class="bi bi-x text-white"></i>
+                                                                </button>
+                                                                <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
+                                                                
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container> -->
+                                                    <div *ngFor="let file of getFileKeys(); let ind = index">
+                                                        <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
+                                                            <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                            </div>
+                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                        </div>
+                                                        <div 
+                                                            (mouseenter)="showToolTip(file, ind)"
+                                                            (mouseleave)="unshowToolTip(file)"
+                                                            [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                                                            class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
+                                                        >
+                                                            <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
+                                                                <i class="bi bi-x text-white"></i>
+                                                            </button>
+                                                            <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <button type="button" (click)="selectFileForEditing(i)" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                                                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                        <input class="d-none" type="file" id="addimagesedit" name="images" (change)="handleFileInputForEdit($event)" multiple>
+                                                        <div class="container p-3">
+                                                            <ng-container *ngIf="variantsArray.controls[i]; let variant">
+                                                                <ng-container *ngIf="variant.value.images; let images" >
+                                                                    <ng-container *ngIf="images.length + getFileKeys().length <= 2 ">
+                                                                        <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
+                                                                        <p class="fs-5 lh-sm mb-0 {{formTextColor}}">images up to 2560x1440</p>
+                                                                        <p class="fs-6 lh-sm mb-0 {{formTextColor}}">(.png, .jpeg, .jpg)</p>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="images.length + getFileKeys().length >= 3 ">
+                                                                        <h4 class="fw-bolder text-white lh-sm mb-0">3 / 3</h4>
+                                                                        <p class="fs-5 lh-sm mb-0 {{formTextColor}}">MAX</p>
+                                                                    </ng-container> 
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer mt-4" *ngIf="addBtn">
+                                                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" (click)="removeVariant(i)">Cancel</button>
+                                                <button 
+                                                    type="submit" 
+                                                    class="btn btn-primary" 
+                                                    (click)="saveVariant(i)"
+                                                    
+                                                >Save</button>
+                                            </div>
+
+                                            <div class="modal-footer mt-4" *ngIf="editBtn">
+                                                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" (click)="toggleAccordion(i)" >Cancel</button>
+                                                <button 
+                                                    type="submit" 
+                                                    class="btn btn-primary" 
+                                                    (click)="saveEditedVariant(i)"
+                                                    [disabled]="variantsLists[i].value.images < 1 && getFileKeys().length === 0"
+                                                >Save</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button 
+                                type="btn"
+                                class="w-100 border-3 rounded-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+                                (click)="showVariantForms()"
+                                *ngIf="hideVariantValidationContainer"
+                            >
+                                <h1 class="text-dark-subtle-grey fs-3 lh-1 fw-bolder">+</h1>
+                                <h4 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Variant</h4>
+                            </button>
+                        </div>
+                        
+                            
+                        <hr class="divider border-white ">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" (click)="cancelAction()">Cancel</button>
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary glow-primary" 
+                                (click)="onProductAddSubmit()"
+                                [disabled]="disableProductButton()"
+                            >Confrim</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+</div>
 <!-- hide this validation when variantsList is empty or when the button on the top is click-->
                                 <!-- <div 
                                     class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 

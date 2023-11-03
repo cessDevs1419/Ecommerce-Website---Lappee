@@ -71,6 +71,7 @@ export class ModalComponent {
 	@Input() modalViewOrders!: boolean;
 	@Input() allowAnotherSub!: boolean;
     @Input() modalConfirm!: boolean;  
+    @Input() modalPacked!: boolean;  
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;

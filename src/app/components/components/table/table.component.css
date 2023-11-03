@@ -16,6 +16,7 @@
 }
 
 .table-child-container{
+  height: 100%;
   max-height: calc(100vh - 230px);
 }
 
@@ -48,36 +49,48 @@
 
 table th:first-child{
     border-radius: 16px 0 0 16px;
-    border: 1px solid #3F4154;
+    /* border: 2px solid #2E303D; */
     border-right: 0;
     border-bottom: 0;
+    padding-left: 4px;
 }
 
 table th:last-child{
     border-radius:0 16px 16px 0;
-    border: 1px solid #3F4154;
+    /* border: 2px solid #2E303D; */
     border-left: 0;
     border-bottom: 0;
+    padding-right: 4px;
+}
+table th:first-child .bg-container{
+  border-radius: 16px 0 0 16px;
+}
+table th:last-child .bg-container{
+  border-radius:0 16px 16px 0;
 }
 
-
-
 table th{
+  background: linear-gradient(180deg, #2E303D 0%, rgba(22, 24, 31, 0.00) 100%);
+  border: 0;
+  padding: 0;
+  padding-top: 4px;
+  overflow: hidden;
+}
+
+.bg-container{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   background: linear-gradient(180deg, #16181F 0%, rgba(22, 24, 31, 0.00) 100%);
-  border: 1px solid #3F4154;
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
-
 }
 
 table{
   border-spacing: 0;
   border-collapse: separate;
   border-radius: 16px;
-  border: 1px solid #3F4154;
+  /* border: 2px solid #3F4154; */
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
@@ -135,10 +148,21 @@ td{
     width: 1.5rem;
     height: 1.5rem;
   }
+  
+  .ban-btn{
+    width: 1rem;
+    height: 1.5rem;
+  }
+  
   .order-btn:hover{
     background: #1C92FF;
     box-shadow: 0px 0px 10px 1px #1C92FF;
   }
+  
+  .ban-btn:hover{
+    box-shadow: 0px 0px 10px 1px #ff241c;
+  }
+  
   .bar{
     max-width: 600px;
     width: 100%;

@@ -32,11 +32,11 @@
                             </li>
                         </ul>
                         <hr class="divider mb-4 border {{bordercolor}}">
-                        <div class="row w-100">
-                            <div class="col-sm-6">
+                        <div class="row w-100 px-0 m-0">
+                            <div class="col-sm-6 px-0">
                                 <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
                             </div>
-                            <div class="col-sm-6 d-flex justify-content-end align-content-center">
+                            <div class="col-sm-6 px-0 d-flex justify-content-end align-content-center">
                                 <h1 class="form-title fs-2 fw-bolder mb-4 {{titleColor}}" >₱{{selectedRowData?.total_price}}</h1>
                             </div>
                         </div>
@@ -55,7 +55,25 @@
         </div>
     </form>
 </div>
+<div class="container m-auto p-2 overflow-y-auto" *ngIf="formPacked">
+    <form  (ngSubmit)="packed()" >
+        <div class="modal-body text-center pt-0 pb-0">
+            <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to this order to mark as packed?</p>
+            <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
+        </div>
+        
+        <div class="modal-footer border-0 justify-content-center mb-3">
+            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">CANCEL</button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary glow-primary"
 
+            >
+                CONFIRM
+            </button>
+        </div>
+    </form>
+</div>
 <div class="container m-auto p-2 overflow-y-auto" *ngIf="formShip">
     <form  (ngSubmit)="shipPackage()" >
         <div class="modal-body text-center pt-0 pb-0">

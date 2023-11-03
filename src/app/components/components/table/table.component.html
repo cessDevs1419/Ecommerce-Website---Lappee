@@ -204,7 +204,7 @@
                                         *ngIf="editBtn"
                                         type="button" 
                                         class="{{editBtnclass}} btn btn-primary bg-none text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center"
-                                        (click)="showEditForm()"
+                                        
                                         [title]="'Edit'"
                                     >
                                         <i class="bi bi-pencil-square fs-5"></i>
@@ -279,31 +279,36 @@
                 <table class="table " *ngIf="paginate === false">
                     
                     <thead >
-                        <tr class="">
+                        <tr >
                             <th *ngIf="showMultipleSelection" colspan="1"  class=" {{tableHeaderbg}} " >
-    
-                                <div  class="container position-relative cursor-pointer d-flex align-content-center justify-content-center">
-                                    <label class="position-relative p-0 cursor-pointer m-auto">
-                                        <input 
-                                            #checkboxInput
-                                            [checked]="isAllChecked"
-                                            class="form-check-input visually-hidden" 
-                                            type="checkbox"  
-                                            (change)="selectAll()"
-                                        />
-                                        <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
-                                        <span *ngIf="showMinus" class="minus position-absolute" ></span>
-                                    </label>
+                                <div class="bg-container">
+                                    <div  class="container position-relative cursor-pointer d-flex align-content-center justify-content-center">
+                                        <label class="position-relative p-0 cursor-pointer m-auto">
+                                            <input 
+                                                #checkboxInput
+                                                [checked]="isAllChecked"
+                                                class="form-check-input visually-hidden" 
+                                                type="checkbox"  
+                                                (change)="selectAll()"
+                                            />
+                                            <span class="custom-checkbox rounded-1 bg-none mt-0 cursor-pointer {{checkboxcolor}}"></span>
+                                            <span *ngIf="showMinus" class="minus position-absolute" ></span>
+                                        </label>
+                                    </div>
                                 </div>
-    
                             </th>
         
-                            <th colspan="2" class=" {{tableHeaderbg}} table-header-dark th fw-bold fs-6 text-center text-white text-nowrap" *ngFor="let item of tableHeader">{{item}}</th>
+                            <th colspan="2" class="" *ngFor="let item of tableHeader">
+                                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                                    {{item}}
+                                </div>
+                            </th>
                         
                             <!--Enable this tableHeader Action-->
                             <th colspan="1" *ngIf="tableAction"
                                 class="th {{tableHeaderbg}}  fw-bold fs-6 text-center dataTools text-white"
-                            >       
+                            >      
+                                <div class="bg-container">Action</div>
                             </th>
                         </tr>
                     </thead>
@@ -355,10 +360,19 @@
                                         <ul class="z-3 action-button dropdown-menu border-0 bg-none rounded-3" >
                                             <li class="action-item">
                                                 <button 
+                                                    *ngIf="editBtn"
                                                     type="button"
                                                     data-bs-toggle="modal" data-bs-target="#edit"
                                                     class="edit-btn px-2 py-1 border-0 actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
                                                     (click)="sendRowData(item)"
+                                                    > 
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    *ngIf="editSubBtn"
+                                                    type="button"
+                                                    class="edit-btn px-2 py-1 border-0 actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                    (click)="showEditForm(item)"
                                                     > 
                                                     Edit
                                                 </button>
@@ -379,17 +393,19 @@
                                     </div>
                                 </div>
                                 <div *ngIf="actionForOrderBtn" class="m-auto d-flex align-items-center justify-content-center">
+                                    <ng-container *ngIf="elipsesActionBtn">
+                                        <button 
+                                            id="actionBtn" 
+                                            class="actionbtn  m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
+                                            [class.activebtn]="activeOrderButtonIndex === i"
+                                            (click)="showOrderAction(i)"
+                
+                                            > 
+                                            <i class="bi bi-three-dots fs-5"></i> 
+                                        </button>
+                                    </ng-container>
+
                                     
-                                    <button 
-                                        *ngIf="elipsesActionBtn"
-                                        id="actionBtn" 
-                                        class="actionbtn  m-auto position-relative btn d-flex align-items-center justify-content-center p-2  border {{bordercolor}} {{textcolor}}"
-                                        [class.activebtn]="activeOrderButtonIndex === i"
-                                        (click)="showOrderAction(i)"
-            
-                                        > 
-                                        <i class="bi bi-three-dots fs-5"></i> 
-                                    </button>
                                     <button 
                                         *ngIf="item.status === paymentStatus"
                                         type="button"
@@ -401,6 +417,16 @@
                                         <i class="bi bi-check fs-4 {{textcolor}}"></i>
                                     </button>
                                     <button 
+                                        *ngIf="item.status === packStatus"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#packed"
+                                        [title]="'Pack Order'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        <i class="bi bi-box2 fs-4 {{textcolor}}"></i>
+                                    </button>
+                                    <button 
                                         *ngIf="item.status === shipStatus"
                                         type="button"
                                         data-bs-toggle="modal" data-bs-target="#ship"
@@ -408,7 +434,7 @@
                                         class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
                                         (click)="sendRowData(item)"
                                         > 
-                                        <i class="bi bi-box fs-4 {{textcolor}}"></i>
+                                        <i class="bi bi-box2-fill fs-4 {{textcolor}}"></i>
                                     </button>
                                     <button 
                                         *ngIf="item.status === deliverStatus"
@@ -515,16 +541,18 @@
                                 </ng-container>
                                 <!--ACCOUNT STATUS BTN-->
                                 <ng-container *ngIf="bannedBtn">
-                                    <button
-                                        (click)="sendRowData(item)"
-                                        *ngIf="banBtn"
-                                        type="button"
-                                        [class]="bannedStatus[item.user_id] ? 'btn btn-danger bg-banned text-white border-danger rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center' : 'btn btn-primary bg-none text-primary border-primary rounded-3 mx-2 w-20 px-2 pt-1 pb-1 d-flex align-items-center'"
-                                        data-bs-toggle="modal" data-bs-target="#ban"
-                                        [title]="bannedStatus[item.user_id] ? 'Unban':'Ban'"
-                                    >
-                                        <i class="bi bi-hammer fs-5"></i>
-                                    </button>
+                                    <div class="m-auto d-flex align-items-center justify-content-center">
+                                        <button
+                                            (click)="sendRowData(item)"
+                                            *ngIf="banBtn"
+                                            type="button"
+                                            [class]="bannedStatus[item.user_id] ? 'ban-btn order-dark-subtle border-danger text-center px-2 py-3 mx-2 border-1 bg-danger w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center' : 'order-btn order-dark-subtle text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center'"
+                                            data-bs-toggle="modal" data-bs-target="#ban"
+                                            [title]="bannedStatus[item.user_id] ? 'Unban':'Ban'"
+                                        >
+                                            <i class="bi bi-hammer fs-4 {{textcolor}}"></i>
+                                        </button>
+                                    </div>
                                 </ng-container>
                             </td>
 

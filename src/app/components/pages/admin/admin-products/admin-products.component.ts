@@ -25,7 +25,9 @@ export class AdminProductsComponent {
     products!: Observable<AdminProduct[]>;
     sub_categories: Observable<AdminSubcategory[]>;
 	private refreshData$ = new Subject<void>();
-
+    showEditForms: boolean;
+    showAddForms: boolean;
+    
     selectedRowData: any;
     selectedRowDataForDelete: any;
     /*classes*/
@@ -73,11 +75,12 @@ export class AdminProductsComponent {
 	
     showAddForm(): void{
         this.router.navigate(['/admin/product-management','product','add']);
+	    // this.showAddForms = true
 	}
 	
-    showEditForm(): void{
-        
-        this.router.navigate(['/admin/product-management','product','edit',this.selectedRowData.id]);
+    showEditForm(row: any): void{
+        this.router.navigate(['/admin/product-management','product','edit',row.product_id]);
+        // this.showAddForms = false
 	}
 	
     SuccessToast(value: any): void {

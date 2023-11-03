@@ -105,6 +105,7 @@ export class TableComponent {
 	@Input() banBtnclass: string;
 	
 	@Input() paymentStatus!: number;
+	@Input() packStatus!: number;
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
 	@Input() orderBtn: boolean;
@@ -156,6 +157,10 @@ export class TableComponent {
 		} else {
 			this.activeButtonIndex = rowIndex;
 		}
+	}
+	
+	showEdit(index: number){
+	
 	}
 
 	showOrderAction(rowIndex: number) {
@@ -345,8 +350,8 @@ export class TableComponent {
 		this.ShowAddForm.emit()
 	}
 	
-	showEditForm(): void{
-		this.ShowEditForm.emit()
+	showEditForm(row: any): void{
+		this.ShowEditForm.emit(row)
 	}
 
 	showAddSubForm(): void{

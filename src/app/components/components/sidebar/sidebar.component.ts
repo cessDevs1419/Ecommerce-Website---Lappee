@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { AdminNotification, AdminNotificationList } from 'src/assets/models/admin-notifications';
@@ -36,6 +36,7 @@ export class SidebarComponent {
   notifications: Observable<AdminNotification[]>;
   notificationsLength: Observable<AdminNotification[]>;
   notif: boolean = false;
+  id: string
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
   }
@@ -50,7 +51,8 @@ export class SidebarComponent {
   constructor(private router: Router,
     private notification_service: NotificationsService,
     private cdr: ChangeDetectorRef,
-    private echo: EchoService
+    private echo: EchoService,
+    private route: ActivatedRoute
     ) {
 
     }
@@ -70,6 +72,14 @@ export class SidebarComponent {
     this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
       this.refreshTableData()
     })
+    
+		this.route.paramMap.subscribe((params) => {
+			const page = params.get('page');
+			const action = params.get('action');
+			const id = params.get('id') || null;
+
+      console.log(action, id)
+		});
   }
 
 
@@ -121,11 +131,13 @@ export class SidebarComponent {
   }
   
   isManageProductActive(): boolean {
+
     return (
       this.router.url === '/admin/attribute-management' ||
       this.router.url === '/admin/category-management' ||
       this.router.url === '/admin/product-management' ||
-      this.router.url === '/admin/product-management/product/add' 
+      this.router.url === '/admin/product-management/product/add' || 
+      this.router.url.startsWith('/admin/product-management/product/edit')
     );
   }
   
