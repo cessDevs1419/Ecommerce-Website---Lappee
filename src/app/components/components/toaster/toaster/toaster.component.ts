@@ -11,6 +11,7 @@ export class ToasterComponent {
   constructor(private toast: ToastsService, public vcr: ViewContainerRef) {}
 
   @Input() positionClasses: string = ''
+  @Input() maxToastsShown: number = 5
 
   activeToasts: ComponentRef<ToastComponent>[] = [];
   index: number = 0;
@@ -19,8 +20,8 @@ export class ToasterComponent {
     const toast = this.toast.showToast(title, message, theme, customClass, routerLink);
     let index = this.index;
 
-    // limit to 5 only, 
-    if(this.activeToasts.length == 5){
+    // limit toasts shown
+    if(this.activeToasts.length == this.maxToastsShown){
       this.index = 0;
       this.destroyToast(this.activeToasts[index], index);
     }

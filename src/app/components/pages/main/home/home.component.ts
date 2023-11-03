@@ -4,8 +4,10 @@ import { ToasterComponent } from 'src/app/components/components/toaster/toaster/
 import { BannersService } from 'src/app/services/banners/banners.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { EchoService } from 'src/app/services/echo/echo.service';
+import { ProductsService } from 'src/app/services/products/products.service';
 import { formatBanners, formatCategories } from 'src/app/utilities/response-utils';
 import { Category } from 'src/assets/models/categories';
+import { Product } from 'src/assets/models/products';
 import { Banner } from 'src/assets/models/sitedetails';
 
 @Component({
@@ -14,10 +16,12 @@ import { Banner } from 'src/assets/models/sitedetails';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {  
-  constructor(private bannersService: BannersService, private echo: EchoService, private categoryService: CategoriesService) {}
+  constructor(private bannersService: BannersService, private echo: EchoService, private categoryService: CategoriesService, private productsService: ProductsService) {}
   
   banners: Observable<Banner[]>;
-  categories: Observable<Category[]>
+  categories: Observable<Category[]>;
+  products: Product[];
+
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent; 
 
@@ -32,5 +36,14 @@ export class HomeComponent {
 
   toast(title: string, msg: string): void {
     this.toaster.showToast(title, msg, 'default', '', "/login");
+  }
+
+  toastRand(): void {
+    let toasts = [["Success!", "Item has been added to the cart."], ["Long content", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], ["Short content", "kwan"]]
+    let min = 0;
+    let max = toasts.length;
+    let rand = Math.floor(Math.random() * (max - min + 1) + min);
+    let toastContent = toasts[rand]
+    this.toast(toastContent[0], toastContent[1])
   }
 }
