@@ -27,7 +27,7 @@ export class HomeComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent; 
 
   ngOnInit(): void {
-    this.productsService.getProductByCategory('cat6540ea8d7e68a').pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
+    this.productsService.getProducts().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
       next: (products: CategoryProduct[]) => {
         this.products = products;
         console.log(this.products)
