@@ -68,11 +68,12 @@ export const GETVerifyEmail: string = api + "api/client/user-info/verify-email"
 
 //Order Endpoints
 //Admin
-export const GETOrder: string = api + "api/admin/products/orders";
-export const GETAdminOrderDetail: string = api + "api/admin/products/orders/details?order_id=";
-export const PATCHPackStatus: string = api + "api/admin/products/orders/pack"
-export const PATCHShipStatus: string = api + "api/admin/products/orders/ship"
-export const PATCHDeliverStatus: string = api + "api/admin/products/orders/deliver"
+export const GETOrder: string = api + "api/admin/orders";
+export const GETAdminOrderDetail: string = api + "api/admin/orders/details?order_id=";
+export const PATCHPackStatus: string = api + "api/admin/orders/mark/to-pack"
+export const PATCHToShipStatus: string = api + "api/admin/orders/mark/to-ship"
+export const PATCHShipStatus: string = api + "api/admin/orders/mark/shipping"
+export const PATCHDeliverStatus: string = api + "api/admin/orders/mark/deliver"
 
 //Client
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
