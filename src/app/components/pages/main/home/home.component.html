@@ -23,17 +23,23 @@
 
     <!-- Trending -->
 
-    <div class="d-flex justify-content-between align-items-center mt-5">
-        <div class="d-flex">
-            <span class="blue-accent me-3"></span>
-            <p class="m-0 fs-3 fw-bold">Trending Now</p>
+    <div>
+        <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+            <div class="d-flex">
+                <span class="blue-accent me-3"></span>
+                <p class="m-0 fs-3 fw-bold">Trending Now</p>
+            </div>
+            <a [routerLink]="['/home']">View All</a>
         </div>
-        <a [routerLink]="['/home']">View All</a>
+
+       <app-product-carousel [products]="products" [itemsPerPage]="4"></app-product-carousel>
     </div>
+
+
 
     <!-- Best Sellers -->
 
-    <div class="d-flex justify-content-between align-items-center mt-5">
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
         <div class="d-flex">
             <span class="blue-accent me-3"></span>
             <p class="m-0 fs-3 fw-bold">Best Sellers</p>
@@ -41,7 +47,7 @@
         <a [routerLink]="['/home']">View All</a>
     </div>
 
-    <app-toaster #toaster [positionClasses]="'top-0 end-0'"></app-toaster>
+    <app-product-carousel [products]="products" [itemsPerPage]="4"></app-product-carousel>
 
     <button class="btn btn-primary mt-5" (click)="toastRand()">Toast!</button>
 </div>
