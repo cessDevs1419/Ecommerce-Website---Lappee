@@ -17,8 +17,7 @@ export interface OrderDetail {
 
 export interface OrderContent {
     name: string,
-    size: string,
-    color_title: string,
+    variant_name: string,
     quantity: number,
     sub_price: string,
     product_id: string,
