@@ -143,7 +143,7 @@ export class OrdersFormComponent {
             console.log(`${value[0]}, ${value[1]}`);
         } 
         
-        this.orderService.patchShip(formData).subscribe({
+        this.orderService.patchToShip(formData).subscribe({
             next: async(response: any) => { 
                 const successMessage = {
                     head: 'Package To be Ship',
@@ -205,7 +205,7 @@ export class OrdersFormComponent {
         this.orderService.patchShip(formData).subscribe({
             next: async(response: any) => { 
                 const successMessage = {
-                    head: 'Package To be Ship',
+                    head: 'Shipping Package',
                     sub: response?.message
                 };
                 

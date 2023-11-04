@@ -252,7 +252,8 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     address_line_2: data.address_line_2,
     city: data.city,
     province: data.province,
-    zip_code: data.zip_code
+    zip_code: data.zip_code,
+    status_name: data.status_name,
   }))
 }
 

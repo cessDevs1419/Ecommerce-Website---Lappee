@@ -49,7 +49,8 @@ export interface AdminOrder {
     address_line_2: string,
     city: string,
     province: string,
-    zip_code: number
+    zip_code: number,
+    status_name: string,
 }
 
 export interface AdminOrderDetailList {
