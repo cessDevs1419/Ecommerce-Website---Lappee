@@ -28,7 +28,8 @@ export class TableComponent {
 	@Output() ShowEditSubForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() FilterValue: EventEmitter<any> = new EventEmitter<any>();
 	@Output() DateValue: EventEmitter<any> = new EventEmitter<any>();
-
+	@Output() showEvent: EventEmitter<any> = new EventEmitter<any>();
+	
 	//table theme
 	table_container_bg: string = 'table-bg-dark'
 	tabletitlecolor: string = 'text-white'
@@ -108,7 +109,8 @@ export class TableComponent {
 	@Input() packStatus!: number;
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
-	@Input() orderBtn: boolean;
+	@Input() orderBtn!: boolean;
+	@Input() orderBtnSet!: boolean;
 	@Input() bannedBtn: boolean;
 	@Input() setFirstUpper!: boolean;
 	@Input() showMinus!: boolean;
@@ -344,6 +346,10 @@ export class TableComponent {
 		this.rowDataSelected.emit(row);
 		// this.selectedIds.push(row.id);
 		// this.rowDataForDelete.emit(this.selectedIds);
+	}
+	
+	showPage(row: any): void{
+		this.showEvent.emit(row)
 	}
 	
 	showAddForm(): void{

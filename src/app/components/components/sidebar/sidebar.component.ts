@@ -158,7 +158,10 @@ export class SidebarComponent {
   }
   
   isManageSalesReportActive(): boolean {
-    return this.router.url === '/admin/sales-management' 
+    return (
+      this.router.url === '/admin/sales-management' || 
+      this.router.url.startsWith('/admin/product-statistics')
+    )
   }
   
   isManageInquiriesActive(): boolean {

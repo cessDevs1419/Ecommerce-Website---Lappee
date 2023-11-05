@@ -99,6 +99,7 @@ import { ToggleswitchComponent } from './components/components/toggleswitch/togg
 import { ToastNotificationComponent } from './components/components/toast-notification/toast-notification.component';
 import { ToasterComponent } from './components/components/toaster/toaster/toaster.component';
 import { ProductCarouselComponent } from './components/components/product-carousel/product-carousel/product-carousel.component';
+import { AdminProductStatisticsComponent } from './components/pages/admin/admin-product-statistics/admin-product-statistics.component';
 
 @NgModule({
   declarations: [
@@ -186,6 +187,7 @@ import { ProductCarouselComponent } from './components/components/product-carous
     ToastNotificationComponent,
     ToasterComponent,
     ProductCarouselComponent,
+    AdminProductStatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -238,6 +240,7 @@ import { ProductCarouselComponent } from './components/components/product-carous
           {path: 'product-management/:page/:action/:var_id/:connector/:prod_id', component: AdminParentFormComponent},
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
+          {path: 'product-statistics/:id', component: AdminProductStatisticsComponent},
           {path: 'inquiry', component: AdminInquiryComponent},
           {path: 'site-settings', component: AdminSiteSettingsComponent},
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent},

@@ -21,13 +21,13 @@
                                         </circle-progress>
                                     </div>
                                     <div class="container h-100 w-100 p-3 px-0">
-                                        <circle-progress 
+                                        <!-- <circle-progress 
                                             name="E" 
                                             [options]="innerDataOptions" 
                                             [renderOnClick]="false" 
                                             class="w-100 m-0 p-0 pt-1 d-flex justify-content-center align-items-center "
                                             >
-                                        </circle-progress>
+                                        </circle-progress> -->
                                     </div>
                                 </div>
                             </div>
@@ -38,8 +38,8 @@
                                         <div class="body d-flex justify-content-start align-items-center">
                                             <div class="color rounded-circle bg-outer me-2 "></div>
                                             <div class="text-start">
-                                                <p class="fs-6 fw-bold lh-base mb-0 {{fontColor}}">Pending Orders</p>
-                                                <p class="fs-6  lh-1 mb-0 {{subitemColor}}">300</p>
+                                                <p class="fs-6 fw-bold lh-base mb-0 {{fontColor}}">Completed Orders</p>
+                                                <p class="fs-6  lh-1 mb-0 {{subitemColor}}">{{this.outerData}}</p>
                                             </div>
                                         </div>
                                     </li>
@@ -47,8 +47,8 @@
                                         <div class="body d-flex justify-content-start align-items-center">
                                             <div class="color rounded-circle bg-inner me-2"></div>
                                             <div class="text-start">
-                                                <p class="fs-6 fw-bold  lh-base mb-0 {{fontColor}}">Completed Orders</p>
-                                                <p class="fs-6 lh-1 mb-0 {{subitemColor}}">300</p>
+                                                <p class="fs-6 fw-bold  lh-base mb-0 {{fontColor}}">Pending Orders</p>
+                                                <p class="fs-6 lh-1 mb-0 {{subitemColor}}">{{this.innerData}}</p>
                                             </div>
                                         </div>
                                     </li>
@@ -99,10 +99,15 @@
         [paginate]="false"
         
         [tableTools]="true"
+        [tableAction]="true"
         [searchBar]="true"
-        [actionBtn]="true"
+        [actionForOrderBtn]="true"
+        [viewBtn2]="true"
         
-        [tableHeader]="['ITEM ID','ITEM NAME','STOCKS', 'PRICE', 'SOLD']"
+        (showEvent)="showPage($event)"
+        [tableHeader]="['ITEM ID','ITEM NAME', 'PRICE', ]"
+        [tableRows]="['id', 'name', 'price']"
+        [tableData]="products$"
         
     ></app-table>
 </div>

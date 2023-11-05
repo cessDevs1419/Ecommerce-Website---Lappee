@@ -191,9 +191,9 @@
             <!-- Sales Report -->
             <div [ngClass]="isManageContentActive() ? admin_bg : isManageInquiriesActive() ? admin_bg :''">
                 <div [class]="isManageContentActive() ? 'active-rounded-top item-container ' + sidebar_bg : isManageInquiriesActive() ? 'active-rounded-bottom border-0 ' + sidebar_bg : '' "  routerLinkActive="{{active_link}}">
-                    <li [routerLink]="'/admin/sales-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
+                    <li [class]=" isManageSalesReportActive() ? active_link :''" [routerLink]="'/admin/sales-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
-                        <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
+                        <div [class]=" isManageSalesReportActive() ? active_link_icon :''" routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
                             <i routerLinkActive=" text-white" class="bi bi-graph-up text-dark-subtle-grey"></i>
                         </div>
                         
