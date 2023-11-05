@@ -52,7 +52,7 @@
                 <form (ngSubmit)="editSiteName()" [formGroup]="siteNameForm">
                   <div class="row row-cols-1 gy-3 mt-3">
                     <div class="col">
-                      <input type="text" name="" id="" class="form-control bg-transparent border-1 {{textColor}}" formControlName="siteName">
+                      <input type="text" name="" id="" class="form-control bg-transparent border-1 text-white " formControlName="siteName">
                     </div>
                     <div class="col">
                       <div class="row">
@@ -86,6 +86,11 @@
         [tableTools]="true"
         [tableData]="banners"
         
+        [tableAction]="true"
+        [viewBtn]="true"
+        [deleteBtn]="true"
+        [actionBtn]="true"
+        
         [viewBtn]="true"
         [addProdBtn]="true"
         addbtnName="Add New"
@@ -101,21 +106,20 @@
     
     <div class="modal fade" id="view"  tabindex="-1">
       <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
-          <div class="modal-content ">
+          <div class="modal-content content-form">
               <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
                   <div class="modal-title text-start">
-                      <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >BANNER {{ selectedBanner.label | uppercase }}</h1>
+                      <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Banner {{ selectedBanner.label | uppercase }}</h1>
                       <div class="modal-sub-title text-dark-emphasis fs-6">Content Management</div>
                   </div>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <hr class="divider m-0 mb-3">
               <div class="modal-body">
                 <img src="{{ selectedBanner.path }}" alt="{{ selectedBanner.label | uppercase }}" srcset="" class="img-fluid">
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
-              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" data-bs-dismiss="modal">Cancel</button>
+            </div>
           </div> 
       </div>
     </div>
@@ -123,22 +127,26 @@
     <div class="modal fade" id="delete"  tabindex="-1">
       <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
         <form (ngSubmit)="deleteBanner()">
-          <div class="modal-content ">
+          <div class="modal-content content-form">
             <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
                 <div class="modal-title text-start">
-                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >DELETE BANNER {{ selectedBanner.label | uppercase }}</h1>
-                    <div class="modal-sub-title text-dark-emphasis fs-6">CONTENT MANAGEMENT</div>
+                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Delete Banner {{ selectedBanner.label | uppercase }}</h1>
+                    <div class="modal-sub-title text-dark-emphasis fs-6">Content Management</div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #confirmDeleteModal></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" #confirmDeleteModal></button>
             </div>
             <hr class="divider m-0 mb-3">
             <div class="modal-body">
-              <p class="fs-5 fw-bold mb-1 text-center {{textColor}}">Are you sure you want to delete this banner?</p>
+              <p class="fs-5 fw-bold mb-1 text-center mb-2 {{textColor}}">Are you sure you want to delete this banner?</p>
               <img src="{{ selectedBanner.path }}" alt="{{ selectedBanner.label | uppercase }}" srcset="" class="img-fluid">
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-              <button type="submit" class="btn btn-primary bg-light-primary">CONFIRM</button>
+
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" data-bs-dismiss="modal">Cancel</button>
+              <button 
+                  type="submit" 
+                  class="btn btn-primary glow-primary" 
+              >Confrim</button>
             </div>
         </div> 
         </form>
@@ -158,7 +166,7 @@
               <div class="row row-cols-1 gy-3">
                 <div class="col">
                   <label for="bannerLabel" class="form-label mb-1 text-secondary">Banner Label*</label>
-                  <input type="text" class="form-control bg-transparent border-1 {{textColor}}" id="bannerLabel" formControlName="bannerLabel">
+                  <input type="text" class="form-control bg-transparent border-1 text-white" id="bannerLabel" formControlName="bannerLabel">
                 </div>
                 <div class="col">
                   <label class="form-label mb-1 text-secondary">Banner Image*</label>

@@ -48,7 +48,6 @@ export class AdminManageTosComponent {
 
   tosAddSectionForm = this.formBuilder.group({
     sectionHeader: ['', [Validators.required, Validators.pattern('^[a-zA-Z\d_ .!?]*$')]],
-    sectionContent: ['', [Validators.required]]
   });
 
   private refreshData$ = new Subject<void>();

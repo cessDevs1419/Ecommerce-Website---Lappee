@@ -61,11 +61,12 @@
         [tableAction]="true"
         [editSubBtn]="true"
         [deleteBtn]="true"
-
+        [actionBtn]="true"
+        
         [tableHeader]="['ID','Name','Price']"
         [tableRows]="['product_id', 'name','price']"
         [tableData]="products"
-        [actionBtn]="true"
+
         [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"

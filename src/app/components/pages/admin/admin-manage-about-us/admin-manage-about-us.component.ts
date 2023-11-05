@@ -31,7 +31,6 @@ export class AdminManageAboutUsComponent {
 
   aboutUsAddSectionForm = this.formBuilder.group({
     sectionHeader: ['', [Validators.required, Validators.pattern('^[a-zA-Z\d_ .!?]*$')]],
-    sectionContent: ['', [Validators.required]]
   });
 
   toastContent: string = "";
@@ -97,8 +96,10 @@ export class AdminManageAboutUsComponent {
       formData.append('title', this.aboutUsAddSectionForm.get('sectionHeader')?.value);
       formData.append('content', this.rtfValue);
 
-      console.log(formData);
-
+      for (const value of formData.entries()) {
+        console.log(`${value[0]}, ${value[1]}`);
+      }
+      
       this.aboutUsToSService.postAddAboutUs(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully added section', 'Added a section to about us.');

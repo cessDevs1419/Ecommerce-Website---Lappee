@@ -376,6 +376,15 @@
                                                     > 
                                                     Edit
                                                 </button>
+                                                <button 
+                                                    *ngIf="viewBtn"
+                                                    type="button"
+                                                    data-bs-toggle="modal" data-bs-target="#view"
+                                                    class="edit-btn px-2 py-1 border-0 actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                    (click)="sendRowData(item)"
+                                                    > 
+                                                    View
+                                                </button>
                                                 <div class="action-border"></div>
                                             </li>
                                             <li class="action-item">
