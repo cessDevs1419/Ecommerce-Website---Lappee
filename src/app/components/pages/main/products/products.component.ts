@@ -35,6 +35,8 @@ export class ProductsComponent {
   selectedPrice!: number;
   hasVariant: boolean = true;
   selectedVariantId: string;
+  isVariantSelected: boolean = false;
+  isTouched: boolean = false;
   
   toastContent: string = "";
   toastHeader: string = "";
@@ -266,23 +268,47 @@ export class ProductsComponent {
   }
   */
 
-  addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}) {
-    let details: string[] = [];
-    console.log(params.variant_attributes);
-    params.variant_attributes.forEach((key, value) => {
-      details.push(value + ": " + key);
-    })
-    this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
+  addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): boolean {
+    
+    if(!params.variant) {
+      console.log('no variant selected')
+      this.isVariantSelected = false;
+      this.isTouched = true;
+      return false;
+    }
 
-    console.warn('added to cart');
-    console.log(this.cart.items);
+    if(params.variant.stock < 1){
+      this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative');
+      return false
+    }
 
-    this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default');
+    else {
+      if(this.productToCart.valid){
+        let details: string[] = [];
+        console.log(params.variant_attributes);
+        params.variant_attributes.forEach((key, value) => {
+          details.push(value + ": " + key);
+        })
+        this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
+    
+        console.warn('added to cart');
+        console.log(this.cart.items);
+    
+        this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default');
+        return true;
+      }
+
+      else {
+        this.productToCart.markAllAsTouched();
+        return false;
+      }
+    }
   }
 
   orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
-    this.addToCartAttr(params);
-    this.router.navigate(['/cart']);
+    if(this.addToCartAttr(params)){
+      this.router.navigate(['/cart']);
+    }
   }
 
   /*

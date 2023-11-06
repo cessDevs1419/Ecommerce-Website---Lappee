@@ -22,7 +22,7 @@ export class CartItemComponent {
   isIncluded: boolean = false;
   selectedColor: string = "#DDDEE3";
   priceConvert: number;
-  maxStock: number = 10;
+  maxStock: number = 0;
 
   ngOnInit(): void {
     this.priceConvert = Number(this.cartItem.price);
@@ -71,6 +71,9 @@ export class CartItemComponent {
   }
 
   emit(): void {
+    if(this.selectAll && this.maxStock == 0){
+      this.selectAll = false;
+    }
     this.isIncluded = !this.isIncluded;
     console.log("isIncluded: " + this.isIncluded);
     console.log("selectAll: " + this.selectAll);
