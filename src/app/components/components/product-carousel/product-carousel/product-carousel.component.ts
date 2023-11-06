@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { CategoryProduct, Product } from 'src/assets/models/products';
 import * as bootstrap from 'bootstrap';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-product-carousel',
@@ -9,7 +10,7 @@ import * as bootstrap from 'bootstrap';
 })
 export class ProductCarouselComponent {
 
-  constructor() {}
+  constructor(private bpo: BreakpointObserver) {}
 
   @Input() products: CategoryProduct[] = [];
   @Input() itemsPerPage: number;
@@ -26,6 +27,11 @@ export class ProductCarouselComponent {
   }
 
   ngOnInit(): void {
+    // this.bpo.observe(['(max-width: 576px)']).subscribe((res: any) => {
+    //   if(res.matches) {
+    //    this.itemsPerPage = 3      
+    //   }
+    // });
     this.sliceArray();
   }
 

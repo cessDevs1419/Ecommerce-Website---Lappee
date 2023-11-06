@@ -11,6 +11,7 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-size: cover;
+    background-position: center center;
 }
 
 .product-card img {
@@ -49,4 +50,28 @@
 .button-primary {
     border-radius: 9999px;
     padding: 1rem;
+}
+
+@media screen and (max-width: 576px){
+    .card-img-container {
+        height: 7rem;
+    }
+}
+
+@media screen and (min-width: 576px){
+    .card-img-container {
+        height: 10rem;
+    }
+}
+
+@media screen and (min-width: 768px){
+    .card-img-container {
+        height: 15rem;
+    }
+}
+
+@media screen and (min-width: 992px){
+    .card-img-container {
+        height: 20rem;
+    }
 }

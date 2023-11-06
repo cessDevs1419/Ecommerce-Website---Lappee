@@ -2,7 +2,7 @@
     <div class="carousel-inner">
         <div class="carousel-item" *ngFor="let group of itemGroups; index as i" [ngClass]=" i == 0 ? 'active' : ''">
             <div class="row px-2">
-                <div *ngFor="let item of group" class="col-6 col-lg-4 col-xl-3 mb-3">
+                <div *ngFor="let item of group" class="col-3 col-lg-4 col-xl-3 mb-3">
                     <div *ngIf="item.product_id">
                         <a [routerLink]="['/products', item.product_id]" class="text-reset text-decoration-none">
                             <div class="card product-card h-100">
@@ -11,17 +11,17 @@
                                     <!-- <img [src]="product.images[0] ? product.images[0] : 'https://picsum.photos/700'"> -->
                                 </div>
                                 <div class="card-body d-flex flex-column justify-content-between">
-                                    <div class="card-title fs-5">{{item.name}}</div>
+                                    <div class="card-title fs-6 fs-lg-5">{{item.name}}</div>
                                     <div class="d-flex flex-column flex-md-row justify-content-between">
                                         <div class="d-inline-flex align-items-center">
-                                            <div class="product-price fs-5 fw-bold">
+                                            <div class="product-price fs-6 fs-lg-5 fw-bold">
                                                 {{item.price | currency}}
                                             </div>
                                             <!-- <div class="muted-text text-decoration-line-through">
                                                 {{product.price | currency}}
                                             </div> -->
                                         </div>
-                                        <div class="d-flex justify-content-start justify-content-md-end text-muted align-items-center">
+                                        <div class="d-flex justify-content-start justify-content-md-end text-muted align-items-center fs-6 fs-lg-5">
                                             32k sold
                                         </div>
                                     </div>
