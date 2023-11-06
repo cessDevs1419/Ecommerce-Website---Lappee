@@ -6,6 +6,7 @@ import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User } from 'src/assets/models/user';
+import { OutlineCircleSpinnerComponent } from '../loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 
 @Component({
   selector: 'app-signinform',
@@ -19,6 +20,9 @@ export class SigninformComponent {
     password: '',
     rememberMe: false,
   }
+
+  isLoading: boolean = false;
+  circleLoader = OutlineCircleSpinnerComponent;
 
   @Output() loginSuccess: EventEmitter<any> = new EventEmitter();
   @Output() invalidCredentials: EventEmitter<any> = new EventEmitter();
@@ -39,6 +43,7 @@ export class SigninformComponent {
   onSubmit(){
     if(this.signInForm.valid){
       //submit
+      this.isLoading = true;
 
       let formData: any = new FormData();
       formData.append('email', this.signInForm.get('signInEmail')?.value);
@@ -50,6 +55,7 @@ export class SigninformComponent {
       this.accountService.postLoginUser(formData).subscribe({
         next: (response: any) => {
           console.log(response);
+          this.isLoading = false;
           this.signInForm.reset();
           this.loginSuccess.emit();
           this.accountService.checkLoggedIn().subscribe();
