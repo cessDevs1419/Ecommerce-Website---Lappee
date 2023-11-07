@@ -21,9 +21,17 @@
     <div *ngIf="this.searchResults && !isLoading">
         <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of paginateReview()">
             
-            <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
-                <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
-                <p class="m-0 text-muted">{{order.ordered_on | date:'medium'}}</p>
+            <div class="pb-2 border-bottom d-flex justify-content-between">
+                <div class="d-flex flex-column justify-content-start">
+                    <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
+                    <p class="text-muted">{{order.ordered_on | date:'medium'}}</p>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="d-flex align-items-center">
+                        <p class="m-0 text-muted me-3">Items are packed by the seller.</p>
+                        <a [routerLink]="['/profile/orders/details/', order.order_id]" class="border-start ps-3 m-0">View Order Details</a>
+                    </div>
+                </div>
             </div>
             
             <div class="w-100">
@@ -50,7 +58,7 @@
                             <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
                             -->
                             <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
-                            <button *ngIf="!item.is_reviewed" class="border-md-end border-top button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
+                            <button *ngIf="!item.is_reviewed" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                         </div>
                     </div>
             </div>

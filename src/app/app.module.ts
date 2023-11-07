@@ -100,6 +100,7 @@ import { ToastNotificationComponent } from './components/components/toast-notifi
 import { ToasterComponent } from './components/components/toaster/toaster/toaster.component';
 import { ProductCarouselComponent } from './components/components/product-carousel/product-carousel/product-carousel.component';
 import { AdminProductStatisticsComponent } from './components/pages/admin/admin-product-statistics/admin-product-statistics.component';
+import { OrderDetailsComponent } from './components/pages/main/order-details/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -188,6 +189,7 @@ import { AdminProductStatisticsComponent } from './components/pages/admin/admin-
     ToasterComponent,
     ProductCarouselComponent,
     AdminProductStatisticsComponent,
+    OrderDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -212,6 +214,7 @@ import { AdminProductStatisticsComponent } from './components/pages/admin/admin-
       {path: 'cart', component: CartComponent, title: 'Cart'},
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
+      {path: 'profile/orders/details/:orderId', component: OrderDetailsComponent, canActivate: [authGuard], title: 'Order Details'},
       {path: 'contactus', component: ContactusComponent, title: 'Contact Us'},
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
