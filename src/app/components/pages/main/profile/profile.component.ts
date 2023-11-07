@@ -7,8 +7,10 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
+import { City, Province } from 'src/assets/models/province-city';
 import { User } from 'src/assets/models/user';
 
 @Component({
@@ -53,11 +55,45 @@ export class ProfileComponent {
   toastContent!: string;
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
-  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService) {}
+  provinces: Province[];
+  cities: City[];
+
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService) {}
   
 
   ngOnInit(): void {
+    console.log(this.provinceCity.cities);
+    this.initProvinceCity();
     this.checkAddress();
+  }
+
+  ngOnChanges(): void {
+    this.initProvinceCity()
+    console.log(this.provinces)
+  }
+
+  initProvinceCity(): void {
+    let prov = this.provinceCity.getProvinces()
+    prov.subscribe((response: Province[]) => {
+      this.provinces = response.sort((a, b) => a.name.localeCompare(b.name));
+    })
+    let city = this.provinceCity.getCities();
+    city.subscribe((response: City[]) => {
+      this.cities = response.sort((a, b) => a.name.localeCompare(b.name));
+    })
+  }
+
+  filterCity(): City[] {
+    let provinceSelected = this.editProvince?.value;
+    
+    if(provinceSelected){
+      let match = this.provinces.find((province) => province.name == provinceSelected);
+      let key = match?.key;
+
+      return this.cities.filter((city) => city.province == key)
+    }
+
+    return this.cities;
   }
 
   checkAddress(): void {

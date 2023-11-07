@@ -130,7 +130,11 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="edit-stateprovince" class="form-label">State / Province</label>
-                        <input type="text" class="form-control form-control-lg rounded-0" id="edit-stateprovince" formControlName="editProvince"/>
+                        <!-- <input type="text" class="form-control form-control-lg rounded-0" id="edit-stateprovince" formControlName="editProvince"/> -->
+                        <select class="form-select form-select-lg rounded-0" id="edit-stateprovince" formControlName="editProvince">
+                            <option selected value="">Select Province</option>
+                            <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+                        </select>
                         <div *ngIf="editProvince?.invalid && (editProvince?.dirty || editProvince?.touched)"> 
                             <div *ngIf="editProvince?.errors?.['required']">
                                 <span class="text-danger">This field is required.</span>
@@ -139,7 +143,11 @@
                     </div>
                     <div class="col">
                         <label for="edit-city" class="form-label">City / Municipality</label>
-                        <input type="text" class="form-control form-control-lg rounded-0" id="edit-city" formControlName="editCity"/>
+                        <!-- <input type="text" class="form-control form-control-lg rounded-0" id="edit-city" formControlName="editCity"/> -->
+                        <select class="form-select form-select-lg rounded-0" id="edit-city" formControlName="editCity">
+                            <option selected value="">Select City</option>
+                            <option *ngFor="let city of filterCity()" [value]="city.name">{{city.name}}</option>
+                        </select>
                         <div *ngIf="editCity?.invalid && (editCity?.dirty || editCity?.touched)"> 
                             <div *ngIf="editCity?.errors?.['required']">
                                 <span class="text-danger">This field is required.</span>
