@@ -1,4 +1,4 @@
-<div class="toast-custom bg-white top-0 p-3" [style.opacity]="this.opacity" role="button" (click)="navigate()">
+<div class="toast-custom bg-white top-0 p-3" [ngClass]="limitWidth ? 'width-limiter' : ''" [style.opacity]="this.opacity" role="button" (click)="navigate()">
     <div class="d-flex flex-row justify-content-between">
         <div class="d-flex flex-row">
             <div [ngClass]="this.accent" class="toast-stripe me-3 ">

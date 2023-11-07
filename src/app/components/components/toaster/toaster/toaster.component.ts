@@ -12,12 +12,14 @@ export class ToasterComponent {
 
   @Input() positionClasses: string = ''
   @Input() maxToastsShown: number = 5
+  @Input() limitWidth: boolean = true;
 
   activeToasts: ComponentRef<ToastComponent>[] = [];
   index: number = 0;
 
-  showToast(title: string, message: string, theme: string = 'default', customClass: string = "", routerLink = ""): void {
-    const toast = this.toast.showToast(title, message, theme, customClass, routerLink);
+  showToast(title: string, message: string, theme: string = 'default', customClass: string = "", routerLink: string = "", limitWidth: boolean = true): void {
+    console.log(limitWidth)
+    const toast = this.toast.showToast(title, message, theme, customClass, routerLink, limitWidth);
     let index = this.index;
 
     // limit toasts shown
@@ -32,10 +34,10 @@ export class ToasterComponent {
     }
 
     //console.log(this.activeToasts)
-    setTimeout(() => {
-      toast.instance.hide();
-      this.destroyToast(toast, index);
-    }, 5000)
+    // setTimeout(() => {
+    //   toast.instance.hide();
+    //   this.destroyToast(toast, index);
+    // }, 5000)
   }
 
   destroyToast(toast: ComponentRef<ToastComponent>, index: number): void {

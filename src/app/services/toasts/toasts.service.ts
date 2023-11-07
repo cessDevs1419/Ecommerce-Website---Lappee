@@ -9,7 +9,7 @@ export class ToastsService {
 
   constructor(private appRef: ApplicationRef) { }
 
-  showToast(title: string, message: string, theme: string = 'default', customClass: string = "", routerLink: string = ""): ComponentRef<ToastComponent> {
+  showToast(title: string, message: string, theme: string = 'default', customClass: string = "", routerLink: string = "", limitWidth: boolean = true): ComponentRef<ToastComponent> {
     let toast = createComponent(ToastComponent, {
       environmentInjector: this.appRef.injector
     })
@@ -17,6 +17,9 @@ export class ToastsService {
     toast.instance.toastTitle = title;
     toast.instance.toastContent = message;
     toast.instance.toastClass = title;
+    toast.instance.limitWidth = limitWidth;
+    console.log('limit width ' + limitWidth)
+
     if(theme){
       toast.instance.switchTheme(theme)
     }

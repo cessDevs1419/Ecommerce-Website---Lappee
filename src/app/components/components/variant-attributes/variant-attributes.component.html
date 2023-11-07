@@ -49,7 +49,7 @@
                     <div class="d-flex flex-column ms-3 justify-content-center">
                         <p class="m-0 fw-bold fs-5">{{variant.variant_name}}</p>
                         <p class="m-0 fw-bold">{{variant.price  | currency}}</p>
-                        <p class="m-0">{{variant.stock}} pieces available.</p>
+                        <p class="m-0">{{variant.stock}} {{ variant.stock > 1 ? 'pieces' : 'piece'}} available.</p>
                     </div>
                 </div>
             </label>

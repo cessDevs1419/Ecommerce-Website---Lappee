@@ -4,15 +4,21 @@
     border: 1px solid var(--primary);
     border-radius: 12px;
     opacity: 0;
-    width: 25vw;
-    min-width: 400px;
+    
     white-space: nowrap;
     overflow: hidden;
-    
+}
+
+.width-limiter {
+    max-width: 25vw;
+    min-width: 400px;
+}
+
+.width-limiter .toast-body p {
+    width: calc(25vw * 0.65);
 }
 
 .toast-body p {
-    width: calc(25vw * 0.65);
     white-space: nowrap !important; 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -31,13 +37,13 @@
 }
 
 @media screen and (max-width: 990px) {
-    .toast-body p {
+    .width-limiter .toast-body p {
         width: calc(400px * 0.65);
     }
 }
 
 @media screen and (max-width: 576px) {
-    .toast-container-custom {
+    .width-limiter {
         width: 90%;
     }
 

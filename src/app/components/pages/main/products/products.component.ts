@@ -270,6 +270,7 @@ export class ProductsComponent {
 
   addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): boolean {
     
+    console.log('trigger')
     if(!params.variant) {
       console.log('no variant selected')
       this.isVariantSelected = false;
@@ -278,34 +279,28 @@ export class ProductsComponent {
     }
 
     if(params.variant.stock < 1){
-      this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative');
+      this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative', '', '', false);
       return false
     }
 
     else {
-      if(this.productToCart.valid){
-        let details: string[] = [];
-        console.log(params.variant_attributes);
-        params.variant_attributes.forEach((key, value) => {
-          details.push(value + ": " + key);
-        })
-        this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
-    
-        console.warn('added to cart');
-        console.log(this.cart.items);
-    
-        this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default');
-        return true;
-      }
-
-      else {
-        this.productToCart.markAllAsTouched();
-        return false;
-      }
+      let details: string[] = [];
+      console.log(params.variant_attributes);
+      params.variant_attributes.forEach((key, value) => {
+        details.push(value + ": " + key);
+      })
+      this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
+  
+      console.warn('added to cart');
+      console.log(this.cart.items);
+  
+      this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default', '', '', false);
+      return true;
     }
   }
 
   orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
+    console.log(this.addToCartAttr(params));
     if(this.addToCartAttr(params)){
       this.router.navigate(['/cart']);
     }
@@ -409,7 +404,7 @@ export class ProductsComponent {
       this.reviewService.postReview(formData).subscribe({
         next: (response: any) => {
 
-          this.toaster.showToast("Successful!", "Your review has been submitted.")
+          this.toaster.showToast("Successful!", "Your review has been submitted.",'default','', '', false)
 
           let reviewData = this.reviewService.getReviews(this.currentProduct.id);
           reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
@@ -438,7 +433,7 @@ export class ProductsComponent {
     this.reviewService.deleteReview(formData).subscribe({
       next: (response: any) => {
 
-        this.toaster.showToast("Successful!", "Your review has been deleted.")
+        this.toaster.showToast("Successful!", "Your review has been deleted.",'default','', '', false)
 
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
         reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
@@ -446,7 +441,7 @@ export class ProductsComponent {
       },
       error: (err: HttpErrorResponse) => {
 
-        this.toaster.showToast("Error!", "Please try again in a few moments.", 'negative')
+        this.toaster.showToast("Error!", "Please try again in a few moments.", 'negative','', '', false)
       }
     })
   }

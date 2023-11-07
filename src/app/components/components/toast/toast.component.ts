@@ -24,6 +24,7 @@ export class ToastComponent {
   // red = red color with encircled exclamation icon
   @Input() toastTheme: string;
   @Input() routerLink: string = ""
+  @Input() limitWidth: boolean = true
 
   theme: string;
   opacity: number = 0;
@@ -31,7 +32,7 @@ export class ToastComponent {
   isVisible: boolean = true;
 
   ngOnInit(): void {
-
+    console.log(this.limitWidth)
   }
 
   switchTheme(input: string): void {
