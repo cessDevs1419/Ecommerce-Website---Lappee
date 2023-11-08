@@ -34,10 +34,10 @@ export class ToasterComponent {
     }
 
     //console.log(this.activeToasts)
-    // setTimeout(() => {
-    //   toast.instance.hide();
-    //   this.destroyToast(toast, index);
-    // }, 5000)
+    setTimeout(() => {
+      toast.instance.hide();
+      this.destroyToast(toast, index);
+    }, 5000)
   }
 
   destroyToast(toast: ComponentRef<ToastComponent>, index: number): void {
