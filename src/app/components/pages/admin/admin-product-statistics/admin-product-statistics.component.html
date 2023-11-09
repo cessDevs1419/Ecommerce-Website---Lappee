@@ -1,1 +1,53 @@
-<p>admin-product-statistics works!</p>
+
+<div class="container-fluid m-auto h-auto text-center px-0 px-sm-3 ">
+    <div class="row m-auto w-100 ">
+        <div class="col-lg-8">
+            <div class=" w-100">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <app-counters title="Product Sold"></app-counters>
+                    </div>
+                    <div class="col-lg-4">
+                        <app-counters title="Average Rating"></app-counters>
+                    </div>
+                    <div class="col-lg-4">
+                        <app-counters title="Total Orders"></app-counters>
+                    </div>
+                </div>
+            </div>
+            <div class=" w-100 mt-4">
+                <div class="box-shadow linear-gradient-border">
+                    <div class="container rounded-4 p-0 {{bgColor}}">
+                        <div class="select-data-container p-2 text-center">
+                            <div class="select-container cursor-pointer position-relative d-flex align-items-center justify-content-between">
+                                <select class="form-select cursor-pointer border-0 {{bgColor}} {{titleColor}}" #selectBox>
+                                    <option selected>Select Graph Data</option>
+                                    <option value="yearly">Yearly Sales Graphs</option>
+                                    <option value="monthly">Monthly Sales Graphs</option>
+                                    <option value="weekly">Weekly Sales Graphs</option>
+                                </select>
+                                <i class="bi bi-caret-down-fill position-absolute end-0 me-3 {{titleColor}}"  ></i>
+                            </div>
+                            <div class="data-text-container ">
+                                <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">₱102.7k</h1>
+                            </div>
+                        </div>
+                        
+                        <app-line-graph
+                            [data]="lineChartData"
+                            width="1000"
+                            height="300"
+                        >
+                        </app-line-graph>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <app-donut-chart
+                [data]="variants$"
+                [colors]="colors"
+            ></app-donut-chart>
+        </div>
+    </div>
+</div>
