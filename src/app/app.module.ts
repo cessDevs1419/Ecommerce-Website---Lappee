@@ -101,6 +101,11 @@ import { ToasterComponent } from './components/components/toaster/toaster/toaste
 import { ProductCarouselComponent } from './components/components/product-carousel/product-carousel/product-carousel.component';
 import { AdminProductStatisticsComponent } from './components/pages/admin/admin-product-statistics/admin-product-statistics.component';
 import { OrderDetailsComponent } from './components/pages/main/order-details/order-details/order-details.component';
+import { CountersComponent } from './components/components/counters/counters.component';
+import { BarGraphComponent } from './components/components/bar-graph/bar-graph.component';
+import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
+import { NgChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -190,6 +195,9 @@ import { OrderDetailsComponent } from './components/pages/main/order-details/ord
     ProductCarouselComponent,
     AdminProductStatisticsComponent,
     OrderDetailsComponent,
+    CountersComponent,
+    BarGraphComponent,
+    DonutChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -279,7 +287,8 @@ import { OrderDetailsComponent } from './components/pages/main/order-details/ord
     }),
     LightboxModule,
     NgxImageZoomModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NgChartsModule
   ],
   providers: [
     {
