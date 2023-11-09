@@ -45,8 +45,8 @@ export class OrderService {
     return this.http.patch<Order>(PATCHDeliverStatus, data, this.httpOptions);
   } 
   
-  getOrderDetail(): Observable<any> {
-    return this.http.get(GETOrderDetail);
+  getOrderDetail(id: string): Observable<any> {
+    return this.http.get(GETOrderDetail + id);
   }
 
   getOrderDetailByUser(): Observable<any> {
