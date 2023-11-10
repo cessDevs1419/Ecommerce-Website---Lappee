@@ -1,18 +1,21 @@
-<<<<<<< Updated upstream
 <div class="container-md mt-5">
+    <app-modal-client [mode]="this.mode"></app-modal-client>
     <div *ngIf="orderDetails | async as order">
         <div class="bg-light-gray p-3 d-flex justify-content-between align-items-center">
             <div class="d-flex flex-column">
-                <p class="m-0 fw-bold fs-4">Order Details</p>
+                <p class="m-0 fw-bold fs-3">Order Details</p>
                 <p class="m-0 muted-text">{{order[0].order_id}}</p>
+                <p class="m-0 muted-text">{{order[0].ordered_on | date:'medium'}}</p>
             </div>
-            <div class="d-flex flex-column align-items-end">
+            <div class="d-flex">
+                <button class="button-secondary-outline rounded-0 me-2">Chat Admin</button>
                 <button class="button-primary rounded-0">Cancel Order</button>
             </div>
         </div>
 
         <div class="bg-light-gray p-3 mt-3">
-            <p class="m-0 fw-bold fs-5">Order Status</p>
+            <p class="m-0 fw-bold fs-4">Order Status</p>
+            <div class="w-100 border-bottom my-2"></div>
 
             <div class="mt-3 px-3">
                 <div>
@@ -58,7 +61,8 @@
         </div>
 
         <div class="bg-light-gray p-3 mt-3">
-            <p class="m-0 fw-bold fs-5">Order Contents</p>
+            <p class="m-0 fw-bold fs-4">Order Contents</p>
+            <div class="w-100 border-bottom my-2"></div>
             <div class="w-100 my-4 d-flex flex-column flex-md-row justify-content-between" *ngFor="let item of order[0].order_contents">
                 <div class="col-md d-flex flex-row justify-content-between mb-3 mb-md-0 ">
                     <div class="d-flex flex-row align-items-center">
@@ -81,14 +85,49 @@
                     <button [disabled]="!checkProductStock(item.product_id, item.color_title, item.size)" class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
                     <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
                     -->
-                    <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
+                    <a class="button-primary rounded-0 w-100 text-decoration-none" [routerLink]="['/products', item.product_id]">Buy Again</a>
                     <button *ngIf="!item.is_reviewed" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                 </div>
             </div>
         </div>
+
+        <div class="d-flex">
+            <div class="bg-light-gray p-3 mt-3 me-3 w-100">
+                <p class="m-0 fw-bold fs-4">Billing</p>
+                <div class="w-100 border-bottom my-2"></div>
+    
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="m-0 fw-bold">Subtotal ({{order[0].order_contents.length > 1 ? order[0].order_contents.length + ' items' : order[0].order_contents.length + ' item'}})</p>
+                    <p class="">{{orderSubtotal | currency}}</p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="m-0 fw-bold">Shipping</p>
+                    <p class="">{{60 | currency}} </p>
+                </div>
+                <div class="w-100 border-bottom my-2"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="m-0 fw-bold">Grand Total</p>
+                    <p class="fw-bold fs-5 m-0">{{orderSubtotal + 60 | currency}}</p>
+                </div>
+                <div class="w-100 border-bottom my-2"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="m-0 fw-bold">Payment Method</p>
+                    <p class="m-0">Cash on Delivery</p>
+                </div>
+            </div>
+            <div class="bg-light-gray p-3 mt-3 w-100">
+                <p class="m-0 fw-bold fs-4">Contact Details</p>
+                <div class="w-100 border-bottom my-2"></div>
+                
+                <p class="m-0 muted-text">Name</p>
+                <p class="fw-bold">Wendell Lance</p>
+
+                <p class="m-0 muted-text">Contact Number</p>
+                <p class="">0911 111 1111</p>
+
+                <p class="m-0 muted-text">Address</p>
+                <p class="m-0">Address Line, City, Province</p>
+            </div>
+        </div>
     </div>
-=======
-<div class="w-100 d-flex justify-content-center align-items-center">
-    <p class="display-1">Di pa po tapos. 🥹 👉👈</p>
->>>>>>> Stashed changes
 </div>

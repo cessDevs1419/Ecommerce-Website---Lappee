@@ -57,7 +57,7 @@
                             <button [disabled]="!checkProductStock(item.product_id, item.color_title, item.size)" class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
                             <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
                             -->
-                            <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
+                            <a class="button-primary rounded-0 w-100" [routerLink]="['/products', item.product_id]">Buy Again</a>
                             <button *ngIf="!item.is_reviewed" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                         </div>
                     </div>

@@ -86,7 +86,7 @@ export class OrdersComponent {
   }
 
   buyProduct(item: OrderContent): void {
-
+    
   }
 
   addReview(item: OrderContent): void {
