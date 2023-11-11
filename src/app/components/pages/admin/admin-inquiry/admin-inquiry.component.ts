@@ -13,7 +13,14 @@ import { Inquiry, InquiryList } from 'src/assets/models/inquiry';
 })
 export class AdminInquiryComponent {
   inquiries!: Observable<Inquiry[]>;
-  
+
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
+  size: string = 'w-100';
+
   inquiryContent: Inquiry = {
     id: '',
     email: '',

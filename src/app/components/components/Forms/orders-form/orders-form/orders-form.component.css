@@ -1,3 +1,23 @@
 .scrollable-height{
     height: 36rem;
 }
+
+.hold{
+    transform: translateX(200%);
+    
+}
+.transition{
+    transition: .3s ease-in-out;
+}
+.toleft{
+    transform: translateX(0%);
+
+}
+.active-hold{
+    transform: translateX(-200%);
+
+}
+
+.list-container{
+    max-height: 37rem;
+}

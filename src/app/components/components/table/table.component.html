@@ -101,7 +101,7 @@
                                 <div class="col-sm-2 px-0 pe-sm-1 d-flex align-items-center">
                                     <h6 class="{{tablesubtitlecolor}} fw-bold me-2 text-nowrap ">Filter by:</h6>
                                 </div>
-                                <div class="col-sm-5 px-0 pe-sm-1">
+                                <!-- <div class="col-sm-5 px-0 pe-sm-1">
                                     <select class="form-select text-nowrap text-truncate pe-5 border border-2 border-secondary rounded-4 w-100 {{textcolor}}  {{table_container_bg}}" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
                                         <option class="bg-none {{textcolor}}" value="Status" selected>Status</option>
                                         <option class="bg-none {{textcolor}}" value="100" >To Pack</option>
@@ -109,7 +109,7 @@
                                         <option class="bg-none {{textcolor}}" value="175" >Shipping</option>
                                         <option class="bg-none {{textcolor}}" value="200" >Delivered</option>
                                     </select> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-5 px-0 ps-sm-1">
                                     <div class="input-group position-relative cursor-pointer border border-2 border-secondary rounded-4 w-100" (click)="selectDate()">
                                         <input type="date" class="visually-hidden " (change)="getDateValue($event)" #date>
@@ -125,7 +125,8 @@
                         </div>
                     </div>
                     <div class=" col-xl-6 px-0 d-flex align-items-center justify-content-end mb-4 mb-md-0">          
-                        <!-- <button
+                        <button
+                            *ngIf="addBtn"
                             type="button" 
                             class="add-btn btn btn-primary text-nowrap rounded-4 px-4 py-2 text-white mx-1 border-0 py-2 px-3 glow-primary bg-light-primary {{addBtnclass}}" 
                             data-bs-toggle="modal" 
@@ -133,7 +134,7 @@
                             >
                             <i class="bi bi-plus-lg fw-bold"></i>
                             {{addbtnName}}
-                        </button> -->
+                        </button>
 
                         <div class="searchbar-container w-auto px-0 {{searchBarclass}}" >
                             <div  class="input-group mx-1 bg-transparent" >
@@ -466,19 +467,18 @@
                                         >
                                         <i class="bi bi-box fs-4 {{textcolor}}"></i>
                                         </button> -->
-    
-    
-                                        <button
-                                            *ngIf="viewBtn"
-                                            (click)="sendRowData(item)"
-                                            type="button" 
-                                            class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
-                                            data-bs-toggle="modal" data-bs-target="#view"
-                                            [title]="'View'"
-                                        >
-                                            <i class="bi bi-eye fs-4 {{textcolor}}"></i>
-                                        </button>
+
                                     </ng-container>
+                                    <button
+                                        *ngIf="viewBtn"
+                                        (click)="sendRowData(item)"
+                                        type="button" 
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal" data-bs-target="#view"
+                                        [title]="'View'"
+                                    >
+                                        <i class="bi bi-eye fs-4 {{textcolor}}"></i>
+                                    </button>
                                     <button
                                         *ngIf="viewBtn2"
                                         (click)="showPage(item)"
@@ -487,6 +487,16 @@
                                         [title]="'View'"
                                     >
                                         <i class="bi bi-eye fs-4 {{textcolor}}"></i>
+                                    </button>
+                                    <button 
+                                        *ngIf="cancelOrder"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#cancel"
+                                        [title]="'Cancel'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                        (click)="sendRowData(item)"
+                                        > 
+                                        <i class="bi bi-check fs-4 {{textcolor}}"></i>
                                     </button>
                                 </div>
                                 

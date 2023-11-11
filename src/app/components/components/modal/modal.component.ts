@@ -74,6 +74,7 @@ export class ModalComponent {
     @Input() modalPacked!: boolean;  
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
+    @Input() modalCancel!: boolean;
 	@Input() modalData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
@@ -142,7 +143,14 @@ export class ModalComponent {
         this.confirm.emit()
         this.closeModal()
     }
-    
+    setname(isHold: boolean){
+        if(isHold){
+            this.modalTitle = 'Hold Order'
+        }else{
+            this.modalTitle = 'Confirm Payment'
+        }
+        console.log('de')
+    }
     sendAttribute(value: any){
         this.selectedAttributeData = value
     }

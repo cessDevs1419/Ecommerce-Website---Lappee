@@ -11,6 +11,10 @@
         [tableTools]="true"
         [searchBar]="true"
         [tableAction]="true"
+        [Btntools]="true"
+        [addBtn]="true"
+        addbtnName="Add New"
+        [addBtnclass]="'w-100'"
         [banBtn]="true"
         
         [tableHeader]="['User Id','Email', 'Date Created', 'Last Login']"
@@ -34,7 +38,21 @@
         modalId="ban"
         modalClass="modal-md"
         [modalTitle]="modalTitle"
-        modalSubTitle="ACCOUNT MANAGEMENT"
+        modalSubTitle="Account Management"
+        (RefreshTable)="refreshTableData()"
+        [modalBanAccounts]="modalBanAccounts"
+        [modalUnBanAccounts]="modalUnBanAccounts"
+        [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+    ></app-modal>
+
+    <app-modal
+        modalId="add"
+        modalClass="modal-md"
+        [modalTitle]="'Add Account'"
+        modalSubTitle="Account Management"
         (RefreshTable)="refreshTableData()"
         [modalBanAccounts]="modalBanAccounts"
         [modalUnBanAccounts]="modalUnBanAccounts"

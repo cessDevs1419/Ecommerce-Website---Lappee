@@ -105,6 +105,12 @@ import { CountersComponent } from './components/components/counters/counters.com
 import { BarGraphComponent } from './components/components/bar-graph/bar-graph.component';
 import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AdminOrderPackComponent } from './components/pages/admin/admin-order-pack/admin-order-pack.component';
+import { AdminOrderShipComponent } from './components/pages/admin/admin-order-ship/admin-order-ship.component';
+import { AdminOrderShippingComponent } from './components/pages/admin/admin-order-shipping/admin-order-shipping.component';
+import { AdminOrderDeliveredComponent } from './components/pages/admin/admin-order-delivered/admin-order-delivered.component';
+import { AdminOrderCancelComponent } from './components/pages/admin/admin-order-cancel/admin-order-cancel.component';
+import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-hold/admin-order-hold.component';
 
 
 @NgModule({
@@ -198,6 +204,12 @@ import { NgChartsModule } from 'ng2-charts';
     CountersComponent,
     BarGraphComponent,
     DonutChartComponent,
+    AdminOrderPackComponent,
+    AdminOrderShipComponent,
+    AdminOrderShippingComponent,
+    AdminOrderDeliveredComponent,
+    AdminOrderCancelComponent,
+    AdminOrderHoldComponent,
   ],
   imports: [
     BrowserModule,
@@ -244,6 +256,11 @@ import { NgChartsModule } from 'ng2-charts';
           {path: 'accounts-management', component: AdminAccountsComponent},
           {path: 'parcel-management', component: AdminParcelManagementComponent},
           {path: 'order-management', component: AdminOrderManagementComponent},
+          {path: 'order-packed', component: AdminOrderPackComponent},
+          {path: 'order-ship', component: AdminOrderShipComponent},
+          {path: 'order-shipping', component: AdminOrderShippingComponent},
+          {path: 'order-delivered', component: AdminOrderDeliveredComponent},
+          {path: 'order-cancel', component: AdminOrderCancelComponent},
           {path: 'courier-management', component: AdminCourierManagementComponent},
           {path: 'stocks-management', component: AdminStocksManagementComponent},
           {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},

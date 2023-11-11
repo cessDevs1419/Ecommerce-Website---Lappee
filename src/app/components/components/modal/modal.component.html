@@ -244,6 +244,7 @@
                 
                 <app-orders-form
                     *ngIf="modalConfirm"
+                    (Hold)="setname($event)"
                     [formConfirm]="true"
                     (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
@@ -298,7 +299,18 @@
                 
                 </app-orders-form>
                 
-
+                <app-orders-form
+                    *ngIf="modalCancel"
+                    [formCancel]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                >
+                
+                </app-orders-form>
         </div> 
 
     </div>

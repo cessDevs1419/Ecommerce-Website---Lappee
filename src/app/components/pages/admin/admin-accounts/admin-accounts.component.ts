@@ -83,9 +83,9 @@ export class AdminAccountsComponent implements OnInit {
 
         // Update modalBanAccounts, modalUnBanAccounts, and modalTitle when rowData is available
         if (this.bannedStatus[this.selectedRowData.user_id]) {
-            this.modalTitle = "UNBAN ACCOUNT";
+            this.modalTitle = "Unban Account";
         } else {
-            this.modalTitle = "BAN ACCOUNT";
+            this.modalTitle = "Ban Account";
         }
         this.modalBanAccounts = !this.bannedStatus[this.selectedRowData.user_id];
         this.modalUnBanAccounts = this.bannedStatus[this.selectedRowData.user_id];

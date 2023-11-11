@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -17,8 +17,10 @@ export class OrdersFormComponent {
 	@Output() ship: EventEmitter<any> = new EventEmitter();
     @Output() CloseModal: EventEmitter<any> = new EventEmitter();
     @Output() RefreshTable: EventEmitter<void> = new EventEmitter();
+    @Output() Hold: EventEmitter<boolean> = new EventEmitter();
 
-
+    inputColor: string = "text-white"
+    borderColor: string = "border-grey"
     textcolor: string = 'text-light-subtle'
     bordercolor: string = 'dark-subtle-borders'
     titleColor : string = 'dark-theme-text-color';
@@ -28,15 +30,17 @@ export class OrdersFormComponent {
     @Input() formPacked!: boolean;
     @Input() formShip!: boolean;
     @Input() formDelivered!: boolean;
+    @Input() formCancel!: boolean;
     @Input() modalConfirmData!: any;
     @Input() modalData!: any;
-    
+    formHold: boolean = false;
     imageSrc: string;
     tobePack: FormGroup;
     tobeShip: FormGroup;
     tobeDelivered: FormGroup;
     Delivered: FormGroup;
-    
+    canceled: FormGroup;
+
     constructor(
         private orderService: OrderService
     ){
@@ -56,6 +60,10 @@ export class OrdersFormComponent {
         this.Delivered = new FormGroup({
             todliver: new FormControl(200)
         });
+        this.canceled = new FormGroup({
+            reasons: new FormControl('', Validators.required)
+        });
+        
     }
     
     
@@ -308,5 +316,77 @@ export class OrdersFormComponent {
             }
 
         });
+    }
+
+    cancel(){
+        
+        let formData: any = new FormData();
+        formData.append('order_id',  this.selectedRowData.id);
+        formData.append('reasons',  this.canceled.get('reasons')?.value);
+
+        for (const value of formData.entries()) {
+            console.log(`${value[0]}, ${value[1]}`);
+        } 
+        // this.orderService.patchDeliver(formData).subscribe({
+        //     // next: async(response: any) => { 
+        //     //     const successMessage = {
+        //     //         head: 'Delivered',
+        //     //         sub: response?.message
+        //     //     };
+                
+        //     //     this.RefreshTable.emit();
+        //     //     this.OrderSuccess.emit(successMessage);
+
+        //     //     await this.asyncTask();
+        //     //     this.CloseModal.emit();
+        //     // },
+        //     // error: (error: HttpErrorResponse) => {
+        //     //     if (error.error?.data?.error) {
+        //     //         const fieldErrors = error.error.data.error;
+        //     //         const errorsArray = [];
+                
+        //     //         for (const field in fieldErrors) {
+        //     //             if (fieldErrors.hasOwnProperty(field)) {
+        //     //                 const messages = fieldErrors[field];
+        //     //                 let errorMessage = messages;
+        //     //                 if (Array.isArray(messages)) {
+        //     //                     errorMessage = messages.join(' '); 
+        //     //                 }
+        //     //                 errorsArray.push(errorMessage);
+        //     //             }
+        //     //         }
+                
+        //     //         const errorDataforProduct = {
+        //     //             errorMessage: 'Error Invalid Inputs',
+        //     //             suberrorMessage: errorsArray,
+        //     //         };
+                
+        //     //         this.OrderWarn.emit(errorDataforProduct);
+        //     //     } else {
+                
+        //     //         const errorDataforProduct = {
+        //     //             errorMessage: 'Error Invalid Inputs',
+        //     //             suberrorMessage: 'Please Try Another One',
+        //     //         };
+        //     //         this.OrderError.emit(errorDataforProduct);
+        //     //     }
+        //     //     return throwError(() => error);
+        //     // }
+            
+        // });
+    }
+
+    hold(){
+        // this.formConfirm = false
+        this.formHold = true
+        this.Hold.emit(true)
+    }
+    backtoconfirm(){
+        // this.formConfirm = true
+        this.formHold = false
+        this.Hold.emit(false)
+    }
+    holdOrders(){
+        console.log('hold my beer')
     }
 }

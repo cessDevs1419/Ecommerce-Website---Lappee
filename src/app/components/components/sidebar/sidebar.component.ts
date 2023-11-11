@@ -144,7 +144,11 @@ export class SidebarComponent {
   isManageOrderActive(): boolean {
     return (
       this.router.url === '/admin/order-management' ||
-      this.router.url === '/admin/order-management'
+      this.router.url === '/admin/order-packed'||
+      this.router.url === '/admin/order-ship'||
+      this.router.url === '/admin/order-shipping'||
+      this.router.url === '/admin/order-delivered'||
+      this.router.url === '/admin/order-cancel'
     );
   }
   

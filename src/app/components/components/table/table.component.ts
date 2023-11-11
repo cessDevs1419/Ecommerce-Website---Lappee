@@ -82,6 +82,7 @@ export class TableComponent {
 	@Input() viewBtn!: boolean;
 	@Input() viewBtn2!: boolean;
 	@Input() banBtn!: boolean;
+	@Input() cancelOrder!: boolean;
 	
 	@Input() bannedStatus: { [userId: number]: boolean } = {};
 	@Input() deliveredStatus: { [status: number]: boolean } = {};

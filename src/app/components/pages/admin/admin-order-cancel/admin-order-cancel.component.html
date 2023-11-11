@@ -1,7 +1,7 @@
 <div class="container-fluid position-relative m-auto h-auto px-0 px-sm-3" >
 
     <app-table
-        tableTitle="Pending Orders"
+        tableTitle="Cancel Orders"
         subTitle="Status & Track Order List"
         [tableHead]="true"
         tableContainerClass="p-4 table-container"
@@ -12,9 +12,8 @@
         (FilterValue)="getStatus($event)"
         addbtnName="Add New"
         [tableAction]="true"
-        [viewBtn]="true"
         [actionForOrderBtn]="true"
-        [orderBtnSet]="true"
+        [cancelOrder]="true"
         [tableHeaderActions]="true"
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
@@ -130,7 +129,21 @@
 ></app-modal>
 
 <app-modal
-    modalId="delete"
+    modalId="cancel"
+    modalTitle="Cancel Order"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    [modalHideCloseBtn]="false"
+    
+    [modalCancel]="true"
+    (RefreshTable)="refreshTableData()"
+    [selectedRowData]="selectedRowData"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
 ></app-modal>
 
 
