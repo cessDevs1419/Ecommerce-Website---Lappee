@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild} from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from '../../toaster/toaster/toaster.component';
 
 @Component({
     selector: 'app-admin-parent-form',
@@ -10,7 +11,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 })
 export class AdminParentFormComponent {
 	
-	@ViewChild(ToastComponent) toast: ToastComponent
+	@ViewChild(ToasterComponent) toaster: ToasterComponent;
 	@Output() success: EventEmitter<any> = new EventEmitter();
 	@Output() invalid: EventEmitter<any> = new EventEmitter();
 	@Output() RefreshTable: EventEmitter<void> = new EventEmitter<void>();
@@ -75,33 +76,18 @@ export class AdminParentFormComponent {
 		this.RefreshTable.emit();
 	}
 	
-    postSuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
-    }
-    
-	patchSuccessToast(value: any): void {
-        this.toastHeader =  value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
+    SuccessToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
     }
     
     WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
     }
     
-	ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
+    ErrorToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
+    
 }
 
 

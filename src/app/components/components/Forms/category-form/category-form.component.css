@@ -1,0 +1,32 @@
+body{
+    font-family: Mulish, sans-serif;
+}
+
+.item-list{
+    width: fit-content;
+}
+
+::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+}
+
+.selected-attribute-list{
+    height: 21.3rem;
+}
+.attribute-list-container{
+    height: 21.3rem;
+}
+
+.attribute-list{
+    height: 14rem;
+}
+

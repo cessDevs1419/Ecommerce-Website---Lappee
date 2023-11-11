@@ -63,7 +63,8 @@
 .size-select-box {
     cursor: pointer;
     display: flex;
-    padding: 1rem;
+    padding: .75rem 2rem;
+    font-weight: bold;
     color: #FFFFFF;
     background-color: var(--muted-gray);
     transition: all .4s;
@@ -122,6 +123,21 @@ gallery-image {
 
 .trash-icon:hover {
     color: var(--bs-danger);
+}
+
+::ng-deep .ngxImageZoomContainer > img{
+    max-height: 600px;
+}
+
+.sticky-column {
+    position: sticky;
+    overflow: auto;
+    height: 500px;
+    top: 0;
+}
+
+.content-column {
+    flex: 1;
 }
 
 @media screen and (min-width: 992px) {

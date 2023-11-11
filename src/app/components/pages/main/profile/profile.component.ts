@@ -4,10 +4,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
+import { City, Province } from 'src/assets/models/province-city';
 import { User } from 'src/assets/models/user';
 
 @Component({
@@ -18,6 +21,7 @@ import { User } from 'src/assets/models/user';
 export class ProfileComponent {
   isEditMode: boolean = false;
   isSubmitEdit: boolean = false; 
+  isNameEditable: boolean = true;
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
   isInfoRegistered!: boolean
@@ -25,6 +29,10 @@ export class ProfileComponent {
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
   
   editProfileForm = new FormGroup({
+    editFirstName: new FormControl('', Validators.required),
+    editMiddleName: new FormControl(''),
+    editLastName: new FormControl('', Validators.required),
+    editSuffix: new FormControl(''),
     editProvince: new FormControl('', Validators.required),
     editCity: new FormControl('', Validators.required),
     editAddressLine: new FormControl('', Validators.required),
@@ -37,21 +45,60 @@ export class ProfileComponent {
   get editAddressLine() { return this.editProfileForm.get('editAddressLine')}
   get editZipCode() { return this.editProfileForm.get('editZipCode')}
   get editPhoneNumber() { return this.editProfileForm.get('editPhoneNumber')}
+  get editFirstName() { return this.editProfileForm.get('editFirstName') }
+  get editMiddleName() { return this.editProfileForm.get('editMiddleName') }
+  get editLastName() { return this.editProfileForm.get('editLastName') }
+  get editSuffix() { return this.editProfileForm.get('editSuffix') }
 
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
-  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService) {}
+  provinces: Province[];
+  cities: City[];
+
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService) {}
   
 
   ngOnInit(): void {
+    console.log(this.provinceCity.cities);
+    this.initProvinceCity();
     this.checkAddress();
+  }
+
+  ngOnChanges(): void {
+    this.initProvinceCity()
+    console.log(this.provinces)
+  }
+
+  initProvinceCity(): void {
+    let prov = this.provinceCity.getProvinces()
+    prov.subscribe((response: Province[]) => {
+      this.provinces = response.sort((a, b) => a.name.localeCompare(b.name));
+    })
+    let city = this.provinceCity.getCities();
+    city.subscribe((response: City[]) => {
+      this.cities = response.sort((a, b) => a.name.localeCompare(b.name));
+    })
+  }
+
+  filterCity(): City[] {
+    let provinceSelected = this.editProvince?.value;
+    
+    if(provinceSelected){
+      let match = this.provinces.find((province) => province.name == provinceSelected);
+      let key = match?.key;
+
+      return this.cities.filter((city) => city.province == key)
+    }
+
+    return this.cities;
   }
 
   checkAddress(): void {
     this.infos = this.deliveryinfoService.getDeliveryInfo().pipe(map((response: any) => formatDeliveryInfo(response)));
+    this.user = this.accountService.getLoggedUser();
     this.user.subscribe({
       next: (response: any) => {
         findDeliveryInfo(response.user_id, this.infos).subscribe({
@@ -71,6 +118,18 @@ export class ProfileComponent {
                       editZipCode: info[0].zip_code.toString(),
                       editPhoneNumber: info[0].number
                     })
+                    if(response.fname && response.lname) {
+                      this.editProfileForm.patchValue({
+                        editFirstName: response.fname,
+                        editLastName: response.lname,
+                        editMiddleName: response.mname,
+                        editSuffix: response.suffix
+                      })
+                      this.editFirstName?.disable();
+                      this.editLastName?.disable();
+                      this.editMiddleName?.disable();
+                      this.editSuffix?.disable();
+                    }
                   }
                   else {
                     this.isSubmitEdit = false;
@@ -108,44 +167,56 @@ export class ProfileComponent {
       console.log(formData);
 
       if(!this.isSubmitEdit) {
+        formData.append('first_name', this.editFirstName?.value);
+        formData.append('middle_name', this.editMiddleName?.value ? this.editMiddleName?.value : '');
+        formData.append('last_name', this.editLastName?.value);
+        formData.append('suffix', this.editSuffix?.value ? this.editSuffix?.value : '');
+
         this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
           next: (response: any) => {
-            this.toastHeader = "Successfully added!";
-            this.toastContent = "Your delivery information has been updated.";
-            this.toast.switchTheme('default');
-            this.toast.show();
+
+            this.toaster.showToast("Successfully added!", "Your delivery information has been updated.")
           },
           error: (err: HttpErrorResponse) => {
             console.log(err)
-            this.toastHeader = "Action failed!";
-            this.toastContent = "Please try again in a few moments.";
-            this.toast.switchTheme('negative');
-            this.toast.show();
+
+            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
           },
           complete: () => {
-            this.isEditMode = false;
-            this.checkAddress();
+            this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+              if(status){
+                this.user = this.accountService.getLoggedUser();
+                this.checkAddress();
+              }
+              
+              this.isEditMode = false;
+            })
           }
         })
       }
       else {
         this.deliveryinfoService.patchDeliveryInfo(formData).subscribe({
           next: (response: any) => {
-            this.toastHeader = "Successfully edited!";
-            this.toastContent = "Your delivery information has been updated.";
-            this.toast.switchTheme('default');
-            this.toast.show();
+
+            this.toaster.showToast("Successfully edited!", "Your delivery information has been updated.")
+
+            this.user = this.accountService.getLoggedUser();
           },
           error: (err: HttpErrorResponse) => {
-            console.log(err)
-            this.toastHeader = "Action failed!";
-            this.toastContent = "Please try again in a few moments.";
-            this.toast.switchTheme('negative');
-            this.toast.show();
+
+            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
           },
           complete: () => {
-            this.isEditMode = false;
-            this.checkAddress();
+            
+            this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+              if(status){
+                this.user = this.accountService.getLoggedUser();
+                this.checkAddress();
+              }
+
+              this.isEditMode = false;
+            })
+            
           }
         })
       }

@@ -1,5 +1,5 @@
 .select-data-container{
-    max-width: 200px;
+    max-width: 220px;
 }
 
 .color{
@@ -9,9 +9,20 @@
 
 
 .bg-inner{
-    background-color: #00F0FF;
+    background-color: #094175;
 }
 
 .bg-outer{
     background-color: #1C92FF;
+}
+
+.select-container {
+    max-width: 270px;
+    width: 100%;
+}
+
+@media screen and (max-width: 360px) {
+    .donut-legend-list{
+        justify-content: center !important;
+    }
 }

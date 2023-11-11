@@ -55,6 +55,7 @@ export class VariantsService {
     }
 
     addVariantToVariantsList(variantFormGroup: FormGroup): void {
+        console.log(variantFormGroup);
         this.variantsList.push(variantFormGroup);
     }
     
@@ -77,7 +78,7 @@ export class VariantsService {
 			productArray.forEach((product) => {
 				if (product.id === this.id) {
 					const newVariants: FormGroup[] = [];
-					product.product_variants.forEach((variant) => {
+					product.variants.forEach((variant) => {
 						// Check if the variant already exists in the DatabaseVariantList
 						const variantExists = this.DatabaseVariantList.controls.some(
 							(control) =>
@@ -91,12 +92,8 @@ export class VariantsService {
 								const variantGroup = this.formBuilder.group({
 									variant_id: variant.variant_id,
 									product_id: variant.product_id,
-									size: variant.size,
 									price: variant.price,
 									stock: variant.stock,
-									stock_limit: variant.stock_limit,
-									color: variant.color,
-									color_title: variant.color_title,
 								});
 				
 								newVariants.push(variantGroup);

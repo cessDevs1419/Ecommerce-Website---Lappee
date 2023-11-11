@@ -1,0 +1,134 @@
+{
+    "success": true,
+    "message": "List of all products.",
+	"data": [
+		{
+			"id": "qwerty",
+			"category": "cat650c4470b63bf",
+			"name": "Subcategory1 Item1",
+			"description": "This is Subcategory1's first item.",
+			"variants": [
+				{
+					"variant_id": "variant1-prod1",
+					"product_id": "zxcvb",
+					"variant_name": "Red Cotton",
+					"stock": 1,
+					"price": "420.00",
+					"images": ["https://picsum.photos/900"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"category_attribute_id": "catattr1",
+							"attribute_name": "Size",
+							"value": "LG"
+						},
+						{
+							"attribute_id": "attr_color",
+							"category_attribute_id": "catattr2",
+							"attribute_name": "Color",
+							"value": "A83A32"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"category_attribute_id": "catattr3",
+							"attribute_name": "Fabric",
+							"value": "Cotton"
+						}
+					]
+				},
+				{
+					"variant_id": "variant2-prod1",
+					"product_id": "qwerty",
+					"variant_name": "Blue Polyester",
+					"stock": 1,
+					"price": "420.00",
+					"images": ["https://picsum.photos/900"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"category_attribute_id": "catattr1",
+							"attribute_name": "Size",
+							"value": "MD"
+						},
+						{
+							"attribute_id": "attr_color",
+							"category_attribute_id": "catattr2",
+							"attribute_name": "Color",
+							"value": "4287F5"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"category_attribute_id": "catattr3",
+							"attribute_name": "Fabric",
+							"value": "Polyester"
+						}
+					]
+				}
+			]
+        },
+        {
+			"id": "asdfg",
+			"category": "cat650c4470b63bf",
+			"name": "Subcategory1 Item2",
+			"description": "This is Subcategory1's second item.",
+			"variants": [
+				{
+					"variant_id": "variant1-prod1",
+					"product_id": "zxcvb",
+					"variant_name": "Red Cotton",
+					"stock": 1,
+					"price": "420.00",
+					"images": ["https://picsum.photos/900"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"category_attribute_id": "catattr1",
+							"attribute_name": "Size",
+							"value": "LG"
+						},
+						{
+							"attribute_id": "attr_color",
+							"category_attribute_id": "catattr2",
+							"attribute_name": "Color",
+							"value": "A83A32"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"category_attribute_id": "catattr3",
+							"attribute_name": "Fabric",
+							"value": "Cotton"
+						}
+					]
+				},
+				{
+					"variant_id": "variant2-prod1",
+					"product_id": "qwerty",
+					"variant_name": "Blue Polyester",
+					"stock": 1,
+					"price": "420.00",
+					"images": ["https://picsum.photos/900"],
+					"attributes": [
+						{
+							"attribute_id": "attr_size",
+							"category_attribute_id": "catattr1",
+							"attribute_name": "Size",
+							"value": "MD"
+						},
+						{
+							"attribute_id": "attr_color",
+							"category_attribute_id": "catattr2",
+							"attribute_name": "Color",
+							"value": "4287F5"
+						},
+						{
+							"attribute_id": "attr_fabric",
+							"category_attribute_id": "catattr3",
+							"attribute_name": "Fabric",
+							"value": "Polyester"
+						}
+					]
+				}
+			]
+        }
+	]
+}

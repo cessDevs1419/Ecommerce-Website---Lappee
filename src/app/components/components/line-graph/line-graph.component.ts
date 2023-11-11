@@ -9,13 +9,26 @@ import { ChartType, ChartOptions, ChartData } from 'chart.js';
 })
 export class LineGraphComponent {
   @Input() data: { label: string, value: number }[];
+  @Input() theme: string;
   @Input() width: string;
   @Input() height: string;
   @ViewChild('canvas', { static: true }) canvasRef: ElementRef;
   
+  backGround: string;
+  fontColor: string;
+  borderColor: string;
+  
   constructor() { }
 
   ngOnInit() {
+    switch(this.theme){
+      case 'dark':
+        this.theme = ''
+      break;
+      case 'light':
+        this.theme = ''
+      break;
+    }
   }
 
   ngAfterViewInit() {
@@ -88,7 +101,7 @@ export class LineGraphComponent {
 
     if(ctx){
       ctx.lineWidth = 0;
-      ctx.strokeStyle = '#FFFFFF';    
+      ctx.strokeStyle = '#1E2029';    
     }
     ctx?.stroke();
     ctx?.closePath();

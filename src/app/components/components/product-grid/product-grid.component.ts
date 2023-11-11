@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product, ProductList } from 'src/assets/models/products';
+import { CategoryProduct, Product, ProductList } from 'src/assets/models/products';
 import { Router } from '@angular/router';
 import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
 
@@ -12,6 +12,6 @@ import { SearchFilterPipe } from '../../pipes/search-filter.pipe';
 export class ProductGridComponent {
   
   @Input() searchString : any;
-  @Input() products!: Observable<Product[]>;
+  @Input() products!: Observable<CategoryProduct[]>;
   
 }

@@ -33,7 +33,12 @@ export class ModalComponent {
 	@Output() confirm: EventEmitter<any> = new EventEmitter();
     @Output() ship: EventEmitter<any> = new EventEmitter();
 	@Output() deliver: EventEmitter<any> = new EventEmitter();
-	
+    @Output() SuccessToast: EventEmitter<any> = new EventEmitter();
+	@Output() ErrorToasts: EventEmitter<any> = new EventEmitter();
+    @Output() WarningToasts: EventEmitter<any> = new EventEmitter();
+    @Output() hideMinus: EventEmitter<any> = new EventEmitter();
+
+
 	@Input() modalId!: string;
     @Input() modalTitle!: string;
 	@Input() modalSubTitle!: string;
@@ -41,22 +46,44 @@ export class ModalComponent {
 	@Input() modalSubTitleClass!: string;
     @Input() modalinfoTitle!: any;
 	@Input() modalClass!: string;
+	@Input() modalHideCloseBtn!: boolean;
+	@Input() modalHideIcon!: boolean;
+	@Input() modalIcon!: string;
 	
 	@Input() selectedRowData: any;
+	@Input() selectedRowDataForDelete: any;
+	@Input() modalLogout!: boolean;
+	@Input() modalAddAttribute!: boolean;
+	@Input() modalEditAttribute!: boolean;
+    @Input() modalDeleteAttribute!: boolean;
+    @Input() modalMultipleDeleteAttribute!: boolean;
+    @Input() modalMultipleDeleteCategory!: boolean;
+    @Input() modalSelectAttribute!: boolean;
+    @Input() modalAddCategory!: boolean;
+    @Input() modalEditCategory!: boolean;
 	@Input() modalDeleteCategory!: boolean;
 	@Input() modalDeleteSubCategory!: boolean;
 	@Input() modalDeleteProduct!: boolean; 
+	@Input() modalMultipleDeleteProduct!: boolean; 
 	@Input() modalDeleteVariant!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
 	@Input() allowAnotherSub!: boolean;
     @Input() modalConfirm!: boolean;  
+    @Input() modalPacked!: boolean;  
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
 	@Input() modalData!: Observable<any>;
+	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
-	
+	selectedAttributeData: any;
+	//modal theme
+	modalTheme: string = 'table-bg-dark';
+	modalTitleColor : string = 'dark-theme-text-color';
+	modalBorderColor: string = 'border-grey';
+	modalHeaderColor: string = 'text-white';
+	modalitemColor: string = 'text-white-50';
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
     
@@ -65,7 +92,7 @@ export class ModalComponent {
     toastHeader: string = "";
     toastTheme: string = "default";  
     
-
+    index: number | null = null;
 	private refreshData$ = new Subject<void>();
 
 
@@ -80,9 +107,13 @@ export class ModalComponent {
 	ngOnInit(): void{
 
 	}
-	
+
     refreshTableData(): void {
         this.RefreshTable.emit();
+    }
+
+    indexVariant(index: number){
+        console.log(index)
     }
     
     confirmPayment(){
@@ -96,7 +127,9 @@ export class ModalComponent {
     deliverPackage(){
         this.deliver.emit()
     }
-    
+    hideMinusFunction() {
+        this.hideMinus.emit();
+    }
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
         return new Promise((resolve) => {
@@ -104,6 +137,14 @@ export class ModalComponent {
             resolve();
             }, 2500); 
         });
+    }
+    onLogout(){
+        this.confirm.emit()
+        this.closeModal()
+    }
+    
+    sendAttribute(value: any){
+        this.selectedAttributeData = value
     }
     
     async closeModal() {
@@ -116,38 +157,23 @@ export class ModalComponent {
 
     
 	deleteSuccessToast(value: any): void {
-        this.toastHeader = value.head;
-        this.toastContent = value.sub;
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
 	banSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully Banned";
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
 	unbanSuccessToast(value: string): void {
-        this.toastHeader = value;
-        this.toastContent = "Successfully UnBanned";
-        this.toast.switchTheme('default');
-        this.toast.show();
+        this.SuccessToast.emit(value)
     }
     
     WarningToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('warn');
-        this.toast.show();
+        this.WarningToasts.emit(value)
     }
     
 	ErrorToast(value: any): void {
-        this.toastHeader = value.errorMessage;
-        this.toastContent = value.suberrorMessage;
-        this.toast.switchTheme('negative');
-        this.toast.show();
+        this.ErrorToasts.emit(value)
     }
     
     

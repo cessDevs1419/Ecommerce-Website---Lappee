@@ -1,110 +1,123 @@
-<div class="container-md m-auto h-auto p-2 pb-4" >
-    
-    <div class="row p-3">
-        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-md-2 ">
-            <div class=" rounded-4 pt-4 panel-container text-center d-flex flex-column justify-content-center ">
-                <div class="panel-body">
-                    <div class="icon-container rounded-circle m-auto d-flex align-items-center justify-content-center">
-                        <i class="bi bi-box-fill fs-1"></i>
+<div class="container-fluid position-relative m-auto px-0 px-sm-3"  >
+    <div class="row px-4 mb-2">
+        <div class="col-xl-3 col-lg-4 p-2 px-0 pe-lg-2 pt-0">
+            <div class="panel-store-container store-container  overflow-hidden gray-gradient-border box-shadow">
+                <div class="{{counter_bg}}  py-3 store-container h-10 text-center d-flex flex-column justify-content-center ">
+                    <div class="panel-body position-relative">
+                        <div class="position-absolute icon-linear  m-auto mx-2 d-flex justify-content-center mt-0">
+                            <div class="{{counter_bg}} icon-container d-flex align-items-center justify-content-center  mt-0">
+                                <i class="bi bi-bag-fill fs-3 glow"></i>
+                            </div>
+                        </div>
+                        <div class="title-container mt-1">
+                            <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 glow">25</h1>
+                            <p class="card-sub-title {{text_color}} fs-5 fw-bold lh-1">Products</p>
+                        </div>
                     </div>
-                    <h1 class="heading-color heading-title-fs-64 fw-bolder ">438</h1>
-                    <p class="sub-text-color fs-6 fw-medium">SOLD ITEMS TODAY</p>
-                </div>
-                <div class="wave-container position-relative mt-3 mt-lg-0 mt-sm-5">
-                    <svg class="w-100 p-0 position-absolute start-0 bottom-0" viewBox="0 0 258 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_182_275)">
-                            <path class="stroke-bg" d="M0.157227 9.19995L42.9906 27.6L85.8239 64.4L128.657 36.8L171.491 64.4L214.324 46L257.157 18.4V92H214.324H171.491H128.657H85.8239H42.9906H0.157227V9.19995Z" fill="#1C92FF" fill-opacity="0.5"/>
-                            <path class="stroke-slant" d="M0.157227 9L43.5614 27.0852" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-down" d="M43.8094 27.2419L86.8094 64.2419" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up" d="M87.1572 64L128.157 37" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <line class="stroke-down-slight" x1="128.538" y1="36.6932" x2="170.85" y2="63.6195" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up-slight" d="M171.157 64L215.768 45.0789" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up"  d="M215.607 45.1648L256.607 18.1648" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                        </g>
-                        <defs>
-                        <clipPath id="clip0_182_275">
-                            <path d="M0.157227 0H257.157V76C257.157 84.8366 249.994 92 241.157 92H16.1572C7.32067 92 0.157227 84.8366 0.157227 76V0Z" fill="white"/>
-                        </clipPath>
-                        </defs>
-                    </svg>
+    
                 </div>
             </div>
         </div> 
-        <div class="col-xl-3 col-lg-4 p-2 px-0 ps-md-2">
-            <div class=" rounded-4 pt-4 panel-container text-center d-flex flex-column justify-content-center align-items-center">
-                <div class="panel-body">
-                    <div class="icon-container rounded-circle m-auto d-flex align-items-center justify-content-center">
-                        <i class="bi bi-boxes fs-1"></i>
+        <div class="col-xl-3 col-lg-4 p-2 px-0 ps-lg-2 pt-0">
+            <div class="panel-store-container store-container gray-gradient-border box-shadow">
+                <div class="{{counter_bg}}  py-3 store-container h-100 rounded-4 text-center d-flex flex-column justify-content-center ">
+                    <div class="panel-body position-relative">
+                        <div class="position-absolute icon-linear  m-auto mx-2 d-flex justify-content-center mt-0">
+                            <div class="{{counter_bg}} icon-container d-flex align-items-center justify-content-center  mt-0">
+                                <i class="bi bi-bag-fill fs-3 glow"></i>
+                            </div>
+                        </div>
+                        <div class="title-container mt-1">
+                            <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 glow">25</h1>
+                            <p class="card-sub-title {{text_color}} fs-5 fw-bold lh-1">Low Stocks</p>
+                        </div>
                     </div>
-                    <h1 class="heading-color heading-title-fs-64 fw-bolder ">438</h1>
-                    <p class="sub-text-color fs-6 fw-medium">LOW STOCK ITEMS</p>
-                </div>
-                <div class="wave-container position-relative  mt-3 mt-lg-0 mt-sm-5">
-                    <svg class="w-100 p-0 position-absolute start-0 bottom-0" viewBox="0 0 258 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_182_275)">
-                            <path class="stroke-bg" d="M0.157227 9.19995L42.9906 27.6L85.8239 64.4L128.657 36.8L171.491 64.4L214.324 46L257.157 18.4V92H214.324H171.491H128.657H85.8239H42.9906H0.157227V9.19995Z" fill="#1C92FF" fill-opacity="0.5"/>
-                            <path class="stroke-slant" d="M0.157227 9L43.5614 27.0852" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-down" d="M43.8094 27.2419L86.8094 64.2419" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up" d="M87.1572 64L128.157 37" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <line class="stroke-down-slight" x1="128.538" y1="36.6932" x2="170.85" y2="63.6195" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up-slight" d="M171.157 64L215.768 45.0789" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                            <path class="stroke-up"  d="M215.607 45.1648L256.607 18.1648" stroke="#1C92FF" stroke-width="2" stroke-linecap="round"/>
-                        </g>
-                        <defs>
-                        <clipPath id="clip0_182_275">
-                            <path d="M0.157227 0H257.157V76C257.157 84.8366 249.994 92 241.157 92H16.1572C7.32067 92 0.157227 84.8366 0.157227 76V0Z" fill="white"/>
-                        </clipPath>
-                        </defs>
-                    </svg>
+    
                 </div>
             </div>
         </div>
     </div>
     
     <app-table
-        tableTitle="PRODUCT LIST"
-        subTitle="MANAGEMENT"
+        tableTitle="Manage Products"
+        subTitle="Product Management"
         [tableHead]="true"
-        tableContainerClass="p-4"
-        [paginate]="true"
+        tableContainerClass="p-4 table-container-lg"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
         
         [tableTools]="true"
+        [tableAction]="true"
         [searchBar]="true"
         [Btntools]="true"
-        [addBtn]="true"
-        addbtnName="ADD ITEM"
+        [addProdBtn]="true"
+        addbtnName="Add New"
+        [showMinus]="showMinus"
+        
         [searchBarclass]="margin"
         [addBtnclass]="size"
         
         [restockBtn]="false"
         [tableAction]="true"
-        [editBtn]="true"
+        [editSubBtn]="true"
         [deleteBtn]="true"
-
-        [tableHeader]="['ITEM NAME','DESCRIPTION']"
-        [tableRows]="['name', 'description']"
-        [tableData]="products"
+        [actionBtn]="true"
         
+        [tableHeader]="['ID','Name','Price']"
+        [tableRows]="['product_id', 'name','price']"
+        [tableData]="products"
+
+        [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
+        (rowDataForDelete)="onRowDataForDelete($event)"
         (ShowAddForm)="showAddForm()"
-        (ShowEditForm)="showEditForm()"
+        (ShowEditForm)="showEditForm($event)"
+        #triggerFunction
     ></app-table>
-    
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
     
 </div>
 
 
-
 <app-modal
     modalId="delete"
-    modalTitle="DELETE PRODUCT"
-    modalSubTitle="PRODUCT CONTROL"
+    modalTitle="Delete Product"
     modalClass="modal-md"
-    
-    [modalDeleteProduct]="true"
+    [modalHideIcon]="true"
+    modalIcon="delete"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    (hideMinus)="showMinusFunction()"
     (RefreshTable)="refreshTableData()"
+    [modalDeleteProduct]="true"
+    
     [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+
 ></app-modal>
+
+<app-modal
+    modalId="deleteMultiple"
+    modalTitle="Delete Product"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="delete"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    (hideMinus)="showMinusFunction()"
+    (RefreshTable)="refreshTableData()"
+    [modalMultipleDeleteProduct]="true"
+
+    [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+
+
+></app-modal>  
+
+
 
 
 

@@ -1,23 +1,33 @@
-<div class="container-md m-auto h-auto p-2" >
+<div class="container-fluid m-auto h-auto px-0 px-sm-3" >
+
     <app-table
-        tableTitle="REGISTERED USERS"
-        subTitle="VALUED CUSTOMERS"
+        tableTitle="Regitered Users"
+        subTitle="Valued Customers"
         [tableHead]="true"
-        tableContainerClass="p-4"
-        [paginate]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
         
         [tableTools]="true"
         [searchBar]="true"
         [tableAction]="true"
         [banBtn]="true"
         
-        [tableHeader]="['USER ID','EMAIL', 'DATE CREATED', 'LAST LOGIN']"
+        [tableHeader]="['User Id','Email', 'Date Created', 'Last Login']"
         [tableRows]="['user_id', 'email','created_at', 'last_login']"
         [tableData]="users"
         [bannedStatus]="bannedStatus"
-        
+        [bannedBtn]="true"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
+    
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+    
+    <!-- <app-chats
+        [size]="'chat-body-lg'"
+    ></app-chats> -->
+
 </div>
 
     <app-modal
@@ -29,6 +39,9 @@
         [modalBanAccounts]="modalBanAccounts"
         [modalUnBanAccounts]="modalUnBanAccounts"
         [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
     ></app-modal>
 
 

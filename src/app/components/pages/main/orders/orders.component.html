@@ -12,6 +12,8 @@
         </form>
     </div>
 
+    <app-loader [componentName]="orderLoader" [flag]="isLoading"></app-loader>
+
     <div *ngIf="isLoading && !doneLoading">
         Loading data...
     </div>
@@ -19,32 +21,44 @@
     <div *ngIf="this.searchResults && !isLoading">
         <div class="row bg-light-gray mt-3 px-3 py-3" *ngFor="let order of paginateReview()">
             
-            <div class="pb-2 border-bottom d-flex flex-column justify-content-start">
-                <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
-                <p class="m-0 text-muted">{{order.ordered_on | date:'medium'}}</p>
+            <div class="pb-2 border-bottom d-flex justify-content-between">
+                <div class="d-flex flex-column justify-content-start">
+                    <p class="fs-3 fw-bold color-primary m-0">{{order.order_id}}</p>
+                    <p class="text-muted">{{order.ordered_on | date:'medium'}}</p>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="d-flex align-items-center">
+                        <p class="m-0 text-muted me-3"><i class="bi bi-box-seam-fill"></i> Items are packed by the seller.</p>
+                        <a [routerLink]="['/profile/orders/details/', order.order_id]" class="border-start ps-3 m-0">View Order Details</a>
+                    </div>
+                </div>
             </div>
             
-            <div class="w-100 mt-3">
+            <div class="w-100">
                     <div class="w-100 my-4 d-flex flex-column flex-md-row justify-content-between" *ngFor="let item of order.order_contents">
                         <div class="col-md d-flex flex-row justify-content-between mb-3 mb-md-0 ">
                             <div class="d-flex flex-row align-items-center">
                                 <div>
-                                    <img src="https://picsum.photos/200" class="img-fluid order-item-img">
+                                    <img [src]="item.images[0]" class="img-fluid order-item-img">
                                 </div>
                                 <div class="d-flex flex-column ms-3">
                                     <p class="color-primary fs-4 m-0 fw-bold">{{ item.name }}</p>
-                                    <p class="text-muted m-0">Color: {{item.color_title}}, Size: {{item.size}}</p>
+                                    <p class="text-muted m-0">{{item.variant_name}}</p>
                                     <p class="m-0">x{{item.quantity}}</p>
                                 </div>
                             </div>
                             <div class="col d-flex flex-column align-items-end justify-content-center pe-3" >
                                 <p class="m-0 color-primary fs-4 fw-bold">{{item.sub_price | currency}}</p><br>
-                                <p class="m-0 text-muted" *ngIf="item.quantity > 1">@ {{ Number(item.sub_price) / item.quantity | currency}} each</p>
+                                <p class="m-0 text-muted" *ngIf="item.quantity > 1">&#64; {{ Number(item.sub_price) / item.quantity | currency}} each</p>
                             </div>
                         </div>
-                        <div class="col-md-3 ps-0 ps-md-3 pb-3 pb-md-0 border-md-start border-bottom d-flex flex-md-column flex-row justify-content-center align-items-center">
-                            <button class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
-                            <button class="button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
+                        <div class="col-md-3 ps-0 ps-md-3 pb-3 pb-md-0 d-flex flex-md-column flex-row justify-content-center align-items-center">
+                            <!-- 
+                            <button [disabled]="!checkProductStock(item.product_id, item.color_title, item.size)" class="button-primary rounded-0 w-100" (click)="buyProduct(item)">Buy Again</button>
+                            <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
+                            -->
+                            <a class="button-primary rounded-0 w-100" [routerLink]="['/products', item.product_id]">Buy Again</a>
+                            <button *ngIf="!item.is_reviewed" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                         </div>
                     </div>
             </div>

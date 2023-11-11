@@ -1,0 +1,39 @@
+<div class="box-shadow linear-gradient-border">
+    <div class="container h-100 rounded-4 p-3  {{bgColor}}">
+        <h6 class="fs-5 mt-2 fw-bold text-start {{titleColor}}">Most Selling Variants</h6>
+        <div class="row w-100 m-auto pt-2 align-items-center ">
+            <div class="col-xl-4 p-0 position-relative">
+                <div class="container position-relative p-0 ">
+                    <!-- <circle-progress 
+                        name="E" 
+                        [options]="outerDataOptions" 
+                        [renderOnClick]="false" 
+                        class="w-100 p-0 "
+                
+                        >
+                    </circle-progress> -->
+                    <canvas baseChart
+                        [datasets]="doughnutChartDatasets"
+                        [options]="doughnutChartOptions"
+                        [legend]="true"
+                        [type]="'doughnut'">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col-xl-8 mt-3 mt-xl-0">
+                <ul class="donut-legend-list list-unstyled mt-xxl-2 w-100 mt-xl-4 mt-2 mx-0 d-flex flex-wrap justify-content-between"> 
+                    <li *ngFor="let item of (data | async); let i = index" class="text-decoration-none mt-2 mx-1 w-100">
+                        <div class="body w-100 d-flex justify-content-start align-items-center">
+                            <div  class="color rounded-circle me-2 " [style.background-color]="colors[i % colors.length]"></div>
+                            <div class=" w-100 d-flex justify-content-between align-items-center">
+                                <p class="fs-6 fw-bold lh-base mb-0 {{fontColor}}">{{item.name}}</p>
+                                <p class="fs-6  lh-1 mb-0 {{subitemColor}}">{{item.percent}} %</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -74,6 +74,38 @@ import { OrdersFormComponent } from './components/components/Forms/orders-form/o
 import { AdminManageAboutUsComponent } from './components/pages/admin/admin-manage-about-us/admin-manage-about-us.component';
 import { AdminManageTosComponent } from './components/pages/admin/admin-manage-tos/admin-manage-tos.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { OrderHistoryLoaderComponent } from './components/components/loader/main/order-history-loader/order-history-loader.component';
+import { LoaderComponent } from './components/components/loader/loader.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { AdminAttributesComponent } from './components/pages/admin/admin-attributes/admin-attributes.component';
+import { AdminMainCategoriesComponent } from './components/pages/admin/admin-main-categories/admin-main-categories.component';
+import { AdminSubCategoriesComponent } from './components/pages/admin/admin-sub-categories/admin-sub-categories.component';
+import { AttributeFormComponent } from './components/components/Forms/attribute-form/attribute-form.component';
+import { ConfirmDialogComponent } from './components/components/modal-forms-client/confirm-dialog/confirm-dialog.component';
+import { EditCartItemComponent } from './components/components/modal-forms-client/edit-cart-item/edit-cart-item.component';
+import { VariantAttributesComponent } from './components/components/variant-attributes/variant-attributes.component';
+import { CategoryProductsComponent } from './components/pages/main/category-products/category-products.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { ColorPickerComponent } from './components/components/color-picker/color-picker.component';
+import { NotificationDropdownComponent } from './components/components/notification-dropdown/notification-dropdown.component';
+import { VerifyEmailComponent } from './components/pages/main/verify-email/verify-email.component';
+import { RichTextEditorComponent } from './components/components/rich-text-editor/rich-text-editor.component';
+import { NgxEditorModule } from 'ngx-editor';
+import { LoginComponent } from './components/pages/main/login/login.component';
+import { RegisterComponent } from './components/pages/main/register/register.component';
+import { OutlineCircleSpinnerComponent } from './components/components/loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
+import { ChatsComponent } from './components/components/chats/chats.component';
+import { ToggleswitchComponent } from './components/components/toggleswitch/toggleswitch.component';
+import { ToastNotificationComponent } from './components/components/toast-notification/toast-notification.component';
+import { ToasterComponent } from './components/components/toaster/toaster/toaster.component';
+import { ProductCarouselComponent } from './components/components/product-carousel/product-carousel/product-carousel.component';
+import { AdminProductStatisticsComponent } from './components/pages/admin/admin-product-statistics/admin-product-statistics.component';
+import { OrderDetailsComponent } from './components/pages/main/order-details/order-details/order-details.component';
+import { CountersComponent } from './components/components/counters/counters.component';
+import { BarGraphComponent } from './components/components/bar-graph/bar-graph.component';
+import { DonutChartComponent } from './components/components/donut-chart/donut-chart.component';
+import { NgChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -139,7 +171,33 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     OrdersFormComponent,
     AdminManageAboutUsComponent,
     AdminManageTosComponent,
-
+    OrderHistoryLoaderComponent,
+    LoaderComponent,
+    AdminAttributesComponent,
+    AdminMainCategoriesComponent,
+    AdminSubCategoriesComponent,
+    AttributeFormComponent,
+    ConfirmDialogComponent,
+    EditCartItemComponent,
+    VariantAttributesComponent,
+    CategoryProductsComponent,
+    ColorPickerComponent,
+    NotificationDropdownComponent,
+    VerifyEmailComponent,
+    RichTextEditorComponent,
+    LoginComponent,
+    RegisterComponent,
+    OutlineCircleSpinnerComponent,
+    ChatsComponent,
+    ToggleswitchComponent,
+    ToastNotificationComponent,
+    ToasterComponent,
+    ProductCarouselComponent,
+    AdminProductStatisticsComponent,
+    OrderDetailsComponent,
+    CountersComponent,
+    BarGraphComponent,
+    DonutChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,20 +208,26 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       headerName: 'X-XSRF-TOKEN'
     }),
     AppRoutingModule,
+    NgxEditorModule,
     RouterModule.forRoot([
       
       //client
       {path: 'home', component: HomeComponent, title: 'Home'},
-      {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
+      //{path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
+      {path:'login', component: LoginComponent, canActivate: [authGuard], title: 'Log In'},
+      {path: 'register', component: RegisterComponent, canActivate: [authGuard], title: 'Register'},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
+      {path: 'category/:categoryId' , component: CategoryProductsComponent},
       {path: 'products/:productId', component: ProductsComponent},
       {path: 'cart', component: CartComponent, title: 'Cart'},
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
+      {path: 'profile/orders/details/:orderId', component: OrderDetailsComponent, canActivate: [authGuard], title: 'Order Details'},
       {path: 'contactus', component: ContactusComponent, title: 'Contact Us'},
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
       {path: 'tos', component: TosComponent, title: 'Terms of Service'},
+      {path: 'verify-email/:id/:token', component: VerifyEmailComponent, canActivate: [authGuard], title: 'Email Verification'},
 
       //admin
       {
@@ -172,6 +236,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
         children: [
           {path: '', redirectTo: 'overview', pathMatch: 'full'},
           {path: 'overview', component: AdminOverviewComponent},
+          {path: 'attribute-management', component: AdminAttributesComponent,},
           {path: 'category-management', component: AdminCategoriesComponent,},
           {path: 'product-management', component: AdminProductsComponent},
           {path: 'sales-management', component: AdminSalesComponent},
@@ -186,6 +251,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
           {path: 'product-management/:page/:action/:var_id/:connector/:prod_id', component: AdminParentFormComponent},
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
+          {path: 'product-statistics/:id', component: AdminProductStatisticsComponent},
           {path: 'inquiry', component: AdminInquiryComponent},
           {path: 'site-settings', component: AdminSiteSettingsComponent},
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent},
@@ -220,7 +286,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       animationDuration: 300,
     }),
     LightboxModule,
-    
+    NgxImageZoomModule,
+    ColorPickerModule,
+    NgChartsModule
   ],
   providers: [
     {

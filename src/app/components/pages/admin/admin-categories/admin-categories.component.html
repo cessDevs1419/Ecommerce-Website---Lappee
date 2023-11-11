@@ -1,90 +1,102 @@
-<div class="container-md m-auto h-auto p-2 text-center" >
-    <div class="row">
-        <div class="col-xl-6 p-2">
-            <app-table
-                tableTitle="MAIN CATEGORIES"
-                subTitle="MANAGEMENT"
-                [tableHead]="true"
-                tableContainerClass="p-4"
-                [paginate]="true"
-                
-                [tableTools]="true"
-                [searchBar]="false"
-                [Btntools]="true"
-                [addBtn]="true"
-                addbtnName="ADD CATEGORY"
-                [addBtnclass]="size"
-                
-                [tableAction]="true"
-                [editBtn]="true"
-                [deleteBtn]="true"
-                
-                [tableHeader]="['CATEGORY NAME']"
-                [tableRows]="['name']"
-                [tableData]="categories"
-                
-                (rowDataSelected)="onRowDataSelected($event)"
-                (ShowAddForm)="showAddCategoryForm()"
-                (ShowEditForm)="showEditCategoryForm()"
-            ></app-table>
-        </div>
+<div class="container-fluid position-relative m-auto h-auto text-center px-0 px-sm-3" >
+    
+    <app-table
+        tableTitle="Category Management"
+        subTitle="Product Management"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
         
-        <div class="col-xl-6 p-2">
-            <app-table
-                tableTitle="SUB CATEGORIES"
-                subTitle="MANAGEMENT"
-                [tableHead]="true"
-                tableContainerClass="p-4"
-                [paginate]="true"
-                
-                [searchBar]="false"
-                [tableTools]="true"
-                [Btntools]="true"
-                
-                [addSubBtn]="true"
-                [addSubBtnclass]="size"
-                addSubtnName="ADD SUB CATEGORY"
-                [tableAction]="true"
-                [editSubBtn]="true"
-                [deleteSubBtn]="true"
-                
-                [tableHeader]="['CATEGORY NAME','MAIN CATEGORY']"
-                [tableRows]="['name', 'main_category']"
-                [tableData]="sub_categories "
-                
-                (rowDataSelected)="onRowDataSelected($event)"
-                (ShowAddSubForm)="showAddSubCategoryForm()"
-                (ShowEditSubForm)="showEditSubCategoryForm()"
-            ></app-table>
-        </div>
-    </div>
+        [tableTools]="true"
+        [searchBar]="true"
+        [Btntools]="true"
+        [addBtn]="true"
+        [editBtn]="true"
+        addbtnName="Add New"
+        [addBtnclass]="size"
+        [tableAction]="true"
+        [actionBtn]="true"
+        [showMinus]="showMinus"
+        
+        [tableHeader]="['ID', 'Name']"
+        [tableRows]="['id','name']"
+        [tableData]="categories"
+        [showMultipleSelection]="true"
+        (rowDataSelected)="onRowDataSelected($event)"
+        (rowDataForDelete)="onRowDataForDelete($event)"
+        #triggerFunction
+    ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
 
     <!--MAIN-->
+    <app-modal
+        modalId="add"
+        modalTitle="Add Category"
+        modalClass="modal-lg"
+        [modalHideIcon]="true"
+        [modalHideCloseBtn]="true"
+        modalIcon="add"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
 
+        [modalAddCategory]="true"
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
+    
+    <app-modal
+        modalId="edit"
+        modalTitle="Edit Category"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="edit"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [modalEditCategory]="true"
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
     
     <app-modal
         modalId="delete"
-        modalTitle="DELETE CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
+        modalTitle="Delete Category"
         modalClass="modal-md"
-    
+        [modalHideIcon]="true"
+        modalIcon="delete"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
         [modalDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
         (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
     ></app-modal> 
-    
-    <!--SUB-->
-    
+
+
     <app-modal
-        modalId="deleteSub"
-        modalTitle="DELETE SUB CATEGORY"
-        modalSubTitle="CATEGORY MANAGEMENT"
+        modalId="deleteMultiple"
+        modalTitle="Delete Category"
         modalClass="modal-md"
-        
-        [modalDeleteSubCategory]="true"
+        [modalHideIcon]="true"
+        modalIcon="delete"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [modalMultipleDeleteCategory]="true"
         [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
     ></app-modal> 
+
+    
+
 
 
 </div>

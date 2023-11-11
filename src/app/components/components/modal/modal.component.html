@@ -1,66 +1,192 @@
-<div class="modal fade" id={{modalId}}  tabindex="-1" #modalRef>
+<div class="modal fade" id={{modalId}} data-bs-backdrop="static"  tabindex="-1" #modalRef>
     
-    <div class="position-relative w-100 mt-3">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
-    
-    <div class="modal-dialog  modal-dialog-centered rounded-0 {{modalClass}}" >
-        <div class="modal-content rounded-0 p-2">
+    <div class="modal-dialog modal-dialog-centered rounded-0  {{modalClass}}" >
+        <div class="modal-content rounded-4 p-2 {{modalClass}} {{modalTheme}}">
 
             <div class="modal-title-container mb-0 container">
                 <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
                     <div class="modal-title text-start">
-                        <h1 class="modal-title fs-4 fw-bolder lh-1 {{modalTitleClass}}">{{modalTitle}}</h1>
-                        <div class="modal-sub-title text-dark-emphasis fs-6  {{modalSubTitleClass}}">{{modalSubTitle}}</div>
-                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 mb-3" *ngIf="allowAnotherSub">
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
-                            <p class="user-info m-0 p-o lh-1 text-wrap text-body-tertiary " *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                        <div class="title d-flex align-items-center">
+                            <ng-container *ngIf="modalHideIcon">
+                                <i *ngIf="modalIcon === 'add'" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'edit'" class="bi bi-pencil-square fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'delete'"  class="bi bi-trash fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'view'"  class="bi bi-eye fs-5 me-2 mb-3 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'confirm'"  class="bi bi-check fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'packed'"  class="bi bi-box2 fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'ship'"  class="bi bi-box2-fill fs-5 me-2 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'delivered'"  class="bi bi-truck fs-5 me-2 {{modalTitleColor}}"></i>
+                            </ng-container>
+                            <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
+                        </div>
+                        <div class="modal-sub-title fs-6 fw-bold {{modalTitleColor}}">{{modalSubTitle}}</div>
+                        <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " *ngIf="allowAnotherSub">
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                            <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
                         </div>
                     </div>  
                     
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
+                    <button [ngClass]="{'visually-hidden': modalHideCloseBtn}" type="button" class="btn-close btn-close-white " data-bs-dismiss="modal" aria-label="Close" #dismiss></button>
                 
                 </div>
-                <hr class="divider m-0 mb-3">
             </div>
+                
+                <app-attribute-form 
+                    *ngIf="modalAddAttribute"
+                    [formAddAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+                
+                <app-attribute-form 
+                    *ngIf="modalEditAttribute"
+                    [formEditAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-attribute-form>
+            
+                <app-attribute-form 
+                    *ngIf="modalDeleteAttribute"
+                    [formDeleteAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                ></app-attribute-form>
+        
+                <app-attribute-form 
+                    *ngIf="modalMultipleDeleteAttribute"
+                    [formMultipleDeleteAttribute]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                ></app-attribute-form>
+            
+                <app-category-form 
+                    *ngIf="modalAddCategory"
+                    [formAddCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
+                
+                <app-category-form 
+                    *ngIf="modalEditCategory"
+                    [formEditCategory]="true"
+                    [selectedRowData]="selectedRowData"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
             
                 <app-category-form 
                     *ngIf="modalDeleteCategory"
                     [formDeleteCategory]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
                     (CategorySuccess)="deleteSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 ></app-category-form>
-                
                 
                 <app-category-form 
-                    *ngIf="modalDeleteSubCategory"
-                    [formDeleteSubCategory]="true"
+                    *ngIf="modalMultipleDeleteCategory"
+                    [formMultipleDeleteCategory]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
                     (CategorySuccess)="deleteSuccessToast($event)"
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
                 ></app-category-form>
+
+
                 
                 <app-product-form
-                    *ngIf="modalDeleteProduct"
-                    [formDeleteProduct]="true"
+                    *ngIf="modalSelectAttribute"
+                    [formSelectAttribute]="true"
                     [selectedRowData]="selectedRowData"
+                    [selectedAttributeData]="selectedAttributeData"
+                    (Index)="indexVariant($event)"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
+                    (SendAttribute)="sendAttribute($event)"
+                >
+                </app-product-form> 
+            
+                            
+                <app-product-form
+                    *ngIf="modalDeleteVariant"
+                    [formDeleteVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                >
+                </app-product-form> 
+
+                <app-product-form
+                    *ngIf="modalDeleteProduct"
+                    [formDeleteProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowData"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
                 >
                 </app-product-form> 
                 
+                <app-product-form
+                    *ngIf="modalMultipleDeleteProduct"
+                    [formMultipleDeleteProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                    (hideMinus)="hideMinusFunction()"
+                ></app-product-form>
+        
                 <app-accounts-form
                     *ngIf="modalBanAccounts"
                     [formBanAccount]="true"
@@ -80,30 +206,41 @@
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
                 
-                <div class="container m-auto P-2 overflow-y-auto" *ngIf="modalData">
-                    <h1 class="form-title fs-4 fw-bolder mb-4" >Order Summarry</h1>
+                <div class="container m-auto p-2" *ngIf="modalData">
+                    <hr class="divider  {{modalBorderColor}}">
+                    <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Order Summarry</h1>
                     <ul class="list-unstyled" *ngFor="let item of modalSubData | async">
-                        <li class="text-decoration-none row">
+                        <li class="text-decoration-none row mb-2">
                             <div class="col-sm-8 text-start">
-                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate">{{item.product_id}}</p>
-                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">variant</p>
-                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate">x{{item.quantity}}</p>
+                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">{{item.product_id}}</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">variant</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">x{{item.quantity}}</p>
                             </div>
                             <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
-                                <h1 class="product_price fs-4 fw-bolder" >₱{{item.sub_price}}</h1>
+                                <h1 class="product_price fs-4 fw-bolder {{modalTitleColor}}" >₱{{item.sub_price}}</h1>
                             </div>
                         </li>
                     </ul>
-                    <hr class="divider mb-4">
+                    <hr class="divider mb-4 {{modalBorderColor}}">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="fs-5 fw-bold">Subtotal</h3>
+                            <h3 class="fs-5 fw-bold {{modalTitleColor}}">Subtotal</h3>
                         </div>
                         <div class="col-sm-6 d-flex justify-content-end align-content-center">
-                            <h1 class="form-title fs-2 fw-bolder mb-4" >₱{{selectedRowData?.total_price}}</h1>
+                            <h1 class="form-title fs-2 fw-bolder mb-4 {{modalTitleColor}}" >₱{{selectedRowData?.total_price}}</h1>
                         </div>
                     </div>
                 </div>
+                
+                <form *ngIf="modalLogout" (ngSubmit)="onLogout()">
+                    <div  class="modal-body text-center pt-0 pb-0">
+                        <p class="fs-5 fw-bold mb-1 {{modalitemColor}}">Are you sure you want to log out of your account?</p>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
+                    </div>
+                </form>
                 
                 <app-orders-form
                     *ngIf="modalConfirm"
@@ -114,10 +251,27 @@
                     (OrderWarning)="WarningToast($event)"
                     [selectedRowData]="selectedRowData"
                     (RefreshTable)="refreshTableData()"
+                    [modalConfirmData]="modalSubData"
+                    [modalData]="orderData"
                 >
                 
                 </app-orders-form>
                 
+                <app-orders-form
+                    *ngIf="modalPacked"
+                    [formPacked]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                    [modalConfirmData]="modalSubData"
+                    [modalData]="orderData"
+                >
+                
+                </app-orders-form>
+            
                 <app-orders-form
                     *ngIf="modalShip"
                     [formShip]="true"
@@ -143,6 +297,8 @@
                 >
                 
                 </app-orders-form>
+                
+
         </div> 
 
     </div>

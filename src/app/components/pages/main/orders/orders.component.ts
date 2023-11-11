@@ -2,12 +2,15 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { Observable, map } from 'rxjs';
+import { OrderHistoryLoaderComponent } from 'src/app/components/components/loader/main/order-history-loader/order-history-loader.component';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatOrderDetails, orderSortByDate } from 'src/app/utilities/response-utils';
+import { ProductsService } from 'src/app/services/products/products.service';
+import { formatOrderDetails, formatProducts, orderSortByDate } from 'src/app/utilities/response-utils';
 import { OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-details';
+import { Product } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-orders',
@@ -20,6 +23,8 @@ export class OrdersComponent {
   orders: Observable<OrderDetail[]>;
   userOrders!: Observable<OrderDetail[]>;
   userOrdersArr: OrderDetail[];
+  products!: Observable<Product[]>;
+  productsArr!: Product[];
   isLoading: boolean = true;
   doneLoading: boolean = false;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
@@ -32,23 +37,45 @@ export class OrdersComponent {
 
   searchResults: OrderDetail[] = [];
 
+  orderLoader = OrderHistoryLoaderComponent;
+
   //pagination
   currentPage: number = 1;
   itemsPerPage: number = 5;
 
   constructor(private orderService: OrderService,
-              private cartService: CartService) {}
+              private cartService: CartService,
+              private productService: ProductsService) {}
 
   ngOnInit(): void {
     this.orders = this.orderService.getOrderDetailByUser().pipe(map((response: any) => formatOrderDetails(response)));
+    this.products = this.productService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.userOrders = orderSortByDate(this.orders, 'descending');
     this.userOrders.subscribe((order: OrderDetail[]) => {
-      this.userOrdersArr = order;
-      this.isLoading = false;
-      this.doneLoading = true;
-      this.searchOrder();
+      this.products.subscribe((product: Product[]) => {
+        this.productsArr = product;
+        this.userOrdersArr = order;
+        this.isLoading = false;
+        this.doneLoading = true;
+        this.searchOrder();
+        console.log(this.productsArr);
+      })
     })
   }
+
+  /*
+  checkProductStock(product_id: string, variant_color: string, variant_size: string): boolean {
+      // match id
+      if(this.productsArr.filter(product => product.id === product_id).length > 0){
+        let matchProduct = this.productsArr.filter(product => product.id === product_id);
+        // match variant color and size
+        if((matchProduct[0].variants.filter(variant => variant.color_title === variant_color).length > 0) && (matchProduct[0].variants.filter(variant => variant.size === variant_size).length > 0)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  */
 
   calculateOrderPrice(order: OrderDetail): number {
     let total: number = 0
@@ -59,7 +86,7 @@ export class OrdersComponent {
   }
 
   buyProduct(item: OrderContent): void {
-
+    
   }
 
   addReview(item: OrderContent): void {

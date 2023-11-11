@@ -8,6 +8,8 @@ import { AdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { Router } from '@angular/router';
+import { TableComponent } from 'src/app/components/components/table/table.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
     selector: 'app-admin-categories',
@@ -18,9 +20,18 @@ import { Router } from '@angular/router';
 export class AdminCategoriesComponent {
 
     
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
+    @ViewChild('triggerFunction') childComponent: TableComponent;
     
-    size = "w-100"
+    showMinus: boolean
+    backdrop: string = 'true';
+    toastContent: string = "";
+    toastHeader: string = "";
+    toastTheme: string = "default";  
+
+    size = "w-100 me-2"
     selectedRowData: any;
+    selectedRowDataForDelete: any;
     categories!: Observable<AdminCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
@@ -51,26 +62,31 @@ export class AdminCategoriesComponent {
     refreshTableData(): void {
         this.refreshData$.next();
     }
-    
+
+    showMinusFunction(){
+        this.childComponent.removeAllSelected();
+    }
+
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
     }
+
+    onRowDataForDelete(rowData: any){
+        this.selectedRowDataForDelete = rowData;
+    }
     
-	showAddCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','category','add']);
-	}
-	
-    showEditCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','category','edit',this.selectedRowData.id]);
-	}
-	
-    showAddSubCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','subcategory','add']);
-	}
-	
-    showEditSubCategoryForm(): void{
-        this.router.navigate(['/admin/category-management','subcategory','edit',this.selectedRowData.id]);
-	}
+    SuccessToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
+    }
+    
+    WarningToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
+    }
+    
+    ErrorToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
+    }
+    
 
 
 

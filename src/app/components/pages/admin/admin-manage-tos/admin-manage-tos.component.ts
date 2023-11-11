@@ -2,7 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
 import { AboutUsTosSection } from 'src/assets/models/sitedetails';
@@ -14,15 +16,23 @@ import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 })
 export class AdminManageTosComponent {
 
+
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
+  
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;
-
+  rtfValue: string;
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild(ToastComponent) toast: ToastComponent;
-
+  @ViewChild('rte') childComponent: RichTextEditorComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
 
   modal: bootstrap.Modal;
@@ -38,7 +48,6 @@ export class AdminManageTosComponent {
 
   tosAddSectionForm = this.formBuilder.group({
     sectionHeader: ['', [Validators.required, Validators.pattern('^[a-zA-Z\d_ .!?]*$')]],
-    sectionContent: ['', [Validators.required]]
   });
 
   private refreshData$ = new Subject<void>();
@@ -57,7 +66,10 @@ export class AdminManageTosComponent {
   refreshTableData(): void {
     this.refreshData$.next();
   }
-
+  getRTFValue(value: any){
+      // console.log(value)
+      this.rtfValue = value
+  }
   closeModal()
   {
     this.confirmDeleteModal.nativeElement.click();
@@ -79,7 +91,7 @@ export class AdminManageTosComponent {
 
       let formData: any = new FormData();
       formData.append('title', this.tosAddSectionForm.get('sectionHeader')?.value);
-      formData.append('content', this.tosAddSectionForm.get('sectionContent')?.value);
+      formData.append('content', this.rtfValue);
 
       console.log(formData);
 
@@ -104,30 +116,22 @@ export class AdminManageTosComponent {
       this.showWarnToast('Missing required fields.', 'Please fill up the form completely.');
     }
   }
-
-  private showWarnToast(header: string, content: string)
-  {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('warn');
-    this.toast.show();
-  }
-
   private showSuccessToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('default');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'default', '', )
   }
 
   private showFailedToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('negative');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'negative', '', )
   }
+  
+  private showWarnToast(header: string, content: string)
+  {
+    this.toaster.showToast(header, content, 'warn', '', )
+  }
+
+
 
   public deleteToSSection()
   {

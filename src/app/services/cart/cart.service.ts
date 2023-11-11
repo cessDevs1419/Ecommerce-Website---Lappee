@@ -8,9 +8,45 @@ export class CartService {
 
   items: CartItem[] = [];
 
-  constructor() { }
+  constructor() { 
+    /*
+    this.items.push({
+      product: {
+        id: 'product1',
+        name: 'ONLV Red Shirt',
+        sub_category_id: 'subcat1',
+        description: 'A red shirt from One Love Clothing Co.',
+        images: ["https://picsum.photos/800"],
+        product_variants: [
+          {
+            variant_id: "var1",
+            product_id: 'product1',
+            color: 'd2d2d2',
+            color_title: 'Ash Gray',
+            size: 'XL',
+            stock: 99,
+            stock_limit: 10,
+            price: "650.00",
+            attributes: [
 
-  addToCart(product: Product, variant: string, variant_details: string, quantity: number, price: string, imgurl: string): void {
+            ]
+          },
+        ]
+      },
+      variant: 'Size: XL | Color: Ash Gray',
+      variant_details: [],
+      quantity: 2,
+      price: '650.00',
+      image_url: 'https://picsum.photos/800'
+    })
+    */
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+  addToCart(product: Product, variant: string, variant_details: Map<string, string>, quantity: number, price: string, imgurl: string[]): void {
     let duplicate = -1;
     let cartItem: CartItem = {
       product: product,
@@ -44,6 +80,10 @@ export class CartService {
       this.items[duplicate].quantity += quantity;
     }
     console.log(this.getItems);
+  }
+
+  removeItem(index: number){
+    this.items.splice(index, 1);
   }
 
   getItems(): CartItem[] {

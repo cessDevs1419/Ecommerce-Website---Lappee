@@ -7,12 +7,12 @@
                     [value]="selectedRowData?.user_id"
                     formControlName="user_id"
                 >
-                <p class="fs-5 fw-bold mb-1">Are you sure you want to ban this user?</p>
+                <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to ban this user?</p>
                 <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.fname}}</h1>
                 <div class="mb-3 text-start">
                     <label for="reason" class="form-label ">Reason:</label>
                     <textarea 
-                        class="form-control" 
+                        class="form-control bg-transparent {{inputColor}} {{borderColor}}" 
                         id="reason" 
                         rows="3"
                         formControlName="account_reason"
@@ -37,7 +37,7 @@
         <div  class="modal-body text-center pt-0 pb-0">
             <div class="modal-body text-center pt-0 pb-0">
                 <input type="hidden" [value]="selectedRowData?.user_id">
-                <p class="fs-5 fw-bold mb-1">Are you sure you want to unban this user?</p>
+                <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to unban this user?</p>
                 <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.fname}}</h1>
             </div>
             <div class="modal-footer border-0 justify-content-center">

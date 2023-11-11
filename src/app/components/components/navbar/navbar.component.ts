@@ -10,11 +10,14 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { CsrfService } from 'src/app/services/csrf/csrf.service';
-import { formatCategories, formatSiteLogo, formatSubcategories } from 'src/app/utilities/response-utils';
+import { findDeliveryInfo, formatCategories, formatDeliveryInfo, formatSiteLogo, formatSubcategories } from 'src/app/utilities/response-utils';
 import { User } from 'src/assets/models/user';
 import { LocationStrategy } from '@angular/common';
 import { SiteLogo } from 'src/assets/models/sitedetails';
 import { SiteDetailsService } from 'src/app/services/site-details/site-details.service';
+import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
+import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -37,9 +40,13 @@ export class NavbarComponent {
   targetElement!: HTMLElement;
   loginState$: Observable<boolean>;
   currentUser: Observable<User> = this.accountService.getLoggedUser();
+
+  infos!: Observable<DeliveryInfo[]> 
   isAdminDashboard: boolean = false;
 
   siteLogo: Observable<SiteLogo>;
+  isInfoRegistered: boolean;
+  setupDetailsResolved: boolean = false;
   
   // 3/23/2023 - use Renderer2 to handle clicks
   constructor(private CategoriesService: CategoriesService, 
@@ -51,7 +58,8 @@ export class NavbarComponent {
               private router: Router,
               private csrfService: CsrfService,
               private url: LocationStrategy,
-              private siteDetailsService: SiteDetailsService) {
+              private siteDetailsService: SiteDetailsService,
+              private deliveryInfoService: DeliveryinfoService) {
       this.renderer.listen('window','click', (event) => {
       let categoryClicked = false;
       
@@ -96,12 +104,54 @@ export class NavbarComponent {
     this.categories = categoryList.pipe(map((response: any) => formatCategories(response)));
     this.subcategories = categoryList.pipe(map((response: any) => formatSubcategories(response)));
     this.cartContents = this.cart.getItems(); 
-    this.accountService.checkLoggedIn().subscribe((status: boolean) => {console.log("Logged In: " + status)});
+    this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+      console.log("Logged In: " + status)
+      if(status){
+        this.checkUserInfo()
+      }
+    });
   }
 
   ngOnChanges(): void {
-    this.accountService.checkLoggedIn();
+    this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+      if(status){
+        this.checkUserInfo();
+      }
+    });
     console.log('ngOnchanges');
+  }
+
+  checkUserInfo(): void {
+    this.infos = this.deliveryInfoService.getDeliveryInfo().pipe(map((response: any) => formatDeliveryInfo(response)));
+    this.accountService.checkLoggedIn().subscribe({
+      next: (response: any) => {
+        if(response) {
+          this.accountService.getLoggedUser().subscribe({
+            next: (response: any) => {
+              findDeliveryInfo(response.user_id, this.infos).subscribe({
+                next: (match: boolean) => {
+                  if(match) {
+                    console.log('has matching address')
+                    this.isInfoRegistered = true;
+                    this.setupDetailsResolved = true;
+                  }
+                  else {
+                    console.log('no matching address')
+                    this.isInfoRegistered = false;
+                  }
+                },
+                error: (err: HttpErrorResponse) => {
+                  console.log(err)
+                }
+              })
+            },
+            error: (err: HttpErrorResponse) => {
+              console.log(err)
+            }
+          });
+        }
+      }
+    });
   }
 
   updateAdminDashboardFlag(): void {

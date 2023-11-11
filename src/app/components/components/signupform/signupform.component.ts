@@ -4,6 +4,7 @@ import { uppercaseValidator, numberValidator, lowercaseValidator, samePassValida
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { OutlineCircleSpinnerComponent } from '../loader/general/outline-circle-spinner/outline-circle-spinner/outline-circle-spinner.component';
 
 @Component({
   selector: 'app-signupform',
@@ -12,16 +13,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignupformComponent {
 
-  @Output() registerSuccess: EventEmitter<any> = new EventEmitter(); 
+  circleLoader = OutlineCircleSpinnerComponent;
+  @Output() registerSuccess: EventEmitter<string> = new EventEmitter(); 
   response!: Observable<any>;
+  isLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private accountsService: AccountsService) {}
 
   signUpForm = this.fb.group ({
-    signUpFirstName: ['', Validators.required],
-    signUpMiddleName: [''],
-    signUpLastName: ['', Validators.required],
-    signUpSuffix: [''],
+    // signUpFirstName: ['',],
+    // signUpMiddleName: [''],
+    // signUpLastName: ['',],
+    // signUpSuffix: [''],
     signUpEmail: ['', [Validators.required, Validators.email]],
     signUpPassword: ['', [Validators.required, Validators.minLength(7), uppercaseValidator(), numberValidator(), lowercaseValidator(), symbolValidator()]],
     signUpConfirmPassword: ['', [Validators.required]],
@@ -42,14 +45,15 @@ export class SignupformComponent {
   
 
     if(this.signUpForm.valid){
+      this.isLoading = true;
       // submit
       console.warn(this.signUpForm.value);
 
       let formData: any = new FormData();
-      formData.append('first_name', this.signUpForm.get('signUpFirstName')?.value);
-      formData.append('middle_name', this.signUpForm.get('signUpMiddleName')?.value);
-      formData.append('last_name', this.signUpForm.get('signUpLastName')?.value);
-      formData.append('suffix', this.signUpForm.get('signUpSuffix')?.value);
+      // formData.append('first_name', this.signUpForm.get('signUpFirstName')?.value);
+      // formData.append('middle_name', this.signUpForm.get('signUpMiddleName')?.value);
+      // formData.append('last_name', this.signUpForm.get('signUpLastName')?.value);
+      // formData.append('suffix', this.signUpForm.get('signUpSuffix')?.value);
       formData.append('email', this.signUpForm.get('signUpEmail')?.value);
       formData.append('password', this.signUpForm.get('signUpPassword')?.value);
       formData.append('password_confirmation', this.signUpForm.get('signUpConfirmPassword')?.value);
@@ -61,8 +65,9 @@ export class SignupformComponent {
     this.accountsService.postRegisterUser(formData).subscribe({
         next: (response: any) => { 
           console.log(response);
+          this.registerSuccess.emit(this.signUpEmail?.value!);
+          this.isLoading = false;
           this.signUpForm.reset();
-          this.registerSuccess.emit();
         },
         error: (error: HttpErrorResponse) => {
           return throwError(() => error)

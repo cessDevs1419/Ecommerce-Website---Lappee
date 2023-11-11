@@ -1,11 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { Product, ColorVariant } from 'src/assets/models/products';
+import { Product, ColorVariant, Variant } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj } from 'src/app/utilities/response-utils';
 import { Gallery, GalleryItem, GalleryRef, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -15,6 +15,8 @@ import { Review, ReviewItem } from 'src/assets/models/reviews';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/assets/models/user';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-products',
@@ -25,7 +27,7 @@ export class ProductsComponent {
   Number = Number;
   isFaved: boolean = false;
   productId!: string;
-  product!: Observable<Product[]>;
+  product!: Observable<Product>;
   imgArray: GalleryItem[] = [];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
@@ -33,6 +35,8 @@ export class ProductsComponent {
   selectedPrice!: number;
   hasVariant: boolean = true;
   selectedVariantId: string;
+  isVariantSelected: boolean = false;
+  isTouched: boolean = false;
   
   toastContent: string = "";
   toastHeader: string = "";
@@ -50,7 +54,8 @@ export class ProductsComponent {
 
   galleryRef: GalleryRef = this.gallery.ref('product-images');
 
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
+  @ViewChild("itemTemplate", {static: true}) itemTemplate: TemplateRef<any>;
 
   //pagination
   currentPage: number = 1;
@@ -68,7 +73,8 @@ export class ProductsComponent {
               private cdr: ChangeDetectorRef,
               private gallery: Gallery,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {}
+              private activatedRoute: ActivatedRoute,
+              public domSanitizer: DomSanitizer) {}
 
   colorCurrent = {
     name: '',
@@ -138,18 +144,18 @@ export class ProductsComponent {
     })
     
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
-    this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProducts(response)));
+    this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProductObj(response)));
 
     // get local array copy of product observable
-    this.product.subscribe((product: Product[]) => {
-      if(product.length > 0){
-        this.currentProduct = product[0];
-        this.selectedPrice = Number(this.currentProduct.product_variants[0].price);
+    this.product.subscribe((product: Product) => {
+      if(product){
+        this.currentProduct = product;
+        this.selectedPrice = Number(this.currentProduct.variants[0].price);
         
         // initialize gallerize
         this.galleryRef.reset();
-        product[0].images.forEach((url: string) => {
-          console.log(url);
+        product.variants.forEach((variant: Variant) => {
+          let url = variant.images[0];
           this.galleryRef.addImage({src: url, thumb: url});
         });
 
@@ -186,13 +192,13 @@ export class ProductsComponent {
 
         console.log('item found');
         
-        this.initVariants();
+        //this.initVariants();
       }
       else {
         console.log('no items found');
       }
 
-      if(this.currentProduct.product_variants.length > 0){
+      if(this.currentProduct.variants.length > 0){
         this.hasVariant = false
       }
       else {
@@ -203,13 +209,13 @@ export class ProductsComponent {
     });
   }
   
-
+/*
   initVariants(): void {
-    for(let variantColor of this.currentProduct.product_variants){
+    for(let variantColor of this.currentProduct.variants){
       let existingColor = this.colorVariants.find((cv) => cv.color === variantColor.color);
       if(!existingColor){
         let variantSizes: string[] = [];
-        for(let variantSize of this.currentProduct.product_variants){
+        for(let variantSize of this.currentProduct.variants){
           if(variantSize.color === variantColor.color){
             variantSizes.push(variantSize.size)
           }
@@ -225,9 +231,10 @@ export class ProductsComponent {
     }
     console.log(this.colorVariants);
   }
+*/
 
   recheckVariant(): void {
-    if(this.currentProduct.product_variants.length > 0){
+    if(this.currentProduct.variants.length > 0){
       this.hasVariant = false
     }
     else {
@@ -248,9 +255,10 @@ export class ProductsComponent {
     console.log(this.productColor?.value);
   }
 
+  /*
   changeSize(size: string): void {
     this.sizeCurrent = size;
-    let selectedVariant = this.currentProduct.product_variants.find((cv) => cv.color_title === this.colorCurrent.name && cv.size === this.sizeCurrent);
+    let selectedVariant = this.currentProduct.variants.find((cv) => cv.color_title === this.colorCurrent.name && cv.size === this.sizeCurrent);
     console.log(selectedVariant ? 'variant found' : 'variant not found');
     this.selectedPrice = Number(selectedVariant?.price);
     this.productSize?.setValue(size);
@@ -258,23 +266,63 @@ export class ProductsComponent {
     this.maxStock = selectedVariant?.stock ? selectedVariant.stock : 0;
     console.log(this.productSize?.value);
   }
+  */
 
+  addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): boolean {
+    
+    console.log('trigger')
+    if(!params.variant) {
+      console.log('no variant selected')
+      this.isVariantSelected = false;
+      this.isTouched = true;
+      return false;
+    }
+
+    if(params.variant.stock < 1){
+      this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative', '', '', false);
+      return false
+    }
+
+    else {
+      let details: string[] = [];
+      console.log(params.variant_attributes);
+      params.variant_attributes.forEach((key, value) => {
+        details.push(value + ": " + key);
+      })
+      this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
+  
+      console.warn('added to cart');
+      console.log(this.cart.items);
+  
+      this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default', '', '', false);
+      return true;
+    }
+  }
+
+  orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
+    console.log(this.addToCartAttr(params));
+    if(this.addToCartAttr(params)){
+      this.router.navigate(['/cart']);
+    }
+  }
+
+  /*
   addToCart(): boolean {
     let variantId = "";
-    let details = "";
+    let details = [];
     if(!this.hasVariant){
       //add to cart with form checks for variant validation
       if(this.productToCart.valid){
         // get variant id of selected color and size
-        for(let variant of this.currentProduct.product_variants){
+        for(let variant of this.currentProduct.variants){
           if(variant.color == this.colorCurrent.hex && variant.size == this.sizeCurrent){
             variantId = variant.variant_id;
           }
         }
         
-        details = "Color: " + this.colorCurrent.name + " | Size: " + this.sizeCurrent;
+        details = [this.colorCurrent.name, this.sizeCurrent]
         console.log(this.productToCart.value);
-        this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images[0]);
+        //this.cart.addToCart(this.currentProduct, this.selectedVariantId, details, this.productToCart.get('quantity')?.value, this.selectedPrice.toString(), this.currentProduct.images);
         console.warn('added to cart');
 
         this.toastHeader = "Successful!";
@@ -299,8 +347,9 @@ export class ProductsComponent {
         console.log(this.productToCart.value);
         this.cart.addToCart(this.currentProduct, "", "", 1, this.currentProduct.price.toString());
         console.warn('added to cart');
-    } */
+    }
   }
+  
 
   orderNow(): void {
     if(this.productToCart.valid){
@@ -319,6 +368,7 @@ export class ProductsComponent {
 
     console.log(this.productToCart.value);
   }
+  */
 
   matchReviewFromUser(arr: Review[]): number {
     let matchIndex = -1;
@@ -331,7 +381,8 @@ export class ProductsComponent {
 
     return matchIndex;
   }
-
+  
+  
   paginateReview(): Review[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.reviewListMatched.slice(startIndex, startIndex + this.itemsPerPage);
@@ -352,10 +403,8 @@ export class ProductsComponent {
       console.log(this.postComment.value);
       this.reviewService.postReview(formData).subscribe({
         next: (response: any) => {
-          this.toastHeader = "Successful!";
-          this.toastContent = "Your review has been added.";
-          this.toast.switchTheme('default');
-          this.toast.show();
+
+          this.toaster.showToast("Successful!", "Your review has been submitted.",'default','', '', false)
 
           let reviewData = this.reviewService.getReviews(this.currentProduct.id);
           reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
@@ -383,20 +432,16 @@ export class ProductsComponent {
 
     this.reviewService.deleteReview(formData).subscribe({
       next: (response: any) => {
-        this.toastHeader = "Successful!";
-        this.toastContent = "Your review has been deleted.";
-        this.toast.switchTheme('default');
-        this.toast.show();
+
+        this.toaster.showToast("Successful!", "Your review has been deleted.",'default','', '', false)
 
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
         reviewData.subscribe((response: any) => this.reviews = formatReviews(response))
         this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
       },
       error: (err: HttpErrorResponse) => {
-        this.toastHeader = "Error!";
-        this.toastContent = "Please try again in a few moments.";
-        this.toast.switchTheme('negative');
-        this.toast.show();
+
+        this.toaster.showToast("Error!", "Please try again in a few moments.", 'negative','', '', false)
       }
     })
   }

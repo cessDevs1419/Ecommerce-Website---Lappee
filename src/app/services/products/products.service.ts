@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETProductDetails, GETProducts, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETProductDetails, GETProducts, GETProductsByCategory, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -11,6 +11,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class ProductsService {
 
 	private imageList: FormArray = this.formBuilder.array([]);
+	
   private newData: Observable<Product[]>;
   private productsSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(of([]));
   constructor(private http: HttpClient,
@@ -42,13 +43,25 @@ export class ProductsService {
     this.imageList.removeAt(index)
   }
   
+  removeAllImg(){
+    this.imageList.clear()
+  }
+  
   getProducts(): Observable<any>{
+    console.log(this.http.get<ProductList>(GETProducts))
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
 
   getProductDetails(id: string): Observable<any> {
+    console.log(this.http.get(GETProductDetails + id))
     return this.http.get(GETProductDetails + id);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
+
+  public getProductByCategory(id: string): Observable<any> {
+    console.log(this.http.get(GETProductsByCategory + id))
+    return this.http.get(GETProductsByCategory + id)
   }
   
   getNewProducts(): Observable<any> {
@@ -75,8 +88,22 @@ export class ProductsService {
   } 
   
 
-  deleteProduct(prodId: number): Observable<any> {
-    return this.http.delete(DELETEProductsAdmin, {
+  // deleteProduct(prodId: number): Observable<any> {
+  //   return this.http.delete(DELETEProductsAdmin, {
+  //     headers: new HttpHeaders({
+  //       'Accept': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Access-Control-Allow-Credentials': 'true'
+  //     }),
+  //     responseType: 'json',
+  //     body: {
+  //         id: prodId
+  //       }
+  //   })
+  // }
+  
+  deleteProduct(prodIds: number[]): Observable<any> {
+    return this.http.request('delete', DELETEProductsAdmin, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -84,10 +111,9 @@ export class ProductsService {
       }),
       responseType: 'json',
       body: {
-          id: prodId
-        }
-    })
+        products: prodIds
+      }
+    });
   }
-  
 
 }

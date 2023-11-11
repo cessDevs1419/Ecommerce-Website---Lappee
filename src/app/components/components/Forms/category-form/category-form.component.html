@@ -1,262 +1,141 @@
 <!--ADD CATEGORY FORM-->    
-<form *ngIf="formAddCategory" [formGroup]="addCategoryForm" (ngSubmit)="onCategoryAddSubmit()">
-
-    
-    <div class="container d-flex align-items-center h-100">
-        <div class="col-lg-6 m-auto container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
+<div class="container m-auto " *ngIf="formAddCategory">
+        <form  [formGroup]="addCategoryForm" >
+            <div class=" w-100 px-1">
+                <hr class="divider border-white mt-0 mb-4">
+                <input formControlName="category" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3" placeholder="Enter Category Name">
             </div>
-            <hr class="divider mb-4">
-            
-            <div class="modal-body text-center pt-0 pb-0 mb-4 ">
-                <div class="m-auto col-sm-8 mb-3">
-                    <label for="categoryName" class="form-label">Category Name</label>
-                    <input 
-                        class="form-control" 
-                        type="text" 
-                        id="categoryName" 
-                        formControlName="category"  
-                        required
-                    >
-                </div>
-            </div>
-            
-            <div class="modal-footer border-0 justify-content-center mb-4">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
-                >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-primary-light text-white mx-1"
-                >
-                CONFIRM</button>
-            </div>
-        </div>
-    </div>
-    
-</form>
-
-<!--EDIT CATEGORY FORM-->
-<form *ngIf="formEditCategory" [formGroup]="editCategoryForm"  (ngSubmit)="onCategoryEditSubmit()">
-    <div class="container d-flex align-items-center h-100">
-        <div class="col-lg-6 m-auto container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
-            </div>
-            <hr class="divider mb-4">
-            <div class="modal-body text-center pt-0 pb-0 mb-3 ">
-                <div class="m-auto col-sm-8 mb-3">
-                    <label for="categoryName" class="form-label">Category Name</label>
-                    <input 
-                        type="hidden" 
-                        [value]="selectedRowData"
+        </form>
         
-                    >
-                    <input 
-                        class="form-control" 
-                        type="text" 
-                        id="categoryName" 
-                        formControlName="category" 
-                        [value]="editCategories"
-                        required
-                    >
-        
-                </div>
-            </div>
-            
-            <div class="modal-footer border-0 justify-content-center">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
-                >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-primary-light text-white mx-1 "
-                    [ngClass]="{'disabled': !editCategoryForm.get('category')?.value}"
+<!-- Attribute List   -->
+        <div class=" w-100 px-1 pt-0">
+            <p class="text-start mt-3 mb-0 fw-bold  {{formTextColor}}">Attributes</p>
+            <div class="row pt-0">
+                <div class="col-lg-4 pt-3">
+                    <!-- <form [formGroup]="addAttributeForm">
+                        
+                        <div class="input-group mb-3">
+                            <input type="text" formControlName="name" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control   border-end-0" placeholder="Add Attribute" >
+                            <button 
+                                class="rounded-corner bg-transparent input-group-text border-start-0  border border-dark-subtle" 
+                                id="AddVariants"
+                                (click)="onAttributeAddSubmit()"
+                                >
+                                <i class="bi bi-plus-lg {{formTextColor}}"></i>
+                            </button>
+                        </div>
+                    </form> -->
+
                     
-                >CONFIRM</button>
-            </div>
-        </div>
-    </div>
-</form>
+                    <div  class="attribute-list-container overflow-hidden border border-dark-subtle rounded-3">
+                        
+                        <div class="input-group mb-3">
+                            <input type="text" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control border-start-0 border-top-0 border-end-0 py-3 px-3" placeholder="Search..." [(ngModel)]="searchString">
+                            <button class="rounded-corner bg-transparent input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                <i class="bi bi-search {{formTextColor}}"></i>
+                            </button>
+                        </div>
+                        <!-- ATTRIBUTE LIST -->
+                        <form [formGroup]="selectedAttributeForm">
+                            <ul class="attribute-list overflow-y-auto list-unstyled px-4  " >
+                                <li class="text-decoration-none mb-2 d-flex" *ngFor="let item of attributes | async | searchFilter: searchString; let i = index">
+                                    <label >
+                                        <div class="input-group d-flex align-items-center">
+                                            <input class="d-none form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
+                                                type="checkbox" 
+                                                [checked]="isChecked(item)"
+                                                (change)="onCheckboxChange(item)"
+                                            />
+                                            <p class="mx-2 m-auto cursor-pointer {{formTextColor}}">{{ item.name }}</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
 
-<!--ADD SUB CATEGORY FORM-->
-<form *ngIf="formAddSubCategory" [formGroup]="addSubCategoryForm"  (ngSubmit)="onSubCategoryAddSubmit()">
-    <div class="container d-flex align-items-center h-100">
-        <div class="col-lg-6 m-auto container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
-            </div>
-            <hr class="divider mb-4">
-            <div class="modal-body text-center pt-0 pb-0 mb-3">
-                <div class="m-auto col-sm-8 mb-3">
-                    <label for="categoryName" class="form-label">Select Main Category</label>
-                    <select 
-                        class="form-select"  
-                        id="editproductCurrency" 
-                        name="editproductCurrency" 
-        
-                        formControlName="main_category"
-                        required
-                    >
-                        <option *ngFor="let category of categories | async" [value]="category.id">{{ category.name }}</option>
-                    </select>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center m-auto justify-content-center">
-                    <label class="form-label mx-2" >Sub Category Name</label>
-                    <button class="btn mb-3 border mx-2" type="button" (click)="addSubCategory()">+</button>
-                </div>
-                
-                <div class="m-auto col-sm-8" formArrayName="sub_categories">
-                    <div class="input-group mb-3" *ngFor="let subCategoryControl of subCategories.controls; let i = index">
-                        <input class="form-control" type="text" [id]="'subCategoryName' + i" [formControlName]="i" [value]="subCategoryControl.value" />
-                        <span class="input-group-text p-0" id="basic-addon2">
-                            <button class="btn m-0 w-100" type="button" (click)="removeSubCategory(i)">X</button>
-                        </span>
+                <div class="col-lg-8 ps-0 pt-3 position-relative">
+                    <p class="text-start top-0 position-absolute ms-3 mt-1 px-1 fw-bold {{formTheme}} {{formTextColor}}">Selected Attributes</p>
+                    <div class="selected-attribute-list p-0 border border-dark-subtle rounded-3">
+                        <ul class="d-flex p-0 flex-wrap pt-2">
+                            <li class="mx-2 mt-2" *ngFor="let item of checkedItems">
+                                <div class="item-list h-auto border rounded-4 p-1 px-2 d-flex justify-content-between align-items-center">
+                                    <label class="{{formTextColor}} me-2">{{item.name}}</label>
+                                    <button class="btn border-0 bg-none p-0" (click)="removeAttribute(item)">
+                                        <i class="{{formTextColor}} bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            
-            <div class="modal-footer border-0 justify-content-center">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
-                >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary bg-light-primary text-white mx-1"
-                >
-                CONFIRM</button>
-            </div>
         </div>
-    </div>
-</form>
 
-
-<!--EDIT SUB CATEGORY FORM-->
-<form *ngIf="formEditSubCategory" [formGroup]="editSubCategoryForm"  (ngSubmit)="onSubCategoryEditSubmit()">
-    <div class="container d-flex align-items-center h-100">
-        <div class="col-lg-6 m-auto container-shadow bg-white p-4">
-            <div class="form-title text-start mb-2">
-                <h1 class="modal-title fs-4 fw-bolder mb-0" >{{formTitle}}</h1>
-                <div class="modal-sub-title text-dark-emphasis fs-6 mt-0">{{formsubTitle}}</div>
-            </div>
-            <hr class="divider mb-4">
-            <div class="modal-body text-center pt-0 pb-0 mb-3">
-                <div class="m-auto col-sm-8 mb-3">
-                    <label for="categoryName" class="form-label">Sub Category Name</label>
-                    <input 
-                        type="hidden" 
-                        [value]="selectedRowData?.id"
-        
-                    >
-                    <input 
-                        class="form-control" 
-                        type="text" 
-                        id="subcategoryName" 
-                        formControlName="sub_category" 
-                        [value]="selectedRowData?.name"
-                        required
-                    >
-        
-                </div>
-            </div>
-            
-            <div class="modal-footer border-0 justify-content-center">
-                <button 
-                    *ngIf="cancel"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitcancel()"
+        <div class="modal-footer mt-2 mb-2 p-0 border-0" >
+            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary rounded-3 glow-primary" 
+                (click)="onCategoryAddSubmit()"
                 >
-                CANCEL</button>
-                
-                <button 
-                    *ngIf="done"
-                    type="button" 
-                    class="btn btn-muted mx-1" 
-                    (click)="hitdone()"
-                >
-                DONE</button>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-primary-light text-white mx-1"
-                    [ngClass]="{'disabled': !editSubCategoryForm.get('sub_category')?.value}"
-                    
-                >CONFIRM</button>
-            </div>
-        </div>
-    </div>
-</form>
+                Confirm
+            </button>
+        </div> 
+</div> 
 
+<!--EDIT CATEGORY FORM-->
+<form *ngIf="formEditCategory" [formGroup]="editCategoryForm" (ngSubmit)="onCategoryEditSubmit()" >
+    <div class="container">
+        <div class=" w-100 px-1">
+            <input 
+                formControlName="category" 
+                type="text" 
+                class="form-control form-control-lg text-white bg-transparent tex border rounded-3" 
+                placeholder="Enter Category Name"
+                [value]="selectedRowData?.name"
+            >
+        </div> 
+        <div class="modal-footer mt-2 mb-2 p-0 border-0" >
+            <button 
+                type="button" 
+                data-bs-dismiss="modal"
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Cancel
+            </button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary rounded-3" 
+            >
+                Confirm
+            </button>
+        </div> 
+    </div> 
+</form>
 
 <!--DELETE CATEGORY FORM-->
-<form *ngIf="formDeleteCategory" [formGroup]="deleteCategoryForm"  (ngSubmit)="onCategoryDeleteSubmit()">
+<form *ngIf="formDeleteCategory"  (ngSubmit)="onCategoryDeleteSubmit()">
     <div  class="modal-body text-center pt-0 pb-0">
-        <input 
-            type="hidden" 
-            [value]="selectedRowData?.id"
-            formControlName="main_category_id"
-        >
-        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Category?</p>
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to delete this?</p>
         <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
     </div>
 </form>
 
-<!--DELETE SUB CATEGORY FORM-->
-<form *ngIf="formDeleteSubCategory" [formGroup]="deleteSubCategoryForm"  (ngSubmit)="onSubCategoryDeleteSubmit()">
+<form *ngIf="formMultipleDeleteCategory" (ngSubmit)="onCategoryDeleteMultipleSubmit()">
     <div  class="modal-body text-center pt-0 pb-0">
-        <input 
-            type="hidden" 
-            [value]="selectedRowData?.id"
-        >
-        <p class="fs-5 fw-bold mb-1">Are you sure to remove this Subcategory?</p>
-        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name}}</h1>
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to delete this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-muted" data-bs-dismiss="modal">CANCEL</button>
-        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confrim</button>
     </div>
 </form>
+
+

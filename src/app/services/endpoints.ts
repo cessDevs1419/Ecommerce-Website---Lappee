@@ -12,20 +12,29 @@ export const DELETESubcategories: string = api + "api/admin/category/sub/delete"
 
 //Category Endpoints
 export const GETCategories: string = api + "api/client/category/";
-export const GETAdminCategories: string = api + "api/admin/category/main";
-export const POSTCategories: string = api + "api/admin/category/main/store";
-export const PATCHCategories: string = api + "api/admin/category/main/edit";
-export const DELETECategories: string = api + "api/admin/category/main/delete";
+export const GETAdminCategories: string = api + "api/admin/category";
+export const GETAdminCategoriesAttribute: string = api + "api/admin/category/attributes/";
+export const POSTCategories: string = api + "api/admin/category/store";
+export const PATCHCategories: string = api + "api/admin/category/edit";
+export const DELETECategories: string = api + "api/admin/category/delete";
 
 // Product Client Endpoints
 export const GETProducts: string = api + "api/client/products";
 export const GETProductDetails: string = api + "api/client/products/details/"
+export const GETProductsByCategory: string = api + "api/client/products/category/"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";
 export const POSTProductsAdmin: string = api + "api/admin/products/store";
 export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
+
+//Attributes Admin Endpoints
+export const GETAttributesAdmin: string = api + "api/admin/attributes";
+export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
+export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
+export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/delete";
+export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/";
 
 //Variant Admin Endpoints
 export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";
@@ -54,18 +63,27 @@ export const GETDeliveryInfo: string = api + "api/client/user-info/delivery-info
 export const POSTDeliveryInfo: string = api + "api/client/user-info/delivery-info/store";
 export const PATCHDeliveryInfo: string = api + "api/client/user-info/delivery-info/edit";
 
+//Email Endpoints
+export const GETVerifyEmail: string = api + "api/client/user-info/verify-email"
+
 //Order Endpoints
 //Admin
-export const GETOrder: string = api + "api/admin/products/orders";
-export const GETAdminOrderDetail: string = api + "api/admin/products/orders/details?order_id=";
-export const PATCHPackStatus: string = api + "api/admin/products/orders/pack"
-export const PATCHShipStatus: string = api + "api/admin/products/orders/ship"
-export const PATCHDeliverStatus: string = api + "api/admin/products/orders/deliver"
+export const GETOrder: string = api + "api/admin/orders";
+export const GETAdminOrderDetail: string = api + "api/admin/orders/details?order_id=";
+export const PATCHPackStatus: string = api + "api/admin/orders/mark/to-pack"
+export const PATCHToShipStatus: string = api + "api/admin/orders/mark/to-ship"
+export const PATCHShipStatus: string = api + "api/admin/orders/mark/shipping"
+export const PATCHDeliverStatus: string = api + "api/admin/orders/mark/deliver"
 
 //Client
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";
 export const GETOrderDetailByUser: string = api + "api/client/orders/user";
 export const POSTOrder: string = api + "api/client/orders/store";
+
+//Notifications 
+export const GETNotifications: string = api + "api/admin/notif";
+export const PATCHNotifications: string = api + "api/admin/notif/mark";
+export const PATCHMarkAllReadNotifications: string = api + "api/admin/notif/markAll";
 
 //Inquiry Endpoints
 export const GETInquiry: string = api + "api/admin/inquiry";

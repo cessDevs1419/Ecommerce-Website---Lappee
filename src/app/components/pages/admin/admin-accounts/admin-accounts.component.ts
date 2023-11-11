@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { UsersService } from 'src/app/services/users/users.service';
 
 import { formatBannedUser, formatUser } from 'src/app/utilities/response-utils';
@@ -12,7 +14,14 @@ import { BannedUser, User } from 'src/assets/models/user';
     styleUrls: ['./admin-accounts.component.css']
 })
 export class AdminAccountsComponent implements OnInit {
-
+    @ViewChild(ToastComponent) toast: ToastComponent;
+    @ViewChild(ToasterComponent) toaster: ToasterComponent;
+    
+    backdrop: string = 'true';
+    toastContent: string = "";
+    toastHeader: string = "";
+    toastTheme: string = "default";  
+    
     users!: Observable<User[]>;
     banned_users!: Observable<BannedUser[]>;
     bannedStatus: { [userId: string]: boolean } = {}; 
@@ -82,5 +91,17 @@ export class AdminAccountsComponent implements OnInit {
         this.modalUnBanAccounts = this.bannedStatus[this.selectedRowData.user_id];
     }
 
+    SuccessToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'default', '', )
+    }
+    
+    WarningToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'warn', '', )
+    }
+    
+    ErrorToast(value: any): void {
+        this.toaster.showToast(value.head, value.sub, 'negative', '', )
+    }
+    
 
 }

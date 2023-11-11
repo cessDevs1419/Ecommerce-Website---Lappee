@@ -1,5 +1,5 @@
-import { AdminCategory, AdminCategoryList, Category, CategoryList, Subcategory } from "src/assets/models/categories";
-import { Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
+import { AdminProduct, AdminProductList, CategoryProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -10,6 +10,9 @@ import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderCon
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
+import { AttributeList, Attributes } from "src/assets/models/attributes";
+import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
+import { parse } from 'date-fns';
 
 // Formatting
 
@@ -41,39 +44,126 @@ export function formatAdminCategories(response: AdminCategoryList): AdminCategor
   }))
 }
 
+// returns an AdminCategory Attribute array from an Admin-side Subcategory List
+export function formatAdminCategoriesAttribute(response: NewAdminCategoryList): NewAdminCategory {
+  return {
+    category_id: response.data.category_id,
+    name: response.data.name,
+    attributes: response.data.attributes
+  }
+}
+
+
 // returns a Category array from a CategoryList
 export function formatCategories(response: CategoryList) : Category[] {
     return response.data.map((data: Category) => ({
       id: data.id,
       name: data.name,
-      sub_categories: data.sub_categories
+      sub_categories: data.sub_categories,
+      images: data.images
     }));
 }
+
+
 
 // returns a Product array from a ProductList
 export function formatProducts(response: ProductList): Product[] {
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
-    sub_category_id: data.sub_category_id,
     description: data.description,
-    images: data.images,
-    product_variants: data.product_variants
+    category: data.category,
+    variants: data.variants,
   }));
 }
 
-// returns Variant array from a ProductList
-export function formatProductVariants(response: ProductList): Variant[] {
-  let variantList = response.data.flatMap((product: Product) => product.product_variants);
+export function formatAdminProducts(response: AdminProductList): AdminProduct[] {
+  return response.data.map((data: AdminProduct) => ({
+    product_id: data.product_id,
+    name: data.name,
+    price: data.price,
+    preview_image: data.preview_image
+  }));
+}
+
+
+// returns a Product object
+export function formatProductObj(response: any): Product {
+  let data = response.data
+  return {
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    variants: data.variants,
+  };
+}
+
+export function formatCategoryProduct(response: any): CategoryProduct[] {
+  return response.data.map((data: CategoryProduct) => ({
+    product_id: data.product_id,
+    name: data.name,
+    price: data.price,
+    preview_image: data.preview_image
+  }))
+}
+
+
+// returns Attributes array from a ProductList
+export function formatAttributes(response: AttributeList): Attributes[] {
+  return response.data.map((data: Attributes) => ({
+    id: data.id,
+    name: data.name,
+  }));
+}
+
+// returns a Notifications Object
+
+export function formatNotificationsResponse(response: AdminNotificationList): AdminNotification[] {
+  const sortedData = response.data.sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime(); 
+  });
+  
+  return sortedData.map((data: AdminNotification) => ({
+    id: data.id,
+    type: data.type,
+    content: data.content,
+    user_id: data.user_id,
+    is_read: data.is_read,
+    read_on: formatDate(data.read_on, 'medium', 'en_PH'),
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
+  }));
+}
+
+// returns Variant array from a ProductListparseFormattedDate
+/* export function formatProductVariants(response: ProductList): Variant[] {
+  let variantList = response.data.flatMap((product: Product) => product.variants);
   return variantList.map((variant: Variant) => ({
     variant_id: variant.variant_id,
+    variant_name: variant.variant_name,
     product_id: variant.product_id,
     color: variant.color,
     color_title: variant.color_title,
     size: variant.size,
     stock: variant.stock,
     stock_limit: variant.stock_limit,
-    price: variant.price
+    price: variant.price,
+    attributes: variant.attributes,
+    variant_images: variant.variant_images
+  }));
+} */
+
+export function formatProductVariants(response: ProductList): Variant[] {
+  let variantList = response.data.flatMap((product: Product) => product.variants);
+  return variantList.map((variant: Variant) => ({
+    variant_id: variant.variant_id,
+    variant_name: variant.variant_name,
+    stock: variant.stock,
+    price: variant.price,
+    attributes: variant.attributes,
+    product_id: variant.product_id,
+    images: variant.images
   }));
 }
 
@@ -162,7 +252,8 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     address_line_2: data.address_line_2,
     city: data.city,
     province: data.province,
-    zip_code: data.zip_code
+    zip_code: data.zip_code,
+    status_name: data.status_name,
   }))
 }
 
@@ -188,9 +279,10 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
 }
 
 export function formatOrderDetails(response: OrderList): OrderDetail[] {
-  return response.data.map((data: OrderDetail) => ({
+  console.log(response);
+  return response.data.details.map((data: OrderDetail) => ({
     order_id: data.order_id,
-    ordered_on: formatDate(data.ordered_on, 'medium', 'en_PH'),
+    ordered_on: data.ordered_on,
     order_contents: data.order_contents
   }))
 }
@@ -250,6 +342,16 @@ export function formatSiteLogo(response: SiteLogoList): SiteLogo {
   }
 }
 
+export function formatProductsAndAttributes(response: ProductList): Product[] {
+  return response.data.map((data: Product) => ({
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    variants: data.variants,
+    category: data.category,
+  }))
+}
+
 // Filtering
 export function filterSubcategories(subcategoryID: string,input: Observable<Subcategory[]>): Observable<Subcategory[]> {
   return input.pipe(map((subs: Subcategory[]) => {
@@ -258,9 +360,16 @@ export function filterSubcategories(subcategoryID: string,input: Observable<Subc
 }
 
 // returns all products with specified subcategory ID
-export function filterProductsBySubcategory(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+/* export function filterProductsBySubcategory(subcategoryID: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
   return productObservable.pipe(map((prods: Product[]) => {
     return prods.filter((product: Product) => product.sub_category_id === subcategoryID);
+  }));
+} */
+
+// return all products with specified category
+export function filterProductsBySubcategory(category: string, productObservable: Observable<Product[]> ): Observable<Product[]> {
+  return productObservable.pipe(map((prods: Product[]) => {
+    return prods.filter((product: Product) => product.category === category);
   }));
 }
 
@@ -286,14 +395,14 @@ export function findDeliveryInfo(userID: string, DeliveryInfoObservable: Observa
 
 /* Sorting Functions */
 
-export function productSortByName(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+export function productSortByName(productObservable: Observable<CategoryProduct[]>, mode: string): Observable<CategoryProduct[]> {
   if (mode == "normal"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => a.name.localeCompare(b.name));
     }));
   }
   if (mode == "inverse"){
-    return productObservable.pipe(map((prods: Product[]) => {
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
       return prods.sort((a: any, b: any) => b.name.localeCompare(a.name));
     }));
   }
@@ -301,15 +410,15 @@ export function productSortByName(productObservable: Observable<Product[]>, mode
   return productObservable;
 }
 
-export function productSortByPrice(productObservable: Observable<Product[]>, mode: string): Observable<Product[]> {
+export function productSortByPrice(productObservable: Observable<CategoryProduct[]>, mode: string): Observable<CategoryProduct[]> {
   if (mode == "ascending"){
-    return productObservable.pipe(map((prods: Product[]) => {
-      return prods.sort((a: any, b: any) => a.product_variants[0].price - b.product_variants[0].price);
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
+      return prods.sort((a: any, b: any) => a.price - b.price);
     }));
   }
   if (mode == "descending"){
-    return productObservable.pipe(map((prods: Product[]) => {
-      return prods.sort((a: any, b: any) => b.product_variants[0].price - a.product_variants[0].price);
+    return productObservable.pipe(map((prods: CategoryProduct[]) => {
+      return prods.sort((a: any, b: any) => b.price - a.price);
     }));
   }
   
@@ -329,4 +438,9 @@ export function orderSortByDate(orders: Observable<OrderDetail[]>, mode: string)
   }
 
   return orders;
+}
+
+export function parseFormattedDate(formattedDate: string): Date {
+  const parsedDate = parse(formattedDate, 'yyyy-MM-dd HH:mm:ss', new Date());
+  return parsedDate;
 }

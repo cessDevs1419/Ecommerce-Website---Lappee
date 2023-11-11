@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { SearchService } from 'src/app/services/search/search.service';
-import { formatProducts } from 'src/app/utilities/response-utils';
-import { Product } from 'src/assets/models/products';
+import { formatCategoryProduct, formatProducts } from 'src/app/utilities/response-utils';
+import { CategoryProduct, Product } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-search',
@@ -22,7 +22,7 @@ export class SearchComponent {
 
   navsubscription: any;
   term: string;
-  results: Observable<Product[]>
+  results: Observable<CategoryProduct[]>
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => this.term = params['searchTerm']);
@@ -31,7 +31,7 @@ export class SearchComponent {
   }
 
   initResults(): void {
-    this.results = this.searchService.getSearchResults(this.term).pipe(map((response: any) => formatProducts(response)));
+    this.results = this.searchService.getSearchResults(this.term).pipe(map((response: any) => formatCategoryProduct(response)));
   }
 
   ngOnDestroy(): void {

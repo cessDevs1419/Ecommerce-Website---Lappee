@@ -1,7 +1,12 @@
 export interface OrderList {
     success: string,
     message: string,
-    data: OrderDetail[]
+    data: OrderListInfo
+}
+
+export interface OrderListInfo {
+    order_count: number,
+    details: OrderDetail[]
 }
 
 export interface OrderDetail {
@@ -12,11 +17,12 @@ export interface OrderDetail {
 
 export interface OrderContent {
     name: string,
-    size: string,
-    color_title: string,
+    variant_name: string,
     quantity: number,
     sub_price: string,
-    product_id: string
+    product_id: string,
+    images: string[],
+    is_reviewed: boolean
 }
 
 
@@ -42,7 +48,8 @@ export interface AdminOrder {
     address_line_2: string,
     city: string,
     province: string,
-    zip_code: number
+    zip_code: number,
+    status_name: string,
 }
 
 export interface AdminOrderDetailList {

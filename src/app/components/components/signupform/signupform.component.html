@@ -2,7 +2,7 @@
     
     <h2 class="text-center">Register</h2>
     <form [formGroup]="signUpForm" (submit)="onSubmit()">
-        <div class="mb-4">
+        <!-- <div class="mb-4">
             <label for="registerFirstName" class="form-label">First Name</label>
             <input type="text" class="form-control form-control-lg rounded-0" id="registerFirstName" formControlName="signUpFirstName"/>
             <div *ngIf="signUpFirstName?.invalid && (signUpFirstName?.dirty || signUpFirstName?.touched)"> 
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
             
 
         <div class="mb-4">
@@ -115,12 +115,13 @@
         </div>
         <hr class="mb-4 w-75 w-md-100 mx-auto">
         <div class="row mb-3 px-3">
-            <button type="submit" class="button-primary rounded-0 mb-3">REGISTER</button>
+            <button type="submit" class="button-primary rounded-0 mb-3">REGISTER <app-outline-circle-spinner class="ms-3" *ngIf="isLoading"></app-outline-circle-spinner></button>
+            <p class="m-0 text-center">Have an account? Log-in <a [routerLink]="['/login']">here</a>.</p> 
         </div>
-        <div *ngFor="let item of response | async">
+        <!-- <div *ngFor="let item of response | async">
             <p>{{item.success}}</p>
             <p>{{item.message}}</p>
             <p>{{item.data}}</p>
-        </div>
+        </div> -->
     </form>
 </div>

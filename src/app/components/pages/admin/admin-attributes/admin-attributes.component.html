@@ -1,0 +1,103 @@
+
+<div class="container-fluid position-relative m-auto h-auto text-center px-0 px-sm-3" >
+
+    <app-table
+        tableTitle="Attribute Management"
+        subTitle="Product Management"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
+        
+        [searchBar]="true"
+        [tableTools]="true"
+        [tableAction]="true"
+        [Btntools]="true"
+        
+        [addBtn]="true"
+        [editBtn]="true"
+        [showMinus]="false"
+        addbtnName="Add New"
+        addBtnclass="me-2"
+        [actionBtn]="true"
+        [showMultipleSelection]="true"
+        (rowDataSelected)="onRowDataSelected($event)"
+        (rowDataForDelete)="onRowDataForDelete($event)"
+        [tableHeader]="['ID','Name', 'Products']"
+        [tableRows]="['id', 'name', 'products']"
+        [tableData]="attributes"
+        #triggerFunction
+    ></app-table>
+    
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+    <!--MAIN-->
+
+    <app-modal
+        modalId="add"
+        modalTitle="Add Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        [modalHideCloseBtn]="true"
+        modalIcon="add"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+        
+        [modalAddAttribute]="true"
+        [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
+    
+    <app-modal
+        modalId="edit"
+        modalTitle="Edit Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="edit"
+        [modalEditAttribute]="true"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal>
+    
+    <app-modal
+        modalId="delete"
+        modalTitle="Delete Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="delete"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [modalDeleteAttribute]="true"
+        [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
+
+    ></app-modal>  
+    
+    <app-modal
+        modalId="deleteMultiple"
+        modalTitle="Delete Attributes"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="delete"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+        
+        [modalMultipleDeleteAttribute]="true"
+        (hideMinus)="showMinusFunction()"
+        [selectedRowData]="selectedRowData"
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal>  
+</div>

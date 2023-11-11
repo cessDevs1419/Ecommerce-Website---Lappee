@@ -20,8 +20,11 @@ export class AccountsFormComponent {
     @Input() selectedRowData: any;
     @Input() formBanAccount!: boolean;
     @Input() formUnBanAccount!: boolean;
+
+    textcolor: string = 'text-light-subtle'
+    inputColor: string = "text-white"
+    borderColor: string = "border-grey"
     
-    BanSuccessMessage = 'User: ';
     
     banAccountForm: FormGroup;
     unbanAccountForm: FormGroup;
@@ -58,10 +61,13 @@ export class AccountsFormComponent {
         formData.append('reason', this.banAccountForm.get('account_reason')?.value);
         
         this.userService.banUsers(formData).subscribe({
-            next: async (response: any) => { 
-                console.log(response)
+            next: async (response: any) => {
+                const banSuccess = {
+                    head: 'Ban Account',
+                    sub: response.message
+                }; 
+                this.BanSuccess.emit(banSuccess);
                 this.RefreshTable.emit();
-                this.BanSuccess.emit(this.BanSuccessMessage + this.selectedRowData.fname);
                 this.banAccountForm.reset();
 
             },
@@ -88,8 +94,12 @@ export class AccountsFormComponent {
         this.userService.unbanUsers(this.selectedRowData.user_id).subscribe({
             next: async (response: any) => { 
 
+                const banSuccess = {
+                    head: 'Ban Account',
+                    sub: response.message
+                }; 
+                this.BanSuccess.emit(banSuccess);
                 this.RefreshTable.emit();
-                this.BanSuccess.emit(this.BanSuccessMessage+this.selectedRowData.fname);
                 this.unbanAccountForm.reset();
                 
             },

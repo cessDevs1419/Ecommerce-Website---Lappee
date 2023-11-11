@@ -1,0 +1,18 @@
+::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+  }
+
+  .attr-btn{
+    max-width: 16px;
+    height: 24px;
+    width: 100%;
+  }

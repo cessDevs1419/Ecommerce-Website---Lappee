@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem, Order, Product, Variant } from 'src/assets/models/products';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
@@ -13,6 +13,7 @@ import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProduct
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 
 @Component({
   selector: 'app-cart',
@@ -23,8 +24,13 @@ export class CartComponent {
 
   Number = Number;
 
+  mode: string = "";
+
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
+  @ViewChild(ModalClientComponent) modal: ModalClientComponent;
+  @ViewChildren('itemCheckbox') itemChkBoxes: QueryList<any>;
+
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
@@ -55,6 +61,8 @@ export class CartComponent {
   
   orderPaymentProofError: boolean = false;
 
+  selectAllFlag: boolean = false;
+
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
     orderPaymentMethod: new FormControl('', Validators.required),
@@ -71,7 +79,8 @@ export class CartComponent {
               public accountService: AccountsService,
               private deliveryInfoService: DeliveryinfoService,
               private orderService: OrderService,
-              private productsService: ProductsService) {}
+              private productsService: ProductsService,
+              private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
@@ -80,7 +89,7 @@ export class CartComponent {
     products.subscribe({
       next: (response: any) => {
         this.products = response;
-        console.log(this.products);
+        console.log("Cart Fetch: ", this.products);
       },
       error: (err: HttpErrorResponse) => {
         console.log(err)
@@ -135,6 +144,11 @@ export class CartComponent {
     });
   }
 
+  selectAll() {
+    this.selectAllFlag = !this.selectAllFlag;
+    console.log(this.selectAllFlag);
+  }
+
   matchOrderListToCart(index: number): number {
     let matchindex =-1;
     let orderlistvariant = this.orderList[index].variant;
@@ -145,7 +159,7 @@ export class CartComponent {
         console.log("Found match: " + orderlistitem + " | " + item.product.id);
         let cartItemIndex = index;
 
-        item.product.product_variants.forEach((variant: Variant, index: number) => {
+        item.product.variants.forEach((variant: Variant, index: number) => {
           if(orderlistvariant === variant.variant_id){
             console.log("Found matching variant: " + orderlistvariant + " | " + variant.variant_id);
             matchindex = cartItemIndex;
@@ -161,7 +175,7 @@ export class CartComponent {
   matchIndexAndVariant(index: number): number {
     let matchIndex =-1;
     let variantId = this.cartContents[index].variant;
-    this.cartContents[index].product.product_variants.forEach((variant: any, index: number) => {
+    this.cartContents[index].product.variants.forEach((variant: any, index: number) => {
       if(variantId === variant.variant_id){
         matchIndex = index;
       }
@@ -172,7 +186,7 @@ export class CartComponent {
   matchCartItemAndVariant(sender: CartItem): number {
     let matchIndex = -1
     let variantId = sender.variant;
-    sender.product.product_variants.forEach((variant: any, index: number) => {
+    sender.product.variants.forEach((variant: any, index: number) => {
       if(variantId === variant.variant_id){
         matchIndex = index;
       }
@@ -185,12 +199,30 @@ export class CartComponent {
 
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
-      this.subtotal += Number(this.cartContents[index].product.product_variants[variantIndex].price) * this.cartContents[index].quantity;
+      this.subtotal += Number(this.cartContents[index].product.variants[variantIndex].price) * this.cartContents[index].quantity;
     }
     /* else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
     } */
     this.isItemSelected = true;
+  }
+
+  removeFromCart(item: CartItem): void {
+    this.mode = "confirm-dialog";
+    this.modal.confirmRemoveCartItem(item);
+  }
+
+  confirmRemoveCartItem(params: any) {
+    if(params.status){
+      let index = this.matchCartItemAndVariant(params.item);
+      console.log(index);
+      this.cart.removeItem(index);
+    }
+  }
+
+  editCartItem(item: CartItem): void {
+    this.mode = "edit-cart-item";
+    this.modal.editCartItem(item);
   }
 
   removeFromOrder(sender: CartItem): void {
@@ -204,7 +236,7 @@ export class CartComponent {
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
-        this.subtotal -= Number(this.orderList[i].product.product_variants[variantIndex].price) * this.orderList[i].quantity;
+        this.subtotal -= Number(this.orderList[i].product.variants[variantIndex].price) * this.orderList[i].quantity;
         console.log('Match found at index ' + i);
       }
     }
@@ -226,7 +258,7 @@ export class CartComponent {
     this.cartContents[Number(params[0])].quantity = Number(params[1]);
     let updatedSubtotal: number = 0;
     this.orderList.forEach(item => {
-      updatedSubtotal += Number(item.product.product_variants[variantIndex].price) * item.quantity;
+      updatedSubtotal += Number(item.product.variants[variantIndex].price) * item.quantity;
     })
 
     this.subtotal = updatedSubtotal;

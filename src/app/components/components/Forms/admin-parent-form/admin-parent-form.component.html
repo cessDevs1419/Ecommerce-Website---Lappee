@@ -3,15 +3,13 @@
 
 
 </div> -->
-<div class="parent-form-container">
-    <div class="position-relative w-100 mt-3">
-        <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-    </div>
-    
-    <div class="container p-0 ">
-                
+<div class="parent-form-container position-relative  overflow-visible">
+
+
+        <div class=" px-3 px-sm-4 form-container ">
+            <div class="">
             <!--categories-->
-                <app-category-form 
+                <!-- <app-category-form 
                     *ngIf="AddCategory"
                     formTitle="ADD CATEGORY"
                     formsubTitle="CATEGORY CONTROL"
@@ -32,10 +30,10 @@
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
+                ></app-category-form> -->
             
             <!--sub category -->
-                <app-category-form 
+                <!-- <app-category-form 
                     *ngIf="AddSubCategory"
                     formTitle="ADD SUB CATEGORY"
                     formsubTitle="CATEGORY CONTROL"
@@ -56,7 +54,7 @@
                     (CategoryWarn)="WarningToast($event)"
                     (CategoryError)="ErrorToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
+                ></app-category-form> -->
             
 
             
@@ -65,7 +63,7 @@
                 <app-product-form
                     *ngIf="AddProduct"
                     [formAddProduct]="true"
-                    (ProductSuccess)="postSuccessToast($event)"
+                    (ProductSuccess)="SuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
@@ -76,14 +74,14 @@
                     *ngIf="EditProduct"
                     [formEditProduct]="true"
                     [selectedRowData]="selectedRowData"
-                    (ProductSuccess)="patchSuccessToast($event)"
+                    (ProductSuccess)="SuccessToast($event)"
                     (ProductError)="ErrorToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                 >
                 </app-product-form>
 
-                <app-product-form
+                <!-- <app-product-form
                     *ngIf="AddVariant"
                     [formAddVariant]="true"
                     (ProductSuccess)="postSuccessToast($event)"
@@ -134,11 +132,46 @@
                     (ProductWarning)="WarningToast($event)"
                     (RefreshTable)="triggerRefreshTable()"
                 >
-                </app-product-form>
-    </div>
+                </app-product-form> -->
+            </div>
+        </div>
+
+    
+        <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
     
 </div>
 
+<app-modal
+    modalId="attributes"
+    modalTitle="Add Attribute"
+    [modalHideCloseBtn]="false"
+    [modalHideIcon]="true"
+    modalIcon="add"
+    modalClass="modal-md"
+    
+    [modalSelectAttribute]="true"
+    [selectedRowData]="selectedRowData"
+></app-modal>
+
+<app-modal
+    modalId="add"
+    modalTitle="Add Category"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="add"
+    
+    [modalAddCategory]="true"
+></app-modal> 
+
+<app-modal
+    modalId="removeVariants"
+    modalTitle="Delete Variant"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="delete"
+    
+    [modalDeleteVariant]="true"
+></app-modal> 
 
 
 

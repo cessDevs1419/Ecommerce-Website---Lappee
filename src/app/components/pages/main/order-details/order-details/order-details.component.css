@@ -1,0 +1,64 @@
+.order-item-img {
+    width: 7rem;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.progress-steps {
+    width: 25%;
+    list-style-type: none;
+    text-align: center;
+    position: relative;
+}
+
+.progress-steps:after {
+    width: 100%;
+    height: 2px;
+    content: '';
+    position: absolute;
+    background-color: var(--muted-gray);
+    top: 25px;
+    left: -50%;
+    z-index: 0;
+}
+
+.progress-steps:first-child:after {
+    content: none;
+}
+
+.steps-label {
+    text-transform: uppercase;
+    margin-top: .5rem;
+    color: #BBBBBB;
+}
+
+.steps-icon {
+    background-color: var(--muted-gray);
+    color: #fff;
+    padding: .5rem;
+    border-radius: 9999px;
+    width: 3rem;
+    height: 3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    align-self: center;
+    z-index: 2;
+}
+
+.active-step .steps-icon {
+    background-color: var(--primary)
+}
+
+.active-step .steps-label {
+    color: var(--primary)
+}
+
+.active-step:after {
+    background-color: var(--primary);
+}

@@ -12,10 +12,11 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
 
     return loginState$.pipe(
       switchMap((loginState: any) => {
-        if (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin')) {
+        console.log(route.url);
+        if (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin' || route.url[0].toString() === 'verify-email')) {
           // redirect users not logged in
           console.log("Please log-in.");
-          return of(router.parseUrl('/account'));
+          return of(router.parseUrl('/login'));
         }
 
         if(!loginState){
@@ -25,6 +26,10 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
 
         return accountService.getLoggedUser().pipe(
           map((user: User) => {
+            if(loginState && route.url[0].toString() === 'verify-email'){
+              return true;
+            }
+
             if(user.user_type === 100 && route.url.toString() === 'admin'){
               // redirect normal users from accessing admin
               console.log('You lack privileges to access this page.');
@@ -34,7 +39,7 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
               // let admin users access admin page
               return true;
             }
-            else if(loginState && route.url.toString() === 'account'){
+            else if(loginState && (route.url.toString() === 'login' || route.url.toString() === 'register')){
               // redirect logged-in users from account page
               return router.parseUrl('/home');
             }

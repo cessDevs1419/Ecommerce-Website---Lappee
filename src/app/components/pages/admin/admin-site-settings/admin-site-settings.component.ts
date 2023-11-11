@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-admin-site-settings',
@@ -17,7 +18,12 @@ import * as bootstrap from 'bootstrap';
   styleUrls: ['./admin-site-settings.component.css']
 })
 export class AdminSiteSettingsComponent {
-
+  
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
   size: string = 'w-100';
 
   // To know whether to show or hide add banner form.
@@ -45,8 +51,8 @@ export class AdminSiteSettingsComponent {
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
-  @ViewChild(ToastComponent) toast: ToastComponent;
 
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
 
   modal: bootstrap.Modal;
@@ -97,7 +103,7 @@ export class AdminSiteSettingsComponent {
 
   ngAfterViewInit()
   {
-    this.modal = new bootstrap.Modal(this.confirmDeleteModal.nativeElement);
+    //this.modal = new bootstrap.Modal(this.confirmDeleteModal.nativeElement);
   }
 
   closeModal()
@@ -108,7 +114,8 @@ export class AdminSiteSettingsComponent {
   refreshTableData(): void {
     this.refreshData$.next();
   }
-
+  
+  
   editSiteLogo()
   {
     if(this.imagePath != null) {
@@ -117,23 +124,14 @@ export class AdminSiteSettingsComponent {
 
       this.siteDetailsService.uploadSiteLogo(uploadFormData).subscribe({
         next: (response: any) => {
-          this.toastHeader = "Image upload success!";
-          this.toastContent = "Site logo has been updated.";
-          this.toast.switchTheme('default');
-          this.toast.show();
+          this.toaster.showToast("Image upload success!", "Site logo has been updated.", 'default', '', )
         },
         error: (error: HttpErrorResponse) => {
-          this.toastHeader = "Image upload failed!";
-          this.toastContent = "Site logo has not been updated.";
-          this.toast.switchTheme('negative');
-          this.toast.show();
+          this.toaster.showToast("Image upload failed!", "Site logo has not been updated.", 'negative', '', )
         }
       });
     } else {
-      this.toastHeader = "No Image Upload!";
-      this.toastContent = "Please select a logo before uploading.";
-      this.toast.switchTheme('warn');
-      this.toast.show();
+      this.toaster.showToast("No Image Upload!", "Please select a logo before uploading.", 'warn', '', )
     }
   }
 
@@ -152,25 +150,15 @@ export class AdminSiteSettingsComponent {
 
       this.siteDetailsService.editSiteTitle(formData).subscribe({
         next: (response: any) => {
-          this.toastHeader = "Updated site name!";
-          this.toastContent = "You have changed the site name.";
-          this.toast.switchTheme('default');
-          this.toast.show();
-
+          this.toaster.showToast("Updated site name!", "You have changed the site name.", 'default', '', )
           this.siteNameForm.reset();
         },
         error: (error: HttpErrorResponse) => {
-          this.toastHeader = "Can't change site name!";
-          this.toastContent = "Failed to update site name.";
-          this.toast.switchTheme('negative');
-          this.toast.show();
+          this.toaster.showToast("Can't change site name!", "Failed to update site name.", 'negative', '', )
         }
       });
     } else {
-      this.toastHeader = "Invalid Site Name!";
-      this.toastContent = "Please enter a valid site name.";
-      this.toast.switchTheme('warn');
-      this.toast.show();
+      this.toaster.showToast("Invalid Site Name!", "Please enter a valid site name.", 'warn', '', )
     }
   }
 
@@ -255,32 +243,17 @@ export class AdminSiteSettingsComponent {
 
       this.siteDetailsService.uploadBanner(formData).subscribe({
         next: (response: any) => {
-          this.toastHeader = "Successfully uploaded banner!";
-          this.toastContent = "You have added a banner.";
-          this.toast.switchTheme('default');
-          this.toast.show();
-
+          this.toaster.showToast("Successfully uploaded banner!", "You have added a banner.", 'default', '', )
           this.resetBannerForm();
-
           this.addBannerForm.reset();
-
-          console.log(response);
         },
         error: (error: HttpErrorResponse) => {
-          this.toastHeader = "Failed to upload banner!";
-          this.toastContent = "Cannot add banner.";
-          this.toast.switchTheme('negative');
-          this.toast.show();
-
-          console.log(error);
+          this.toaster.showToast("Failed to upload banner!", "Cannot add banner.", 'negative', '', )
         }
       });
 
     } else {
-      this.toastHeader = "Invalid Banner!";
-      this.toastContent = "Please enter a valid image and/or label.";
-      this.toast.switchTheme('warn');
-      this.toast.show();
+      this.toaster.showToast("Invalid Banner!", "Please enter a valid image and/or label.", 'warn', '', )
     }
   }
 
@@ -298,11 +271,7 @@ export class AdminSiteSettingsComponent {
     
     this.siteDetailsService.deleteBanner(formData).subscribe({
       next: (response: any) => {
-        this.toastHeader = "Successfully removed banner!";
-        this.toastContent = "You have deleted a banner.";
-        this.toast.switchTheme('default');
-        this.toast.show();
-
+        this.toaster.showToast("Successfully removed banner!", "You have deleted a banner.", 'default', '', )
         this.closeModal();
 
         this.refreshTableData();
@@ -315,12 +284,7 @@ export class AdminSiteSettingsComponent {
 
       },
       error: (error: HttpErrorResponse) => {
-        this.toastHeader = "Failed to remove banner!";
-        this.toastContent = "Cannot delete banner.";
-        this.toast.switchTheme('negative');
-        this.toast.show();
-
-        console.log(error);
+        this.toaster.showToast("Failed to remove banner!", "Cannot delete banner.", 'negative', '', )
       }
     })
   }

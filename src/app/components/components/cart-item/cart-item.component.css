@@ -1,6 +1,6 @@
 .cart-item-img {
-    max-height: 5rem;
-    width: auto;
+    
+    width: 100%;
 }
 
 .item-row {
@@ -14,4 +14,13 @@ td {
 
 .td-quantity {
     text-align: center;
+}
+
+.cart-item-action {
+    color: var(--body-text);
+    cursor: pointer;
+}
+
+.cart-item-action:hover {
+    color: var(--primary);
 }

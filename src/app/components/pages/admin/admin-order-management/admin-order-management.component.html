@@ -1,26 +1,37 @@
-<div class="container-md m-auto h-auto p-2" >
+<div class="container-fluid position-relative m-auto h-auto px-0 px-sm-3" >
+
     <app-table
-        tableTitle="TRACK ORDERS"
-        subTitle="STATUS AND TRACK ORDER LIST"
+        tableTitle="Track Orders"
+        subTitle="Status & Track Order List"
         [tableHead]="true"
-        tableContainerClass="p-4"
-        [paginate]="true"
-        
-        [tableTools]="true"
-        [searchBar]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        searchBarclass="me-0"
+        [paginate]="false"
+        (DateValue)="getDate($event)"
+        (FilterValue)="getStatus($event)"
+        addbtnName="Add New"
         [tableAction]="true"
         [viewBtn]="true"
-        [orderBtn]="true"
+        [actionForOrderBtn]="true"
+        [orderBtnSet]="true"
+        [tableHeaderActions]="true"
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
+        [packStatus]="packStatus"
         [setFirstUpper]="true"
-        [tableHeader]="['ORDER ID', 'PLACED ON', 'STATUS']"
-        [tableRows]="['id', 'created_at', 'status' ]"
+        [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
+        [tableRows]="['id', 'created_at', 'status_name' ]"
         [tableData]="orders"
+
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
 </div>
+
 
 
 
@@ -30,7 +41,9 @@
     modalTitleClass="mb-3"
     modalSubTitle="{{selectedRowData?.user_id}}"
     modalSubTitleClass="mt-3 fs-5 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
+    modalClass="modal-md "
+    [modalHideIcon]="true"
+    modalIcon="view"
     [allowAnotherSub]="true"
     [modalViewOrders]="true"
     (RefreshTable)="refreshTableData()"
@@ -41,31 +54,57 @@
 
 <app-modal
     modalId="confirm"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Order"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog modal-md "
-        
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    [modalHideCloseBtn]="true"
     [modalConfirm]="true"
     (RefreshTable)="refreshTableData()"
-
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
     [selectedRowData]="selectedRowData"
-
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
 ></app-modal>
 
+<app-modal
+    modalId="packed"
+    modalTitle="Confirm Packed"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="packed"
+    [modalHideCloseBtn]="true"
+    [modalPacked]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+></app-modal>
 
 <app-modal
     modalId="ship"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Shipping"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
-        
+    modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="ship"
+    [modalHideCloseBtn]="true"
+
     [modalShip]="true"
     (RefreshTable)="refreshTableData()"
-
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
     [selectedRowData]="selectedRowData"
 
 ></app-modal>
@@ -73,17 +112,25 @@
 
 <app-modal
     modalId="deliver"
-    modalTitle="CONFIRM PAYMENT"
+    modalTitle="Confirm Delivered"
     modalTitleClass="mb-0"
-    modalSubTitle="STATUS UPDATE"
     modalSubTitleClass="mt-0 fw-bold"
-    modalClass="modal-dialog-scrollable modal-md "
-        
+    modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="delivered"
+    [modalHideCloseBtn]="true"
+    
     [modalDeliver]="true"
     (RefreshTable)="refreshTableData()"
-    (deliver)="deliverPackage()"
     [selectedRowData]="selectedRowData"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
 
+></app-modal>
+
+<app-modal
+    modalId="delete"
 ></app-modal>
 
 
@@ -91,6 +138,3 @@
 
 
 
-
-
- 

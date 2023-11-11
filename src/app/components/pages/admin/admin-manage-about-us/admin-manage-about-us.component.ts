@@ -7,6 +7,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
+import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-admin-manage-about-us',
@@ -14,21 +16,30 @@ import { formatAboutUsTos } from 'src/app/utilities/response-utils';
   styleUrls: ['./admin-manage-about-us.component.css']
 })
 export class AdminManageAboutUsComponent {
-
+  
+  // theme
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
+  
+  size: string = 'w-100';
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;
 
   aboutUsAddSectionForm = this.formBuilder.group({
     sectionHeader: ['', [Validators.required, Validators.pattern('^[a-zA-Z\d_ .!?]*$')]],
-    sectionContent: ['', [Validators.required]]
   });
 
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default"; 
-  @ViewChild(ToastComponent) toast: ToastComponent;
-
+  rtfValue: string;
+  
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
+  @ViewChild('rte') childComponent: RichTextEditorComponent;
   selectedSection: AboutUsTosSection = {
     id: '',
     title: '',
@@ -54,7 +65,10 @@ export class AdminManageAboutUsComponent {
       map((response: any) => formatAboutUsTos(response)),
     );
   }
-
+  getRTFValue(value: any){
+      // console.log(value)
+      this.rtfValue = value
+  }
   refreshTableData(): void {
     this.refreshData$.next();
   }
@@ -80,14 +94,16 @@ export class AdminManageAboutUsComponent {
 
       let formData: any = new FormData();
       formData.append('title', this.aboutUsAddSectionForm.get('sectionHeader')?.value);
-      formData.append('content', this.aboutUsAddSectionForm.get('sectionContent')?.value);
+      formData.append('content', this.rtfValue);
 
-      console.log(formData);
-
+      for (const value of formData.entries()) {
+        console.log(`${value[0]}, ${value[1]}`);
+      }
+      
       this.aboutUsToSService.postAddAboutUs(formData).subscribe({
         next: (response: any) => {
           this.showSuccessToast('Successfully added section', 'Added a section to about us.');
-
+          
           this.aboutUsAddSectionForm.reset();
 
           this.refreshTableData();
@@ -105,30 +121,22 @@ export class AdminManageAboutUsComponent {
       this.showWarnToast('Missing required fields.', 'Please fill up the form completely.');
     }
   }
-
-  private showWarnToast(header: string, content: string)
-  {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('warn');
-    this.toast.show();
-  }
-
   private showSuccessToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('default');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'default', '', )
   }
 
   private showFailedToast(header: string, content: string)
   {
-    this.toastHeader = header;
-    this.toastContent = content;
-    this.toast.switchTheme('negative');
-    this.toast.show();
+    this.toaster.showToast(header, content, 'negative', '', )
   }
+  
+  private showWarnToast(header: string, content: string)
+  {
+    this.toaster.showToast(header, content, 'warn', '', )
+  }
+
+
 
   public deleteAboutUsSection()
   {

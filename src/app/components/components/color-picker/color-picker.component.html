@@ -1,0 +1,21 @@
+
+<p class="form-label" *ngIf="showLabel">Color</p>
+<div [(colorPicker)]="color"
+     [cpAlphaChannel]="'disabled'"
+     [cpCmykEnabled]="false"
+     [cpPresetColors]="presetColors"
+     class="cursor-pointer  "
+     (colorPickerChange)="matchColor($event)">
+    <div class="d-flex flex-row justify-content-between input-field py-3 px-3">
+        <div class="d-flex flex-row me-3 color-container">
+            <div class="color-preview me-2" [style.background]="color"></div>
+            <p class="m-0 color-name" [style.color]="color ? '#ffffff' : 'gray' " >{{color ? colorname : placeholder}}</p>
+        </div>
+
+        <div *ngIf="color">
+            <button class="productBtnOpener d-flex align-items-center justify-content-center btn btn-admin-outline-primary mx-2">
+                <i class="bi bi-info"></i>
+            </button>
+        </div>
+    </div>
+</div>

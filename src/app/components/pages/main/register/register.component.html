@@ -1,0 +1,30 @@
+<!-- <div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
+    <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
+</div> -->
+<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [maxToastsShown]="1"></app-toaster>
+<div class="container-md" id="entryDiv">
+    <div class="row d-flex d-md-none text-center my-5 mx-2 entry-selector" *ngIf="!registerDone">
+        <div class="col py-3" [ngClass]="isSignIn ? 'active-shown' : 'inactive-hidden'" (click)="signInToggle()">Sign In</div>
+        <div class="col py-3" [ngClass]="isSignIn ? 'inactive-hidden' : 'active-shown'" (click)="signUpToggle()">Sign Up</div>
+    </div>
+    
+    <div class="row my-5 flex-column flex-md-row align-items-center justify-content-center" *ngIf="!registerDone">
+        <app-signupform (registerSuccess)="registerSuccessToast($event)" class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="isSignIn"></app-signupform>
+    </div>
+
+    <div class="row my-5" *ngIf="registerDone">
+        <div class="col d-flex flex-column justify-content-center">
+            <p class="fw-bold fs-3 m-0">Thank you for registering!</p>
+            <p class="fs-5">A confirmation email has been sent to <span class="fw-bold">{{lastEmail}}</span>.</p>
+
+            <p>If you haven't received your email after a few minutes: </p>
+            <ul>
+                <li>Check your spam folder.</li>
+                <li>Check if you typed your email correctly.</li>
+            </ul>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <img src="../../../../../assets/images/register_thankyou.svg" class="register-thanks">
+        </div>
+    </div>
+</div>

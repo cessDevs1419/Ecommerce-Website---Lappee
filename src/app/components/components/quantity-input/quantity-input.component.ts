@@ -21,8 +21,23 @@ export class QuantityInputComponent implements ControlValueAccessor {
   @Input() max: number;
   @Input() showStock: boolean = true;
   @Input() quantity: number = 1;
+  @Input() size: string = "normal";
   @Output() quantityChange: EventEmitter<number> = new EventEmitter<number>();
   @ViewChild('quantity_input') input: ElementRef;
+  sizeClass: string = "";
+
+  ngOnInit(): void {
+    switch(this.size) {
+      case 'normal': 
+        this.sizeClass = "padding-normal";
+        break;
+      
+      case 'small':
+        this.sizeClass = "padding-small";
+        break;
+    }
+  }
+
 
   writeValue(obj: any): void {
     this.quantity = obj;

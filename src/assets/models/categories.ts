@@ -1,3 +1,5 @@
+
+
 export interface CategoryList {
     success: string,
     message: string,
@@ -7,7 +9,8 @@ export interface CategoryList {
 export interface Category {
     id: string,
     name: string
-    sub_categories: Subcategory[]
+    sub_categories: Subcategory[],
+    images: string[]
 }
 
 export interface Subcategory {
@@ -26,3 +29,25 @@ export interface AdminCategory {
     id: string,
     name: string
 }
+
+export interface NewAdminCategoryList {
+    success: string,
+    message: string,
+    data: NewAdminCategory;
+}
+
+export interface NewAdminCategory {
+    category_id: string,
+    name: string
+    attributes: Attributes[]
+}
+
+export interface Attributes{
+    category_attribute_id: string,
+    attribute_id: string,
+    category_id: string,
+    name: string
+    values: string[];
+}
+
+

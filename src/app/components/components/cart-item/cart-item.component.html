@@ -1,5 +1,5 @@
 
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+    <!-- <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
         <div class="form-check text-center">
             <input class="form-check-input" type="checkbox" value="true" (change)="emit()">
         </div>
@@ -13,4 +13,72 @@
     </td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ this.cartItem.price | currency }}</td>
     <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'" ><app-quantity-input [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> <p class="m-0 fs-6">In stock: {{this.maxStock}}</p></td>
-    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td>
+    <td [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">{{ priceConvert * this.cartItem.quantity | currency }}</td> -->
+
+   <!-- <div class="d-flex d-xxl-none row mt-3 p-3 border-bottom" [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+        <div class="col-1">
+            <div class="form-check text-center">
+                <input class="form-check-input" type="checkbox" value="true" (ngModelChange)="emit()" [(ngModel)]="selectAll">
+            </div>
+        </div>
+
+        <div class="col-4">
+            <img class="cart-item-img" [src]="this.cartItem.image_url">
+        </div>
+
+        <div class="col-7 d-flex flex-column justify-content-between">
+            <div>
+                <p class="fw-bold m-0">{{this.cartItem.product.name}}</p> 
+                <div *ngIf="this.cartItem.variant">
+                    <p class="m-0">Color: {{this.cartItem.variant_details[0]}}</p>
+                    <p class="m-0">Size: {{this.cartItem.variant_details[1]}}</p>
+                </div>
+                <div>
+                    <span class="color-primary fw-bold">{{ this.cartItem.price | currency }}</span>
+                </div>
+            </div>
+            <div class="mt-2 d-flex flex-row align-items-center">
+                <app-quantity-input [size]="'small'" [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> 
+                <p class="m-0 fs-6 ms-3">In stock: {{this.maxStock}}</p>
+            </div>
+            <div>
+                <span class="fw-bold">Total: {{ priceConvert * this.cartItem.quantity | currency }}</span>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <div class="row pt-3 px-3 d-flex align-items-between d-xxl-flex d-none" [style.background-color]="this.isIncluded ? this.selectedColor : 'transparent'">
+        <div class="col-1" >
+            <div class="form-check text-center">
+                <input class="form-check-input" type="checkbox" value="true" (ngModelChange)="emit()" [(ngModel)]="selectAll">
+            </div>
+        </div>
+
+        <div class="col-2">
+            <img class="cart-item-img" [src]="this.cartItem.image_url[0]">
+        </div>
+
+        <div class="col-3 d-flex flex-column justify-content-between">
+            <div *ngIf="this.cartItem.variant">
+                <p class="fw-bold m-0">{{this.cartItem.product.name}}</p> 
+                <p class="m-0" *ngFor="let attr of this.cartItem.variant_details | keyvalue"><span class="fw-bold">{{attr.key}}:</span> {{attr.value}}</p>
+            </div>
+            <div class="text-muted mt-3">
+                <span class="cart-item-action" (click)="handleEditItem(this.cartItem)">Edit</span> | <span class="cart-item-action" (click)="handleRemoveItem(this.cartItem.variant)">Remove</span>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <span class="color-primary fw-bold">{{ this.cartItem.price | currency }}</span>
+        </div>
+
+        <div class="col-2">
+            <app-quantity-input [size]="'small'" [showStock]="false" [quantity]="this.cartItem.quantity" [max]="this.maxStock" (quantityChange)="handleQuantityChange($event)"></app-quantity-input> 
+            <p class="m-0 fs-6">In stock: {{this.maxStock}}</p>
+        </div>
+
+        <div class="col-2">
+            <span class="fw-bold">{{ priceConvert * this.cartItem.quantity | currency }}</span>
+        </div>
+    </div>

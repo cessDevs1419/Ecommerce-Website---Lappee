@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { InquiryService } from 'src/app/services/inquiry/inquiry.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class ContactusComponent {
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   contactusForm = new FormGroup({
     contactusName: new FormControl('', Validators.required),
@@ -40,17 +41,12 @@ export class ContactusComponent {
       this.inquiryService.postInquiry(formData).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.toastHeader = "Successfully added!";
-          this.toastContent = "Your inquiry has been sent.";
-          this.toast.switchTheme('default');
-          this.toast.show();
+          this.toaster.showToast("Successfully added!", "Your inquiry has been sent.");
+          this.contactusForm.reset();
         },
         error: (err: HttpErrorResponse) => {
           console.log(err);
-          this.toastHeader = "Action failed!";
-          this.toastContent = "Please try again in a few moments.";
-          this.toast.switchTheme('negative');
-          this.toast.show();
+          this.toaster.showToast("Action failed!","Please try again in a few moments.", 'negative');
         }
       })
 

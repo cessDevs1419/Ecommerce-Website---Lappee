@@ -1,7 +1,9 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { OrderContent } from 'src/assets/models/order-details';
 import { ToastComponent } from '../toast/toast.component';
+import { CartItem } from 'src/assets/models/products';
+import { ToasterComponent } from '../toaster/toaster/toaster.component';
 
 @Component({
   selector: 'app-modal-client',
@@ -12,17 +14,22 @@ export class ModalClientComponent {
 
   @ViewChild('modal') modal: ElementRef;
   @Input() mode: string = "";
+  @Input() params_target: string = "";
+  @Input() context: string = "";
+  @Input() operation: string = "";
+  @Input() modalSize: string = "modal-lg"
+  @Output() confirmDialogOutput = new EventEmitter<boolean>();
   modalTitle!: string;
 
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToastComponent) toast: ToastComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   modalEl: bootstrap.Modal;
 
   // review resources
-  product!: OrderContent;
+  product!: any;
 
   ngOnInit(): void {
     
@@ -48,6 +55,28 @@ export class ModalClientComponent {
     this.show();
   }
 
+  // Confirm Dialog Methods
+
+  confirmRemoveCartItem(item: CartItem){
+    this.modalTitle = "Remove from Cart";
+    this.operation = "delete";
+    this.context = "cart";
+    this.product = item;
+    this.show()
+  }
+
+  passConfirmDialogOutput(params: any): void {
+    this.confirmDialogOutput.emit(params);
+  }
+
+  // Edit Cart Item Methods
+  editCartItem(item: CartItem): void {
+    this.modalTitle = "Edit Cart Item";
+    this.product = item;
+    this.modalSize = 'modal-xl';
+    this.show();
+  }
+
   show(): void {
     this.modalEl.show();
   }
@@ -58,10 +87,7 @@ export class ModalClientComponent {
   }
 
   activateToast(data: string[]): void {
-    this.toastHeader = data[0];
-    this.toastContent = data[1];
-    this.toast.switchTheme(data[2]);
-    this.toast.show()
+    this.toaster.showToast(data[0], data[1], data[2])
   }
  
 }

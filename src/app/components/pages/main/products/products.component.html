@@ -1,11 +1,21 @@
-<div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
+<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [limitWidth]="false" [maxToastsShown]="1"></app-toaster>
+<!-- <div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
     <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
-</div>
-<div class="container-md mt-5">
+</div> -->
+<div class="container-md overflow-x-visible">
     <div class="row">
-        <gallery gallerize *ngIf="this.product| async" id="product-images" [thumbPosition]="position" imageSize="cover" [thumbWidth]="60" [thumbHeight]="75" class="col-lg me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+        <div class="sticky-column col-lg-6 pt-5 overflow-hidden">
+            <gallery gallerize *ngIf="this.product| async" id="product-images"  [itemTemplate]="itemTemplate" [thumbPosition]="position" imageSize="contain" [thumbWidth]="60" [thumbHeight]="75" class="me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
+    
+            <!-- Gallery Template -->
+            <ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+                <ng-container>
+                  <lib-ngx-image-zoom [thumbImage]="data.thumb" [fullImage]="data.src" [magnification]="1.5" [enableScrollZoom]="true" [enableLens]="true" [lensHeight]="150" [lensWidth]="150"></lib-ngx-image-zoom>
+                </ng-container>
+            </ng-template>
+        </div>
 
-        <div *ngFor="let match of product | async"  class="col-lg">
+        <div *ngIf="product | async as match"  class="col-lg-6 content-column mt-5">
             <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
                 <div>
                     <h3>{{match.name}}</h3>
@@ -22,6 +32,8 @@
                 </div>
                <!--  <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button> -->
             </div>
+
+            <!-- <div id="spacer" style="height: 1000px;"></div> -->
             <div class="mt-3" id="productDescOptions">
                 <div class="accordion accordion-flush " id="accordionProductDesc">
                     <div class="accordion-item">
@@ -31,13 +43,19 @@
                             </button>
                         </h3>
                         <div class="accordion-collapse collapse show product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
-                            <div class="accordion-body">
-                                {{match.description}} 
+                            <div class="accordion-body" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(match.description)">
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-3" >
+                <div class="mt-3">
+                    <div *ngIf="!isVariantSelected && isTouched" class="bg-danger-subtle text-danger p-3 my-2">
+                        <p class="m-0">You need to select one or more items from your cart.</p>
+                    </div>
+                    <app-variant-attributes mode="Product" [product]="match" (addToCart)="addToCartAttr($event)" (orderNow)="orderNowAttr($event)"></app-variant-attributes>
+                    
+                    <!--
                     <form [formGroup]="productToCart">
                         <div *ngIf="!this.hasVariant">
                             <p class="fs-4 mb-0"><span class="fw-bold">Color:</span> {{colorCurrent.name}}</p>
@@ -54,7 +72,7 @@
                             </div>
                             
                             <div *ngIf="selectedColorSizes.length > 0">
-                                <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Sizes:</span> {{sizeCurrent}}</p>
+                                <p class="fs-4 mb-0 mt-3"><span class="fw-bold">Size:</span> {{sizeCurrent}}</p>
                                 <div *ngIf="productSize?.invalid && (productSize?.dirty || productSize?.touched)">
                                     <div *ngIf="productSize?.errors?.['required']">
                                         <span class="text-danger">This field is required.</span>
@@ -94,12 +112,15 @@
                                 
                         </div>
                     </form>
+                    -->
                 </div>
             </div>
 
         </div>
     </div>
+    
     <div class="row reviews-overview mt-5 py-3 px-5" *ngIf="this.reviews | async as review">
+        
         <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
             <div class="fs-1 fw-bold">{{ review.rating ? review.rating : 0}}<span class="muted-text fs-2">/5.0</span></div>
             <app-star-ratings [rating]="review.rating" class="fs-3 rating-yellow"></app-star-ratings>
@@ -169,7 +190,7 @@
                     There are currently no reviews for this item.
                 </p>
             </div>
-        </div>
+        </div> 
         
 
        <!--  <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
@@ -192,8 +213,8 @@
                     </div>
                 </div>
             </form>   
-        </div> -->
-    </div>
+        </div>
+    </div> -->
     <div class="row mt-3">
        <div class="border-bottom fs-2 p-3">You May Also Like</div>
     </div>
