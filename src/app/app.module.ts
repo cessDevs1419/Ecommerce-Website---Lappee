@@ -111,6 +111,7 @@ import { AdminOrderShippingComponent } from './components/pages/admin/admin-orde
 import { AdminOrderDeliveredComponent } from './components/pages/admin/admin-order-delivered/admin-order-delivered.component';
 import { AdminOrderCancelComponent } from './components/pages/admin/admin-order-cancel/admin-order-cancel.component';
 import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-hold/admin-order-hold.component';
+import { CancelOrderComponent } from './components/components/modal-forms-client/cancel-order/cancel-order.component';
 
 
 @NgModule({
@@ -210,6 +211,7 @@ import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-ho
     AdminOrderDeliveredComponent,
     AdminOrderCancelComponent,
     AdminOrderHoldComponent,
+    CancelOrderComponent,
   ],
   imports: [
     BrowserModule,

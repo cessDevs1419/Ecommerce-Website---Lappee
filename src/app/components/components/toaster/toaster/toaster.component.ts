@@ -18,8 +18,8 @@ export class ToasterComponent {
   index: number = 0;
 
   showToast(title: string, message: string, theme: string = 'default', customClass: string = "", routerLink: string = "", limitWidth: boolean = true): void {
-    console.log(limitWidth)
-    const toast = this.toast.showToast(title, message, theme, customClass, routerLink, limitWidth);
+    console.log("toaster: " + limitWidth)
+    const toast = this.toast.showToast(title, message, theme, customClass, routerLink, this.limitWidth);
     let index = this.index;
 
     // limit toasts shown

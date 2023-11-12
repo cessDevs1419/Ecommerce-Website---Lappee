@@ -86,6 +86,9 @@ export const GETOrderDetail: string = api + "api/client/orders/details?order_id=
 export const GETOrderDetailByUser: string = api + "api/client/orders/user";
 export const POSTOrder: string = api + "api/client/orders/store";
 
+//Order Cancellations
+export const POSTCancelOrder: string = api + "api/client/orders/cancel"
+
 //Notifications 
 export const GETNotifications: string = api + "api/admin/notif";
 export const PATCHNotifications: string = api + "api/admin/notif/mark";

@@ -12,6 +12,7 @@ import { ToasterComponent } from '../toaster/toaster/toaster.component';
 })
 export class ModalClientComponent {
 
+
   @ViewChild('modal') modal: ElementRef;
   @Input() mode: string = "";
   @Input() params_target: string = "";
@@ -19,17 +20,20 @@ export class ModalClientComponent {
   @Input() operation: string = "";
   @Input() modalSize: string = "modal-lg"
   @Output() confirmDialogOutput = new EventEmitter<boolean>();
+  @Output() cancelOrderOutput = new EventEmitter<{id: string, reason: string}>();
   modalTitle!: string;
 
   toastTheme!: string;
   toastHeader!: string;
   toastContent!: string;
-  @ViewChild(ToasterComponent) toaster: ToasterComponent;
+  //@ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   modalEl: bootstrap.Modal;
 
   // review resources
   product!: any;
+
+  order: string;
 
   ngOnInit(): void {
     
@@ -46,6 +50,20 @@ export class ModalClientComponent {
   ngAfterViewInit(): void {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement);
   }
+
+  // Cancel Order Methods 
+
+  cancelOrder(order_id: string){
+    this.modalTitle = "Cancel Order";
+    this.order = order_id;
+    this.show();
+  }
+
+  emitCancelOrder($event: { id: string; reason: string; }) {
+    this.cancelOrderOutput.emit({id: $event.id, reason: $event.reason})
+  }
+
+  // Review Methods
 
   addReview(item: OrderContent): void {
     console.log(this.mode);
@@ -87,7 +105,7 @@ export class ModalClientComponent {
   }
 
   activateToast(data: string[]): void {
-    this.toaster.showToast(data[0], data[1], data[2])
+    //this.toaster.showToast(data[0], data[1], data[2])
   }
  
 }

@@ -12,8 +12,15 @@ export interface OrderListInfo {
 export interface OrderDetail {
     order_id: string,
     ordered_on: string,
-    order_contents: OrderContent[]
+    status: number,
+    status_name: string,
+    confirmed_on: string,
+    packed_date: string,
+    shipped_date: string,
+    delivered_date: string,
+    order_contents: OrderContent[],
 }
+    
 
 export interface OrderContent {
     name: string,

@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-client" tabindex="-1" #modal>
-    <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'"></app-toaster>
+    <!-- <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'"></app-toaster> -->
     <div class="position-fixed vh-100 pe-none z-3 toast-container-parent m-5">
         
     </div>
@@ -14,6 +14,7 @@
                 <app-review-form *ngSwitchCase="'add-review'" [product]="this.product" (activateToast)="activateToast($event)" (dismiss)="dismiss()"></app-review-form>
                 <app-confirm-dialog *ngSwitchCase="'confirm-dialog'" [product]="this.product" [operation]="this.operation" [context]="this.context" (activateToast)="activateToast($event)" (dismiss)="dismiss()" (emitDeleteTrue)="passConfirmDialogOutput($event)"></app-confirm-dialog>
                 <app-edit-cart-item *ngSwitchCase="'edit-cart-item'" [product]="this.product" (dismiss)="dismiss()"></app-edit-cart-item>
+                <app-cancel-order *ngSwitchCase="'cancel-order'" [order]="this.order" (dismiss)="dismiss()" (emitCancel)="emitCancelOrder($event)"></app-cancel-order>
             </div>
         </div>
     </div>

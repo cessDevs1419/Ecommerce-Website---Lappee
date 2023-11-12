@@ -1,0 +1,44 @@
+<div class="d-flex flex-column justify-content-center align-items-start px-3">
+    <p class="m-0 fs-4">Select reason for cancellation:</p>
+    <div class="bg-light-gray p-3 rounded-1">
+        <p class="m-0">Keep in mind that ONLV reserves the right to reject cancellation requests.</p>
+    </div>
+
+    <form [formGroup]="reasonForm" class="mt-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Need to change address" id="reasonOptionsAddress" name="reason" formControlName="reason">
+            <label class="form-check-label" for="reasonOptionsAddress">
+                I need to change my delivery address.
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Ordered wrong variant" id="reasonOptionsWrongVar" name="reason" formControlName="reason">
+            <label class="form-check-label" for="reasonOptionsWrongVar">
+                I ordered the wrong variant. (Wrong size, color, etc.)
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Change of mind" id="reasonOptionsChangeMind" name="reason" formControlName="reason">
+            <label class="form-check-label" for="reasonOptionsChangeMind">
+                I changed my mind.
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Change of mind" id="reasonOptionsOther" name="reason">
+            <label class="form-check-label" for="reasonOptionsOther">
+                Other (please specify):
+            </label>
+        </div>
+        <div class="ms-4">
+            <label for="reasonOptionsFreeform" class="form-label">Reason for cancellation (min. 10 characters)</label>
+            <input type="text" class="form-control" id="reasonOptionsFreeform" formControlName="reason">
+        </div>  
+    </form>
+
+    <div class="d-flex flex-row justify-content-center mt-3">
+        <button class="button-secondary-outline me-3" (click)="handleDismiss()">Cancel</button>
+        <button class="button-primary" (click)="emit()">Confirm</button>
+    </div>
+</div>

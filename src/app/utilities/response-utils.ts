@@ -283,7 +283,13 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
   return response.data.details.map((data: OrderDetail) => ({
     order_id: data.order_id,
     ordered_on: data.ordered_on,
-    order_contents: data.order_contents
+    order_contents: data.order_contents,
+    status: data.status,
+    status_name: data.status_name,
+    confirmed_on: data.confirmed_on,
+    packed_date: data.packed_date,
+    shipped_date: data.shipped_date,
+    delivered_date: data.delivered_date
   }))
 }
 

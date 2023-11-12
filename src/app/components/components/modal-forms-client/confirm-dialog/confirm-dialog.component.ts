@@ -15,18 +15,32 @@ export class ConfirmDialogComponent {
   @Output() dismiss = new EventEmitter();
   @Output() emitDeleteTrue = new EventEmitter<{status: boolean, item: any}>();
 
+  contentString: string;
   operation_output: string;
+
 
   ngOnInit(): void {
     switch(this.operation){
       case 'delete':
         this.operation_output = 'remove';
-        break; 
+        break;
+      case 'cancel':
+        this.operation_output = 'cancel';
+        break;
+      default:
+        this.operation_output = 'none';
+        break;
     }
+
+    this.contentBuilder();
   }
 
   handleDismiss(): void {
     this.dismiss.emit()
+  }
+
+  contentBuilder(): void {
+    this.contentString = "Are you sure you want to " + this.operation_output + this.context ? " this item from the + " + this.context + "?" : "?"
   }
 
   emit(): void {
