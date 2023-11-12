@@ -27,7 +27,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Placed</p>
-                                <p class="m-0">{{order[0].ordered_on | date:'short'}}</p>
+                                <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
 
                             </div>
                         </li>
@@ -37,7 +37,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Confirmed</p>
-                                <p class="m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p>
 
                             </div>
                         </li>
@@ -47,7 +47,7 @@
                                     <i class="bi bi-box-seam"></i>
                                 </div>
                                 <p class="steps-label m-0">Packed</p>
-                                <p class="m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p>
                             </div>
                         </li>
                         <li class="progress-steps" [ngClass]="order[0].shipped_date ? 'active-step' : ''">

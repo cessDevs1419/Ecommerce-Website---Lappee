@@ -19,6 +19,7 @@ import { Product } from 'src/assets/models/products';
 })
 export class OrdersComponent {
   Number = Number;
+  String = String;
   mode: string;
   orders: Observable<OrderDetail[]>;
   userOrders!: Observable<OrderDetail[]>;
@@ -32,6 +33,7 @@ export class OrdersComponent {
   searchForm: FormGroup = new FormGroup({
     searchTerm: new FormControl('')
   })
+  
 
   get searchTerm() { return this.searchForm.get('searchTerm') }
 
@@ -119,5 +121,24 @@ export class OrdersComponent {
 
   onPageChange(pageNumber: number) {
     this.currentPage = pageNumber;
+  }
+
+  orderIcon(code: number): string{
+    switch(code){
+      case 100:
+        return "bi-box-seam";
+        break;
+      case 150:
+        return "bi-box-seam-fill";
+        break;
+      case 175:
+        return "bi-truck";
+        break;
+      case 200:
+        return 'bi-check'
+        break;
+      default:
+        return '';
+    }
   }
 }
