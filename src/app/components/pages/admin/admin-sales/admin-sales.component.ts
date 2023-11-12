@@ -34,6 +34,8 @@ export class AdminSalesComponent {
       new Product(2, 'Product B', 19.99),
       new Product(3, 'Product C', 5.99),
     ]);
+
+    
   }
   
   bgColor: string = 'table-bg-dark';

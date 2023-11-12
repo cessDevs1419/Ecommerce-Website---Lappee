@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus, GETAdminOrderToPack, GETAdminOrderToShip, GETAdminOrderShipping, GETAdminOrderDelivered, GETAdminOrderCanceled, GETAdminOrderPending, POSTCancelOrder } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus, GETAdminOrderToPack, GETAdminOrderToShip, GETAdminOrderShipping, GETAdminOrderDelivered, GETAdminOrderPending, POSTCancelOrder, GETAdminOrderCancel, GETAdminOrderCancelled, PATCHCancel, PATCHDeny } from '../endpoints';
 import { Observable } from 'rxjs';
 import { Order } from 'src/assets/models/products';
 
@@ -39,7 +39,10 @@ export class OrderService {
     return this.http.get(GETAdminOrderDelivered);
   }
   getAdminOrdersCancel(): Observable<any> {
-    return this.http.get(GETAdminOrderCanceled);
+    return this.http.get(GETAdminOrderCancel);
+  }
+  getAdminOrdersCancelled(): Observable<any> {
+    return this.http.get(GETAdminOrderCancelled);
   }
   
   getAdminOrderDetail(orderId: string): Observable<any> {
@@ -61,6 +64,13 @@ export class OrderService {
   
   patchDeliver(data: FormData): Observable<any> {
     return this.http.patch<Order>(PATCHDeliverStatus, data, this.httpOptions);
+  } 
+
+  patchCancel(data: FormData): Observable<any> {
+    return this.http.patch<Order>(PATCHCancel, data, this.httpOptions);
+  } 
+  patchDeny(data: FormData): Observable<any> {
+    return this.http.patch<Order>(PATCHDeny, data, this.httpOptions);
   } 
   
   getOrderDetail(id: string): Observable<any> {

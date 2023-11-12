@@ -148,7 +148,8 @@ export class SidebarComponent {
       this.router.url === '/admin/order-ship'||
       this.router.url === '/admin/order-shipping'||
       this.router.url === '/admin/order-delivered'||
-      this.router.url === '/admin/order-cancel'
+      this.router.url === '/admin/order-cancel'||
+      this.router.url === '/admin/order-cancelled'
     );
   }
   

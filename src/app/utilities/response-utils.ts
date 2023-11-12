@@ -6,7 +6,7 @@ import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
-import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList } from "src/assets/models/order-details";
+import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest } from "src/assets/models/order-details";
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
@@ -253,6 +253,18 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     city: data.city,
     province: data.province,
     zip_code: data.zip_code,
+    status_name: data.status_name,
+  }))
+}
+
+export function formatAdminOrderCancelRequest(response: AdminOrderListCancelRequest): AdminOrderCancelRequest[] {
+  return response.data.map((data: AdminOrderCancelRequest) => ({
+    id: data.id,
+    order_id: data.order_id,
+    reason: data.reason,
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
+    status: data.status,
     status_name: data.status_name,
   }))
 }

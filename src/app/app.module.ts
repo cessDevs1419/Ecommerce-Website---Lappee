@@ -112,6 +112,7 @@ import { AdminOrderDeliveredComponent } from './components/pages/admin/admin-ord
 import { AdminOrderCancelComponent } from './components/pages/admin/admin-order-cancel/admin-order-cancel.component';
 import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-hold/admin-order-hold.component';
 import { CancelOrderComponent } from './components/components/modal-forms-client/cancel-order/cancel-order.component';
+import { AdminOrderCancelledComponent } from './components/pages/admin/admin-order-cancelled/admin-order-cancelled.component';
 
 
 @NgModule({
@@ -212,6 +213,7 @@ import { CancelOrderComponent } from './components/components/modal-forms-client
     AdminOrderCancelComponent,
     AdminOrderHoldComponent,
     CancelOrderComponent,
+    AdminOrderCancelledComponent,
   ],
   imports: [
     BrowserModule,
@@ -263,6 +265,7 @@ import { CancelOrderComponent } from './components/components/modal-forms-client
           {path: 'order-shipping', component: AdminOrderShippingComponent},
           {path: 'order-delivered', component: AdminOrderDeliveredComponent},
           {path: 'order-cancel', component: AdminOrderCancelComponent},
+          {path: 'order-cancelled', component: AdminOrderCancelledComponent},
           {path: 'courier-management', component: AdminCourierManagementComponent},
           {path: 'stocks-management', component: AdminStocksManagementComponent},
           {path: 'category-management/:page/:action/:id', component: AdminParentFormComponent},

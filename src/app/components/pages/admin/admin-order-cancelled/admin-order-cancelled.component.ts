@@ -4,17 +4,15 @@ import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatAdminOrder, formatAdminOrderCancelRequest, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
-import { AdminOrder, AdminOrderCancelRequest, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
+import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
+import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
 
 @Component({
-  selector: 'app-admin-order-cancel',
-  templateUrl: './admin-order-cancel.component.html',
-  styleUrls: ['./admin-order-cancel.component.css']
+  selector: 'app-admin-order-cancelled',
+  templateUrl: './admin-order-cancelled.component.html',
+  styleUrls: ['./admin-order-cancelled.component.css']
 })
-export class AdminOrderCancelComponent {
-    
-
+export class AdminOrderCancelledComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   backdrop: string = 'true';
@@ -22,7 +20,7 @@ export class AdminOrderCancelComponent {
   toastHeader: string = "";
   toastTheme: string = "default";  
 
-  orders!: Observable<AdminOrderCancelRequest[]>;
+  orders!: Observable<AdminOrder[]>;
 ordersDetails!: Observable<AdminOrderDetail>;
   ordersContents$: Observable<AdminOrderContent[]>;
 
@@ -44,10 +42,10 @@ private refreshData$ = new Subject<void>();
 ngOnInit(): void{
   this.orders = this.refreshData$.pipe(
           startWith(undefined), 
-          switchMap(() => this.service.getAdminOrdersCancel()),
-          map((Response: any) => formatAdminOrderCancelRequest(Response))
+          switchMap(() => this.service.getAdminOrdersCancelled()),
+          map((Response: any) => formatAdminOrder(Response))
       );
-    this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
+      this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
         this.refreshTableData();
     })
 }
@@ -58,6 +56,17 @@ ngOnInit(): void{
   
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;
+
+      this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
+          next: (response: any) => {
+              const data = formatAdminOrderDetail(response);
+              this.ordersContents$ = of(data.order_contents); 
+          },
+          error: (error: HttpErrorResponse) => {
+              console.log(error);
+          }
+      }); 
+
   }
       
   getDate(event: any){
@@ -79,6 +88,4 @@ ngOnInit(): void{
   ErrorToast(value: any): void {
       this.toaster.showToast(value.head, value.sub, 'negative', '', )
   }
-  
-
 }

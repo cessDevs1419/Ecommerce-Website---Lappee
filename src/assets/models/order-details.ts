@@ -59,6 +59,22 @@ export interface AdminOrder {
     status_name: string,
 }
 
+export interface AdminOrderListCancelRequest {
+    success: string,
+    message: string,
+    data: AdminOrderCancelRequest[]
+}
+
+export interface AdminOrderCancelRequest {
+    id: string,
+    order_id: string,
+    reason: string,
+    created_at: string,
+    updated_at: string,
+    status: number,
+    status_name: string,
+}
+
 export interface AdminOrderDetailList {
     success: string,
     message: string,

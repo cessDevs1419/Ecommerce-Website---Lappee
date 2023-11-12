@@ -218,3 +218,11 @@ img{
 
 
 }
+@media screen and (max-height: 800px) {
+    .logout{
+        position: relative !important;
+
+    }
+
+
+}

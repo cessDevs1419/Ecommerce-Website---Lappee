@@ -205,7 +205,13 @@ td{
   
   .actn-btn{
     padding: 0 1.1rem;
-    background: #F1F1F1;
+
+  }
+
+  .dropdown-menu{
+    min-width: 2rem;
+    height: 4.2rem;
+    padding: 0;
   }
 
   .actn-btn:hover{

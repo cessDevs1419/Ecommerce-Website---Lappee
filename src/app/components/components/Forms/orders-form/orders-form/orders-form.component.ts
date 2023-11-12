@@ -60,9 +60,7 @@ export class OrdersFormComponent {
         this.Delivered = new FormGroup({
             todliver: new FormControl(200)
         });
-        this.canceled = new FormGroup({
-            reasons: new FormControl('', Validators.required)
-        });
+
         
     }
     
@@ -317,60 +315,108 @@ export class OrdersFormComponent {
     cancel(){
         
         let formData: any = new FormData();
-        formData.append('order_id',  this.selectedRowData.id);
-        formData.append('reasons',  this.canceled.get('reasons')?.value);
-
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        } 
+        formData.append('cancellation_id',  this.selectedRowData.id);
         
-        // this.orderService.patchDeliver(formData).subscribe({
-        //     // next: async(response: any) => { 
-        //     //     const successMessage = {
-        //     //         head: 'Delivered',
-        //     //         sub: response?.message
-        //     //     };
+        this.orderService.patchCancel(formData).subscribe({
+            next: async(response: any) => { 
+                const successMessage = {
+                    head: 'Cancel Order',
+                    sub: response?.message
+                };
                 
-        //     //     this.RefreshTable.emit();
-        //     //     this.OrderSuccess.emit(successMessage);
+                this.RefreshTable.emit();
+                this.OrderSuccess.emit(successMessage);
 
-        //     //     await this.asyncTask();
-        //     //     this.CloseModal.emit();
-        //     // },
-        //     // error: (error: HttpErrorResponse) => {
-        //     //     if (error.error?.data?.error) {
-        //     //         const fieldErrors = error.error.data.error;
-        //     //         const errorsArray = [];
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
                 
-        //     //         for (const field in fieldErrors) {
-        //     //             if (fieldErrors.hasOwnProperty(field)) {
-        //     //                 const messages = fieldErrors[field];
-        //     //                 let errorMessage = messages;
-        //     //                 if (Array.isArray(messages)) {
-        //     //                     errorMessage = messages.join(' '); 
-        //     //                 }
-        //     //                 errorsArray.push(errorMessage);
-        //     //             }
-        //     //         }
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); 
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
                 
-        //     //         const errorDataforProduct = {
-        //     //             errorMessage: 'Error Invalid Inputs',
-        //     //             suberrorMessage: errorsArray,
-        //     //         };
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: errorsArray,
+                    };
                 
-        //     //         this.OrderWarn.emit(errorDataforProduct);
-        //     //     } else {
+                    this.OrderWarn.emit(errorDataforProduct);
+                } else {
                 
-        //     //         const errorDataforProduct = {
-        //     //             errorMessage: 'Error Invalid Inputs',
-        //     //             suberrorMessage: 'Please Try Another One',
-        //     //         };
-        //     //         this.OrderError.emit(errorDataforProduct);
-        //     //     }
-        //     //     return throwError(() => error);
-        //     // }
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: 'Please Try Another One',
+                    };
+                    this.OrderError.emit(errorDataforProduct);
+                }
+                return throwError(() => error);
+            }
             
-        // });
+        });
+    }
+
+    deny(){
+        
+        let formData: any = new FormData();
+        formData.append('cancellation_id',  this.selectedRowData.id);
+
+        
+        this.orderService.patchDeny(formData).subscribe({
+            next: async(response: any) => { 
+                const successMessage = {
+                    head: 'Cancel Order',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                this.OrderSuccess.emit(successMessage);
+
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); 
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: errorsArray,
+                    };
+                
+                    this.OrderWarn.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        errorMessage: 'Error Invalid Inputs',
+                        suberrorMessage: 'Please Try Another One',
+                    };
+                    this.OrderError.emit(errorDataforProduct);
+                }
+                return throwError(() => error);
+            }
+            
+        });
     }
 
     hold(){
