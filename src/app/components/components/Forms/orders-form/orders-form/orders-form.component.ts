@@ -101,7 +101,6 @@ export class OrdersFormComponent {
                 this.RefreshTable.emit();
                 this.OrderSuccess.emit(successMessage);
                 
-                await this.asyncTask();
                 this.CloseModal.emit();
             },
             error: (error: HttpErrorResponse) => {
@@ -161,7 +160,6 @@ export class OrdersFormComponent {
                 this.RefreshTable.emit();
                 this.OrderSuccess.emit(successMessage);
 
-                await this.asyncTask();
                 this.CloseModal.emit();
             },
             error: (error: HttpErrorResponse) => {
@@ -220,7 +218,6 @@ export class OrdersFormComponent {
                 this.RefreshTable.emit();
                 this.OrderSuccess.emit(successMessage);
 
-                await this.asyncTask();
                 this.CloseModal.emit();
             },
             error: (error: HttpErrorResponse) => {
@@ -279,7 +276,6 @@ export class OrdersFormComponent {
                 this.RefreshTable.emit();
                 this.OrderSuccess.emit(successMessage);
 
-                await this.asyncTask();
                 this.CloseModal.emit();
             },
             error: (error: HttpErrorResponse) => {
@@ -327,6 +323,7 @@ export class OrdersFormComponent {
         for (const value of formData.entries()) {
             console.log(`${value[0]}, ${value[1]}`);
         } 
+        
         // this.orderService.patchDeliver(formData).subscribe({
         //     // next: async(response: any) => { 
         //     //     const successMessage = {

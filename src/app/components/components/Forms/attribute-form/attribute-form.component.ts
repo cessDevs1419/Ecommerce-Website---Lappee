@@ -101,7 +101,7 @@ export class AttributeFormComponent {
             this.attribute_service.postAttribute(formData).subscribe({
                 next: (response: any) => { 
                     const successMessage = {
-                        head: 'Category ' + this.addAttributeForm.get('name')?.value,
+                        head: 'Attribute ' + this.addAttributeForm.get('name')?.value,
                         sub: response?.message
                     };
                     

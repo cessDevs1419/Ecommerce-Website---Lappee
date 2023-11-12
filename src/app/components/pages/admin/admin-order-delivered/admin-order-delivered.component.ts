@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
@@ -33,6 +34,7 @@ private refreshData$ = new Subject<void>();
   selectedRowData!: any;
   
   constructor(
+  private echo: EchoService, 
   private service: OrderService,
   private cdr: ChangeDetectorRef
 ) {}
@@ -40,9 +42,12 @@ private refreshData$ = new Subject<void>();
 ngOnInit(): void{
   this.orders = this.refreshData$.pipe(
           startWith(undefined), 
-          switchMap(() => this.service.getAdminOrders()),
+          switchMap(() => this.service.getAdminOrdersDelivered()),
           map((Response: any) => formatAdminOrder(Response))
       );
+      this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
+        this.refreshTableData();
+    })
 }
 
   refreshTableData(): void {

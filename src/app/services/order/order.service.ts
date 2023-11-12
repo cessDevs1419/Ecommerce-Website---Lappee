@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus, GETAdminOrderToPack, GETAdminOrderToShip, GETAdminOrderShipping, GETAdminOrderDelivered, GETAdminOrderCanceled, GETAdminOrderPending } from '../endpoints';
 import { Observable } from 'rxjs';
 import { Order } from 'src/assets/models/products';
 
@@ -22,6 +22,24 @@ export class OrderService {
   
   getAdminOrders(): Observable<any> {
     return this.http.get(GETOrder);
+  }
+  getAdminOrdersPending(): Observable<any> {
+    return this.http.get(GETAdminOrderPending);
+  }
+  getAdminOrdersToPack(): Observable<any> {
+    return this.http.get(GETAdminOrderToPack);
+  }
+  getAdminOrdersToShip(): Observable<any> {
+    return this.http.get(GETAdminOrderToShip);
+  }
+  getAdminOrdersShipping(): Observable<any> {
+    return this.http.get(GETAdminOrderShipping);
+  }
+  getAdminOrdersDelivered(): Observable<any> {
+    return this.http.get(GETAdminOrderDelivered);
+  }
+  getAdminOrdersCancel(): Observable<any> {
+    return this.http.get(GETAdminOrderCanceled);
   }
   
   getAdminOrderDetail(orderId: string): Observable<any> {

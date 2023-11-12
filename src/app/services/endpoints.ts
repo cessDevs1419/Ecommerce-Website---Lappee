@@ -69,6 +69,12 @@ export const GETVerifyEmail: string = api + "api/client/user-info/verify-email"
 //Order Endpoints
 //Admin
 export const GETOrder: string = api + "api/admin/orders";
+export const GETAdminOrderPending: string = api + "api/admin/orders/list/pending";
+export const GETAdminOrderToPack: string = api + "api/admin/orders/list/to-pack";
+export const GETAdminOrderToShip: string = api + "api/admin/orders/list/to-ship";
+export const GETAdminOrderShipping: string = api + "api/admin/orders/list/shipping";
+export const GETAdminOrderDelivered: string = api + "api/admin/orders/list/delivered";
+export const GETAdminOrderCanceled: string = api + "api/admin/orders/list/cancelled";
 export const GETAdminOrderDetail: string = api + "api/admin/orders/details?order_id=";
 export const PATCHPackStatus: string = api + "api/admin/orders/mark/to-pack"
 export const PATCHToShipStatus: string = api + "api/admin/orders/mark/to-ship"

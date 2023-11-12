@@ -5,6 +5,7 @@ import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
@@ -39,6 +40,7 @@ export class AdminOrderManagementComponent {
     selectedRowData!: any;
     
     constructor(
+        private echo: EchoService, 
 		private service: OrderService,
 		private cdr: ChangeDetectorRef
 	) {}
@@ -46,9 +48,13 @@ export class AdminOrderManagementComponent {
 	ngOnInit(): void{
 		this.orders = this.refreshData$.pipe(
             startWith(undefined), 
-            switchMap(() => this.service.getAdminOrders()),
+            switchMap(() => this.service.getAdminOrdersPending()),
             map((Response: any) => formatAdminOrder(Response))
         );
+        
+        this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
+            this.refreshTableData();
+        })
 	}
 
     refreshTableData(): void {
