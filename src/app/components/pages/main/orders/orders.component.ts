@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { OrderHistoryLoaderComponent } from 'src/app/components/components/loader/main/order-history-loader/order-history-loader.component';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
@@ -29,6 +30,7 @@ export class OrdersComponent {
   isLoading: boolean = true;
   doneLoading: boolean = false;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
   searchForm: FormGroup = new FormGroup({
     searchTerm: new FormControl('')
@@ -140,5 +142,9 @@ export class OrdersComponent {
       default:
         return '';
     }
+  }
+
+  toast(data: string[]){
+    this.toaster.showToast(data[0], data[1], data[2])
   }
 }

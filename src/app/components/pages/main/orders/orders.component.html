@@ -1,6 +1,7 @@
 
 <div class="container-lg mt-5">
-    <app-modal-client [mode]="this.mode"></app-modal-client>
+    <app-modal-client [mode]="this.mode" (emitActivateToast)="toast($event)"></app-modal-client>
+    <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [limitWidth]="false" [maxToastsShown]="1" #toaster></app-toaster>
     <app-profile-banner></app-profile-banner>
     
     <div class="row mt-3 mx-3 mx-md-0">

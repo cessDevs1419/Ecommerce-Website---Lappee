@@ -21,6 +21,7 @@ export class ModalClientComponent {
   @Input() modalSize: string = "modal-lg"
   @Output() confirmDialogOutput = new EventEmitter<boolean>();
   @Output() cancelOrderOutput = new EventEmitter<{id: string, reason: string}>();
+  @Output() emitActivateToast = new EventEmitter<string[]>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -106,6 +107,7 @@ export class ModalClientComponent {
 
   activateToast(data: string[]): void {
     //this.toaster.showToast(data[0], data[1], data[2])
+    this.emitActivateToast.emit(data)
   }
  
 }

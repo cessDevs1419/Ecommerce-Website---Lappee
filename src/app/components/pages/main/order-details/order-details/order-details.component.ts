@@ -74,8 +74,8 @@ export class OrderDetailsComponent {
       }
     })
   }
-  toast(): void {
-    this.toaster.showToast('Success!', 'Your request is now pending approval.', 'default');
-    console.log(this.toaster.limitWidth)
+  
+  toast(data: string[]): void {
+    this.toaster.showToast(data[0], data[1], data[2]);
   }
 } 
