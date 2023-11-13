@@ -38,6 +38,9 @@ export class OrderDetailsComponent {
       orders[0].order_contents.forEach((item: OrderContent) => {
         this.orderSubtotal += this.Number(item.sub_price)
       })
+      if(orders[0].status == 15 || orders[0].status == 50){
+        this.isCancelRequest = true;
+      }
     }) 
   }
 

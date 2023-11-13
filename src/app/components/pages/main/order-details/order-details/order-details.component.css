@@ -62,3 +62,9 @@
 .active-step:after {
     background-color: var(--primary);
 }
+
+.cancel-status p {
+    border: 1px solid var(--primary);
+    padding: 1rem;
+    color: var(--primary);
+}
