@@ -133,6 +133,9 @@ export class OrdersComponent {
       case 10:
         return "bi-x-circle-fill"
         break;
+      case 50:
+        return "bi-question-circle-fill";
+        break;
       case 100:
         return "bi-box-seam";
         break;
