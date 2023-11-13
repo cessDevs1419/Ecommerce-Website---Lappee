@@ -4,6 +4,12 @@
         <p class="m-0">Keep in mind that ONLV reserves the right to reject cancellation requests.</p>
     </div>
 
+    <div *ngIf="reason?.invalid && (reason?.dirty || reason?.touched)"> 
+        <div *ngIf="reason?.errors?.['required']">
+            <span class="text-danger">The reason for cancellation is required.</span>
+        </div>
+    </div>
+        
     <form [formGroup]="reasonForm" class="mt-3">
         <div class="form-check">
             <input class="form-check-input" type="radio" value="Need to change address" id="reasonOptionsAddress" name="reason" formControlName="reason">
@@ -30,11 +36,9 @@
             <label class="form-check-label" for="reasonOptionsOther">
                 Other (please specify):
             </label>
+            <input type="text" class="form-control reason-input" id="reasonOptionsFreeform" formControlName="reason">
+            <p class="form-text reason-input-help">Minimum of 10 characters.</p>
         </div>
-        <div class="ms-4">
-            <label for="reasonOptionsFreeform" class="form-label">Reason for cancellation (min. 10 characters)</label>
-            <input type="text" class="form-control" id="reasonOptionsFreeform" formControlName="reason">
-        </div>  
     </form>
 
     <div class="d-flex flex-row justify-content-center mt-3">

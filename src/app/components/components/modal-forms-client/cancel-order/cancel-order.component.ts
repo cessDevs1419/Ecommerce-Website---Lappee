@@ -18,6 +18,8 @@ export class CancelOrderComponent {
     reason: new FormControl('', Validators.required),
   });
 
+  hideReasonInput: boolean = true;
+
   get reason() { return this.reasonForm.get('reason') }
 
   handleDismiss(): void {
@@ -28,7 +30,7 @@ export class CancelOrderComponent {
     if(this.reasonForm.valid && this.reason?.value){
       console.log('emitting from delete case');
       this.emitCancel.emit({id: this.order, reason: this.reason.value});
-      //this.handleDismiss();
+      this.handleDismiss();
     }
     else {
       this.reasonForm.markAllAsTouched();

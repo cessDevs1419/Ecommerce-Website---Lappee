@@ -67,6 +67,7 @@ export class OrderDetailsComponent {
       next: (response: any) => {
         this.toaster.showToast('Success!', 'Your request is now pending approval.', 'default');
         this.isCancelRequest = true;
+        this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
       },
       error: (err: any) => {
         this.toaster.showToast('Oops!', err.error.message, 'negative');
