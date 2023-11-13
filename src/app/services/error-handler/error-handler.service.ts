@@ -10,8 +10,11 @@ export class ErrorHandlerService {
   constructor() { }
 
   handle(err: HttpErrorResponse): string {
-    let error: Error = err;
+    let error: Error = err.error.data;
+    console.log(error)
+    
     let key = Object.keys(error.error)[0];
+    console.log(key)
     return error.error[key][0];
   }
 }

@@ -17,6 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/assets/models/user';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-products',
@@ -74,7 +75,8 @@ export class ProductsComponent {
               private gallery: Gallery,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              public domSanitizer: DomSanitizer) {}
+              public domSanitizer: DomSanitizer,
+              private eh: ErrorHandlerService) {}
 
   colorCurrent = {
     name: '',
@@ -440,8 +442,7 @@ export class ProductsComponent {
         this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
       },
       error: (err: HttpErrorResponse) => {
-
-        this.toaster.showToast("Error!", "Please try again in a few moments.", 'negative','', '', false)
+        this.toaster.showToast("Oops!", this.eh.handle(err), 'negative','', '', false)
       }
     })
   }

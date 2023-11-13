@@ -1,10 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, EventEmitter, Output, ErrorHandler } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderContent } from 'src/assets/models/order-details';
 import { ReviewsService } from 'src/app/services/reviews/reviews.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastComponent } from '../../toast/toast.component';
 import { StarRatingsInputComponent } from '../../star-ratings-input/star-ratings-input.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-review-form',
@@ -32,7 +33,7 @@ export class ReviewFormComponent {
   get reviewContent() { return this.reviewForm.get('reviewContent') };
   get reviewAnonymous() { return this.reviewForm.get('reviewAnonymous') };
 
-  constructor(private reviewsService: ReviewsService){}
+  constructor(private reviewsService: ReviewsService, private eh: ErrorHandlerService){}
 
   ratingChange(rating: number){
     this.rating = rating;
@@ -91,7 +92,7 @@ export class ReviewFormComponent {
         },
         error: (err: HttpErrorResponse) => {
           console.log(err);
-          this.activateToast.emit(['Action failed!', 'Please try again in a few moments.', 'negative']);
+          this.activateToast.emit(['Oops!', this.eh.handle(err), 'negative']);
         }});
       }
     else {

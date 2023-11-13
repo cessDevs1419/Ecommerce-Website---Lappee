@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { InquiryService } from 'src/app/services/inquiry/inquiry.service';
 
 @Component({
@@ -27,7 +28,7 @@ export class ContactusComponent {
   get contactusEmail() { return this.contactusForm.get('contactusEmail')}
   get contactusMsg() { return this.contactusForm.get('contactusMsg')}
 
-  constructor(private inquiryService: InquiryService) {}
+  constructor(private inquiryService: InquiryService, private eh: ErrorHandlerService) {}
 
   submit() {
     if(this.contactusForm.valid){
@@ -46,7 +47,7 @@ export class ContactusComponent {
         },
         error: (err: HttpErrorResponse) => {
           console.log(err);
-          this.toaster.showToast("Action failed!","Please try again in a few moments.", 'negative');
+          this.toaster.showToast("Oops!", this.eh.handle(err), 'negative');
         }
       })
 

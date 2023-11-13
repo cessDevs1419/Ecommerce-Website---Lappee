@@ -7,6 +7,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
@@ -58,7 +59,7 @@ export class ProfileComponent {
   provinces: Province[];
   cities: City[];
 
-  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService) {}
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService, private eh: ErrorHandlerService) {}
   
 
   ngOnInit(): void {
@@ -180,7 +181,7 @@ export class ProfileComponent {
           error: (err: HttpErrorResponse) => {
             console.log(err)
 
-            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
+            this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
           },
           complete: () => {
             this.accountService.checkLoggedIn().subscribe((status: boolean) => {
@@ -204,7 +205,7 @@ export class ProfileComponent {
           },
           error: (err: HttpErrorResponse) => {
 
-            this.toaster.showToast("Action failed!", "Please try again in a few moments.", 'negative')
+            this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
           },
           complete: () => {
             
