@@ -20,13 +20,13 @@ export class AdminOrderCancelledComponent {
   toastHeader: string = "";
   toastTheme: string = "default";  
 
-  orders!: Observable<AdminOrder[]>;
+orders!: Observable<AdminOrder[]>;
 ordersDetails!: Observable<AdminOrderDetail>;
-  ordersContents$: Observable<AdminOrderContent[]>;
+ordersContents$: Observable<AdminOrderContent[]>;
 
   
-  paymentStatus: number = 50;
-  packStatus: number = 100; 
+paymentStatus: number = 50;
+packStatus: number = 100; 
 shipStatus: number = 150;
 deliverStatus: number = 175; 
 
