@@ -130,7 +130,7 @@ export class OrdersComponent {
       case 15: 
         return "bi-exclamation-triangle-fill";
         break;
-      case 50:
+      case 10:
         return "bi-x-circle-fill"
         break;
       case 100:
@@ -155,7 +155,7 @@ export class OrdersComponent {
       case 15:
         return 'color-warn-dark';
         break;
-      case 50: 
+      case 10: 
         return 'color-danger-dark';
         break;
       case 200:
