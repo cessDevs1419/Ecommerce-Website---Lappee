@@ -10,7 +10,7 @@
             </div>
             <div class="d-flex">
                 <button class="button-secondary-outline rounded-0 me-2">Chat Admin</button>
-                <button class="button-primary rounded-0" (click)="cancelOrder(order[0].order_id)" [disabled]="order[0].status == 15" [hidden]="order[0].status == 10 || order[0].status >= 55 ">Cancel Order</button>
+                <button class="button-primary rounded-0" (click)="cancelOrder(order[0].order_id)" [disabled]="order[0].status == 15" [hidden]="order[0].status == 10 || !order[0].cancellable ">Cancel Order</button>
             </div>
         </div>
 

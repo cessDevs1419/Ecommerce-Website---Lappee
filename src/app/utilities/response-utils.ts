@@ -301,7 +301,8 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     confirmed_on: data.confirmed_on,
     packed_date: data.packed_date,
     shipped_date: data.shipped_date,
-    delivered_date: data.delivered_date
+    delivered_date: data.delivered_date,
+    cancellable: data.cancellable
   }))
 }
 

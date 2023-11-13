@@ -19,6 +19,7 @@ export interface OrderDetail {
     shipped_date: string,
     delivered_date: string,
     order_contents: OrderContent[],
+    cancellable: boolean
 }
     
 
