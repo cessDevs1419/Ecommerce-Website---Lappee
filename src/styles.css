@@ -130,6 +130,18 @@
     color: #FFC107;
 }
 
+.color-warn-dark {
+    color: #DCA709;
+}
+
+.color-danger-dark {
+    color: #DC0909;
+}
+
+.color-success-dark {
+    color: #448404
+}
+
 .color-white {
     color: #FFFFFF;
 }

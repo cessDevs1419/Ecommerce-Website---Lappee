@@ -127,6 +127,12 @@ export class OrdersComponent {
 
   orderIcon(code: number): string{
     switch(code){
+      case 15: 
+        return "bi-exclamation-triangle-fill";
+        break;
+      case 50:
+        return "bi-x-circle-fill"
+        break;
       case 100:
         return "bi-box-seam";
         break;
@@ -141,6 +147,22 @@ export class OrdersComponent {
         break;
       default:
         return '';
+    }
+  }
+
+  orderStatusColor(status: number): string {
+    switch(status){
+      case 15:
+        return 'color-warn-dark';
+        break;
+      case 50: 
+        return 'color-danger-dark';
+        break;
+      case 200:
+        return 'color-success-dark';
+        break;
+      default: 
+        return 'muted-text'
     }
   }
 
