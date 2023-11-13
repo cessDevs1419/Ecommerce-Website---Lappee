@@ -3,7 +3,7 @@
 
     <div class="table-border {{tablebordercolor}} box-shadow">
     
-        <div class="{{tableContainerClass}} table-container overflow-hidden w-100 position-relative rounded-4  {{table_container_bg}}  ">
+        <div class="{{tableContainerClass}} table-container overflow-hidden w-100 position-relative rounded-4 overflow-x-auto {{table_container_bg}}  ">
         
             <div class="table-header  justify-content-between align-items-center pb-2 pt-2 mb-3" *ngIf="tableHead">
                 <div class="row w-100 mx-0 ">
@@ -172,7 +172,7 @@
             </div>
     
         
-            <div class="{{tableChildContainer}} overflow-x-auto ">
+            <div class="table-parent-container {{tableChildContainer}} ">
                 <!--With Pagination-->
                 <table class="table table-striped" *ngIf="paginate === true">
                     <thead>
@@ -277,7 +277,7 @@
                 </table>
                 
                 <!--Without Pagination -->
-                <table class="table " *ngIf="paginate === false">
+                <table class="table overflow-x-auto" *ngIf="paginate === false">
                     
                     <thead >
                         <tr >
@@ -416,8 +416,6 @@
                                             <i class="bi bi-three-dots fs-5"></i> 
                                         </button>
                                     </ng-container>
-
-                                    
                                     <ng-container *ngIf="orderBtnSet" >
                                         <button 
                                             *ngIf="item.status === paymentStatus"

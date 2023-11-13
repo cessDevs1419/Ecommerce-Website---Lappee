@@ -37,7 +37,7 @@
     </ul>
     
 
-    <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 start-0 position-fixed h-100 ">
+    <div [class.active-button]="isClassToggled" class="sidebar z-2 d-flex flex-column flex-shrink-0 start-0 position-fixed h-100 overflow-auto">
         <div [class.active-header]="isClassToggled" class="burger-container header-tools h-auto px-4 pt-2 ms-2">
             <div [class.change]="isClassToggled" class="burger" (click)="toggleClass()">
                 <div class="bar1"></div>

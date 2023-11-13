@@ -85,7 +85,9 @@ table th{
   border-right: 0;
   border-bottom: 0;
 }
-
+.table-parent-container{
+  min-width: 800px;
+}
 table{
   border-spacing: 0;
   border-collapse: separate;
@@ -94,6 +96,7 @@ table{
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
+
 }
 
 td{
