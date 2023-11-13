@@ -61,7 +61,7 @@ export class ProductsService {
 
   public getProductByCategory(id: string): Observable<any> {
     console.log(this.http.get(GETProductsByCategory + id))
-    return this.http.get(GETProductsByCategory + id)
+    return this.http.get(GETProductsByCategory + id, this.httpOptions)
   }
   
   getNewProducts(): Observable<any> {

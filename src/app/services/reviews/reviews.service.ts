@@ -22,7 +22,7 @@ export class ReviewsService {
   constructor(private http: HttpClient) { }
 
   public getReviews(id: string): Observable<any> {
-    return this.http.get<ReviewList>(GETReviews + id);
+    return this.http.get<ReviewList>(GETReviews + id, this.httpOptions);
   }
 
   public postReview(data: FormData): Observable<any> {
