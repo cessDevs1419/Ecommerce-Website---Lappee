@@ -32,7 +32,8 @@
             <a [routerLink]="['/home']">View All</a>
         </div>
 
-       <app-product-carousel [products]="products" [itemsPerPage]="4"></app-product-carousel>
+        <app-outline-circle-spinner class="ms-3" *ngIf="isLoading"></app-outline-circle-spinner>
+        <app-product-carousel [products]="products" [itemsPerPage]="4" *ngIf="!isLoading"></app-product-carousel>
     </div>
 
 
@@ -47,7 +48,8 @@
         <a [routerLink]="['/home']">View All</a>
     </div>
 
-    <app-product-carousel [products]="products" [itemsPerPage]="4"></app-product-carousel>
+    <app-outline-circle-spinner class="ms-3" *ngIf="isLoading"></app-outline-circle-spinner>
+    <app-product-carousel [products]="products" [itemsPerPage]="4" *ngIf="!isLoading"></app-product-carousel>
 
     <!-- <button class="btn btn-primary mt-5" (click)="toastRand()">Toast!</button> -->
 </div>

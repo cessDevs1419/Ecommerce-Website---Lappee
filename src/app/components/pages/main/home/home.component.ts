@@ -23,6 +23,8 @@ export class HomeComponent {
   categories: Observable<Category[]>;
   products: CategoryProduct[] = [];
 
+  isLoading: boolean = true;
+
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent; 
 
@@ -30,7 +32,8 @@ export class HomeComponent {
     this.productsService.getProducts().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
       next: (products: CategoryProduct[]) => {
         this.products = products;
-        console.log(this.products)
+        this.isLoading = false;
+        console.log(this.products);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error)
