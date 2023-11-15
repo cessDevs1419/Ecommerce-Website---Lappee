@@ -264,7 +264,7 @@ import { AdminOrderCancelledComponent } from './components/pages/admin/admin-ord
           {path: 'order-ship', component: AdminOrderShipComponent},
           {path: 'order-shipping', component: AdminOrderShippingComponent},
           {path: 'order-delivered', component: AdminOrderDeliveredComponent},
-          {path: 'order-cancel', component: AdminOrderCancelComponent},
+        //   {path: 'order-cancel', component: AdminOrderCancelComponent},
           {path: 'order-cancelled', component: AdminOrderCancelledComponent},
           {path: 'courier-management', component: AdminCourierManagementComponent},
           {path: 'stocks-management', component: AdminStocksManagementComponent},
