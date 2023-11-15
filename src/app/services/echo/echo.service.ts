@@ -21,11 +21,11 @@ export class EchoService {
       wsHost: window.location.hostname,
       wsPort: 6001,
       disableStats: true,
-      authEndpoint: 'http://localhost:8000/laravel-websockets/auth',
+      authEndpoint: 'http://localhost:8000/broadcasting/auth',
       csrfToken: this.token,
       auth: {
         headers: {
-          'X-XSRF-TOKEN': this.token,
+        //   'X-XSRF-TOKEN': this.token,
           'Accept': 'application/json',
           'Access-Control-Allow-Origin': '*',
           'X-APP-ID': '12345'
