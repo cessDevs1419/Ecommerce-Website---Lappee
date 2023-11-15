@@ -302,7 +302,12 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     packed_date: data.packed_date,
     shipped_date: data.shipped_date,
     delivered_date: data.delivered_date,
-    cancellable: data.cancellable
+    cancellable: data.cancellable,
+    address: data.address,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code,
+    contact_number: data.contact_number,
   }))
 }
 

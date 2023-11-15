@@ -23,7 +23,7 @@
                     <p class="" *ngIf="order[0].status == 15"><i class="bi bi-exclamation-triangle-fill me-3"></i>Your cancellation request is awaiting approval.</p>
                     <p class="" *ngIf="order[0].status == 10" ><i class="bi bi-x-octagon-fill me-3"></i>This order has been canceled.</p>
                 </div>
-                <div class="">
+                <div class="" *ngIf="!this.isCancelRequest">
                     <ul class="progress-bar">
                         <li class="progress-steps active-step">
                             <div class="d-flex flex-column">
@@ -132,18 +132,18 @@
                     <p class="m-0">Cash on Delivery</p>
                 </div>
             </div>
-            <div class="bg-light-gray p-3 mt-3 w-100">
+            <div class="bg-light-gray p-3 mt-3 w-100" *ngIf="this.user | async; let user">
                 <p class="m-0 fw-bold fs-4">Contact Details</p>
                 <div class="w-100 border-bottom my-2"></div>
                 
                 <p class="m-0 muted-text">Name</p>
-                <p class="fw-bold">Wendell Lance</p>
+                <p class="fw-bold">{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
 
                 <p class="m-0 muted-text">Contact Number</p>
-                <p class="">0911 111 1111</p>
+                <p class="">{{ order[0].contact_number ?? 'NA'}}</p>
 
                 <p class="m-0 muted-text">Address</p>
-                <p class="m-0">Address Line, City, Province</p>
+                <p class="m-0">{{order[0].address}}, {{ order[0].city }}, {{ order[0].province }}, {{ order[0].zip_code }}</p>
             </div>
         </div>
     </div>

@@ -10,6 +10,8 @@ import { Observable, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { POSTCancelOrder } from 'src/app/services/endpoints';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { User } from 'src/assets/models/user';
 
 @Component({
   selector: 'app-order-details',
@@ -20,10 +22,11 @@ export class OrderDetailsComponent {
 
 
   Number = Number;
-  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService) {
+  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService) {
     this.orderId = String(this.route.snapshot.paramMap.get('orderId'))
   }
 
+  user: Observable<User> = this.accountService.getLoggedUser();
   mode: string;
   orderId: string = "";
   orderDetails: Observable<OrderDetail[]>;
@@ -65,7 +68,7 @@ export class OrderDetailsComponent {
     
     this.orderService.postCancelOrder(formData).subscribe({
       next: (response: any) => {
-        this.toaster.showToast('Success!', 'Your request is now pending approval.', 'default');
+        this.toaster.showToast('Success!', 'Your order has been cancelled.', 'default');
         this.isCancelRequest = true;
         this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
       },

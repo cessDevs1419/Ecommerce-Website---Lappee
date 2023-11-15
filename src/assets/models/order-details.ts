@@ -19,7 +19,12 @@ export interface OrderDetail {
     shipped_date: string,
     delivered_date: string,
     order_contents: OrderContent[],
-    cancellable: boolean
+    cancellable: boolean,
+    address: string,
+    city: string,
+    province: string,
+    zip_code: string,
+    contact_number: string|null,
 }
     
 
