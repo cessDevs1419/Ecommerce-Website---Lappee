@@ -88,11 +88,11 @@ export class AdminProductsComponent {
     }
     
     WarningToast(value: any): void {
-        this.toaster.showToast(value.head, value.sub, 'warn', '', )
+        this.toaster.showToast(value.errorMessage, value.suberrorMessage, 'warn', '', )
     }
     
     ErrorToast(value: any): void {
-        this.toaster.showToast(value.head, value.sub, 'negative', '', )
+        this.toaster.showToast(value.errorMessage, value.suberrorMessage, 'negative', '', )
     }
     
 	

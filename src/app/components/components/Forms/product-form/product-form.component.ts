@@ -6,7 +6,7 @@ import { AdminCategory, NewAdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminSubcategories, formatAttributes, formatProducts} from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminSubcategories, formatAttributes, formatProductObj, formatProducts} from 'src/app/utilities/response-utils';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
@@ -87,7 +87,7 @@ export class ProductFormComponent {
 	attributes!: Observable<NewAdminCategory[]>;
 	categoryAttributes!: Observable<NewAdminCategory>;
     products!: Observable<Product[]>;
-    
+    productDetails!: Observable<Product>;
     variantsList: FormArray = this.formBuilder.array([]);
     imageList: FormArray = this.formBuilder.array([]);
     attributesList: FormArray = this.formBuilder.array([]);
@@ -205,19 +205,17 @@ export class ProductFormComponent {
         this.variantsArray = this.addProductForm.get('variants') as FormArray;
         // this.variantForms.push({ index: 0, isVisible: true });
         // this.isFormSave = false
+
     }
     
     ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
+        if (this.selectedRowData) {
+            this.productDetails = this.product_service.getProductDetails(this.selectedRowData).pipe(map((Response: any) => formatProductObj(Response)));
+        }
         
-        // this.attributes = this.refreshData$.pipe(
-        //     startWith(undefined), 
-        //     switchMap(() => this.attribute_service.getAttribute()),
-        //     map((Response: any) => formatAttributes(Response))
-        // );
-	
     }
 
     isStockZeroOrNegative(form: FormGroup): boolean {

@@ -65,8 +65,8 @@ export class AdminParentFormComponent {
 			this.EditAdditionalVariant = page === 'variant' && action === 'edit/additional/from';
 			this.EditDatabaseVariant = page === 'variant' && action === 'edit/';
 			this.selectedRowData = id
-			
 		});
+		
 	}
 
 	

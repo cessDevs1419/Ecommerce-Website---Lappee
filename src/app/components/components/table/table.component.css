@@ -87,6 +87,12 @@ table th{
 }
 .table-parent-container{
   min-width: 800px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; 
+}
+.table-parent-container::-webkit-scrollbar{
+  display: none;  /* Safari and Chrome */
+
 }
 table{
   border-spacing: 0;

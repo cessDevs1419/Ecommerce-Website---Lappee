@@ -25,6 +25,8 @@ export class OrdersFormComponent {
     bordercolor: string = 'dark-subtle-borders'
     titleColor : string = 'dark-theme-text-color';
 	itemColor: string = 'text-white-50';
+    selectedReason: string = '';
+
     @Input() selectedRowData!: any;
     @Input() formConfirm!: boolean;
     @Input() formPacked!: boolean;
@@ -40,7 +42,7 @@ export class OrdersFormComponent {
     tobeDelivered: FormGroup;
     Delivered: FormGroup;
     canceled: FormGroup;
-
+    HoldsOrder: FormGroup;
     constructor(
         private orderService: OrderService
     ){
@@ -61,7 +63,9 @@ export class OrdersFormComponent {
             todliver: new FormControl(200)
         });
 
-        
+        this.HoldsOrder = new FormGroup({
+            reason: new FormControl(200)
+        });
     }
     
     
@@ -78,6 +82,9 @@ export class OrdersFormComponent {
         });
     }
 
+    onRadioChange(reason: string): void {
+      this.selectedReason = reason;
+    }
     
     confirmPayment(){  
         
@@ -118,16 +125,16 @@ export class OrdersFormComponent {
                     }
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: errorsArray,
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
                     this.OrderWarn.emit(errorDataforProduct);
                 } else {
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: 'Please Try Another One',
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
                     };
                     this.OrderError.emit(errorDataforProduct);
                 }
@@ -177,16 +184,16 @@ export class OrdersFormComponent {
                     }
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: errorsArray,
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
                     this.OrderWarn.emit(errorDataforProduct);
                 } else {
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: 'Please Try Another One',
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
                     };
                     this.OrderError.emit(errorDataforProduct);
                 }
@@ -235,16 +242,16 @@ export class OrdersFormComponent {
                     }
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: errorsArray,
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
                     this.OrderWarn.emit(errorDataforProduct);
                 } else {
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: 'Please Try Another One',
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
                     };
                     this.OrderError.emit(errorDataforProduct);
                 }
@@ -259,10 +266,6 @@ export class OrdersFormComponent {
         let formData: any = new FormData();
         formData.append('order_id',  this.selectedRowData.id);
         formData.append('tracking_no',  this.Delivered.get('todliver')?.value);
-        
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        } 
         
         this.orderService.patchDeliver(formData).subscribe({
             next: async(response: any) => { 
@@ -293,16 +296,16 @@ export class OrdersFormComponent {
                     }
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: errorsArray,
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
                     this.OrderWarn.emit(errorDataforProduct);
                 } else {
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: 'Please Try Another One',
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
                     };
                     this.OrderError.emit(errorDataforProduct);
                 }
@@ -346,16 +349,16 @@ export class OrdersFormComponent {
                     }
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: errorsArray,
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
                     this.OrderWarn.emit(errorDataforProduct);
                 } else {
                 
                     const errorDataforProduct = {
-                        errorMessage: 'Error Invalid Inputs',
-                        suberrorMessage: 'Please Try Another One',
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
                     };
                     this.OrderError.emit(errorDataforProduct);
                 }
@@ -429,7 +432,61 @@ export class OrdersFormComponent {
         this.formHold = false
         this.Hold.emit(false)
     }
+
     holdOrders(){
-        console.log('hold my beer')
+        let formData: any = new FormData();
+        formData.append('order_id',  this.selectedRowData.id);
+        formData.append('reason',  this.selectedReason);
+        
+        for (const value of formData.entries()) {
+            console.log(`${value[0]}, ${value[1]}`);
+        } 
+
+        this.orderService.patchHold(formData).subscribe({
+            next: async(response: any) => { 
+                const successMessage = {
+                    head: 'Hold Order',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                this.OrderSuccess.emit(successMessage);
+
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); 
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
+                    };
+                
+                    this.OrderWarn.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
+                    };
+                    this.OrderError.emit(errorDataforProduct);
+                }
+                return throwError(() => error);
+            }
+            
+        });
     }
 }

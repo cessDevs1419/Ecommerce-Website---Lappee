@@ -129,16 +129,16 @@ export class AttributeFormComponent {
                         }
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
                         };
                     
                         this.ProductWarning.emit(errorDataforProduct);
                     } else {
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
                         };
                         this.ProductError.emit(errorDataforProduct);
                     }
@@ -159,8 +159,8 @@ export class AttributeFormComponent {
             }
 
             const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
+                head: `Please fill in the following required fields: `,
+                sub: emptyFields.join(', ')
             };
             this.ProductWarning.emit(errorData);
             
@@ -207,21 +207,22 @@ export class AttributeFormComponent {
             //             }
                     
             //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: errorsArray,
+            //                 head: 'Error Invalid Inputs',
+            //                 sub: errorsArray,
             //             };
                     
             //             this.ProductWarning.emit(errorDataforProduct);
             //         } else {
                     
             //             const errorDataforProduct = {
-            //                 errorMessage: 'Error Invalid Inputs',
-            //                 suberrorMessage: 'Please Try Another One',
+            //                 head: 'Error Invalid Inputs',
+            //                 sub: 'Please Try Another One',
             //             };
             //             this.ProductError.emit(errorDataforProduct);
             //         }
             //         return throwError(() => error);
-                    
+                
+            
             //     }
             // });
         
@@ -237,8 +238,8 @@ export class AttributeFormComponent {
             }
 
             const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
+                head: `Please fill in the following required fields: `,
+                sub: emptyFields.join(', ')
             };
             this.ProductWarning.emit(errorData);
             
@@ -294,16 +295,16 @@ export class AttributeFormComponent {
                         }
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
                         };
                     
                         this.ProductWarning.emit(errorDataforProduct);
                     } else {
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
                         };
                         this.ProductError.emit(errorDataforProduct);
                     }

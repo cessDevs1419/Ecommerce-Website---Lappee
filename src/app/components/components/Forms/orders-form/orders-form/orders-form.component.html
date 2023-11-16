@@ -64,10 +64,17 @@
                     <ul class="list-unstyled ">
                         <li class="text-decoration-none mb-3">
                             <div class="form-check">
-                                <input class="form-check-input mt-2 bg-none border-1" type="checkbox" value="" id="flexCheckChecked" checked>
+                                <input 
+                                    class="form-check-input mt-2 bg-none border-1" 
+                                    type="radio" 
+                                    [value]="'Scammer ang potaninga'"
+                                    name="reason"
+                                    [(ngModel)]="selectedReason"
+                                    (change)="onRadioChange('Scammer ang potaninga')"
+                                >
                                 <label class="form-check-label" for="flexCheckChecked">
-                                  <h4 class="{{textcolor}} m-0">REASON NAME FOR HOLDING</h4>
-                                  <p class="text-white-50 m-0">Lorem ipsum dolor sit amet consectetur. Nunc gravida sed id enim in augue auctor nulla. Id cras risus vel massa arcu. Ac vitae fermentum dolor quis feugiat. Diam sollicitudin purus cum a gravida dictum adipiscing nunc. Sagittis ultricies sed diam et.</p>
+                                  <h4 class="{{textcolor}} m-0">Scammer</h4>
+                                  <p class="text-white-50 m-0">Scammer ang potaninga</p>
                                 </label>
                             </div>
                         </li>

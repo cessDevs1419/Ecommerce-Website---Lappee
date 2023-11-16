@@ -154,6 +154,15 @@ img{
   .change .bar3 {
     transform: translate(0, -11px) rotate(45deg);
   }
+
+  .sidebar{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .sidebar::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
 @media screen and (max-width: 1250px) {
     .dashboard-header{
         background-color: #2E303D !important;
@@ -218,7 +227,7 @@ img{
 
 
 }
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 815px) {
     .logout{
         position: relative !important;
 

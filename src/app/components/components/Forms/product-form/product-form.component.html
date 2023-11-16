@@ -525,7 +525,7 @@
 </div>
 
 <div class="addProductForm pb-4" *ngIf="formEditProduct">
-    <form [formGroup]="addProductForm" >
+    <form [formGroup]="addProductForm" *ngIf="productDetails | async as products">
         <div class="products px-0 w-100 m-auto " >
             <div class="product-container  p-1 rounded-4  ">
                     <div class="container {{formColor}} p-4 rounded-4 box-shadow m-auto mt-0">
@@ -550,10 +550,9 @@
                                     id="addproductName" 
                                     name="addproductName" 
                                     formControlName="name"
-                                    placeholder="One Love"
+                                    [placeholder]="products.name"
                                     required
                                 >
-    
                             </div>
                                         
                             <div class="row">

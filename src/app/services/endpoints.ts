@@ -76,13 +76,16 @@ export const GETAdminOrderShipping: string = api + "api/admin/orders/list/shippi
 export const GETAdminOrderDelivered: string = api + "api/admin/orders/list/delivered";
 export const GETAdminOrderCancel: string = api + "api/admin/orders/cancellation-requests/index";
 export const GETAdminOrderCancelled: string = api + "api/admin/orders/list/cancelled";
+export const GETAdminOrderHold: string = api + "api/admin/orders/list/hold";
 export const GETAdminOrderDetail: string = api + "api/admin/orders/details?order_id=";
 export const PATCHPackStatus: string = api + "api/admin/orders/mark/to-pack"
 export const PATCHToShipStatus: string = api + "api/admin/orders/mark/to-ship"
 export const PATCHShipStatus: string = api + "api/admin/orders/mark/shipping"
 export const PATCHDeliverStatus: string = api + "api/admin/orders/mark/deliver"
+export const PATCHHold: string = api + "api/admin/orders/mark/hold"
 export const PATCHCancel: string = api + "api/admin/orders/cancellation-requests/approve"
 export const PATCHDeny: string = api + "api/admin/orders/cancellation-requests/deny"
+
 
 //Client
 export const GETOrderDetail: string = api + "api/client/orders/details?order_id=";

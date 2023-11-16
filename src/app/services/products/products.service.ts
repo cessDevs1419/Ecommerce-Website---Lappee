@@ -54,7 +54,7 @@ export class ProductsService {
   }
 
   getProductDetails(id: string): Observable<any> {
-    console.log(this.http.get(GETProductDetails + id))
+    // console.log(this.http.get(GETProductDetails + id))
     return this.http.get(GETProductDetails + id);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }

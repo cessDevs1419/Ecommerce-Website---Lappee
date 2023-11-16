@@ -225,16 +225,16 @@ export class CategoryFormComponent {
                         }
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
                         };
                     
                         this.CategoryWarn.emit(errorDataforProduct);
                     } else {
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
                         };
                         this.CategoryError.emit(errorDataforProduct);
                     }
@@ -255,8 +255,8 @@ export class CategoryFormComponent {
             }
 
             const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
+                head: `Please fill in the following required fields: `,
+                sub: emptyFields.join(', ')
             };
             this.CategoryWarn.emit(errorData);
             
@@ -320,16 +320,16 @@ export class CategoryFormComponent {
                         }
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
                         };
                     
                         this.CategoryWarn.emit(errorDataforProduct);
                     } else {
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
                         };
                         this.CategoryError.emit(errorDataforProduct);
                     }
@@ -350,8 +350,8 @@ export class CategoryFormComponent {
             }
 
             const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
+                head: `Please fill in the following required fields: `,
+                sub: emptyFields.join(', ')
             };
             this.CategoryWarn.emit(errorData);
             
@@ -390,11 +390,35 @@ export class CategoryFormComponent {
 
                 },
                 error: (error: HttpErrorResponse) => {
-                    const errorData = this.errorService.handleError(error);
-                    if (errorData.errorMessage === 'Unexpected Error') {
-                        this.CategoryError.emit(errorData);
+
+                    if (error.error?.data?.error) {
+                        const fieldErrors = error.error.data.error;
+                        const errorsArray = [];
+                    
+                        for (const field in fieldErrors) {
+                            if (fieldErrors.hasOwnProperty(field)) {
+                                const messages = fieldErrors[field];
+                                let errorMessage = messages;
+                                if (Array.isArray(messages)) {
+                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                                }
+                                errorsArray.push(errorMessage);
+                            }
+                        }
+                    
+                        const errorDataforProduct = {
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
+                        };
+                    
+                        this.CategoryWarn.emit(errorDataforProduct);
                     } else {
-                        this.CategoryWarn.emit(errorData);
+                    
+                        const errorDataforProduct = {
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
+                        };
+                        this.CategoryError.emit(errorDataforProduct);
                     }
                     return throwError(() => error);
                 }
@@ -415,8 +439,8 @@ export class CategoryFormComponent {
             }
 
             const errorData = {
-                errorMessage: `Please fill in the following required fields: `,
-                suberrorMessage: emptyFields.join(', ')
+                head: `Please fill in the following required fields: `,
+                sub: emptyFields.join(', ')
             };
             this.CategoryWarn.emit(errorData);
         }
@@ -445,8 +469,8 @@ export class CategoryFormComponent {
             },
             error: (error: HttpErrorResponse) => {
                 const customErrorMessages = {
-                    errorMessage: 'Invalid Request',
-                    suberrorMessage: 'There are subcategories under this category',
+                    head: 'Invalid Request',
+                    sub: 'There are subcategories under this category',
                 };
                 
                 const errorData = this.errorService.handleError(error, customErrorMessages);
@@ -485,8 +509,8 @@ export class CategoryFormComponent {
             },
             error: (error: HttpErrorResponse) => {
                 const customErrorMessages = {
-                    errorMessage: 'Invalid Request',
-                    suberrorMessage: 'There are subcategories under this category',
+                    head: 'Invalid Request',
+                    sub: 'There are subcategories under this category',
                 };
                 
                 const errorData = this.errorService.handleError(error, customErrorMessages);

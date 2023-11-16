@@ -1,1 +1,83 @@
-<p>admin-order-hold works!</p>
+<div class="container-fluid position-relative m-auto h-auto px-0 px-sm-3" >
+
+    <app-table
+        tableTitle="On Hold Orders"
+        subTitle="Status & Track Order List"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        searchBarclass="me-0"
+        [paginate]="false"
+        (DateValue)="getDate($event)"
+        (FilterValue)="getStatus($event)"
+        addbtnName="Add New"
+        [tableAction]="true"
+        [viewBtn]="true"
+        [actionForOrderBtn]="true"
+        [orderBtnSet]="true"
+        [tableHeaderActions]="true"
+        [paymentStatus]="paymentStatus"
+        [shipStatus]="shipStatus"
+        [deliverStatus]="deliverStatus"
+        [packStatus]="packStatus"
+        [setFirstUpper]="true"
+        [checkBtn]="true"
+        [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
+        [tableRows]="['id', 'created_at', 'status_name' ]"
+        [tableData]="orders"
+
+        (rowDataSelected)="onRowDataSelected($event)"
+    ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+</div>
+
+
+
+
+<app-modal
+    modalId="view"
+    modalTitle="Customer Information"
+    modalTitleClass="mb-3"
+    modalSubTitle="{{selectedRowData?.user_id}}"
+    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalClass="modal-md "
+    [modalHideIcon]="true"
+    modalIcon="view"
+    [allowAnotherSub]="true"
+    [modalViewOrders]="true"
+    (RefreshTable)="refreshTableData()"
+    [selectedRowData]="selectedRowData"
+    [modalData]="orders"
+    [modalSubData]="ordersContents$"
+></app-modal>
+
+<app-modal
+    modalId="confirm"
+    modalTitle="Confirm Order"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    [modalHideCloseBtn]="true"
+    [modalConfirm]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+></app-modal>
+
+<app-modal
+    modalId="delete"
+></app-modal>
+
+
+
+
+
+
