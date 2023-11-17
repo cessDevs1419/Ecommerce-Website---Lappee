@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CsrfService } from '../csrf/csrf.service';
 import Echo from 'laravel-echo';
+import { CookieService } from 'ngx-cookie-service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class EchoService {
   echo: any;
 
   token: string = this.csrf.getCsrfToken()
-  constructor(private csrf: CsrfService) {
+  constructor(private csrf: CsrfService, private http: HttpClient) {
 
     this.echo = new Echo({
       broadcaster: 'pusher',
@@ -21,16 +23,30 @@ export class EchoService {
       wsHost: window.location.hostname,
       wsPort: 6001,
       disableStats: true,
-      authEndpoint: 'http://localhost:8000/broadcasting/auth',
-      csrfToken: this.token,
-      auth: {
-        headers: {
-        //   'X-XSRF-TOKEN': this.token,
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'X-APP-ID': '12345'
-        },
-      },
+      authorizer: (channel: any, options: any) => {
+        return {
+          authorize: (socketId: any, callback: any) => {
+            this.http.post('http://localhost:8000/api/broadcasting/auth', {
+              socket_id: socketId,
+              channel_name: channel.name
+            }, {
+              withCredentials: true,
+              headers: {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'X-APP-ID': '12345'
+              }
+            },).subscribe({
+              next: (response: any) => {
+                callback(null, response)
+              },
+              error: (response: any) => {
+                callback(response);
+              }
+            });
+          }
+        }
+      }
     })
     
   }
