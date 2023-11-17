@@ -25,7 +25,7 @@
                 <a title="User Profile" [routerLink]="['/profile']" class="text-reset" >
                     <div class="d-flex flex-row" *ngIf="this.accountService.getLoggedUser() | async; let user">
                         <img class="navbar-profile-pic me-2" src="https://picsum.photos/500">
-                        {{ user.fname }}
+                        {{ user.fname ? user.fname : user.email}}
                     </div>
                 </a>
             </p>
