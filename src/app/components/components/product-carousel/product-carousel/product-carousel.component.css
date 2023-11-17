@@ -48,6 +48,8 @@
 }
 
 .button-primary {
+    width: 64px;
+    height: 64px;
     border-radius: 9999px;
     padding: 1rem;
 }
