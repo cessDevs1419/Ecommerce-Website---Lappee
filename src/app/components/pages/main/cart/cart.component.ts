@@ -25,6 +25,9 @@ export class CartComponent {
   Number = Number;
 
   mode: string = "";
+  modalSize: string = "modal-lg";
+
+  reminderShown: boolean = false;
 
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
@@ -126,8 +129,15 @@ export class CartComponent {
                     });
                   }
                   else {
-                    console.log('no matching address')
+                    console.log('no matching address');
                     this.isInfoRegistered = false;
+                    console.log("Reminder: " + sessionStorage.getItem('reminderShown'))
+                    if(sessionStorage.getItem('reminderShown') !== 'true'){
+                      setTimeout(() => {
+                        this.setupReminderModal();
+                      }, 3000);
+                      sessionStorage.setItem('reminderShown', 'true');
+                    }
                   }
                 },
                 error: (err: HttpErrorResponse) => {
@@ -142,6 +152,12 @@ export class CartComponent {
         }
       }
     });
+  }
+
+  setupReminderModal(): void {
+    this.mode = 'setup-reminder';
+    this.modalSize = 'modal-md';
+    this.modal.setupReminder();
   }
 
   selectAll() {
@@ -222,6 +238,7 @@ export class CartComponent {
 
   editCartItem(item: CartItem): void {
     this.mode = "edit-cart-item";
+    this.modalSize = 'modal-lg';
     this.modal.editCartItem(item);
   }
 

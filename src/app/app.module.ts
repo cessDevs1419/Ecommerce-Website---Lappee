@@ -113,6 +113,7 @@ import { AdminOrderCancelComponent } from './components/pages/admin/admin-order-
 import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-hold/admin-order-hold.component';
 import { CancelOrderComponent } from './components/components/modal-forms-client/cancel-order/cancel-order.component';
 import { AdminOrderCancelledComponent } from './components/pages/admin/admin-order-cancelled/admin-order-cancelled.component';
+import { SetupReminderComponent } from './components/components/modal-forms-client/setup-reminder/setup-reminder/setup-reminder.component';
 
 
 @NgModule({
@@ -214,6 +215,7 @@ import { AdminOrderCancelledComponent } from './components/pages/admin/admin-ord
     AdminOrderHoldComponent,
     CancelOrderComponent,
     AdminOrderCancelledComponent,
+    SetupReminderComponent,
   ],
   imports: [
     BrowserModule,

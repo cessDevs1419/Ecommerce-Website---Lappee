@@ -1,3 +1,4 @@
+<app-modal-client [mode]="this.mode" [modalSize]="'modal-md'"></app-modal-client>
 <div class="container-md" id="homeContainer">
     <!-- Banners -->
     <div class="d-flex justify-content-center align-items-center my-5 flex-column">
@@ -51,5 +52,5 @@
     <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
     <app-product-carousel [products]="products" [itemsPerPage]="4"[hidden]="isLoading"></app-product-carousel>
 
-    <!-- <button class="btn btn-primary mt-5" (click)="toastRand()">Toast!</button> -->
+    <button class="btn btn-primary mt-5" (click)="toastRand()">Toast!</button>
 </div>

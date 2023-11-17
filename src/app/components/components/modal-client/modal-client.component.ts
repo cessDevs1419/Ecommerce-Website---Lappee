@@ -52,6 +52,13 @@ export class ModalClientComponent {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement);
   }
 
+  // Setup Reminder Methods
+
+  setupReminder(){
+    this.modalTitle = "Profile Setup";
+    this.show();
+  }
+
   // Cancel Order Methods 
 
   cancelOrder(order_id: string){
