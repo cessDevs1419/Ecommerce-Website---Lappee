@@ -27,7 +27,13 @@
         </div>
     </div>
     <div class="col d-flex mt-3 mt-lg-0 justify-content-center justify-content-lg-end">
-        <div class="d-flex flex-row position-relative" *ngIf="(this.orders | async) as orders">
+        <a class="button-primary text-decoration-none border-1 cursor-pointer" [routerLink]="['/profile/orders']" *ngIf="(this.orders | async) as orders">
+            <div class="d-flex flex-column justify-content-center text-center">
+                <p class="fs-4 m-0"><i class="bi bi-box-seam-fill"></i></p>
+                <p class="fw-bold m-0">My Orders</p>
+            </div>
+        </a>
+        <!-- <div class="d-flex flex-row position-relative" *ngIf="(this.orders | async) as orders">
             <a [routerLink]="['/profile/orders']"><span class="link-span"></span></a>
             <div class="d-flex flex-column p-5 border-0 border-lg-start align-items-center">
                 <p class="m-0 color-primary fs-2 fw-bold">{{orders.length}}</p>
@@ -39,6 +45,6 @@
                 <p class="m-0 text-muted">ORDERS</p>
                 <p class="m-0 text-muted">REVIEWED</p>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
