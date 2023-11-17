@@ -253,6 +253,13 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     city: data.city,
     province: data.province,
     zip_code: data.zip_code,
+    confirmed_on: data.confirmed_on,
+    cancellable: data.cancellable,
+    cancellation_reason: data.cancellation_reason,
+    cancelled_on: data.cancelled_on,
+    contact_number: data.contact_number,
+    hold_reason: data.hold_reason,
+    hold_date: data.hold_date,
     status_name: data.status_name,
   }))
 }

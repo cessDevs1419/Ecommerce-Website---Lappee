@@ -62,6 +62,13 @@ export interface AdminOrder {
     city: string,
     province: string,
     zip_code: number,
+    confirmed_on: string,
+    cancellable: number,
+    cancellation_reason: string,
+    cancelled_on: string,
+    contact_number: string,
+    hold_reason: string,
+    hold_date: string,
     status_name: string,
 }
 
