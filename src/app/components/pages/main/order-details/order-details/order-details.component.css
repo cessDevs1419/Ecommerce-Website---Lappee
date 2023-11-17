@@ -64,7 +64,7 @@
 }
 
 .cancel-status p {
-    border: 1px solid var(--primary);
+    border: 1px solid var(--bs-danger);
     padding: 1rem;
-    color: var(--primary);
+    color: var(--bs-danger);
 }

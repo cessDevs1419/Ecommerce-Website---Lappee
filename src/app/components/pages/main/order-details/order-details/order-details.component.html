@@ -22,7 +22,7 @@
                 <div class="d-flex justify-content-center mb-1 cancel-status" *ngIf="this.isCancelRequest">
                     <p class="" *ngIf="order[0].status == 15"><i class="bi bi-exclamation-triangle-fill me-3"></i>Your cancellation request is awaiting approval.</p>
                     <p class="" *ngIf="order[0].status == 10" ><i class="bi bi-x-octagon-fill me-3"></i>This order has been canceled.</p>
-                    <p class="" *ngIf="order[0].status == 51" ><i class="bi bi-x-octagon-fill me-3"></i>This order is on hold, please contact an admin.</p>
+                    <p class="" *ngIf="order[0].status == 51" ><i class="bi bi-hourglass-split me-3"></i>This order is on hold, please contact an admin.</p>
                 </div>
                 <div class="" *ngIf="!this.isCancelRequest">
                     <ul class="progress-bar">
@@ -104,7 +104,7 @@
                     <span *ngIf="!checkProductStock(item.product_id, item.color_title, item.size)" class="text-muted">This item is out of stock.</span>
                     -->
                     <a class="button-primary rounded-0 w-100 text-decoration-none" [routerLink]="['/products', item.product_id]">Buy Again</a>
-                    <button *ngIf="!item.is_reviewed" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
+                    <button *ngIf="!item.is_reviewed && order[0].delivered_date" class="border-md-end border-none button-secondary-outline mt-md-3 mt-0 ms-3 ms-md-0 rounded-0 w-100" (click)="addReview(item)">Review Item</button>
                 </div>
             </div>
         </div>
