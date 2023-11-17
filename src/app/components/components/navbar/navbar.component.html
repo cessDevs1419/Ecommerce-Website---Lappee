@@ -1,5 +1,9 @@
 <div id="navbarContainer" *ngIf="!this.isAdminDashboard">
 
+    <div class="mb-0 p-2 msg-banner d-flex justify-content-center bg-danger" *ngIf="(this.accountService.getIsLoggedIn()) && (!this.isInfoRegistered) && (!this.setupDetailsResolved)">
+        <p class="m-0 text-white">WORK IN PROGRESS. Do not use real money for transactions.</p>
+    </div>
+
     <div class="mb-0 p-2 msg-banner d-flex justify-content-center bgcolor-primary" *ngIf="(this.accountService.getIsLoggedIn()) && (!this.isInfoRegistered) && (!this.setupDetailsResolved)">
         <p class="m-0 text-white">Set up your account first to purchase our products!</p>
         <a [routerLink]="['/profile']" class="ms-3 text-white">Setup Now</a>
