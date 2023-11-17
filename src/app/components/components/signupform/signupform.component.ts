@@ -15,6 +15,7 @@ export class SignupformComponent {
 
   circleLoader = OutlineCircleSpinnerComponent;
   @Output() registerSuccess: EventEmitter<string> = new EventEmitter(); 
+  @Output() registerFailed: EventEmitter<HttpErrorResponse> = new EventEmitter();
   response!: Observable<any>;
   isLoading: boolean = false;
 
@@ -70,7 +71,8 @@ export class SignupformComponent {
           this.signUpForm.reset();
         },
         error: (error: HttpErrorResponse) => {
-          return throwError(() => error)
+          this.isLoading = false;
+          this.registerFailed.emit(error);
         }
     });
     

@@ -26,6 +26,7 @@ export class SigninformComponent {
 
   @Output() loginSuccess: EventEmitter<any> = new EventEmitter();
   @Output() invalidCredentials: EventEmitter<any> = new EventEmitter();
+  @Output() loginError: EventEmitter<HttpErrorResponse> = new EventEmitter();
   response!: Observable<any>;
 
   signInForm = new FormGroup ({
@@ -71,9 +72,12 @@ export class SigninformComponent {
           }
         },
         error: (error: HttpErrorResponse) => {
+          this.isLoading = false;
           if(error.status === 401) {
-            console.log("Error 401");
             this.invalidCredentials.emit();
+          }
+          else {
+            this.loginError.emit(error);
           }
           return throwError(() => error);
         }

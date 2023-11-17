@@ -9,7 +9,7 @@
     </div>
     
     <div class="row my-5 flex-column flex-md-row align-items-center justify-content-center" *ngIf="!registerDone">
-        <app-signupform (registerSuccess)="registerSuccessToast($event)" class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="isSignIn"></app-signupform>
+        <app-signupform (registerSuccess)="registerSuccessToast($event)" (registerFailed)="registerFailedToast($event)" class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="isSignIn"></app-signupform>
     </div>
 
     <div class="row my-5" *ngIf="registerDone">

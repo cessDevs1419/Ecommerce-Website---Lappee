@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class LoginComponent {
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
-  constructor(private cookieService: CookieService, public accountService: AccountsService){
+  constructor(private cookieService: CookieService, public accountService: AccountsService, private eh: ErrorHandlerService){
     
   }
 
@@ -34,8 +36,12 @@ export class LoginComponent {
     this.toaster.showToast("Login successful!", "You are now logged in.", 'default');
   }
 
+  loginErrorToast(error: HttpErrorResponse): void {
+    this.toaster.showToast("Oops!", this.eh.handle(error), 'negative');
+  }
+
   invalidCredentialsToast(): void {
     
-    this.toaster.showToast("Login failed.", "Your credentials may be incorrect.", 'negative');
+    this.toaster.showToast("Oops!", "Your credentials are incorrect.", 'negative');
   }
 }

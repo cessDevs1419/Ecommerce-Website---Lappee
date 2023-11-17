@@ -1,4 +1,4 @@
-<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [maxToastsShown]="1"></app-toaster>
+<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [maxToastsShown]="1" [limitWidth]="false"></app-toaster>
 <!-- <div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
     <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
 </div> -->
@@ -8,6 +8,6 @@
         <div class="col py-3" [ngClass]="isSignIn ? 'inactive-hidden' : 'active-shown'" (click)="signUpToggle()">Sign Up</div>
     </div>
     <div class="row my-5 flex-column flex-md-row align-items-center justify-content-center">
-        <app-signinform  (loginSuccess)="loginSuccessToast()" (invalidCredentials)="invalidCredentialsToast()" class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="!isSignIn"></app-signinform>
+        <app-signinform  (loginSuccess)="loginSuccessToast()" (invalidCredentials)="invalidCredentialsToast()" (loginError)="loginErrorToast($event)" class="col-md mx-0 mx-md-5 my-2 my-md-0 px-5 px-md-0 entry-form" [hidden]="!isSignIn"></app-signinform>
     </div>
 </div>
