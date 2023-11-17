@@ -115,7 +115,8 @@ export class TableComponent {
 	@Input() bannedBtn: boolean;
 	@Input() setFirstUpper!: boolean;
 	@Input() showMinus!: boolean;
-	@Input()checkBtn!: boolean;
+	@Input() checkBtn!: boolean;
+	@Input() chatBtn!: boolean;
 	showCheckboxMinus: boolean;
 	isAllChecked: boolean;
 	selectedIds: number[] = [];

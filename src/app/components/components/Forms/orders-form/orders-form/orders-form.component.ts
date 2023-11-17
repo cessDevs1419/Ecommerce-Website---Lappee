@@ -29,12 +29,16 @@ export class OrdersFormComponent {
 
     @Input() selectedRowData!: any;
     @Input() formConfirm!: boolean;
+    @Input() formConfirmHold!: boolean;
     @Input() formPacked!: boolean;
     @Input() formShip!: boolean;
     @Input() formDelivered!: boolean;
     @Input() formCancel!: boolean;
     @Input() modalConfirmData!: any;
     @Input() modalData!: any;
+
+    showAmount: boolean = false;
+    showReason: boolean = false;
     formHold: boolean = false;
     imageSrc: string;
     tobePack: FormGroup;
@@ -43,6 +47,7 @@ export class OrdersFormComponent {
     Delivered: FormGroup;
     canceled: FormGroup;
     HoldsOrder: FormGroup;
+
     constructor(
         private orderService: OrderService
     ){
@@ -64,7 +69,8 @@ export class OrdersFormComponent {
         });
 
         this.HoldsOrder = new FormGroup({
-            reason: new FormControl(200)
+            amount: new FormControl('', Validators.required),
+            reason: new FormControl('', Validators.required),
         });
     }
     
@@ -83,6 +89,34 @@ export class OrdersFormComponent {
     }
 
     onRadioChange(reason: string): void {
+        switch (reason) {
+            case 'Insufficient Amount':
+                this.showReason = false
+                this.showAmount = true
+                
+            break;
+            
+            case 'Unclear Address':
+                this.showReason = false
+                this.showAmount = false
+
+            break;
+            
+            case 'Scammer':
+                this.showReason = false
+                this.showAmount = false
+               
+            break;
+            
+            case 'Others':
+                this.showReason = true
+                this.showAmount = false
+            break;
+            
+            default:
+                this.showReason = false
+                this.showAmount = false
+          }        
       this.selectedReason = reason;
     }
     
@@ -436,11 +470,40 @@ export class OrdersFormComponent {
     holdOrders(){
         let formData: any = new FormData();
         formData.append('order_id',  this.selectedRowData.id);
-        formData.append('reason',  this.selectedReason);
-        
-        for (const value of formData.entries()) {
-            console.log(`${value[0]}, ${value[1]}`);
-        } 
+        switch (this.selectedReason) {
+            case 'Insufficient Amount':
+                this.showReason = false
+                this.showAmount = true
+                formData.append('reason',  'Insufficient Amount - Kindly meet the required total price for processing. \n total price = '+ this.HoldsOrder.get('amount')?.value);
+            break;
+            
+            case 'Unclear Address':
+                this.showReason = false
+                this.showAmount = false
+                formData.append('reason',  'Unclear Address - Unable to locate due to unclear address. Please verify for accurate delivery.');
+            break;
+            
+            case 'Scammer':
+                this.showReason = false
+                this.showAmount = false
+                formData.append('reason',  'Scammer - Potential scam detected. Further verification required for security purposes.');
+            break;
+            
+            case 'Others':
+                this.showReason = true
+                this.showAmount = false
+                formData.append('reason',  this.HoldsOrder.get('reason')?.value);
+            break;
+            
+            default:
+                this.showReason = false
+                this.showAmount = false
+                formData.append('reason',  this.selectedReason);
+        }     
+
+        // for (const value of formData.entries()) {
+        //     console.log(`${value[0]}, ${value[1]}`);
+        // } 
 
         this.orderService.patchHold(formData).subscribe({
             next: async(response: any) => { 

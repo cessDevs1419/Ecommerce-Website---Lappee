@@ -6,7 +6,7 @@ import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
-import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest } from "src/assets/models/order-details";
+import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest, AdminCancelledOrderList, AdminCancelledOrder } from "src/assets/models/order-details";
 import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
@@ -253,6 +253,35 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     city: data.city,
     province: data.province,
     zip_code: data.zip_code,
+    status_name: data.status_name,
+  }))
+}
+
+export function formatAdminCancelledOrder(response: AdminCancelledOrderList): AdminCancelledOrder[] {
+  return response.data.map((data: AdminCancelledOrder) => ({
+    id: data.id,
+    user_id: data.user_id,
+    status: data.status,
+    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
+    paid: data.paid,
+    tracking_no: formatDate(data.tracking_no, 'medium', 'en_PH'),
+    packed_date: formatDate(data.packed_date, 'medium', 'en_PH') ,
+    shipped_date: formatDate(data.shipped_date, 'medium', 'en_PH'),
+    delivered_date: formatDate(data.delivered_date, 'medium', 'en_PH'),
+    total_price: data.total_price,
+    address_line_1: data.address_line_1,
+    address_line_2: data.address_line_2,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code,
+    confirmed_on: data.confirmed_on,
+    cancellable: data.cancellable,
+    cancellation_reason: data.cancellation_reason,
+    cancelled_on: data.cancelled_on,
+    contact_number: data.contact_number,
+    hold_reason: data.hold_reason,
+    hold_date: data.hold_date,
     status_name: data.status_name,
   }))
 }

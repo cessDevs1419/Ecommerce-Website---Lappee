@@ -481,6 +481,16 @@
                                         <i class="bi bi-check-lg fs-5  {{textcolor}}"></i>
                                     </button>
                                     <button
+                                        (click)="sendRowData(item)"
+                                        *ngIf="chatBtn"
+                                        type="button"
+                                        data-bs-toggle="modal" data-bs-target="#chat"
+                                        [title]="'Confirm Payment'"
+                                        class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
+                                    >
+                                        <i class="bi bi-chat-dots fs-5  {{textcolor}}"></i>
+                                    </button>
+                                    <button
                                         *ngIf="viewBtn"
                                         (click)="sendRowData(item)"
                                         type="button" 

@@ -81,6 +81,39 @@ export interface AdminOrderCancelRequest {
     status_name: string,
 }
 
+export interface AdminCancelledOrderList {
+    success: string,
+    message: string,
+    data: AdminCancelledOrder[]
+}
+
+export interface AdminCancelledOrder {
+    id: string,
+    user_id: string,
+    status: number,
+    created_at: string,
+    updated_at: string,
+    paid: number,
+    tracking_no: string,
+    packed_date: string,
+    shipped_date: string,
+    delivered_date: string,
+    total_price: string,
+    address_line_1: string,
+    address_line_2: string,
+    city: string,
+    province: string,
+    zip_code: number,
+    confirmed_on: string,
+    cancellable: number,
+    cancellation_reason: string,
+    cancelled_on: string,
+    contact_number: string,
+    hold_reason: string,
+    hold_date: string,
+    status_name: string,
+}
+
 export interface AdminOrderDetailList {
     success: string,
     message: string,

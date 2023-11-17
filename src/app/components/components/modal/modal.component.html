@@ -231,6 +231,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="container m-auto p-2" *ngIf="modalCancelledData">
+                    <hr class="divider  {{modalBorderColor}}">
+                    <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Cancellation Summary</h1>
+                    <ul class="list-unstyled" *ngFor="let item of modalCancelledData | async">
+                        <li class="text-decoration-none row mb-2">
+                            <div class="col-sm-8 text-start">
+                                <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">Reason: {{item.cancellation_reason}}</p>
+                                <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">Cancelled On: {{item.cancelled_on}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 
                 <form *ngIf="modalLogout" (ngSubmit)="onLogout()">
                     <div  class="modal-body text-center pt-0 pb-0">
@@ -246,6 +259,22 @@
                     *ngIf="modalConfirm"
                     (Hold)="setname($event)"
                     [formConfirm]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                    [modalConfirmData]="modalSubData"
+                    [modalData]="orderData"
+                >
+                
+                </app-orders-form>
+
+                <app-orders-form
+                    *ngIf="modalConfirmHold"
+                    (Hold)="setname($event)"
+                    [formConfirmHold]="true"
                     (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"

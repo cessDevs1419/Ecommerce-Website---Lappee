@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, throwError } from 'rxjs';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
     selector: 'app-attribute-form',
@@ -36,6 +37,7 @@ export class AttributeFormComponent {
     constructor(
         private attribute_service: AttributesService,
         private formBuilder: FormBuilder,
+        private errorService: ErrorHandlerService,
         private cdr: ChangeDetectorRef
     ){
         this.addAttributeForm = new FormGroup({
@@ -142,6 +144,7 @@ export class AttributeFormComponent {
                         };
                         this.ProductError.emit(errorDataforProduct);
                     }
+                    
                     return throwError(() => error);
                     
                 }

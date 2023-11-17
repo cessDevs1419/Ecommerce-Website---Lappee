@@ -70,12 +70,15 @@ export class ModalComponent {
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
 	@Input() allowAnotherSub!: boolean;
-    @Input() modalConfirm!: boolean;  
+    @Input() modalChat!: boolean;  
+    @Input() modalConfirm!: boolean; 
+    @Input() modalConfirmHold!: boolean; 
     @Input() modalPacked!: boolean;  
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
     @Input() modalCancel!: boolean;
 	@Input() modalData!: Observable<any>;
+    @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
 	selectedAttributeData: any;
@@ -149,7 +152,6 @@ export class ModalComponent {
         }else{
             this.modalTitle = 'Confirm Payment'
         }
-        console.log('de')
     }
     sendAttribute(value: any){
         this.selectedAttributeData = value

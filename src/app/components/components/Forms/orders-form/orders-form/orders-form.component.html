@@ -60,24 +60,100 @@
     <div class="w-100 hold transition position-absolute start-0 h-100" [ngClass]="formHold ? 'toleft transition':''">
         <div class="container position-relative m-auto p-2 h-100"  >
             <form class="position-relative  h-100" (ngSubmit)="holdOrders()">   
-                <div class="container px-1 overflow-y-auto list-container ">
+                <div class="container px-2 overflow-y-auto list-container ">
                     <ul class="list-unstyled ">
                         <li class="text-decoration-none mb-3">
                             <div class="form-check">
                                 <input 
-                                    class="form-check-input mt-2 bg-none border-1" 
+                                    class="form-check-input mt-2 bg-none border-1 me-2" 
                                     type="radio" 
-                                    [value]="'Scammer ang potaninga'"
+                                    [value]="'Insufficient Amount'"
                                     name="reason"
                                     [(ngModel)]="selectedReason"
-                                    (change)="onRadioChange('Scammer ang potaninga')"
+                                    (change)="onRadioChange('Insufficient Amount')"
                                 >
                                 <label class="form-check-label" for="flexCheckChecked">
-                                  <h4 class="{{textcolor}} m-0">Scammer</h4>
-                                  <p class="text-white-50 m-0">Scammer ang potaninga</p>
+                                    <h4 class="{{textcolor}} m-0">Insufficient Amount</h4>
+                                    <p class="text-white-50 m-0">Kindly meet the required total price for processing.</p>
+                                    <div class="mt-1" *ngIf="showAmount">
+                                        <form [formGroup]="HoldsOrder">
+                                            <label class="form-label  {{textcolor}}">Amount</label>
+                                            <input formControlName="amount" type="number" class="form-control bg-none {{textcolor}} {{borderColor}}" >
+                                        </form>
+                                    </div>
                                 </label>
                             </div>
                         </li>
+                        <li class="text-decoration-none mb-3">
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input mt-2 bg-none border-1 me-2" 
+                                    type="radio" 
+                                    [value]="'Unclear Address'"
+                                    name="reason"
+                                    [(ngModel)]="selectedReason"
+                                    (change)="onRadioChange('Unclear Address')"
+                                >
+                                <label class="form-check-label" for="flexCheckChecked">
+                                  <h4 class="{{textcolor}} m-0">Unclear Address</h4>
+                                  <p class="text-white-50 m-0">Unable to locate due to unclear address. Please verify for accurate delivery.</p>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="text-decoration-none mb-3">
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input mt-2 bg-none border-1 me-2" 
+                                    type="radio" 
+                                    [value]="'Scammer'"
+                                    name="reason"
+                                    [(ngModel)]="selectedReason"
+                                    (change)="onRadioChange('Scammer')"
+                                >
+                                <label class="form-check-label" for="flexCheckChecked">
+                                  <h4 class="{{textcolor}} m-0">Scammer</h4>
+                                  <p class="text-white-50 m-0">Potential scam detected. Further verification required for security purposes.</p>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="text-decoration-none mb-3">
+                            <div class="form-check d-flex">
+                                <input 
+                                    class="form-check-input mt-2 bg-none border-1 me-2" 
+                                    type="radio" 
+                                    [value]="'Others'"
+                                    name="reason"
+                                    [(ngModel)]="selectedReason"
+                                    (change)="onRadioChange('Others')"
+                                >
+                                <label class="form-check-label w-100" for="flexCheckChecked">
+                                    <h4 class="{{textcolor}} m-0">Others</h4>
+                                    <div class="mt-1 w-100" *ngIf="showReason">
+                                        <form [formGroup]="HoldsOrder">
+                                            <label class="form-label  {{textcolor}}">Reason</label>
+                                            <textarea formControlName="reason" rows="3" class="form-control bg-none w-100 {{textcolor}} {{borderColor}}" ></textarea>
+                                        </form>
+                                    </div>
+                                </label>
+                            </div>
+                        </li>
+
+                        <!-- <li class="text-decoration-none mb-3">
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input mt-2 bg-none border-1 me-2" 
+                                    type="radio" 
+                                    [value]="'Database'"
+                                    name="reason"
+                                    [(ngModel)]="selectedReason"
+                                    (change)="onRadioChange('Database')"
+                                >
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    <h4 class="{{textcolor}} m-0">Database</h4>
+                                    <p class="text-white-50 m-0">Database</p>
+                                </label>
+                            </div>
+                        </li> -->
                     </ul>
                 </div>
 
@@ -178,6 +254,26 @@
             <button 
                 type="submit" 
                 class="btn btn-primary bg-light-primary glow-primary"
+            >
+                Confirm
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="container m-auto p-2 overflow-y-auto" *ngIf="formConfirmHold">
+    <form (ngSubmit)="confirmPayment()" >
+        <div class="modal-body text-center pt-0 pb-0">
+            <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure you want to confirm this order?</p>
+            <h1 class="text-primary fs-4 fw-bolder text-truncate" >{{selectedRowData?.id}}</h1>
+        </div>
+        
+        <div class="modal-footer border-0 justify-content-center mb-3">
+            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+            <button 
+                type="submit" 
+                class="btn btn-primary bg-light-primary glow-primary"
+
             >
                 Confirm
             </button>

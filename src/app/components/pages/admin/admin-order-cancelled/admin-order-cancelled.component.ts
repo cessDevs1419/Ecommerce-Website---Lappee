@@ -4,7 +4,7 @@ import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
+import { formatAdminCancelledOrder, formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
 
 @Component({
@@ -43,7 +43,7 @@ ngOnInit(): void{
   this.orders = this.refreshData$.pipe(
           startWith(undefined), 
           switchMap(() => this.service.getAdminOrdersCancelled()),
-          map((Response: any) => formatAdminOrder(Response))
+          map((Response: any) => formatAdminCancelledOrder(Response))
       );
       this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
         this.refreshTableData();
