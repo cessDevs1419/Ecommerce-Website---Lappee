@@ -1,1 +1,1 @@
-<div class="lds-dual-ring"></div>
+<div [ngClass]="{'lds-dual-ring-blue': isBlue, 'lds-dual-ring': !isBlue, 'size-small': size == 'small', 'size-medium': size == 'medium', 'size-large': size == 'size-large'}"></div>
