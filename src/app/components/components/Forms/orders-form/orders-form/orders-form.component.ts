@@ -461,6 +461,7 @@ export class OrdersFormComponent {
         this.formHold = true
         this.Hold.emit(true)
     }
+
     backtoconfirm(){
         // this.formConfirm = true
         this.formHold = false
@@ -474,32 +475,37 @@ export class OrdersFormComponent {
             case 'Insufficient Amount':
                 this.showReason = false
                 this.showAmount = true
-                formData.append('reason',  'Insufficient Amount - Kindly meet the required total price for processing. \n total price = '+ this.HoldsOrder.get('amount')?.value);
+                formData.append('reason',  'Insufficient Amount Paid - Customer sent a payment but did not meet the required amount.');
+                formData.append('balance', this.HoldsOrder.get('amount')?.value);
             break;
             
             case 'Unclear Address':
                 this.showReason = false
                 this.showAmount = false
-                formData.append('reason',  'Unclear Address - Unable to locate due to unclear address. Please verify for accurate delivery.');
+                formData.append('reason',  'Unclear Address - Customer\'s address is not complete or is unclear and confusing.');
+                formData.append('balance', null);
             break;
             
             case 'Scammer':
                 this.showReason = false
                 this.showAmount = false
-                formData.append('reason',  'Scammer - Potential scam detected. Further verification required for security purposes.');
+                formData.append('reason',  'Fraud Customer - Customer has a history of not completing orders.');
+                formData.append('balance', null);
             break;
             
             case 'Others':
                 this.showReason = true
                 this.showAmount = false
                 formData.append('reason',  this.HoldsOrder.get('reason')?.value);
+                formData.append('balance', null);
             break;
             
             default:
                 this.showReason = false
                 this.showAmount = false
                 formData.append('reason',  this.selectedReason);
-        }     
+                formData.append('balance', null);
+            }     
 
         // for (const value of formData.entries()) {
         //     console.log(`${value[0]}, ${value[1]}`);
