@@ -73,8 +73,8 @@
                                     (change)="onRadioChange('Insufficient Amount')"
                                 >
                                 <label class="form-check-label" for="flexCheckChecked">
-                                    <h4 class="{{textcolor}} m-0">Insufficient Amount</h4>
-                                    <p class="text-white-50 m-0">Kindly meet the required total price for processing.</p>
+                                    <h4 class="{{textcolor}} m-0">Insufficient Amount Paid</h4>
+                                    <p class="text-white-50 m-0">Customer sent a payment but did not meet the required amount.</p>
                                     <div class="mt-1" *ngIf="showAmount">
                                         <form [formGroup]="HoldsOrder">
                                             <label class="form-label  {{textcolor}}">Amount</label>
@@ -96,7 +96,7 @@
                                 >
                                 <label class="form-check-label" for="flexCheckChecked">
                                   <h4 class="{{textcolor}} m-0">Unclear Address</h4>
-                                  <p class="text-white-50 m-0">Unable to locate due to unclear address. Please verify for accurate delivery.</p>
+                                  <p class="text-white-50 m-0">Customer's address is not complete or is unclear and confusing.</p>
                                 </label>
                             </div>
                         </li>
@@ -111,8 +111,8 @@
                                     (change)="onRadioChange('Scammer')"
                                 >
                                 <label class="form-check-label" for="flexCheckChecked">
-                                  <h4 class="{{textcolor}} m-0">Scammer</h4>
-                                  <p class="text-white-50 m-0">Potential scam detected. Further verification required for security purposes.</p>
+                                  <h4 class="{{textcolor}} m-0">Fraud Customer</h4>
+                                  <p class="text-white-50 m-0">Customer has a history of not completing orders.</p>
                                 </label>
                             </div>
                         </li>
