@@ -1,0 +1,103 @@
+.product-card {
+    transition: box-shadow .2s, border .4s;
+    border: 1px solid var(--muted-gray);
+    border-radius: 10px;
+    max-height: 20rem;    
+}
+
+.card-img-container {
+    height: 25rem;
+    overflow: hidden;
+    border-radius: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-size: cover;
+    background-position: center center;
+}
+
+.product-card img {
+   
+    z-index: 0;
+    
+}
+
+.product-card .product-price {
+    color: var(--primary);
+
+}
+
+.product-card:hover {
+    box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.5);
+}
+
+.card-image-overlay {
+    position: absolute;
+    z-index: 1;
+    background-color: var(--body-text);
+    color: #FFFFFF;
+}
+
+.card-title {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.product-desc-img {
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+}
+
+input[type='radio']{
+    height: 0;
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    display: none;
+}
+
+.size-select-box {
+    cursor: pointer;
+    display: flex;
+    padding: .75rem 2rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: var(--muted-gray);
+    transition: all .4s;
+}
+
+.select-container input:checked + .size-select-box {
+    background-color: var(--primary);
+}
+
+.variant-label input:checked + .variant-box {
+    border: 1px solid var(--primary);
+    background-color: var(--primary);
+    color: white;
+}
+
+.product-label input:checked + .product-card {
+    border: 2px solid var(--primary);
+}
+
+.variant-box {
+    cursor: pointer;
+    border: 1px solid var(--muted-gray);
+    transition: border .4s, background-color .4s, color .4s
+}
+
+.variant-image {
+    height: 5rem;
+    width: 100%;
+}
+
+.white-space-pre {
+    white-space: pre;
+}
+
+.accordion {
+    transition: display .4s;
+}

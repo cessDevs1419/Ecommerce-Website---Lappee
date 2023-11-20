@@ -114,6 +114,8 @@ import { AdminOrderHoldComponent } from './components/pages/admin/admin-order-ho
 import { CancelOrderComponent } from './components/components/modal-forms-client/cancel-order/cancel-order.component';
 import { AdminOrderCancelledComponent } from './components/pages/admin/admin-order-cancelled/admin-order-cancelled.component';
 import { SetupReminderComponent } from './components/components/modal-forms-client/setup-reminder/setup-reminder/setup-reminder.component';
+import { MyStylesComponent } from './components/pages/main/my-styles/my-styles.component';
+import { MyStylesPrimerComponent } from './components/components/modal-forms-client/my-styles-primer/my-styles-primer.component';
 
 
 @NgModule({
@@ -216,6 +218,8 @@ import { SetupReminderComponent } from './components/components/modal-forms-clie
     CancelOrderComponent,
     AdminOrderCancelledComponent,
     SetupReminderComponent,
+    MyStylesComponent,
+    MyStylesPrimerComponent,
   ],
   imports: [
     BrowserModule,
@@ -246,6 +250,7 @@ import { SetupReminderComponent } from './components/components/modal-forms-clie
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
       {path: 'tos', component: TosComponent, title: 'Terms of Service'},
       {path: 'verify-email/:id/:token', component: VerifyEmailComponent, canActivate: [authGuard], title: 'Email Verification'},
+      {path: 'my-styles', component: MyStylesComponent, title: 'My Styles'},
 
       //admin
       {

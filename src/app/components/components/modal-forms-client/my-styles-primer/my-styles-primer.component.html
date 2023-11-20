@@ -1,0 +1,21 @@
+<div class="d-flex flex-column align-items-center p-3">
+    <div class="mt-3">
+        <img src="../../../../../assets/images/my-styles-shopping.svg" class="img-fluid max-wd-img">
+    </div>
+
+    <div class="text-center mt-1">
+        <p class="fw-bold fs-5">Explore and create new styles!</p>
+        <p>Select a pair of products to create your own style using our “My Styles” Feature. Browse along with our selection of clothing that will soothe your fashionista fantasies!</p>
+    </div>
+
+    <form [formGroup]="dontShowAgain">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="true" id="dontShowCheck" formControlName="dontShow">
+            <label class="form-check-label" for="dontShowCheck">
+              Don't show this again.
+            </label>
+          </div>
+    </form>
+
+    <button class="w-100 button-primary mt-3 text-decoration-none" (click)="dismissModal()">Get Started</button>
+</div>

@@ -49,12 +49,26 @@ export class ModalClientComponent {
   }
 
   ngAfterViewInit(): void {
-    this.modalEl = new bootstrap.Modal(this.modal.nativeElement);
+    this.modalEl = new bootstrap.Modal(this.modal.nativeElement, {backdrop: 'static', keyboard: false});
+  }
+
+  // My Styles Primer
+
+  myStylesPrimer() {
+    this.mode = 'my-styles-primer';
+    this.modalTitle = "My Styles";
+    console.log("Local Storage (Don't Show): " + (localStorage.getItem('myStylesDontShow') == 'true'));
+    console.log("Session Storage (Shown): " + (sessionStorage.getItem('myStylesShown') == 'true'))
+    
+    if(!(localStorage.getItem('myStylesDontShow') == 'true') && !(sessionStorage.getItem('myStylesShown') == 'true')){
+      this.show();
+    }
   }
 
   // Setup Reminder Methods
 
   setupReminder(){
+    this.mode = "setup-reminder";
     this.modalTitle = "Profile Setup";
     this.show();
   }
@@ -62,6 +76,7 @@ export class ModalClientComponent {
   // Cancel Order Methods 
 
   cancelOrder(order_id: string){
+    this.mode = "cancel-order"
     this.modalTitle = "Cancel Order";
     this.order = order_id;
     this.show();
@@ -110,6 +125,17 @@ export class ModalClientComponent {
   dismiss(): void {
     console.log('dismiss from modal');
     this.modalEl.hide();
+  }
+
+  dismissMyStyles(flag: boolean): void {
+    if(flag){
+      localStorage.setItem('myStylesDontShow', 'true');
+      this.modalEl.hide();
+    }
+    else {
+      sessionStorage.setItem('myStylesShown', 'true');
+      this.modalEl.hide();
+    }
   }
 
   activateToast(data: string[]): void {
