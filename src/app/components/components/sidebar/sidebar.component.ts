@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OnInit } from '@angular/core';
-import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { AdminNotification, AdminNotificationList } from 'src/assets/models/admin-notifications';
 import { NotificationsService } from 'src/app/services/notfications-service/notifications.service';
 import { formatNotificationsResponse } from 'src/app/utilities/response-utils';
@@ -67,7 +67,10 @@ export class SidebarComponent {
     this.notifications = this.refreshData$.pipe(
       startWith(undefined),
       switchMap(() => this.notification_service.getNotifications()),
-      map((Response: any) => formatNotificationsResponse(Response))
+      map((Response: any) => formatNotificationsResponse(Response)),
+      tap(() => {
+        this.notifs.loaded()
+      })
     );
     
     this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
