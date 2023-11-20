@@ -108,27 +108,31 @@
                 <li class="p-3"><a [routerLink]="['cart']" class="text-reset text-decoration-none"><i class="bi bi-cart"></i> Your Cart</a></li>
             </ul> -->
 
+            <!-- MOBILE MENU -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
                 <div class="offcanvas-header">
-                    <a title="Home" [routerLink]="['/']"><img src="../assets/logo.svg" class="img-fluid"></a>
+                    <a title="Home" [routerLink]="['/']" data-bs-dismiss="offcanvas"><img src="../assets/logo.svg" class="img-fluid"></a>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <hr>
                     <div id="" class="mb-0 mb-md-3 d-block d-md-none">
-                        <div class="container-md d-flex flex-row align-items-center fs-6" id="navbarInfo">
-                            <p class="fs-6 my-2 mx-auto" *ngIf="!this.accountService.getIsLoggedIn()"><a title="Login | Sign-up" [routerLink]="['/account']" class="text-reset">Login | Sign-up</a></p>
+                        <div class="d-flex flex-row align-items-center fs-6" id="navbarInfo">
+                            <div class="d-flex flex-column justify-content-center w-100" *ngIf="!this.accountService.getIsLoggedIn()">
+                                <p class="fs-6 my-2 me-3"><a title="Login" [routerLink]="['/login']" data-bs-dismiss="offcanvas" class="text-reset">Login</a></p>
+                                <p class="fs-6 my-2" ><a title="Register" [routerLink]="['/register']" data-bs-dismiss="offcanvas" class="text-reset">Register</a></p>
+                            </div>
 
-                            <div class="my-2 position-relative d-flex flex-row w-100" *ngIf="this.accountService.getIsLoggedIn()">
-                                <a [routerLink]="['profile']"><span class="link-span"></span></a>
-                                <div class="d-flex flex-row align-items-center" *ngIf="this.accountService.getLoggedUser() | async; let user">
+                            <div class="my-2 position-relative d-flex flex-row w-100 justify-content-center" *ngIf="this.accountService.getIsLoggedIn()">
+                                <a [routerLink]="['profile']" data-bs-dismiss="offcanvas"><span class="link-span"></span></a>
+                                <div class="d-flex flex-column align-items-center" *ngIf="this.accountService.getLoggedUser() | async; let user">
                                     <div>
                                         <img src="https://picsum.photos/200" class="navbar-profile-pic-lg me-3">
                                     </div>
                                     <div class="d-flex flex-column align-items-start justify-content-center" >
-                                        <p class="color-primary fw-bold fs-3 m-0">{{this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "")}}</p>
-                                        <a routerLink="['profile']" class="text-muted m-0 text-center text-lg-start">My Profile </a>
+                                        <p class="color-primary fw-bold fs-3 m-0">{{ user.fname ? user.fname : user.email}}</p>
                                     </div>
+                                    <a routerLink="['profile']" data-bs-dismiss="offcanvas" class="text-muted m-0 text-center text-lg-start">My Profile</a>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +149,7 @@
                             </div>
                         </li> -->
                         <li *ngFor="let category of categories | async" class="nav-item p-2">
-                            <a class="nav-link text-uppercase" [routerLink]="['/category', category.id]">{{category.name}}</a>
+                            <a class="nav-link text-uppercase" [routerLink]="['/category', category.id]" data-bs-dismiss="offcanvas">{{category.name}}</a>
                         </li>
                     </ul>
                 </div>
