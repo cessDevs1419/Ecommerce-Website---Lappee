@@ -619,7 +619,9 @@
                                                 <div class="col-sm-2 me-2">
                                                     <ng-container *ngIf="items.images.length > 0; else colorTemplate" >
                                                         <div class="color-container border rounded-3 overflow-hidden" *ngFor="let images of items.images">
+                                                            
                                                             <img [src]="images" class="w-100 h-100 border" alt="">
+
                                                         </div>
                                                     </ng-container>
                                                     <ng-template #colorTemplate>
@@ -643,12 +645,14 @@
                                                             </div>
                                                             <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
                                                                 <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}" >
-                                                                    <!-- <ng-container *ngIf="items.attributes.value.attribute_name === 'Color' || attribute.attribute_name === 'Colors'; else notcolor">
-                                                                        {{attribute.value}}
+                                                                    <ng-container *ngFor="let attributes of items.attributes">
+                                                                        <ng-container *ngIf="attributes.attribute_name === 'Color' || attributes.attribute_name === 'Colors'; else nocolor">
+                                                                            {{attributes.value}}
+                                                                        </ng-container>
+                                                                        <ng-template #nocolor >
+                                                                            {{attributes.value}}
+                                                                        </ng-template>
                                                                     </ng-container>
-                                                                    <ng-template #notcolor >
-                                                                        {{attribute.value}}
-                                                                    </ng-template> -->
                                                                 </h1>
                                                             </div>
                                                         </div>

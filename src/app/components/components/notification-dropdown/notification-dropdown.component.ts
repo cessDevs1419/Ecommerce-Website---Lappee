@@ -76,10 +76,8 @@ export class NotificationDropdownComponent {
   
         if (daysAgo === 0) {
           this.todayItems.push(item);
-          this.loaded()
         } else if (daysAgo <= 7) {
           this.earlierThisWeekItems.push(item);
-          this.loaded()
         }
       });
     });
@@ -104,10 +102,10 @@ export class NotificationDropdownComponent {
   
         if (daysAgo === 0) {
           this.todayItems.push(item);
-          this.loaded()
+
         } else if (daysAgo <= 7) {
           this.earlierThisWeekItems.push(item);
-          this.loaded()
+
         }
       });
     });

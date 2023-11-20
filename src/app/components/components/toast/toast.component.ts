@@ -67,7 +67,7 @@ export class ToastComponent {
 
       case 'unattended': {
         this.theme = "bi-question-circle-fill text-warning";
-        this.accent = "text-warning";
+        this.accent = "bg-warning";
         break;
       }
 

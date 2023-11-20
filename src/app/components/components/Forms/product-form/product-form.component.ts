@@ -136,6 +136,7 @@ export class ProductFormComponent {
     variantsLists: any[] =[]
     variantData: any[] = []
     private attributeServiceData: any[] = [];
+	isLoading: boolean = true;
 
     constructor(
 	    private http: HttpClient,
@@ -218,7 +219,9 @@ export class ProductFormComponent {
         }
         
     }
-
+	loaded(){
+		this.isLoading = false
+	}
     isStockZeroOrNegative(form: FormGroup): boolean {
         const stockControl = form.get('stock');
         if (stockControl?.value <= 0) {

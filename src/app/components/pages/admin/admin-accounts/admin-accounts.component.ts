@@ -74,7 +74,7 @@ export class AdminAccountsComponent implements OnInit {
             switchMap(() => this.user_service.getUsers()),
             map((response: any) => formatUser(response)),
             tap(() => {
-                this.chats.loaded()
+                this.table.loaded()
             })
         );
 	}
