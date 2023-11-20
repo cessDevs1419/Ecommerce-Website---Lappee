@@ -157,8 +157,10 @@ export class ProductsComponent {
         // initialize gallerize
         this.galleryRef.reset();
         product.variants.forEach((variant: Variant) => {
-          let url = variant.images[0];
-          this.galleryRef.addImage({src: url, thumb: url});
+          variant.images.forEach((img: string) => {
+            let url = img;
+            this.galleryRef.addImage({src: url, thumb: url});
+          });
         });
 
         console.log(this.imgArray);
