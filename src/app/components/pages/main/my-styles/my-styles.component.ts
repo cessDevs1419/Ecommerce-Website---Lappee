@@ -39,6 +39,8 @@ export class MyStylesComponent {
 
   get product1() { return this.product1Select.get('product1') }
   get product2() { return this.product2Select.get('product2') }
+  get variant1() { return this.product1Select.get('variant1') }
+  get variant2() { return this.product2Select.get('variant2') }
 
   ngOnInit(): void {
     this.products = this.productsService.getProducts().pipe(map((response: any) => formatCategoryProduct(response)));
@@ -54,6 +56,7 @@ export class MyStylesComponent {
 
   selectProduct1(product: CategoryProduct) {
     console.log(product);
+    this.variant1?.reset();
     this.productsService.getProductDetails(product.product_id).pipe(map((response: any) => formatProductObj(response))).subscribe({
       next: (response: any) => {
         this.selectedProduct1 = response;
@@ -77,6 +80,16 @@ export class MyStylesComponent {
     else {
       this.product1Select.markAllAsTouched();
     }
+  }
+
+  validatePage2(): void {
+    // if(this.product2Select.valid){
+    //   this.nextPage();
+    // }
+    // else {
+    //   this.product2Select.markAllAsTouched();
+    // }
+    this.nextPage();
   }
 
   nextPage(): void {
