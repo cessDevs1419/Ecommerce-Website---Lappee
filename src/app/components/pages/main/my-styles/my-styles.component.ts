@@ -5,7 +5,7 @@ import * as bootstrap from 'bootstrap';
 import { Observable, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatCategoryProduct, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
+import { formatCategoryProduct, formatProductAll, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
 import { CategoryProduct, Product, Variant } from 'src/assets/models/products';
 
 @Component({
@@ -17,7 +17,7 @@ export class MyStylesComponent {
 
   constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer) {}
   
-  products: Observable<CategoryProduct[]>
+  products: Observable<Product[]>
   //selectedProduct: Product;
   selectedProduct1: Product;
   selectedProduct2: Product;
@@ -45,7 +45,7 @@ export class MyStylesComponent {
   get variant2() { return this.product2Select.get('variant2') }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProducts().pipe(map((response: any) => formatCategoryProduct(response)));
+    this.products = this.productsService.getProductsAll().pipe(map((response: any) => formatProductAll(response)));
 
     setTimeout(() => {
       this.showPrimer();
@@ -60,23 +60,15 @@ export class MyStylesComponent {
 
   }
 
-  selectProduct1(product: CategoryProduct) {
+  selectProduct1(product: Product) {
     console.log(product);
     this.variant1?.reset();
-    this.productsService.getProductDetails(product.product_id).pipe(map((response: any) => formatProductObj(response))).subscribe({
-      next: (response: any) => {
-        this.selectedProduct1 = response;
-      }
-    });
+    this.selectedProduct1 = product;
   }
 
-  selectProduct2(product: CategoryProduct) {
-    console.log(product);
-    this.productsService.getProductDetails(product.product_id).pipe(map((response: any) => formatProductObj(response))).subscribe({
-      next: (response: any) => {
-        this.selectedProduct2 = response;
-      }
-    });
+  selectProduct2(product: Product) {
+    this.variant2?.reset();
+    this.selectedProduct2 = product;
   }
 
   selectVariant1(id: string): void {

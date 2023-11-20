@@ -100,14 +100,14 @@ export function formatProductObj(response: any): Product {
 }
 
 export function formatProductAll(response: any): Product[] {
-  let data = response.data
-  return response.data.map({
+  console.log(response);
+  return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
     description: data.description,
     category: data.category,
     variants: data.variants,
-  });
+  }));
 }
 
 export function formatCategoryProduct(response: any): CategoryProduct[] {
