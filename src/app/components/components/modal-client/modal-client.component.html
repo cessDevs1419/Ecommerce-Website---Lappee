@@ -16,6 +16,7 @@
                 <app-edit-cart-item *ngSwitchCase="'edit-cart-item'" [product]="this.product" (dismiss)="dismiss()"></app-edit-cart-item>
                 <app-cancel-order *ngSwitchCase="'cancel-order'" [order]="this.order" (dismiss)="dismiss()" (emitCancel)="emitCancelOrder($event)"></app-cancel-order>
                 <app-setup-reminder *ngSwitchCase="'setup-reminder'" (dismiss)="dismiss()"></app-setup-reminder>
+                <app-my-styles-primer *ngSwitchCase="'my-styles-primer'" (dismiss)="dismissMyStyles($event)"></app-my-styles-primer>
             </div>
         </div>
     </div>
