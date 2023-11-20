@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable, map } from 'rxjs';
@@ -21,7 +22,9 @@ import { Banner } from 'src/assets/models/sitedetails';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {  
-  constructor(private bannersService: BannersService, private categoryService: CategoriesService, private productsService: ProductsService, private deliveryInfoService: DeliveryinfoService, private accountService: AccountsService) {}
+  constructor(private bannersService: BannersService, private categoryService: CategoriesService, private productsService: ProductsService, private deliveryInfoService: DeliveryinfoService, private accountService: AccountsService, private bpo: BreakpointObserver) {}
+
+  itemsPerPage: number = 4;
   
   banners: Observable<Banner[]>;
   categories: Observable<Category[]>;
@@ -40,6 +43,16 @@ export class HomeComponent {
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
 
   ngOnInit(): void {
+    this.bpo.observe(['(min-width: 768px)']).subscribe((res: any) => {
+      if(res.matches) {
+       this.itemsPerPage = 4
+      }
+
+      else {
+        this.itemsPerPage = 3
+      }
+    });
+
     this.productsService.getProducts().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
       next: (products: CategoryProduct[]) => {
         this.products = products;

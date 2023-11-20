@@ -17,8 +17,6 @@ export class RegisterComponent {
   toastHeader: string = "";
   toastTheme: string = "default"; 
 
-  isSignIn: boolean = true;
-
   lastEmail: string = '';
   registerDone: boolean = false;
 
@@ -26,14 +24,6 @@ export class RegisterComponent {
 
   constructor(private cookieService: CookieService, public accountService: AccountsService, private eh: ErrorHandlerService){
     
-  }
-
-  signInToggle(): void {
-    this.isSignIn = true;
-  }
-
-  signUpToggle(): void {
-    this.isSignIn = false;
   }
 
   registerSuccessToast(email: string): void {
