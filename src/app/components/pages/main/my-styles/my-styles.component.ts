@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { formatCategoryProduct, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
-import { CategoryProduct, Product } from 'src/assets/models/products';
+import { CategoryProduct, Product, Variant } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-my-styles',
@@ -21,6 +21,8 @@ export class MyStylesComponent {
   //selectedProduct: Product;
   selectedProduct1: Product;
   selectedProduct2: Product;
+  selectedVariant1: Variant;
+  selectedVariant2: Variant;
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
 
@@ -54,6 +56,10 @@ export class MyStylesComponent {
     this.modal.myStylesPrimer();
   }
 
+  sliceArray(): void {
+
+  }
+
   selectProduct1(product: CategoryProduct) {
     console.log(product);
     this.variant1?.reset();
@@ -72,6 +78,22 @@ export class MyStylesComponent {
       }
     });
   }
+
+  selectVariant1(id: string): void {
+    this.selectedVariant1 = this.selectedProduct1.variants[this.matchVariantIndex(this.selectedProduct1, id)]
+    console.log(this.selectedVariant1);
+  }
+
+  selectVariant2(id: string): void {
+    this.selectedVariant2 = this.selectedProduct2.variants[this.matchVariantIndex(this.selectedProduct2, id)]
+    console.log(this.selectedVariant2);
+  }
+
+  matchVariantIndex(product: Product, variant_id: string): number {
+    return product.variants.findIndex((variant: Variant) => variant.variant_id == variant_id);
+  } 
+    
+    
 
   validatePage1(): void {
     if(this.product1Select.valid){

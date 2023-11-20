@@ -78,7 +78,7 @@
                                         <div *ngFor="let variant of selected.variants" class="select-container">
                 
                                             <label for={{variant.variant_id}} class="w-100 variant-label">
-                                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant1" />
+                                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant1" (click)="selectVariant1(variant.variant_id)" />
                                                 <div class="d-flex flex-row rounded-1 p-3 variant-box" *ngIf="variant.attributes as attr">
                                                     
                                                     <div class="">
@@ -182,7 +182,7 @@
                                         <div *ngFor="let variant of selected.variants" class="select-container">
                 
                                             <label for={{variant.variant_id}} class="w-100 variant-label">
-                                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant2" />
+                                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant2" (click)="selectVariant2(variant.variant_id)" />
                                                 <div class="d-flex flex-row rounded-1 p-3 variant-box" *ngIf="variant.attributes as attr">
                                                     
                                                     <div class="">
@@ -211,7 +211,39 @@
             </div>
 
             <div class="carousel-item">
-                last page
+                <div class="d-flex flex-column mt-5">
+                    <div class="d-flex justify-content-start">
+                        <span class="blue-accent me-3"></span>
+                        <p class="m-0 fs-3 fw-bold">My Styles</p>
+                    </div>
+                    <p class="ms-4">Review your chosen items.</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        summary
+                        <div class="row p-3 bg-grey" *ngIf="(selectedProduct1) && (selectedVariant1) as variant1">
+                            <div class="d-flex">
+                                <div class="col-5 me-3">
+                                    <img [src]="variant1.images[0]" class="img-fluid">
+                                    <div class="dark-subtle-bg p-1">
+                                        <p class="text-center text-white m-0">{{selectedProduct1.name}}</p> 
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex flex-column">
+                                    <div class="dark-subtle-bg p-3">
+                                        <p class="fw-bold text-white fs-5 m-0">Recommended Products</p> 
+                                    </div>
+                                    <div class="p-3 bg-light-gray">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        subtotal
+                    </div>
+                </div>
                 <button class="button-primary" (click)="prevPage()">Previous</button>
             </div>
         </div>
