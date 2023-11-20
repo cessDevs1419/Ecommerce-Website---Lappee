@@ -19,7 +19,7 @@
                 <button class="button-primary" (click)="this.isEditMode = true">Edit Profile</button>
             </div>
             <div class="row mt-3" *ngIf="this.user.fname && this.user.lname">
-                <div class="col fs-4">
+                <div class="col-md fs-4">
                     <p class="fw-bold fs-4">Contact Information</p>
                     <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
                     <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
@@ -35,10 +35,10 @@
                         </p>
                     </div>
                 </div>
-                <div class="col border-start fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
+                <div class="col-md fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
                     <p class="text-muted">Loading...</p>
                 </div>
-                <div class="col border-start fs-4 ps-4" *ngIf="(this.filteredInfo | async) as info">
+                <div class="col-md fs-4 ps-md-4" *ngIf="(this.filteredInfo | async) as info">
                     <p class="fw-bold fs-4">Address</p>
                     <div *ngIf="info.length === 0">
                         Setup your address through the edit profile form.
@@ -64,7 +64,7 @@
                 <p class="fw-bold fs-4">Personal Information</p>
                 
                 <div class="row mb-4">
-                    <div class="col">
+                    <div class="col-md">
                         <label for="editFirstName" class="form-label">First Name</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="editFirstName" formControlName="editFirstName" />
                         <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="editMiddleName" class="form-label">Middle Name (Optional)</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="editMiddleName" formControlName="editMiddleName" />
                         <!-- <div *ngIf="editMiddleName?.invalid && (editMiddleName?.dirty || editMiddleName?.touched)"> 
@@ -84,7 +84,7 @@
                         </div> -->
                     </div>
 
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="editLastName" class="form-label">Last Name</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="editLastName" formControlName="editLastName" />
                         <div *ngIf="editLastName?.invalid && (editLastName?.dirty || editLastName?.touched)"> 
@@ -94,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="editSuffix" class="form-label">Suffix (Optional)</label>
                         <input type="text" class="form-control form-control-lg rounded-0" id="editSuffix" formControlName="editSuffix" />
                         <!-- <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
@@ -128,7 +128,7 @@
                 </div> -->
 
                 <div class="row mb-3">
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="edit-stateprovince" class="form-label">State / Province</label>
                         <!-- <input type="text" class="form-control form-control-lg rounded-0" id="edit-stateprovince" formControlName="editProvince"/> -->
                         <select class="form-select form-select-lg rounded-0" id="edit-stateprovince" formControlName="editProvince">
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="edit-city" class="form-label">City / Municipality</label>
                         <!-- <input type="text" class="form-control form-control-lg rounded-0" id="edit-city" formControlName="editCity"/> -->
                         <select class="form-select form-select-lg rounded-0" id="edit-city" formControlName="editCity">
@@ -154,7 +154,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md mt-3 mt-md-0">
                         <label for="edit-zipcode" class="form-label">ZIP / Postal Code</label>
                         <input type="number" class="form-control form-control-lg rounded-0" id="edit-zipcode" formControlName="editZipCode" />
                         <div *ngIf="editZipCode?.invalid && (editZipCode?.dirty || editZipCode?.touched)"> 
@@ -171,10 +171,10 @@
                     <div class="input-group">
                         <span class="input-group-text rounded-0"><i class="bi bi-house-fill"></i></span>
                         <textarea type="text" class="form-control form-control-lg rounded-0" id="edit-addressline" formControlName="editAddressLine"></textarea>
-                        <div *ngIf="editProvince?.invalid && (editProvince?.dirty || editProvince?.touched)"> 
-                            <div *ngIf="editProvince?.errors?.['required']">
-                                <span class="text-danger">This field is required.</span>
-                            </div>
+                    </div>
+                    <div *ngIf="editProvince?.invalid && (editProvince?.dirty || editProvince?.touched)"> 
+                        <div *ngIf="editProvince?.errors?.['required']">
+                            <span class="text-danger">This field is required.</span>
                         </div>
                     </div>
                 </div>

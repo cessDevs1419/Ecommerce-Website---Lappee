@@ -145,3 +145,10 @@ gallery-image {
         margin-top: 0;
     }
 }
+
+@media screen and (max-width: 576px){
+    .sticky-column {
+        position: relative;
+        height: auto;
+    }
+}
