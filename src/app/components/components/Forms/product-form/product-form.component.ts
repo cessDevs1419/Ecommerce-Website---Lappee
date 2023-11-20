@@ -134,6 +134,7 @@ export class ProductFormComponent {
     attributesArrays: FormArray;
     rtfValue: string;
     variantsLists: any[] =[]
+    variantData: any[] = []
     private attributeServiceData: any[] = [];
 
     constructor(
@@ -319,8 +320,8 @@ export class ProductFormComponent {
         for (const file of this.addVariantForm.value.images) {
             this.checkImageResolution(file, (width, height, fileName) => {
                 const productWarn = {
-                    errorMessage: 'Add Variant',
-                    suberrorMessage: 'One of the Images Doesnt follow image rules'
+                    head: 'Add Variant',
+                    sub: 'One of the Images Doesnt follow image rules'
                 };
                 switch (true) {
                     case width < 720 || height < 1080:
@@ -370,8 +371,8 @@ export class ProductFormComponent {
         const imageArray = this.getFileKeys().length
         if(imageArray >= 3){
             const errorDataforProduct = {
-                errorMessage: 'Add Image',
-                suberrorMessage: 'Image must be no more than 3',
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
             };
         
             this.ProductWarning.emit(errorDataforProduct);
@@ -391,8 +392,8 @@ export class ProductFormComponent {
         const imageArray = this.getFileKeys().length
         if(imageArray + imageArrays.length >= 3){
             const errorDataforProduct = {
-                errorMessage: 'Add Image',
-                suberrorMessage: 'Image must be no more than 3',
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
             };
         
             this.ProductWarning.emit(errorDataforProduct);
@@ -427,8 +428,8 @@ export class ProductFormComponent {
         if (files.length > 3) {
         
             const errorDataforProduct = {
-                errorMessage: 'Add Image',
-                suberrorMessage: 'Image must be no more than 3',
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
             };
         
             this.ProductWarning.emit(errorDataforProduct);
@@ -483,8 +484,8 @@ export class ProductFormComponent {
 
         if (files.length > 3) {
             const errorDataforProduct = {
-                errorMessage: 'Add Image',
-                suberrorMessage: 'Image must be no more than 3',
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
             };
         
             this.ProductWarning.emit(errorDataforProduct);
@@ -650,16 +651,16 @@ export class ProductFormComponent {
             }
     
             const errorDataforProduct = {
-                errorMessage: errorMessage,
-                suberrorMessage: errorsArray,
+                head: errorMessage,
+                sub: errorsArray,
             };
         
             this.ProductWarning.emit(errorDataforProduct);
             
         } else {
             const errorDataforProduct = {
-                errorMessage: errorMessage,
-                suberrorMessage: 'Please Try Another One',
+                head: errorMessage,
+                sub: 'Please Try Another One',
             };
             this.ProductError.emit(errorDataforProduct);
         }
@@ -683,15 +684,15 @@ export class ProductFormComponent {
                 this.addVariantForm.reset()
             }else{
                 const productWarn = {
-                    errorMessage: 'Add Variant',
-                    suberrorMessage: 'Save Before You Add Another One!'
+                    head: 'Add Variant',
+                    sub: 'Save Before You Add Another One!'
                 };
                 this.ProductWarning.emit(productWarn)
             }
         }else{
             const productWarn = {
-                errorMessage: 'Add Variant',
-                suberrorMessage: 'Select Category First!'
+                head: 'Add Variant',
+                sub: 'Select Category First!'
             };
             this.ProductWarning.emit(productWarn)
         }
@@ -720,6 +721,11 @@ export class ProductFormComponent {
         this.editBtn = true;
         this.editAttributes = false
         this.editImages = false
+        this.addVariantForm.patchValue({
+            name: this.variantsLists[index].value.name,
+            stock: this.variantsLists[index].value.stock,
+            price: this.variantsLists[index].value.price,
+        });
     }
 
     get attributesArray() {
@@ -750,8 +756,8 @@ export class ProductFormComponent {
 
         if (this.isStockZeroOrNegative(addVariantForm) && this.isPriceZeroOrNegative(addVariantForm)) {
             const errorDataforProduct = {
-                errorMessage: 'Invalid Input',
-                suberrorMessage: 'Stocks and Price has invalid inputs'
+                head: 'Invalid Input',
+                sub: 'Stocks and Price has invalid inputs'
             };
             this.stockBorder = true
             this.priceBorder = true
@@ -761,8 +767,8 @@ export class ProductFormComponent {
         
         if (this.isStockZeroOrNegative(addVariantForm)) {
             const errorDataforProduct = {
-                errorMessage: 'Invalid Input',
-                suberrorMessage: 'Stocks has invalid inputs'
+                head: 'Invalid Input',
+                sub: 'Stocks has invalid inputs'
             };
             this.stockBorder = true
             this.ProductError.emit(errorDataforProduct);
@@ -771,8 +777,8 @@ export class ProductFormComponent {
         
         if (this.isPriceZeroOrNegative(addVariantForm)) {
             const errorDataforProduct = {
-                errorMessage: 'Invalid Input',
-                suberrorMessage: 'Price has invalid inputs'
+                head: 'Invalid Input',
+                sub: 'Price has invalid inputs'
             };
             this.priceBorder = true
             this.ProductError.emit(errorDataforProduct);
@@ -783,8 +789,8 @@ export class ProductFormComponent {
         
         if (imagesArray.value.length === 0) {
             const errorDataforProduct = {
-                errorMessage: 'Add Image',
-                suberrorMessage: 'Please Add Image'
+                head: 'Add Image',
+                sub: 'Please Add Image'
             };
 
             this.ProductError.emit(errorDataforProduct);
@@ -900,7 +906,9 @@ export class ProductFormComponent {
             }
             this.product_service.removeAllImg();
             this.isFormSave = false;
-            
+            if(this.variantsLists.length > 0){
+                this.addProductForm.get('category')?.disable()
+            }
             
         }else{
             addVariantForm.markAllAsTouched();
@@ -1012,14 +1020,14 @@ export class ProductFormComponent {
             this.checkImageResolution(file, (width, height, fileName) => {
                 if (width < 720 || height < 1080) {
                     const productWarn = {
-                        errorMessage: 'Add Variant',
-                        suberrorMessage: 'One of Images is Too Small'
+                        head: 'Add Variant',
+                        sub: 'One of Images is Too Small'
                     };
                     this.ProductWarning.emit(productWarn);
                 } else if (width > 2560 || height > 1440) {
                     const productWarn = {
-                        errorMessage: 'Add Variant',
-                        suberrorMessage: 'One of Images is Too Large'
+                        head: 'Add Variant',
+                        sub: 'One of Images is Too Large'
                     };
                     this.ProductWarning.emit(productWarn);
                 } else {
@@ -1030,7 +1038,7 @@ export class ProductFormComponent {
                     }
                     
                     if (this.variantsLists) {
-                        this.variantsLists.splice(index);
+                        this.variantsLists.splice(index, 1);
                         this.variantsLists.push(newVariantGroup);
                     }
                     
@@ -1060,8 +1068,6 @@ export class ProductFormComponent {
             });
         }
 
-
-        
         this.toggleAccordion(index);
 
     }
@@ -1225,16 +1231,16 @@ export class ProductFormComponent {
                         }
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: errorsArray,
+                            head: 'Error Invalid Inputs',
+                            sub: errorsArray,
                         };
                     
                         this.ProductWarning.emit(errorDataforProduct);
                     } else {
                     
                         const errorDataforProduct = {
-                            errorMessage: 'Error Invalid Inputs',
-                            suberrorMessage: 'Please Try Another One',
+                            head: 'Error Invalid Inputs',
+                            sub: 'Please Try Another One',
                         };
                         this.ProductError.emit(errorDataforProduct);
                     }

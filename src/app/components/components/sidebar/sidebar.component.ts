@@ -17,7 +17,8 @@ import { NotificationDropdownComponent } from '../notification-dropdown/notifica
 })
 export class SidebarComponent {
 
-  
+  @ViewChild(NotificationDropdownComponent) notifs: NotificationDropdownComponent;
+
   isClassToggled: boolean = false;
   toggleContent: boolean = false;
   toggleProduct: boolean = false;
@@ -41,7 +42,7 @@ export class SidebarComponent {
     this.isClassToggled = !this.isClassToggled;
   }
   
-  @ViewChild(NotificationDropdownComponent) notifs: NotificationDropdownComponent;
+  
   @Output() confirm: EventEmitter<any>
   @Input() headerName: string;
   @Input() admin!: boolean;
@@ -78,7 +79,6 @@ export class SidebarComponent {
 			const action = params.get('action');
 			const id = params.get('id') || null;
 
-      console.log(action, id)
 		});
   }
 
@@ -201,9 +201,11 @@ export class SidebarComponent {
   }
   getNotifationData(data: any){
       switch(data.type){
-        case 'order':
+        case 'alert':
           this.router.navigate(['/admin/order-management']);
         break;
+        default:
+          this.router.navigate(['/admin/order-management']);
       }
       
       this.notification_service.patchNotifications(data.id).subscribe({

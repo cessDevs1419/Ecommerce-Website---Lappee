@@ -54,4 +54,5 @@ export class EchoService {
   listen(channel: string,event: string, callback: Function){
     this.echo.private(channel).listen(event, callback)
   }
+
 }

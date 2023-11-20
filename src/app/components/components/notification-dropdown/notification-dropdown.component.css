@@ -28,4 +28,12 @@
     position: relative;
 }
 
+.dropdown-menu{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .dropdown-menu::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
 

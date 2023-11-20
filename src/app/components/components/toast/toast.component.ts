@@ -58,6 +58,19 @@ export class ToastComponent {
         this.accent = "bg-danger";
         break;
       }
+
+      case 'alert': {
+        this.theme = "bi-exclamation-circle-fill text-success";
+        this.accent = "bg-success";
+        break;
+      }
+
+      case 'unattended': {
+        this.theme = "bi-question-circle-fill text-warning";
+        this.accent = "text-warning";
+        break;
+      }
+
       default: {
         this.theme = "bi-check-circle-fill color-primary";
         this.accent = "bg-primary";

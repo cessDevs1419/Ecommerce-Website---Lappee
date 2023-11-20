@@ -20,6 +20,7 @@ export class NotificationDropdownComponent {
   font_dark: string = 'text-white'
   font_dark_subtle: string = 'text-notification-grey'
   bordercolor: string = 'table-border-color'
+  icon: string;
   // Sampledata: any = 
   // [
   //   {
@@ -49,6 +50,7 @@ export class NotificationDropdownComponent {
   // ];
   todayItems: any[] = [];
   earlierThisWeekItems: any[] = [];
+	isLoading: boolean = true;
 
   constructor(
     private router: Router,
@@ -74,15 +76,18 @@ export class NotificationDropdownComponent {
   
         if (daysAgo === 0) {
           this.todayItems.push(item);
-
+          this.loaded()
         } else if (daysAgo <= 7) {
           this.earlierThisWeekItems.push(item);
+          this.loaded()
         }
       });
     });
 
   }
-  
+  loaded(){
+		this.isLoading = false
+	}
   
   refreshData(){
     this.data.subscribe((items) => {
@@ -99,12 +104,14 @@ export class NotificationDropdownComponent {
   
         if (daysAgo === 0) {
           this.todayItems.push(item);
-
+          this.loaded()
         } else if (daysAgo <= 7) {
           this.earlierThisWeekItems.push(item);
+          this.loaded()
         }
       });
     });
+    
   }
   
   getRelativeTime(createdDate: string): string {
@@ -158,5 +165,23 @@ export class NotificationDropdownComponent {
     
     this.getNotifationData.emit(data)
   }
+
+  changeIcon(icon: string): string{
+    let notification_icon: string
+    switch(icon){
+      case 'alert':
+        notification_icon = 'bi-exclamation-lg'
+      break
+      case 'unattended':
+        notification_icon = 'bi-question'
+      break
+      default:
+        notification_icon = 'bi-bag'
+      break
+
+    }
+    return notification_icon
+  }
+
 
 }

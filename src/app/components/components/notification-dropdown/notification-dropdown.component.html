@@ -1,5 +1,5 @@
 
-<div class="dropdown-menu rounded-4 overflow-auto dropdown-container p-4 mt-2 box-shadow {{bg_dark}}">
+<div class="dropdown-menu rounded-4 overflow-auto dropdown-container p-4 mt-2 box-shadow {{bg_dark}} ">
     <div class="title-container">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="fs-2 fw-bolder {{font_dark}}">Notifications</h1>
@@ -14,8 +14,7 @@
                 </div>
             </ng-container>
         </div>
-        
-        
+
         <ng-container *ngIf="data | async as items">
             <ng-container *ngIf="calculateUnreadCount(items) > 0">
                 <p class="fs-6 {{font_dark_subtle}} mt-0" *ngIf="calculateUnreadCount(items) > 0">
@@ -24,58 +23,61 @@
             </ng-container>
         </ng-container>
     </div>
-    <div class="realtime-sort-container mt-4" *ngIf="todayItems.length > 0">
-        <h4 class="fs-4 fw-bolder {{font_dark}}">Today</h4>
-        <ul class="list-unstyled">
-            <li 
-                *ngFor="let item of todayItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
-                (click)="route(item.id, item.type)"
-                >
-                <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
-                    <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
-                        <ng-container>
-                        
-                        </ng-container>
-                        <i class="bi bi-bag text-dark-subtle-grey fs-2"></i>
+    <div class=" p-0 position-relative bg-transparent w-100 h-100">
+        <div class="position-absolute w-100 h-100 align-items-center d-flex justify-content-center bg-transparent">
+            <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+        </div>
+        <div class="realtime-sort-container mt-4" *ngIf="todayItems.length > 0">
+            <h4 class="fs-4 fw-bolder {{font_dark}}">Today</h4>
+            <ul class="list-unstyled">
+                <li 
+                    *ngFor="let item of todayItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
+                    (click)="route(item.id, item.type)"
+                    >
+                    <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
+                        <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
+                            <i class="bi {{changeIcon(item.type)}} text-dark-subtle-grey fs-2"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="body">
-                        <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
-                        <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
+                    <div class="col-md-9">
+                        <div class="body">
+                            <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
+                            <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
+                        </div>
+                    </div> 
+                    <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
+                        <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
                     </div>
-                </div> 
-                <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
-                    <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="realtime-sort-container mt-4" *ngIf="earlierThisWeekItems.length > 0">
+            <h4 class="fs-4 fw-bolder {{font_dark}}">Earlier This Week</h4>
+            <ul class="list-unstyled">
+                <li 
+                    *ngFor="let item of earlierThisWeekItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
+                    (click)="route(item.id, item.type)"
+                    >
+                    <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
+                        <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
+                            <i class="bi {{changeIcon(item.type)}} text-dark-subtle-grey fs-2"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="body">
+                            <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
+                            <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
+                        </div>
+                    </div> 
+                    <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
+                        <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    
-    <div class="realtime-sort-container mt-4" *ngIf="earlierThisWeekItems.length > 0">
-        <h4 class="fs-4 fw-bolder {{font_dark}}">Earlier This Week</h4>
-        <ul class="list-unstyled">
-            <li 
-                *ngFor="let item of earlierThisWeekItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
-                (click)="route(item.id, item.type)"
-                >
-                <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
-                    <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
-                        <i class="bi bi-bag text-dark-subtle-grey fs-2"></i>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="body">
-                        <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
-                        <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
-                    </div>
-                </div> 
-                <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
-                    <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
-                </div>
-            </li>
-        </ul>
-    </div>
+
     
     <!-- <div class="realtime-sort-container mt-4" >
         <h4 class="fs-4 fw-bolder {{font_dark}}">Today</h4>
@@ -122,4 +124,5 @@
         </ul>
     </div>
     -->
+
 </div>
