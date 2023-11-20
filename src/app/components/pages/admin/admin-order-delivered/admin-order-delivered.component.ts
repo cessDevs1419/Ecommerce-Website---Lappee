@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -14,7 +15,8 @@ import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/mode
 })
 export class AdminOrderDeliveredComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
-
+  @ViewChild(TableComponent) table: TableComponent;
+  
   backdrop: string = 'true';
   toastContent: string = "";
   toastHeader: string = "";
@@ -43,7 +45,11 @@ ngOnInit(): void{
   this.orders = this.refreshData$.pipe(
           startWith(undefined), 
           switchMap(() => this.service.getAdminOrdersDelivered()),
-          map((Response: any) => formatAdminOrder(Response))
+          map((Response: any) => formatAdminOrder(Response)),
+          tap(() => {
+            this.table.loaded()
+          })
+          
       );
       this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
         this.refreshTableData();

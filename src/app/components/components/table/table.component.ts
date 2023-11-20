@@ -135,6 +135,7 @@ export class TableComponent {
 	selectedDate: string;
 	searchFilter: string = '';
 	sortedTableData: any[];
+	isLoading: boolean = true;
 
 	constructor(private cdr: ChangeDetectorRef) {} 
 	
@@ -145,7 +146,9 @@ export class TableComponent {
 	}
 
 	
-	
+	loaded(){
+		this.isLoading = false
+	}
 	showAction(rowIndex: number) {
 		this.rowActionVisibility[rowIndex] = !this.rowActionVisibility[rowIndex];
 

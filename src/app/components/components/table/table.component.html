@@ -172,7 +172,7 @@
             </div>
     
         
-            <div class="table-parent-container overflow-auto {{tableChildContainer}} ">
+            <div class="table-parent-container overflow-auto position-relative {{tableChildContainer}} ">
                 <!--With Pagination-->
                 <table class="table table-striped" *ngIf="paginate === true">
                     <thead>
@@ -697,9 +697,12 @@
                                 </div>
                             </div>
                         </tr>
+                        
                     </tbody>
                 </table>
-                
+                <div class="position-absolute w-100 d-flex justify-content-center align-items-center">
+                    <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                </div>
             </div>
         
         

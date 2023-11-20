@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 
-import { Observable, Subject, combineLatest, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, combineLatest, startWith, switchMap, tap } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { AdminProduct, Product, ProductList } from 'src/assets/models/products';
 import { formatAdminProducts, formatAdminSubcategories, formatProducts } from 'src/app/utilities/response-utils';
@@ -21,7 +21,7 @@ export class AdminProductsComponent {
 
     @ViewChild(ToasterComponent) toaster: ToasterComponent;
     @ViewChild('triggerFunction') childComponent: TableComponent;
-
+    @ViewChild(TableComponent) table: TableComponent;
     products!: Observable<AdminProduct[]>;
     sub_categories: Observable<AdminSubcategory[]>;
 	private refreshData$ = new Subject<void>();
@@ -54,7 +54,11 @@ export class AdminProductsComponent {
 		this.products = this.refreshData$.pipe(
             startWith(undefined), 
             switchMap(() => this.service.getAdminProducts()),
-            map((Response: any) => formatAdminProducts(Response))
+            map((Response: any) => formatAdminProducts(Response))  
+            ,
+            tap(() => {
+                this.table.loaded()
+            })
         );
 	}
 	

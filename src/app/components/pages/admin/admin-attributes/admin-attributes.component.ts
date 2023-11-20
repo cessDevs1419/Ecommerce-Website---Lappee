@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -17,6 +18,7 @@ export class AdminAttributesComponent {
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
 	@ViewChild(ToasterComponent) toaster: ToasterComponent;
+  @ViewChild(TableComponent) table: TableComponent;
 	@ViewChild('triggerFunction') childComponent: TableComponent;
   showMinus: boolean = false
 
@@ -42,8 +44,13 @@ export class AdminAttributesComponent {
     this.attributes = this.refreshData$.pipe(
         startWith(undefined), 
         switchMap(() => this.attribute_service.getAttribute()),
-        map((Response: any) => formatAttributes(Response))
+        map((Response: any) => formatAttributes(Response)),
+        tap(() => {
+          this.table.loaded()
+        })
     );
+
+
 
   }
 

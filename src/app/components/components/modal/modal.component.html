@@ -341,6 +341,13 @@
                 >
                 
                 </app-orders-form>
+
+                <app-chats
+                    *ngIf="modalChat"
+                    [size]="'chat-body-lg'"
+                    [individual]="true"
+                    [selectedRowData]="selectedRowData"
+                ></app-chats>
         </div> 
 
     </div>

@@ -1,12 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { ChatsComponent } from 'src/app/components/components/chats/chats.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { UsersService } from 'src/app/services/users/users.service';
 
 import { formatBannedUser, formatUser } from 'src/app/utilities/response-utils';
 import { BannedUser, User } from 'src/assets/models/user';
+
 
 @Component({
     selector: 'app-admin-accounts',
@@ -16,7 +19,8 @@ import { BannedUser, User } from 'src/assets/models/user';
 export class AdminAccountsComponent implements OnInit {
     @ViewChild(ToastComponent) toast: ToastComponent;
     @ViewChild(ToasterComponent) toaster: ToasterComponent;
-    
+    @ViewChild(TableComponent) table: TableComponent;
+    @ViewChild(ChatsComponent) chats: ChatsComponent;
     backdrop: string = 'true';
     toastContent: string = "";
     toastHeader: string = "";
@@ -69,6 +73,9 @@ export class AdminAccountsComponent implements OnInit {
             startWith(undefined),
             switchMap(() => this.user_service.getUsers()),
             map((response: any) => formatUser(response)),
+            tap(() => {
+                this.chats.loaded()
+            })
         );
 	}
 	
@@ -103,5 +110,5 @@ export class AdminAccountsComponent implements OnInit {
         this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
     
-
+    
 }

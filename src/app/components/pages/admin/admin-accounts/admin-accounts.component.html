@@ -1,6 +1,6 @@
 <div class="container-fluid m-auto h-auto px-0 px-sm-3" >
 
-    <app-table
+    <!-- <app-table
         tableTitle="Regitered Users"
         subTitle="Valued Customers"
         [tableHead]="true"
@@ -23,14 +23,17 @@
         [bannedStatus]="bannedStatus"
         [bannedBtn]="true"
         (rowDataSelected)="onRowDataSelected($event)"
-    ></app-table>
+    ></app-table> -->
     
     <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
     
     
-    <!-- <app-chats
+    <app-chats
         [size]="'chat-body-lg'"
-    ></app-chats> -->
+        [admin]="true"
+        [channels]="users"
+
+    ></app-chats>
 
 </div>
 

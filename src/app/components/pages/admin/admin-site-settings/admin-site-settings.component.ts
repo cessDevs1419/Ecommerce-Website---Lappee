@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { Banner, SiteLogo } from 'src/assets/models/sitedetails';
 import { OnInit } from '@angular/core';
 import { BannersService } from 'src/app/services/banners/banners.service';
@@ -11,6 +11,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { FormBuilder, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
   selector: 'app-admin-site-settings',
@@ -54,7 +55,8 @@ export class AdminSiteSettingsComponent {
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
-
+  @ViewChild(TableComponent) table: TableComponent;
+  
   modal: bootstrap.Modal;
   
 
@@ -85,6 +87,10 @@ export class AdminSiteSettingsComponent {
       startWith(undefined),
       switchMap(() => this.bannerService.getBanners()),
       map((response: any) => formatBanners(response)),
+      tap(() => {
+        this.table.loaded()
+      })
+      
     );
 
     this.route.paramMap.subscribe((param) => {

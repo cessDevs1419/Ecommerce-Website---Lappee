@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 
 import { CategoriesService } from 'src/app/services/categories/categories.service';
@@ -22,7 +22,7 @@ export class AdminCategoriesComponent {
     
     @ViewChild(ToasterComponent) toaster: ToasterComponent;
     @ViewChild('triggerFunction') childComponent: TableComponent;
-    
+    @ViewChild(TableComponent) table: TableComponent;
     showMinus: boolean
     backdrop: string = 'true';
     toastContent: string = "";
@@ -49,7 +49,10 @@ export class AdminCategoriesComponent {
         this.categories = this.refreshData$.pipe(
             startWith(undefined), 
             switchMap(() => this.category_service.getAdminCategories()),
-            map((Response: any) => formatAdminCategories(Response))
+            map((Response: any) => formatAdminCategories(Response))  ,
+            tap(() => {
+                this.table.loaded()
+            })
         );
         
         this.sub_categories = this.refreshData$.pipe(

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class UsersService {
 
+  private data: any[] = []
   httpOptions = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
@@ -45,4 +46,8 @@ export class UsersService {
         }
     })
   } 
+
+  openedAccount(data: any){
+    this.data.push(data)
+  }
 }

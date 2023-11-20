@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { InquiryService } from 'src/app/services/inquiry/inquiry.service';
 import { formatInquiries, formatInquiryContent } from 'src/app/utilities/response-utils';
 import { Inquiry, InquiryList } from 'src/assets/models/inquiry';
@@ -13,7 +14,7 @@ import { Inquiry, InquiryList } from 'src/assets/models/inquiry';
 })
 export class AdminInquiryComponent {
   inquiries!: Observable<Inquiry[]>;
-
+  @ViewChild(TableComponent) table: TableComponent;
   titleColor: string = 'text-white';
   textColor: string = 'text-secondary';
   borderColor: string = '';
@@ -39,7 +40,11 @@ export class AdminInquiryComponent {
 
   ngOnInit() {
     this.inquiries = this.inquiryService.getInquiry().pipe(
-      map((response: any) => formatInquiries(response))
+      map((response: any) => formatInquiries(response)),
+      tap(() => {
+          this.table.loaded()
+      })
+      
     );
   }
 

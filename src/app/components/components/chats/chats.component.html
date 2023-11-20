@@ -1,74 +1,170 @@
-<div class="container-fluid h-100 w-100 px-3 mb-0">
-    <div class="chat-container mb-0">
+<div class="container-fluid h-100 w-100 px-3 mb-0" *ngIf="admin">
+    <div class="chat-container h-100 mb-0">
             <div class="row w-100 m-auto">
-                <div class="col-3 p-2 border">
+                <div class="col-lg-3 p-2 border position-relative">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="search">
                             <i class="bi bi-search"></i>
                         </span>
-                        <input type="search" class="form-control" placeholder="Search Customer" aria-label="search" aria-describedby="search">
+                        <input type="search" [(ngModel)]="searchString" class="form-control" placeholder="Search Customer" aria-label="search" aria-describedby="search">
                     </div>
-                    <ul class="list-unstyled px-2">
-                        <li class="text-decoration-none d-flex align-items-center py-2">
+                    <ul class="list-unstyled px-2 overflow-y-auto">
+                        <!-- searchFilter: searchString -->
+                        <li class="text-decoration-none  cursor-pointer d-flex align-items-center py-2" 
+                            *ngFor="let item of (channels | async | searchFilter: searchString)  let i = index" 
+                            (click)="getUser(item, i)"
+                            >
                             <img class="img-container rounded-circle bg-white me-2" src="" alt="">
-                            <div class="content">
-                                <h4 class="text-white mb-0">Name Here</h4>
-                                <p class="text-white mb-0">content here</p>
-                            </div>
-                        </li>
-                        <li class="text-decoration-none d-flex align-items-center py-2">
-                            <img class="img-container rounded-circle bg-white me-2" src="" alt="">
-                            <div class="content">
-                                <h4 class="text-white mb-0">Name Here</h4>
-                                <p class="text-white mb-0">content here</p>
-                            </div>
-                        </li>
-                        <li class="text-decoration-none d-flex align-items-center py-2">
-                            <img class="img-container rounded-circle bg-white me-2" src="" alt="">
-                            <div class="content">
-                                <h4 class="text-white mb-0">Name Here</h4>
-                                <p class="text-white mb-0">content here</p>
+                            <div class="content overflow-hidden">
+                                <h4 class="text-white mb-0">{{item.fname}} {{item.mname}} {{item.lname}}</h4>
+                                <p class="text-white mb-0 text-truncate text-nowrap">content here </p>
                             </div>
                         </li>
                     </ul>
+                    <div class="position-absolute w-100 d-flex justify-content-center align-items-center">
+                        <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                    </div>
                 </div>
-                <div class="col-9 p-2 border">
-                    <div class="chat-body position-relative h-100 ">
-                        <div class="chat-header">
-                            <div class="d-flex border justify-content-between align-items-center">
-                                <div class="chat-title d-flex">
-                                    <button class="btn btn-primary bg-none border-0">
-                                        <i class="bi bi-arrow-left text-white"></i>
-                                    </button>
-                                    <h1 class="text-white ">Name Here</h1>
+                <div class="col-lg-9 p-2 border">
+                    <div *ngIf="openedAccount.length === 0" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
+                        <div class="container m-auto text-center d-flex justify-content-center align-items-center {{size}}">
+                            <h1>No Chat Selected</h1>
+                        </div>
+                    </div>
+                    <div *ngIf="openedAccount.length > 0" class="chat-body position-relative h-100 ">
+                        <ng-container *ngFor="let item of openedAccount">
+                            <div class="chat-header">
+                                <div class="d-flex border justify-content-between align-items-center">
+                                    <div class="chat-title d-flex">
+                                        <button class="btn btn-primary bg-none border-0">
+                                            <i class="bi bi-arrow-left text-white"></i>
+                                        </button>
+                                        <h1 class="text-white ">{{item.fname | uppercase }} {{item.mname | uppercase }} {{item.lname | uppercase }}</h1>
+                                    </div>
+                                    <i class="bi bi-info-circle text-white fs-3"></i>
                                 </div>
-                                <i class="bi bi-info-circle text-white fs-3"></i>
                             </div>
-                        </div>
-                        <div class="chat-history overflow-hidden position-relative d-flex flex-column-reverse border py-2 {{size}}">
-                            <ul class="chat-body-container d-flex flex-column position-absolute bottom-0 w-100  list-unstyled overflow-y-auto">
-                                <li  class="text-decoration-none p-3 text-start">
-                                    <p class="text-white mb-0">awdwad</p>
-                                    <div class="message-data">
-                                        <span class="text-white">10:10 AM, Today</span>
+                            <div class="chat-history overflow-hidden position-relative d-flex flex-column-reverse border py-2 {{size}}">
+                                <ul class="chat-body-container d-flex flex-column position-absolute bottom-0 w-100  list-unstyled overflow-y-auto">
+                                    <li  class="text-decoration-none p-3 text-start">
+                                        <p class="text-white mb-0">Client Chat</p>
+                                        <div class="message-data">
+                                            <span class="text-white">10:10 AM, Today</span>
+                                        </div>
+                                    </li>
+                                    <li  class="text-decoration-none p-3 text-end">
+                                        <p class="text-white mb-0">Admin Chat</p>
+                                        <div class="message-data">
+                                            <span class="text-white">10:10 AM, Today</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class=" py-3 w-100">
+                                <form [formGroup]="messageContent" (ngSubmit)="send()">
+                                    <div class="input-group">
+                                        <textarea formControlName="content" class="form-control" rows="1"></textarea>
+                                        <span class="input-group-text cursor-pointer" (click)="send()">
+                                            <i class="bi bi-send"></i>
+                                        </span>
                                     </div>
-                                </li>
-                                <li  class="text-decoration-none p-3 text-end">
-                                    <p class="text-white mb-0">awdwad</p>
-                                    <div class="message-data">
-                                        <span class="text-white">10:10 AM, Today</span>
-                                    </div>
-                                </li>
-                            </ul>
+                                </form>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<div class="container-fluid h-100 w-100 px-3 mb-0" *ngIf="client">
+    <div class="chat-container mb-0">
+            <div class="w-100 m-auto">
+                <div class="chat-body position-relative h-100 ">
+                    <div class="chat-header">
+                        <div class="d-flex border justify-content-between align-items-center">
+                            <div class="chat-title d-flex">
+                                <button class="btn btn-primary bg-none border-0">
+                                    <i class="bi bi-arrow-left text-white"></i>
+                                </button>
+                                <h1 class="text-white ">Lappee Admin</h1>
+                            </div>
+                            <i class="bi bi-info-circle text-white fs-3"></i>
                         </div>
-                        <div class=" py-3 w-100">
+                    </div>
+                    <div class="chat-history overflow-hidden position-relative d-flex flex-column-reverse border py-2 {{size}}">
+                        <ul class="chat-body-container d-flex flex-column position-absolute bottom-0 w-100  list-unstyled overflow-y-auto">
+                            <li  class="text-decoration-none p-3 text-start">
+                                <p class="text-white mb-0">Admin Chat</p>
+                                <div class="message-data">
+                                    <span class="text-white">10:10 AM, Today</span>
+                                </div>
+                            </li>
+                            <li  class="text-decoration-none p-3 text-end">
+                                <p class="text-white mb-0">Client Chat</p>
+                                <div class="message-data">
+                                    <span class="text-white">10:10 AM, Today</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" py-3 w-100">
+                        <form [formGroup]="messageContent" (ngSubmit)="send()">
                             <div class="input-group">
-                                <span class="input-group-text" id="search">
+                                <textarea formControlName="content" class="form-control" rows="1"></textarea>
+                                <span class="input-group-text cursor-pointer" (click)="send()">
                                     <i class="bi bi-send"></i>
                                 </span>
-                                <input type="search" class="form-control" placeholder="Search Customer" aria-label="search" aria-describedby="search">
                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<div class="container-fluid h-100 w-100 px-3 mb-0" *ngIf="individual">
+    <div class="chat-container mb-0">
+            <div class="w-100 m-auto">
+                <div class="chat-body position-relative h-100 " >
+                    <div class="chat-header">
+                        <div class="d-flex border justify-content-between align-items-center">
+                            <div class="chat-title d-flex">
+                                <!-- <button class="btn btn-primary bg-none border-0">
+                                    <i class="bi bi-arrow-left text-white"></i>
+                                </button> -->
+                                <h1 class="text-white ">{{selectedRowData?.user_id}}</h1>
+                            </div>
+                            <i class="bi bi-info-circle text-white fs-3"></i>
                         </div>
+                    </div>
+                    <div class="chat-history overflow-hidden position-relative d-flex flex-column-reverse border py-2 {{size}}">
+                        <ul class="chat-body-container d-flex flex-column position-absolute bottom-0 w-100  list-unstyled overflow-y-auto">
+                            <li  class="text-decoration-none p-3 text-start">
+                                <p class="text-white mb-0">Client Chat</p>
+                                <div class="message-data">
+                                    <span class="text-white">10:10 AM, Today</span>
+                                </div>
+                            </li>
+                            <li  class="text-decoration-none p-3 text-end">
+                                <p class="text-white mb-0">Admin Chat</p>
+                                <div class="message-data">
+                                    <span class="text-white">10:10 AM, Today</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" py-3 w-100">
+                        <form [formGroup]="messageContent" (ngSubmit)="send()">
+                            <div class="input-group">
+                                <textarea formControlName="content" class="form-control" rows="1"></textarea>
+                                <span class="input-group-text cursor-pointer" (click)="send()">
+                                    <i class="bi bi-send"></i>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

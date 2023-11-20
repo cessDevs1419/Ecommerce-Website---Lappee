@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 import { OnInit } from '@angular/core';
@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
   selector: 'app-admin-manage-about-us',
@@ -16,7 +17,7 @@ import { ToasterComponent } from 'src/app/components/components/toaster/toaster/
   styleUrls: ['./admin-manage-about-us.component.css']
 })
 export class AdminManageAboutUsComponent {
-  
+  @ViewChild(TableComponent) table: TableComponent;
   // theme
   titleColor: string = 'text-white';
   textColor: string = 'text-secondary';
@@ -63,6 +64,10 @@ export class AdminManageAboutUsComponent {
       startWith(undefined),
       switchMap(() => this.aboutUsToSService.getAboutUs()),
       map((response: any) => formatAboutUsTos(response)),
+      tap(() => {
+        this.table.loaded()
+      })
+      
     );
   }
   getRTFValue(value: any){

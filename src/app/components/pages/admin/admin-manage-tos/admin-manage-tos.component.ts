@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
@@ -34,7 +35,8 @@ export class AdminManageTosComponent {
   @ViewChild(ToastComponent) toast: ToastComponent;
   @ViewChild('rte') childComponent: RichTextEditorComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
-
+  @ViewChild(TableComponent) table: TableComponent;
+  
   modal: bootstrap.Modal;
 
   selectedSection: AboutUsTosSection = {
@@ -60,6 +62,10 @@ export class AdminManageTosComponent {
       startWith(undefined),
       switchMap(() => this.aboutUsToSService.getTos()),
       map((response: any) => formatAboutUsTos(response)),
+      tap(() => {
+        this.table.loaded()
+      })
+      
     );
   }
 
