@@ -645,14 +645,12 @@
                                                             </div>
                                                             <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
                                                                 <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}" >
-                                                                    <ng-container *ngFor="let attributes of items.attributes">
-                                                                        <ng-container *ngIf="attributes.attribute_name === 'Color' || attributes.attribute_name === 'Colors'; else nocolor">
-                                                                            {{attributes.value}}
-                                                                        </ng-container>
-                                                                        <ng-template #nocolor >
-                                                                            {{attributes.value}}
-                                                                        </ng-template>
+                                                                    <ng-container *ngIf="items.attributes[0].attribute_name === 'Color' || items.attributes[0].attribute_name === 'Colors'; else nocolors">
+                                                                        {{items.attributes[0].value}}
                                                                     </ng-container>
+                                                                    <ng-template #nocolors >
+                                                                        {{items.attributes[0].value}}
+                                                                    </ng-template>
                                                                 </h1>
                                                             </div>
                                                         </div>
@@ -1449,6 +1447,7 @@
         </div>
     </form>
 </div>
+
 <!-- hide this validation when variantsList is empty or when the button on the top is click-->
                                 <!-- <div 
                                     class="validation m-auto w-100 p-3 rounded rounded-3 text-center text-white dark-subtle-bg" 
