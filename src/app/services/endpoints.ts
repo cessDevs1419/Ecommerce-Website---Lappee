@@ -22,6 +22,7 @@ export const DELETECategories: string = api + "api/admin/category/delete";
 export const GETProducts: string = api + "api/client/products";
 export const GETProductDetails: string = api + "api/client/products/details/"
 export const GETProductsByCategory: string = api + "api/client/products/category/"
+export const GETProductsAll: string = api + "api/client/products/all"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";

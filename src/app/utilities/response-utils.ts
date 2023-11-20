@@ -99,6 +99,17 @@ export function formatProductObj(response: any): Product {
   };
 }
 
+export function formatProductAll(response: any): Product[] {
+  let data = response.data
+  return response.data.map({
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    variants: data.variants,
+  });
+}
+
 export function formatCategoryProduct(response: any): CategoryProduct[] {
   return response.data.map((data: CategoryProduct) => ({
     product_id: data.product_id,
