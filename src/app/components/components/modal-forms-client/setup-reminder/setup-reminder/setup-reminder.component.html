@@ -8,6 +8,6 @@
         <p>Please spend a minute or so to complete your profile. Completing your profile gives you a smooth experience from browsing all the way to checkout!</p>
     </div>
 
-    <a class="w-100 button-primary mt-3 text-decoration-none" [routerLink]="['/profile']">Profile Setup</a>
+    <a class="w-100 button-primary mt-3 text-decoration-none" [routerLink]="['/profile']" (click)="dismissModal()">Profile Setup</a>
     <a class="w-100 text-center text-decoration-none mt-2 pointer-cursor" [routerLink]="" (click)="dismissModal()">I'll complete it later.</a>
 </div>
