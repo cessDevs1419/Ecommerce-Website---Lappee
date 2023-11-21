@@ -110,6 +110,16 @@ export function formatProductAll(response: any): Product[] {
   }));
 }
 
+export function formatProductSuggestion(response: any): CategoryProduct[] {
+    console.log(response);
+    return response.data.map((data: CategoryProduct) => ({
+        product_id: data.product_id,
+        name: data.name,
+        price: data.price,
+        preview_image: data.preview_image
+      }))
+  }
+
 export function formatCategoryProduct(response: any): CategoryProduct[] {
   return response.data.map((data: CategoryProduct) => ({
     product_id: data.product_id,

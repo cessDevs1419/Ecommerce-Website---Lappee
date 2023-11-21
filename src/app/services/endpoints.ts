@@ -23,6 +23,7 @@ export const GETProducts: string = api + "api/client/products";
 export const GETProductDetails: string = api + "api/client/products/details/"
 export const GETProductsByCategory: string = api + "api/client/products/category/"
 export const GETProductsAll: string = api + "api/client/products/all"
+export const GETProductsSuggestions: string = api + "api/client/products/suggest/"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";

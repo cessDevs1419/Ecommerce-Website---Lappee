@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { Product, ColorVariant, Variant } from 'src/assets/models/products';
+import { Product, ColorVariant, Variant, CategoryProduct } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj, formatProductSuggestion } from 'src/app/utilities/response-utils';
 import { Gallery, GalleryItem, GalleryRef, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -29,6 +29,7 @@ export class ProductsComponent {
   isFaved: boolean = false;
   productId!: string;
   product!: Observable<Product>;
+  suggestProduct: Observable<any>;
   imgArray: GalleryItem[] = [];
   position!: ThumbnailsPosition;
   currentProduct!: Product;
@@ -147,6 +148,7 @@ export class ProductsComponent {
     
     this.productId = String(this.route.snapshot.paramMap.get('productId'));
     this.product = this.productsService.getProductDetails(this.productId).pipe(map((response: any) => formatProductObj(response)));
+    this.suggestProduct = this.productsService.getProductsSuggestion(this.productId).pipe(map((response:any) => formatProductSuggestion(response)));
 
     // get local array copy of product observable
     this.product.subscribe((product: Product) => {

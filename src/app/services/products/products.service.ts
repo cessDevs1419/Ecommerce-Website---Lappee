@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETProductDetails, GETProducts, GETProductsAll, GETProductsByCategory, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETProductDetails, GETProducts, GETProductsAll, GETProductsByCategory, GETProductsSuggestions, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -58,6 +58,14 @@ export class ProductsService {
     return this.http.get<ProductList>(GETProductsAll);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
+    
+  getProductsSuggestion(id: String): Observable<any>{
+    // console.log(this.http.get<ProductList>(GETProducts))
+    return this.http.get<ProductList>(GETProductsSuggestions + id);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
+    
+    
 
   getProductDetails(id: string): Observable<any> {
     // console.log(this.http.get(GETProductDetails + id))
