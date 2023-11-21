@@ -1,0 +1,22 @@
+
+
+
+    <div class="content border-0" *ngIf="isVisible">
+        <div class="modal-header border-0">
+            <button type="button" class="btn-close" (click)="hide()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="icon-container d-flex justify-content-center">
+                <i class="bi {{theme}} fs-1"></i>
+            </div>
+            <div class="title-container text-center">
+                <h4 class="fw-bolder">{{title}}</h4>
+                <p class="">{{subTitle}}</p>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center border-0">
+            <button type="button" class="btn btn-danger btnWidth rounded-3" (click)="hide()">Close</button>
+            <button type="button" class="btn btn-primary glow-primary btnWidth rounded-3" (click)="route(link)">View Orders</button>
+        </div>
+    </div>
+

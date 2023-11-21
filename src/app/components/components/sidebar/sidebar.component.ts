@@ -73,7 +73,23 @@ export class SidebarComponent {
       })
     );
     
+ 
     this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
+      this.refreshTableData()
+    })
+    this.echo.listen('admin.notifications.orders.placed', 'OrderPlaced', (data: any) => {
+      this.refreshTableData()
+    })
+    this.echo.listen('admin.notifications.orders.cancelled', 'OrderCancelled', (data: any) => {
+      this.refreshTableData()
+    })
+    this.echo.listen('admin.notifications.orders.unattended.to-ship', 'ToShipOrdersDetected', (data: any) => {
+      this.refreshTableData()
+    })
+    this.echo.listen('admin.notifications.orders.unattended.to-pack', 'ToPackOrdersDetected', (data: any) => {
+      this.refreshTableData()
+    })
+    this.echo.listen('admin.notifications.orders.unattended.pending', 'PendingOrdersDetected', (data: any) => {
       this.refreshTableData()
     })
     
@@ -180,7 +196,9 @@ export class SidebarComponent {
   isManageAccountsActive(): boolean {
     return this.router.url === '/admin/accounts-management'
   }
-  
+  isChatsActive(): boolean {
+    return this.router.url === '/admin/chats'
+  }
   
   isSiteSettingsActive(): boolean {
     return (this.router.url === '/admin/site-settings'||

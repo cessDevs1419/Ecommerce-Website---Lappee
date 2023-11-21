@@ -227,7 +227,7 @@ img{
 
 
 }
-@media screen and (max-height: 815px) {
+@media screen and (max-height: 860px) {
     .logout{
         position: relative !important;
 

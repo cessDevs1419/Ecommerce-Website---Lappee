@@ -1216,6 +1216,7 @@ export class ProductFormComponent {
                     this.editAttributes = true
                     this.variantsLists.splice(0)
                     this.childComponent.editorReset();
+                    this.addProductForm.get('category')?.enable()
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {

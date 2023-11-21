@@ -24,8 +24,24 @@
 
 
 
-
-
+.action-item{
+    width: 6rem ;
+}
+.dropdown-menu{
+    min-width: 2rem;
+    height: 4.2rem;
+    padding: 0;
+}
+.actn-btn{
+    padding: 0 1.1rem;
+}
+.actn-btn:hover{
+    color: #272A36;
+    font-weight: 700;
+}
+.action-border{
+    border: 1px solid #D8D8D8;
+}
 .img-remove-btn{
     max-width: 1rem;
     min-width: 1rem;

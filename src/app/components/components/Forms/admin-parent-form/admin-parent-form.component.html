@@ -6,58 +6,9 @@
 <div class="parent-form-container position-relative  overflow-visible">
 
 
-        <div class=" px-3 px-sm-4 form-container ">
+        <div class=" px-3 px-sm-4 form-container overflow-y-scroll">
             <div class="">
-            <!--categories-->
-                <!-- <app-category-form 
-                    *ngIf="AddCategory"
-                    formTitle="ADD CATEGORY"
-                    formsubTitle="CATEGORY CONTROL"
-                    [formAddCategory]="true"
-                    (CategorySuccess)="postSuccessToast($event)"
-                    (CategoryWarn)="WarningToast($event)"
-                    (CategoryError)="ErrorToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
-            
-                <app-category-form 
-                    *ngIf="EditCategory"
-                    formTitle="EDIT CATEGORY"
-                    formsubTitle="CATEGORY CONTROL"
-                    [formEditCategory]="true"
-                    [selectedRowData]="selectedRowData"
-                    (CategorySuccess)="patchSuccessToast($event)"
-                    (CategoryWarn)="WarningToast($event)"
-                    (CategoryError)="ErrorToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form> -->
-            
-            <!--sub category -->
-                <!-- <app-category-form 
-                    *ngIf="AddSubCategory"
-                    formTitle="ADD SUB CATEGORY"
-                    formsubTitle="CATEGORY CONTROL"
-                    [formAddSubCategory]="true"
-                    (CategorySuccess)="postSuccessToast($event)"
-                    (CategoryWarn)="WarningToast($event)"
-                    (CategoryError)="ErrorToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form>
-                
-                <app-category-form 
-                    *ngIf="EditSubCategory"
-                    formTitle="EDIT SUB CATEGORY"
-                    formsubTitle="CATEGORY CONTROL"
-                    [formEditSubCategory]="true"
-                    [selectedRowData]="selectedRowData"
-                    (CategorySuccess)="patchSuccessToast($event)"
-                    (CategoryWarn)="WarningToast($event)"
-                    (CategoryError)="ErrorToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                ></app-category-form> -->
-            
 
-            
             <!--products-->
             
                 <app-product-form
@@ -81,58 +32,6 @@
                 >
                 </app-product-form>
 
-                <!-- <app-product-form
-                    *ngIf="AddVariant"
-                    [formAddVariant]="true"
-                    (ProductSuccess)="postSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                >
-                </app-product-form>
-                
-                <app-product-form
-                    *ngIf="AdditionalVariant"
-                    [formAdditionalVariant]="true"
-                    (ProductSuccess)="postSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                >
-                </app-product-form>
-            
-                <app-product-form
-                    *ngIf="EditVariant"
-                    [formEditVariant]="true"
-                    [selectedRowData]="selectedRowData"
-                    (ProductSuccess)="patchSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                >
-                </app-product-form>
-                
-                <app-product-form
-                    *ngIf="EditDatabaseVariant"
-                    [formEditDatabaseVariant]="true"
-                    [selectedRowData]="selectedRowData"
-                    (ProductSuccess)="patchSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                >
-                </app-product-form>
-                
-                <app-product-form
-                    *ngIf="EditAdditionalVariant"
-                    [formEditAdditionalVariant]="true"
-                    [selectedRowData]="selectedRowData"
-                    (ProductSuccess)="patchSuccessToast($event)"
-                    (ProductError)="ErrorToast($event)"
-                    (ProductWarning)="WarningToast($event)"
-                    (RefreshTable)="triggerRefreshTable()"
-                >
-                </app-product-form> -->
             </div>
         </div>
 

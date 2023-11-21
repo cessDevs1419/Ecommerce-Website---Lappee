@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Modal } from 'bootstrap';
+import { ModalNotificationComponent } from 'src/app/components/components/modal-notification/modal-notification.component';
 import { ModalComponent } from 'src/app/components/components/modal/modal.component';
 import { NotificationDropdownComponent } from 'src/app/components/components/notification-dropdown/notification-dropdown.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -18,6 +19,7 @@ export class AdminRoutingComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild(NotificationDropdownComponent) notification: NotificationDropdownComponent;
   @ViewChild(Modal) modal: ModalComponent;
+  @ViewChild(ModalNotificationComponent) modalNotif: ModalNotificationComponent;
 
   titleColor: string = 'text-white';
   textColor: string = 'text-secondary';
@@ -25,7 +27,7 @@ export class AdminRoutingComponent {
   backGround: string = '';
   btncolor: string = 'btn-primary glow-primary'
   size: string = 'w-100';
-  
+  isModalVisible: boolean = false
   constructor(private echo: EchoService,     
   private accountService: AccountsService,
   private router: Router){
@@ -47,13 +49,32 @@ export class AdminRoutingComponent {
       this.toaster.showToast('Cancelled Order', data.message, this.type(data.type), '', )
     })
     this.echo.listen('admin.notifications.orders.unattended.to-ship', 'ToShipOrdersDetected', (data: any) => {
-      this.toaster.showToast('Unattended Orders Detected', data.message, this.type(data.type), '', )
+      const theme = {
+        theme: this.type(data.type),
+        title: 'Unattended Orders Detected',
+        subTitle: data.message,
+        link: '/admin/order-ship'
+      }
+      this.modalNotif.showModal(theme)
     })
     this.echo.listen('admin.notifications.orders.unattended.to-pack', 'ToPackOrdersDetected', (data: any) => {
-      this.toaster.showToast('Unattended Orders Detected', data.message, this.type(data.type), '', )
+      const theme = {
+        theme: this.type(data.type),
+        title: 'Unattended Orders Detected',
+        subTitle: data.message,
+        link: '/admin/order-packed'
+      }
+
+      this.modalNotif.showModal(theme)
     })
     this.echo.listen('admin.notifications.orders.unattended.pending', 'PendingOrdersDetected', (data: any) => {
-      this.toaster.showToast('Unattended Orders Detected', data.message, this.type(data.type), '', )
+      const theme = {
+        theme: this.type(data.type),
+        title: 'Unattended Orders Detected',
+        subTitle: data.message,
+        link: '/admin/order-management'
+      }
+      this.modalNotif.showModal(theme)
     })
   }
   

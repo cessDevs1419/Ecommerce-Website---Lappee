@@ -262,10 +262,9 @@
                     </li>
                 </div>
             </div>
-            
             <!-- Manage Accounts -->
-            <div [ngClass]="isManageInquiriesActive() ? admin_bg :''">
-                <div [class]="isManageInquiriesActive() ? 'active-rounded-top item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+            <div [ngClass]="isManageInquiriesActive() ? admin_bg : isChatsActive() ? admin_bg :'' ">
+                <div [class]="isManageInquiriesActive() ? 'active-rounded-top item-container ' + sidebar_bg : isChatsActive() ? 'active-rounded-bottom ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
                     <li [routerLink]="'/admin/accounts-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
                         <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
@@ -278,12 +277,30 @@
                     </li>
                 </div>
             </div>
-            
+
+
+
             <div [ngClass]="isManageAccountsActive() ? admin_bg :''">
-                <div [class]="isManageAccountsActive() ? 'p-3 active-rounded-top item-container ' + sidebar_bg :''  " >
+                <div [class]="isManageAccountsActive() ? 'active-rounded-top item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+                    <li [routerLink]="'/admin/chats'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
+
+                        <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
+                            <i routerLinkActive=" text-white" class="bi bi-chat-left-dots text-dark-subtle-grey"></i>
+                        </div>
+                        
+                        <a class="nav-link text-dark-subtle-grey text-decoration-none" aria-current="page">
+                            Chats
+                        </a>
+                    </li>
+                </div>
+            </div>
+            
+            <div [ngClass]="isChatsActive() ? admin_bg :''">
+                <div [class]="isChatsActive() ? 'p-3 active-rounded-top item-container ' + sidebar_bg :''  " >
                     
                 </div>
             </div>
+
             
             <li (click)="closeAllMenu()" data-bs-toggle="modal" data-bs-target="#confirmLogout" class="logout position-absolute bottom-0 d-flex align-items-center nav-item p-2 ps-2 mx-0">
 

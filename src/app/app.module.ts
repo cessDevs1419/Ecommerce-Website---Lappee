@@ -117,6 +117,9 @@ import { SetupReminderComponent } from './components/components/modal-forms-clie
 import { MyStylesComponent } from './components/pages/main/my-styles/my-styles.component';
 import { MyStylesPrimerComponent } from './components/components/modal-forms-client/my-styles-primer/my-styles-primer.component';
 import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop'
+import { AdminChatComponent } from './components/pages/admin/admin-chat/admin-chat.component';
+import { ModalNotificationComponent } from './components/components/modal-notification/modal-notification.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -220,9 +223,12 @@ import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop'
     SetupReminderComponent,
     MyStylesComponent,
     MyStylesPrimerComponent,
+    AdminChatComponent,
+    ModalNotificationComponent,
   ],
   imports: [
     BrowserModule,
+    ModalModule.forRoot(),
     LayoutModule,
     HttpClientModule,
     HttpClientXsrfModule.withOptions({
@@ -271,6 +277,7 @@ import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop'
           {path: 'order-ship', component: AdminOrderShipComponent, title: 'Order Management'},
           {path: 'order-shipping', component: AdminOrderShippingComponent, title: 'Order Management'},
           {path: 'order-delivered', component: AdminOrderDeliveredComponent, title: 'Order Management'},
+          {path: 'chats', component: AdminChatComponent, title: 'Chats'},
           //{path: 'order-cancel', component: AdminOrderCancelComponent},
           {path: 'order-cancelled', component: AdminOrderCancelledComponent, title: 'Order Management'},
           {path: 'order-on-hold', component: AdminOrderHoldComponent, title: 'Order Management'},
