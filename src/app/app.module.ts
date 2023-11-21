@@ -116,7 +116,7 @@ import { AdminOrderCancelledComponent } from './components/pages/admin/admin-ord
 import { SetupReminderComponent } from './components/components/modal-forms-client/setup-reminder/setup-reminder/setup-reminder.component';
 import { MyStylesComponent } from './components/pages/main/my-styles/my-styles.component';
 import { MyStylesPrimerComponent } from './components/components/modal-forms-client/my-styles-primer/my-styles-primer.component';
-
+import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop'
 
 @NgModule({
   declarations: [
@@ -318,7 +318,9 @@ import { MyStylesPrimerComponent } from './components/components/modal-forms-cli
     LightboxModule,
     NgxImageZoomModule,
     ColorPickerModule,
-    NgChartsModule
+    NgChartsModule,
+    DragDropModule,
+    CdkDrag
   ],
   providers: [
     {

@@ -7,6 +7,7 @@ import { ModalClientComponent } from 'src/app/components/components/modal-client
 import { ProductsService } from 'src/app/services/products/products.service';
 import { formatCategoryProduct, formatProductAll, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
 import { CategoryProduct, Product, Variant } from 'src/assets/models/products';
+import { CdkDrag } from '@angular/cdk/drag-drop'
 
 @Component({
   selector: 'app-my-styles',
@@ -17,7 +18,11 @@ export class MyStylesComponent {
 
   constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer) {}
   
-  products: Observable<Product[]>
+  products: Observable<Product[]>;
+  productsCache: Product[];
+  variantsTop: Variant[] = [];
+  variantsBot: Variant[] = [];
+  selectedVariants: Variant[] = [];
   //selectedProduct: Product;
   selectedProduct1: Product;
   selectedProduct2: Product;
@@ -27,6 +32,8 @@ export class MyStylesComponent {
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
 
   mode: string = "";
+
+  isLoading: boolean = true;
 
 
   product1Select = new FormGroup({
@@ -46,10 +53,28 @@ export class MyStylesComponent {
 
   ngOnInit(): void {
     this.products = this.productsService.getProductsAll().pipe(map((response: any) => formatProductAll(response)));
-
+    this.products.subscribe({
+      next: (response: Product[]) => {
+        this.productsCache = response;
+        console.log(this.productsCache)
+        this.setupVariants();
+      }
+    })
     setTimeout(() => {
       this.showPrimer();
     }, 3000)
+  }
+
+  setupVariants(): void {
+    this.productsCache.forEach((product: Product) => {
+      product.variants.forEach((variant: Variant) => {
+        this.variantsTop.push(variant);
+      })
+      product.variants.forEach((variant: Variant) => {
+        this.variantsBot.push(variant);
+      })
+    })
+    this.isLoading = false;
   }
 
   showPrimer(): void {
@@ -71,19 +96,24 @@ export class MyStylesComponent {
     this.selectedProduct2 = product;
   }
 
-  selectVariant1(id: string): void {
-    this.selectedVariant1 = this.selectedProduct1.variants[this.matchVariantIndex(this.selectedProduct1, id)]
+  selectVariant1(variant: Variant): void {
+    this.selectedVariant1 = variant
     console.log(this.selectedVariant1);
   }
 
-  selectVariant2(id: string): void {
-    this.selectedVariant2 = this.selectedProduct2.variants[this.matchVariantIndex(this.selectedProduct2, id)]
-    console.log(this.selectedVariant2);
+  selectVariant2(variant: Variant): void {
+    this.selectedVariant2 = variant
+    console.log(this.selectedVariant1);
   }
 
   matchVariantIndex(product: Product, variant_id: string): number {
     return product.variants.findIndex((variant: Variant) => variant.variant_id == variant_id);
   } 
+
+  matchVariantProductName(variant: Variant): string {
+    let result = this.productsCache.find((product: Product) => product.id === variant.product_id);
+    return result?.name!;
+  }
     
     
 

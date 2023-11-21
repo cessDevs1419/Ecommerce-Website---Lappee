@@ -122,6 +122,10 @@
     background-color: #D9D9D9;
 }
 
+.bg-body-bg {
+    background-color: var(--bs-body-bg)
+}
+
 .color-primary {
     color: var(--primary);
 }

@@ -1,6 +1,87 @@
 <div class="container-md">
     <app-modal-client [mode]="this.mode" [modalSize]="'modal-md'"></app-modal-client>
-    <div class="carousel slide" id="shoppingCartCarousel" #carousel>
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="dark-subtle-bg p-3">
+                <p class="fw-bold text-white fs-5 m-0">Tops</p> 
+            </div>
+            <div class="bg-dark-grey p-3">
+                <div class="input-group border-1">
+                    <span class="input-group-text border-end-0 pe-1 py-1 bg-body-bg"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search for items...">
+                </div>                  
+            </div>
+            <div class="bg-light-gray p-3">
+                <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                <div *ngIf="!isLoading">
+                    <form [formGroup]="product1Select" class="row px-3">
+                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsTop">
+                            <label for={{variant.variant_id}} class="variant-label">
+                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant1" (click)="selectVariant1(variant)" />
+                                <div class="d-flex flex-row rounded-1 p-3 variant-box">
+                                    <img [src]="variant.images[0]" class="img-fluid">
+                                </div>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dark-subtle-bg p-3 mt-3">
+                <p class="fw-bold text-white fs-5 m-0">Bottoms</p> 
+            </div>
+            <div class="bg-dark-grey p-3">
+                <div class="input-group border-1">
+                    <span class="input-group-text border-end-0 pe-1 py-1 bg-body-bg"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search for items...">
+                </div>                  
+            </div>
+            <div class="bg-light-gray p-3">
+                <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                <div *ngIf="!isLoading">
+                    <form [formGroup]="product2Select" class="row px-3">
+                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsTop">
+                            <label for={{variant.variant_id}} class="variant-label">
+                                <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant2" (click)="selectVariant2(variant)" />
+                                <div class="d-flex flex-row rounded-1 p-3 variant-box">
+                                    <img [src]="variant.images[0]" class="img-fluid">
+                                </div>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="dark-subtle-bg p-3">
+                <p class="fw-bold text-white fs-5 m-0">Outfit Preview</p> 
+            </div>
+            <div class="bg-light-gray p-3 preview-panel d-flex flex-column justify-content-center align-items-center">
+                <div class="preview-image" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag>
+                    <img [src]="selectedVariant1.images[0]" class="img-fluid">
+                </div>
+                <div class="preview-image mt-3" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag>
+                    <img [src]="selectedVariant1.images[0]" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dark-subtle-bg p-3">
+                <p class="fw-bold text-white fs-5 m-0">Summary</p> 
+            </div>
+            <div class="bg-light-gray p-3">
+                <div class="d-flex justify-content-between align-items-center" *ngIf="selectedVariant1 as var1">
+                    <div class="d-flex flex-column">
+                        <p class="m-0 fw-bold fs-5">{{this.matchVariantProductName(var1)}}</p>
+                        <p class="m-0 muted-text">{{var1.variant_name}}</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <p class="m-0 fw-bold">{{var1.price | currency}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="carousel slide" id="shoppingCartCarousel" #carousel>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="d-flex flex-column mt-5">
@@ -34,13 +115,7 @@
                                             </div>
                                             <div class="card-body d-flex flex-column justify-content-between">
                                                 <div class="card-title m-0">{{product.name}}</div>
-                                                <!-- <div class="d-flex flex-column flex-md-row justify-content-between">
-                                                    <div class="d-inline-flex align-items-center">
-                                                        <div class="product-price fs-5 fw-bold">
-                                                            {{product.price | currency}}
-                                                        </div>
-                                                    </div>
-                                                </div> -->
+                            
                                             </div>
                                         </div>
                                     </label>
@@ -61,7 +136,6 @@
                                         <div class="col-6 d-flex flex-column align-items-start">
                                             <p class="fw-bold m-0">{{selected.name}}</p>
                                             <p class="m-0 muted-text">{{selected.category}}</p>
-                                            <!-- <p class="text-primary">{{selected.variants[0].price | currency}}</p> -->
                                             <p class="m-0" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(selected.description)"></p>
                                         </div>
                                     </div>
@@ -138,13 +212,7 @@
                                             </div>
                                             <div class="card-body d-flex flex-column justify-content-between">
                                                 <div class="card-title m-0">{{product.name}}</div>
-                                                <!-- <div class="d-flex flex-column flex-md-row justify-content-between">
-                                                    <div class="d-inline-flex align-items-center">
-                                                        <div class="product-price fs-5 fw-bold">
-                                                            {{product.price | currency}}
-                                                        </div>
-                                                    </div>
-                                                </div> -->
+                                            
                                             </div>
                                         </div>
                                     </label>
@@ -165,7 +233,6 @@
                                         <div class="col-6 d-flex flex-column align-items-start">
                                             <p class="fw-bold m-0">{{selected.name}}</p>
                                             <p class="m-0 muted-text">{{selected.category}}</p>
-                                            <!-- <p class="text-primary">{{selected.variants[0].price | currency}}</p> -->
                                             <p class="m-0" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(selected.description)"></p>
                                         </div>
                                     </div>
@@ -251,5 +318,5 @@
                 <button class="button-primary" (click)="prevPage()">Previous</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
