@@ -16,7 +16,7 @@
     <div class="row mt-3">
         <div class="col-6 col-lg-4 col-xl-3 mb-3" *ngFor="let category of categories | async"> 
             <a [routerLink]="['/category', category.id]" class="text-reset text-decoration-none">
-                <div class="category-card px-5 py-3 d-flex justify-content-center align-items-center" [style.background-image]="category.images ? category.images : 'url(' + 'https://picsum.photos/800' +')'">
+                <div class="category-card px-5 py-3 d-flex justify-content-center align-items-center" [style.background-image]="category.images ? 'url(' + category.images + ')' : 'url(' + 'https://picsum.photos/800' +')'">
                     <p class="m-0 fs-4 fw-bold text-white">{{category.name}}</p>
                 </div>
             </a>
