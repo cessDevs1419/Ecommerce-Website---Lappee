@@ -19,9 +19,13 @@
     font-family: Mulish, sans-serif;
 }
 
+.component-container{
+    height: calc(100vh - 80px);
+}
 .font-grey{
     color: #BBBBBB
 }
+
 
 .sub-font-grey{
     color: var(--adm-dark-gray)
@@ -35,7 +39,12 @@
     border: dashed 2px;
     padding: 20px;
 }
-
+.light-gray-emphasis{
+    background: #2E303D;
+}
+.border-gray-emphasis{
+    border-color: #272A36;
+}
 .cancel-btn{
     background: #BBB;
 }

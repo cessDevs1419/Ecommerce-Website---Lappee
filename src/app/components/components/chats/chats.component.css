@@ -4,20 +4,89 @@
     height: 3rem;
 }
 .chat-body-xl{
-    min-height: calc(100vh - 100px);
+    height: calc(97vh - 100px);
 }
 .chat-body-lg{
     height: calc(81.5vh - 100px);
 }
 .chat-body-md{
-    min-height: calc(55.3vh - 100px);
+    height: calc(55.3vh - 100px);
 }
 
-
+.chat-header{
+    background: linear-gradient(180deg, #16181F 0%, rgba(22, 24, 31, 0.00) 100%);
+}
+.chat-history{
+    height: calc(100% - 200px);
+}
+.chat-history-active{
+    height: calc(100% - 260px);
+}
 
 .chat-body-container {
-    max-height: 40rem; 
+    max-height: 40rem;
+    min-height: 20rem;
     padding: 0;
     overflow-y: auto;
 }
 
+.input{
+    background-color: #2E303D;
+    padding-top: .6rem;
+}
+
+.input-client{
+    padding-top: .6rem;
+}
+
+.message-container{
+    max-width: 20rem;
+    min-width: 10rem;
+}
+
+.files-container{
+    min-width: 10rem;
+}
+
+.file-container{
+    height: 5rem;
+    min-width: 4rem;
+    max-width: 4rem;
+}
+textarea {
+    resize: none;
+}
+
+.sender-bg{
+    background: #1C92FF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.receiver-bg{
+    background: #272A36;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+}
+
+
+.border-grey-emphasis{
+    border: 1px solid #909090;
+}
+
+.search{
+    background: none;
+}
+
+.select{
+    max-width: 15rem;
+}
+
+.active{
+    border-radius: 20px;
+    background: #272A36;
+}
+
+.user-items:hover{
+    border-radius: 20px;
+    background: rgb(24, 26, 37);
+}

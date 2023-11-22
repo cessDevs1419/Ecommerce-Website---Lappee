@@ -197,7 +197,8 @@ export class SidebarComponent {
     return this.router.url === '/admin/accounts-management'
   }
   isChatsActive(): boolean {
-    return this.router.url === '/admin/chats'
+    return this.router.url === '/admin/chats' ||
+    this.router.url.startsWith('/admin/chats')
   }
   
   isSiteSettingsActive(): boolean {

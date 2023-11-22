@@ -356,7 +356,7 @@ export class TableComponent {
 	showPage(row: any): void{
 		this.showEvent.emit(row)
 	}
-	
+
 	showAddForm(): void{
 		this.ShowAddForm.emit()
 	}

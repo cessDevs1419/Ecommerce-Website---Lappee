@@ -121,6 +121,7 @@ import { AdminChatComponent } from './components/pages/admin/admin-chat/admin-ch
 import { ModalNotificationComponent } from './components/components/modal-notification/modal-notification.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MaintenanceModeComponent } from './components/pages/maintenance-mode/maintenance-mode.component';
+import { FloatingChatContainerComponent } from './components/components/floating-chat-container/floating-chat-container.component';
 
 @NgModule({
   declarations: [
@@ -227,6 +228,7 @@ import { MaintenanceModeComponent } from './components/pages/maintenance-mode/ma
     AdminChatComponent,
     ModalNotificationComponent,
     MaintenanceModeComponent,
+    FloatingChatContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -281,6 +283,7 @@ import { MaintenanceModeComponent } from './components/pages/maintenance-mode/ma
           {path: 'order-shipping', component: AdminOrderShippingComponent, title: 'Order Management'},
           {path: 'order-delivered', component: AdminOrderDeliveredComponent, title: 'Order Management'},
           {path: 'chats', component: AdminChatComponent, title: 'Chats'},
+          {path: 'chats/:id', component: AdminChatComponent, title: 'Chats'},
           //{path: 'order-cancel', component: AdminOrderCancelComponent},
           {path: 'order-cancelled', component: AdminOrderCancelledComponent, title: 'Order Management'},
           {path: 'order-on-hold', component: AdminOrderHoldComponent, title: 'Order Management'},

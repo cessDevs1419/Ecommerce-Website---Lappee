@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
@@ -43,7 +44,8 @@ private refreshData$ = new Subject<void>();
   constructor(
       private echo: EchoService, 
   private service: OrderService,
-  private cdr: ChangeDetectorRef
+  private cdr: ChangeDetectorRef,
+  private router: Router
 ) {}
 
 ngOnInit(): void{
@@ -65,7 +67,9 @@ ngOnInit(): void{
   refreshTableData(): void {
       this.refreshData$.next();
   }
-  
+  showPage(data: any){
+    this.router.navigate(['/admin/chats',data.user_id]);
+  }
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;
       this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
