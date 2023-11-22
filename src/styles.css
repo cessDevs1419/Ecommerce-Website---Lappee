@@ -5,6 +5,7 @@
 :root {
     --primary: #1C92FF;
     --primary-dark: #1C76CA;
+    --primary-subtle: #D5DCFF;
     --body-text: #3C3C3C;
     --muted-gray: #C1C1C1;
     --light-gray: #EFF0F5;
@@ -133,6 +134,10 @@
 
 .bg-body-bg {
     background-color: var(--bs-body-bg)
+}
+
+.bg-primary-subtle {
+    background-color: var(--primary-subtle)
 }
 
 .color-primary {
