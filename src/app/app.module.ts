@@ -120,6 +120,7 @@ import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop'
 import { AdminChatComponent } from './components/pages/admin/admin-chat/admin-chat.component';
 import { ModalNotificationComponent } from './components/components/modal-notification/modal-notification.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { MaintenanceModeComponent } from './components/pages/maintenance-mode/maintenance-mode.component';
 
 @NgModule({
   declarations: [
@@ -225,6 +226,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     MyStylesPrimerComponent,
     AdminChatComponent,
     ModalNotificationComponent,
+    MaintenanceModeComponent,
   ],
   imports: [
     BrowserModule,
@@ -240,8 +242,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     RouterModule.forRoot([
       
       //client
-      {path: 'home', component: HomeComponent, title: 'Home'},
-      //{path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
+      { path: 'home', component: HomeComponent, title: 'Home' },
+      // { path: 'maintenance', component: MaintenanceModeComponent, title: 'Maintenance'},
+      // {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
       {path:'login', component: LoginComponent, canActivate: [authGuard], title: 'Log In'},
       {path: 'register', component: RegisterComponent, canActivate: [authGuard], title: 'Register'},
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
