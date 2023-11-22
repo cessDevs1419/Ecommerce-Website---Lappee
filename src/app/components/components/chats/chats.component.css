@@ -13,6 +13,7 @@
     height: calc(55.3vh - 100px);
 }
 
+
 .chat-header{
     background: linear-gradient(180deg, #16181F 0%, rgba(22, 24, 31, 0.00) 100%);
 }
@@ -23,6 +24,10 @@
     height: calc(100% - 260px);
 }
 
+.chat-list{
+    height: 40rem;
+
+}
 .chat-body-container {
     max-height: 40rem;
     min-height: 20rem;
