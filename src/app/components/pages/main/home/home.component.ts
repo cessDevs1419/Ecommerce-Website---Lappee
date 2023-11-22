@@ -29,6 +29,7 @@ export class HomeComponent {
   banners: Observable<Banner[]>;
   categories: Observable<Category[]>;
   products: CategoryProduct[] = [];
+  trending: CategoryProduct[] = [];
 
   isLoading: boolean = true;
   mode: string = "setup-reminder";
@@ -67,6 +68,13 @@ export class HomeComponent {
     this.categories = this.categoryService.getCategories().pipe(map((response: any) => formatCategories(response)));
 
     this.checkAddress();
+
+    this.productsService.getProductsTrending().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
+      next: (products: CategoryProduct[]) => {
+        this.trending = products;
+        this.isLoading = false;
+      },
+    });
   }
 
   checkAddress() {

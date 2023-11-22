@@ -35,7 +35,7 @@
         </div>
 
         <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
-        <app-product-carousel [products]="products" [itemsPerPage]="itemsPerPage" [hidden]="isLoading"></app-product-carousel>
+        <app-product-carousel [products]="trending" [itemsPerPage]="itemsPerPage" [hidden]="isLoading"></app-product-carousel>
     </div>
 
 
