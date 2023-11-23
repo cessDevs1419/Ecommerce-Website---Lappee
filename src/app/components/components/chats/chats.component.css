@@ -7,7 +7,7 @@
     height: calc(97vh - 100px);
 }
 .chat-body-lg{
-    height: calc(81.5vh - 100px);
+    height: calc(81.5vh - 100px);   
 }
 .chat-body-md{
     height: calc(55.3vh - 100px);
@@ -94,4 +94,29 @@ textarea {
 .user-items:hover{
     border-radius: 20px;
     background: rgb(24, 26, 37);
+}
+
+.backbtn{
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .chat-box-container{
+        display: none;
+    }
+    .chat-box-container-active{
+        display: block;
+        width: 100%;
+    }
+    .channel-box-container{
+        width: 100% !important;
+        display: block;
+    }
+    .channel-box-container-inactive{
+        display: none;
+    }
+
+    .backbtn{
+        display: block;
+    }
 }

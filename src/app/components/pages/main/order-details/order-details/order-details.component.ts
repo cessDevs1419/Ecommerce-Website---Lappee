@@ -22,7 +22,7 @@ export class OrderDetailsComponent {
 
 
   Number = Number;
-  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService) {
+  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService, private router: Router) {
     this.orderId = String(this.route.snapshot.paramMap.get('orderId'))
   }
 
@@ -80,5 +80,9 @@ export class OrderDetailsComponent {
   
   toast(data: string[]): void {
     this.toaster.showToast(data[0], data[1], data[2]);
+  }
+
+  chat(id: string){
+    this.router.navigate(['/profile/orders/details/chats', id]);
   }
 } 

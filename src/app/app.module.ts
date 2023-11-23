@@ -122,6 +122,7 @@ import { ModalNotificationComponent } from './components/components/modal-notifi
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MaintenanceModeComponent } from './components/pages/maintenance-mode/maintenance-mode.component';
 import { FloatingChatContainerComponent } from './components/components/floating-chat-container/floating-chat-container.component';
+import { OrderChatsComponent } from './components/pages/main/order-chats/order-chats.component';
 
 @NgModule({
   declarations: [
@@ -229,6 +230,7 @@ import { FloatingChatContainerComponent } from './components/components/floating
     ModalNotificationComponent,
     MaintenanceModeComponent,
     FloatingChatContainerComponent,
+    OrderChatsComponent,
   ],
   imports: [
     BrowserModule,
@@ -256,6 +258,7 @@ import { FloatingChatContainerComponent } from './components/components/floating
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
       {path: 'profile/orders/details/:orderId', component: OrderDetailsComponent, canActivate: [authGuard], title: 'Order Details'},
+      {path: 'profile/orders/details/chats/:orderId', component: OrderChatsComponent, canActivate: [authGuard], title: 'Order Chats'},
       {path: 'contactus', component: ContactusComponent, title: 'Contact Us'},
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},

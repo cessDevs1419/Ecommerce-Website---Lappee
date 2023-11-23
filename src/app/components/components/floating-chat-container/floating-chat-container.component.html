@@ -3,7 +3,7 @@
 
 <div class="dropup {{class}}">
     <button 
-        class="btn btn-primary rounded-circle glow-primary py-2 p-3"
+        class="btn btn-primary button-primary  rounded-circle glow-primary py-2 p-3"
         data-bs-toggle="dropdown"
         data-bs-auto-close="false" 
         aria-expanded="false"
@@ -16,6 +16,7 @@
             [size]="'chat-body-lg'"
             [client]="true"
             (closeModal)="close()"
+            [closeBtn]="true"
         >
         </app-chats>
     </ul>

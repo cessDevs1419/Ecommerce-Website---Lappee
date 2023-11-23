@@ -26,10 +26,14 @@ export class ChatsComponent {
   @Input() chatData!: Observable<any>;
   @Input() chatRows: any[];
   @Input() selectedRowData: any;
+  @Input() closeBtn!: boolean;
 
   containerbordercolor: string = ''
   panel_bg: string = ''
   text_color: string = ''
+  channelboxContainer: string = ''
+  chatboxContainer: string = ''
+
   public searchString: string;
   public openedAccount: any[] = []
   public convo_active: boolean[] = [];
@@ -141,13 +145,19 @@ export class ChatsComponent {
     this.router.navigate(['/admin/chats',data.user_id]);
     
     //for showcase only real process will be at the page load
-    
+    this.channelboxContainer = 'channel-box-container-inactive'
+    this.chatboxContainer = 'chat-box-container-active'
     this.chats.removeChat()
     this.chats.setActiveChats(data);
     this.convo_active = Array(this.openedAccount.length).fill(false);
     this.convo_active[index] = true;
   }
+  back(){
+    this.router.navigate(['/admin/chats']);
 
+    this.channelboxContainer = ''
+    this.chatboxContainer = ''
+  }
   closeChat(){
     this.closeModal.emit()
   }

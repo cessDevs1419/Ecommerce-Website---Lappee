@@ -1,10 +1,10 @@
 <div class="home-container position-relative ">
-    <div class="z-3 chat-container position-absolute bottom-0 end-0 mb-4 me-4">
-        <app-floating-chat-container *ngIf="pageFlag" ></app-floating-chat-container>    
-    </div>
     <div class="page-container position-relative h-100 overflow-auto ">
         <app-navbar></app-navbar>
         <router-outlet></router-outlet>
         <app-footer></app-footer>
+    </div>
+    <div class="z-3 chat-container position-fixed bottom-0 end-0 mb-4 me-4">
+        <app-floating-chat-container *ngIf="pageFlag" ></app-floating-chat-container>    
     </div>
 </div>

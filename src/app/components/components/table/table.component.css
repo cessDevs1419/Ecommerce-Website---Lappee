@@ -4,15 +4,15 @@
 }
 
 .table-container-lg{
-  height: calc(79.4vh - 100px);
+  height: calc(80vh - 100px);
 }
 
 .table-container-md{
-  height: calc(69.7vh - 100px);
+  height: calc(70.6vh - 100px);
 }
 
 .table-container-sm{
-  height: calc(55.3vh - 100px);
+  height: calc(56.5vh - 100px);
 }
 
 .table-child-container{
