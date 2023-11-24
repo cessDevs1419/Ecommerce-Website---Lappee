@@ -38,7 +38,7 @@ export class CartItemComponent {
     let matchIndex = -1
 
     this.cartItem.product.variants.forEach((variant: Variant, index: number) => {
-      console.log(variant_id == variant.variant_id ,variant_id, variant.variant_id)
+      // console.log(variant_id == variant.variant_id ,variant_id, variant.variant_id)
       if(variant_id == variant.variant_id){
         matchIndex = index
       }
@@ -47,11 +47,11 @@ export class CartItemComponent {
   } 
 
   updateStockInfo(): void {
-    console.log("Cart Item pass", this.productArray);
-    console.log(this.cartItem);
+    // console.log("Cart Item pass", this.productArray);
+    // console.log(this.cartItem);
     let matchIndex = this.matchVariantId(this.cartItem.variant)
-    console.log(matchIndex)
-    console.log(this.cartItem.variant, this.cartItem.product.variants[this.matchVariantId(this.cartItem.variant)].stock)
+    // console.log(matchIndex)
+    // console.log(this.cartItem.variant, this.cartItem.product.variants[this.matchVariantId(this.cartItem.variant)].stock)
     
     if(this.cartItem.product.variants[this.matchVariantId(this.cartItem.variant)].stock){
       this.maxStock = this.cartItem.product.variants[this.matchVariantId(this.cartItem.variant)].stock

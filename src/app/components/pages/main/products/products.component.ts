@@ -278,7 +278,7 @@ export class ProductsComponent {
     
     console.log('trigger')
     if(!params.variant) {
-      console.log('no variant selected')
+      // console.log('no variant selected')
       this.isVariantSelected = false;
       this.isTouched = true;
       return false;
@@ -291,22 +291,24 @@ export class ProductsComponent {
 
     else {
       let details: string[] = [];
-      console.log(params.variant_attributes);
+      //console.log(params.variant_attributes);
       params.variant_attributes.forEach((key, value) => {
         details.push(value + ": " + key);
       })
+      // console.log("Before addToCart()", this.cart.getItems())
       this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
-  
-      console.warn('added to cart');
-      console.log(this.cart.items);
+
+      // console.warn('added to cart');
+      // console.log("After addToCart()", this.cart.getItems())
   
       this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default', '', '', false);
+      // console.log(this.cart.getItems())
       return true;
     }
   }
 
   orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
-    console.log(this.addToCartAttr(params));
+    //console.log(this.addToCartAttr(params));
     if(this.addToCartAttr(params)){
       this.router.navigate(['/cart']);
     }
