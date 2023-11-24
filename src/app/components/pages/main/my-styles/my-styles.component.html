@@ -60,11 +60,17 @@
                 </button> -->
             </div>
             <div class="bg-primary-subtle p-3 preview-panel d-flex flex-column justify-content-center align-items-center overflow-hidden">
-                <div class="preview-image" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag>
+                <div class="preview-image position-relative" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag ElResizable (emitIsResizing)="onResizeChange($event)" [cdkDragDisabled]="isResizing" > 
                     <img [src]="selectedVariant1.images[0]" class="img-fluid">
+                    <div class="resize-handle d-flex align-items-center justify-content-center" (mousedown)="isResizing = true">
+                        <span class="text-white"><i class="bi bi-arrows-angle-expand"></i></span>
+                    </div>
                 </div>
-                <div class="preview-image mt-3" *ngIf="selectedVariant2" cdkDragBoundary=".preview-panel" cdkDrag>
+                <div class="preview-image position-relative mt-3" *ngIf="selectedVariant2" cdkDragBoundary=".preview-panel" cdkDrag ElResizable (emitIsResizing)="onResizeChange($event)" [cdkDragDisabled]="isResizing" >
                     <img [src]="selectedVariant2.images[0]" class="img-fluid">
+                    <div class="resize-handle d-flex align-items-center justify-content-center" (mousedown)="isResizing = true">
+                        <span class="text-white"><i class="bi bi-arrows-angle-expand"></i></span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -62,6 +62,7 @@ export class MyStylesComponent {
 
   isLoading: boolean = true;
 
+  isResizing: boolean = false;
 
   product1Select = new FormGroup({
     product1: new FormControl('', Validators.required),
@@ -301,5 +302,9 @@ export class MyStylesComponent {
     this.cart.addToCart(product2, this.checkoutVariant2.variant_id, var2attr, 1, this.checkoutVariant2.price, this.checkoutVariant2.images)
 
     this.router.navigate(['/cart']);
+  }
+
+  onResizeChange(state: boolean): void {
+    this.isResizing = state;
   }
 }

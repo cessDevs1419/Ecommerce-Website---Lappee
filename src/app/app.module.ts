@@ -123,6 +123,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { MaintenanceModeComponent } from './components/pages/maintenance-mode/maintenance-mode.component';
 import { FloatingChatContainerComponent } from './components/components/floating-chat-container/floating-chat-container.component';
 import { OrderChatsComponent } from './components/pages/main/order-chats/order-chats.component';
+import { ElResizableDirective } from '../assets/directives/elresizable/el-resizable.directive';
 
 @NgModule({
   declarations: [
@@ -231,6 +232,7 @@ import { OrderChatsComponent } from './components/pages/main/order-chats/order-c
     MaintenanceModeComponent,
     FloatingChatContainerComponent,
     OrderChatsComponent,
+    ElResizableDirective,
   ],
   imports: [
     BrowserModule,

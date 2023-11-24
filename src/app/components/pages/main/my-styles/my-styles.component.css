@@ -106,6 +106,7 @@ input[type='radio']{
 
 .preview-panel {
     height: 45rem;
+    max-height: 45rem;
 }
 
 .preview-image {
@@ -134,4 +135,28 @@ input[type='radio']{
     color: #FFFFFF;
     background-color: var(--muted-gray);
     transition: all .4s;
+}
+
+.resize-handle {
+    position: absolute;
+    border-radius: 9999px;
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--primary);
+    top: 5%;
+    right: 5%;
+    box-shadow: none;
+    transition: all .4s;
+    z-index: 5;
+    cursor: nesw-resize;
+}
+
+.resize-handle:hover {
+    width: 3.5rem;
+    height: 3.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0, 0.15);
+}
+
+.cdk-drag-disabled {
+    box-shadow: none !important;
 }
