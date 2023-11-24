@@ -98,9 +98,7 @@ export class MyStylesComponent {
         this.setupVariants();
       }
     })
-    setTimeout(() => {
-      this.showPrimer();
-    }, 3000)
+    this.showPrimer();
   }
 
   setupVariants(): void {

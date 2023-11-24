@@ -80,7 +80,9 @@ input[type='radio']{
 .variant-box {
     cursor: pointer;
     border: 1px solid var(--muted-gray);
-    transition: border .4s, background-color .4s, color .4s
+    transition: border .4s, background-color .4s, color .4s;
+    width: 5rem;
+    height: 5rem;
 }
 
 .variant-image {

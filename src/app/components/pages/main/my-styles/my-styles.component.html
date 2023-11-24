@@ -59,7 +59,7 @@
                     Reset
                 </button> -->
             </div>
-            <div class="bg-primary-subtle p-3 preview-panel d-flex flex-column justify-content-center align-items-center">
+            <div class="bg-primary-subtle p-3 preview-panel d-flex flex-column justify-content-center align-items-center overflow-hidden">
                 <div class="preview-image" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag>
                     <img [src]="selectedVariant1.images[0]" class="img-fluid">
                 </div>
@@ -80,7 +80,7 @@
                     <div class="d-flex justify-content-between" *ngIf="checkoutVariant1 as var1">
                         <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var1).name}}</p>
-                            <p class="m-0 muted-text">{{var1.variant_name}}</p>
+                            <p class="m-0">{{var1.variant_name}}</p>
                             <p class="m-0 mt-2">Available sizes: </p>
                             <div class="d-flex size-grid">
                                 <div class="" *ngFor="let variant of matchVariantSameColor(var1)" (click)="modelCV1Change(variant)">
@@ -97,7 +97,7 @@
                     <div class="d-flex justify-content-between mt-3" *ngIf="checkoutVariant2 as var2">
                         <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var2).name}}</p>
-                            <p class="m-0 muted-text">{{var2.variant_name}}</p>
+                            <p class="m-0">{{var2.variant_name}}</p>
                             <p class="m-0 mt-2">Available sizes: </p>
                             <div class="d-flex size-grid">
                                 <div class="" *ngFor="let variant of matchVariantSameColor(var2)" (click)="modelCV2Change(variant)">
@@ -115,7 +115,7 @@
             </div>
             <div class="mt-3">
                 <div class="dark-subtle-bg p-3">
-                    <p class="fw-bold text-white fs-5 m-0">Order Summary</p> 
+                    <p class="fw-bold text-white fs-5 m-0">Outfit Items</p> 
                 </div>
                 <div class="bg-primary-subtle p-3">
                     <div class="d-flex justify-content-between align-items-center" *ngIf="!selectedVariant1 && !selectedVariant2">
@@ -136,31 +136,31 @@
 
                         <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var1).name}}</p>
-                            <p class="m-0 muted-text">{{var1.variant_name}}</p>
+                            <p class="m-0">{{var1.variant_name}}</p>
                         </div>
                         <div class="d-flex">
-                            <p class="m-0 fw-bold">{{var1.price | currency}}</p>
+                            <p class="m-0 fw-bold">x1</p>
                         </div>
 
                     </div>
                     <div class="d-flex justify-content-between align-items-center pt-3" [ngClass]="{'border-top-1': checkoutVariant1}" *ngIf="checkoutVariant2 as var2">
                         <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var2).name}}</p>
-                            <p class="m-0 muted-text">{{var2.variant_name}}</p>
+                            <p class="m-0">{{var2.variant_name}}</p>
                         </div>
                         <div class="d-flex align-items-center">
-                            <p class="m-0 fw-bold">{{var2.price | currency}}</p>
+                            <p class="m-0 fw-bold">x1</p>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mt-5" [ngClass]="{'border-top-1': checkoutVariant1}" *ngIf="checkoutVariant1 || checkoutVariant2">
+                    <!-- <div class="d-flex justify-content-between align-items-center mt-5" [ngClass]="{'border-top-1': checkoutVariant1}" *ngIf="checkoutVariant1 || checkoutVariant2">
                         <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">Subtotal</p>
                         </div>
                         <div class="d-flex align-items-center">
                             <p class="m-0 fw-bold fs-5">{{calcTotal() | currency}}</p>
                         </div>
-                    </div>
+                    </div> -->
                     <button class="mt-3 w-100 rounded-0 button-primary text-decoration-none" *ngIf="checkoutVariant1 || checkoutVariant2" (click)="addToCart()"><i class="bi bi-cart-fill me-2"></i>  ADD TO CART</button>
                 </div>
             </div>
