@@ -233,6 +233,7 @@ export class CartComponent {
       let index = this.matchCartItemAndVariant(params.item);
       console.log(index);
       this.cart.removeItem(index);
+      this.cartContents = this.cart.getItems();
     }
   }
 
@@ -259,7 +260,12 @@ export class CartComponent {
     }
     // match found
     if(matchIndex != -1){
-      this.orderList.splice(matchIndex, 1);
+      if(this.orderList.length > 1){
+        this.orderList.splice(matchIndex, 1);
+      }
+      else {
+        this.orderList = [];
+      }
     }
     else {
       console.log('no matches')

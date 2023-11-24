@@ -83,7 +83,13 @@ export class CartService {
   }
 
   removeItem(index: number){
-    this.items.splice(index, 1);
+    if(this.items.length > 1){
+      this.items.splice(index, 1);
+    }
+    else {
+      this.items = [];
+    }
+    console.log(this.items)
   }
 
   getItems(): CartItem[] {
