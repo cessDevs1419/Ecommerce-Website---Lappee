@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as bootstrap from 'bootstrap';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { formatCategoryProduct, formatProductAll, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
@@ -10,7 +10,6 @@ import { Attribute, CategoryProduct, Product, Variant } from 'src/assets/models/
 import { CdkDrag } from '@angular/cdk/drag-drop'
 import { CartService } from 'src/app/services/cart/cart.service';
 import { Router } from '@angular/router';
-
 
 class VariantClass  {
   variant_id: string;
@@ -102,20 +101,67 @@ export class MyStylesComponent {
   }
 
   setupVariants(): void {
+    let allVariants: Variant[] = [];
     this.productsCache.forEach((product: Product) => {
       product.variants.forEach((variant: Variant) => {
-        this.variantsTop.push(variant);
+        allVariants.push(variant);
       })
+      console.log(allVariants);
 
       // product.variants.forEach((variant: Variant) => {
-      //   this.variantsBot.push(variant);
-      // })
+        //   this.variantsBot.push(variant);
+        // })
     })
+    this.variantsTop = this.filterUniqueProductVariants(allVariants)    
+
+    console.log(this.variantsTop)
     for(let i = 0; i < 1; i++){
       this.variantsBot.push(this.variantsTop[i]);
       this.variantsTop.shift();
     }
     this.isLoading = false;
+  }
+
+  benchmark(func: Function, n: number): number[]{
+    let t0,t1;
+    t0 = performance.now();
+    //console.log(t0)
+    for(let i = 0; i < n; i++){
+      func(this.variantsTop)
+    }
+    t1 = performance.now();
+    //console.log(t1)
+
+    return [t1 - t0, n * 1000 / (t1 - t0)]
+  }
+
+  // filterUniqueVariants(array: Variant[]): Variant[] {
+  //   const uniqueVariants = [];
+  //   const seenVariantIds = new Set();
+  //   for (const variant of array) {
+  //     if (!seenVariantIds.has(variant.variant_id)) {
+  //       uniqueVariants.push(variant);
+  //       seenVariantIds.add(variant.variant_id);
+  //     }
+  //   }
+  //   return uniqueVariants;
+  // }
+
+  filterUniqueProductVariants(variants: Variant[]): Variant[] {
+    const uniqueColorsMap = new Map<string, Variant>();
+    variants.forEach((variant) => {
+      const { product_id, attributes } = variant;
+      const colorAttribute = attributes.find(attr => attr.attribute_name === 'Color');
+  
+      if (colorAttribute) {
+        const key = `${product_id}-${colorAttribute.value}`;
+        if (!uniqueColorsMap.has(key)) {
+          uniqueColorsMap.set(key, variant);
+        }
+      }
+    });
+    const uniqueColors = Array.from(uniqueColorsMap.values());
+    return uniqueColors;
   }
 
   showPrimer(): void {
