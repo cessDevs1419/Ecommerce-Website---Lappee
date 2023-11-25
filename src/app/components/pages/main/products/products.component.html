@@ -36,13 +36,13 @@
             <!-- <div id="spacer" style="height: 1000px;"></div> -->
             <div class="mt-3" id="productDescOptions">
                 <div class="accordion accordion-flush " id="accordionProductDesc">
-                    <div class="accordion-item">
+                    <div class="accordion-item"  >
                         <h3 class="accordion-header fw-bold">
-                            <button class="accordion-button product-description-accordion fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#productDescription">
+                            <button class="accordion-button product-description-accordion fw-bold" type="button" (click)="toggleAccordion()">
                                 Product Description
                             </button>
                         </h3>
-                        <div class="accordion-collapse collapse show product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription">
+                        <div class="accordion-collapse collapse show product-description-accordion" data-bs-parent="#accordionProductDesc" id="productDescription" #accordion>
                             <div class="accordion-body" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(match.description)">
                                 
                             </div>

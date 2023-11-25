@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, OnChanges, TemplateRef, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
 import { Product, ColorVariant, Variant, CategoryProduct } from 'src/assets/models/products';
@@ -18,6 +18,7 @@ import { User } from 'src/assets/models/user';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-products',
@@ -58,6 +59,7 @@ export class ProductsComponent {
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild("itemTemplate", {static: true}) itemTemplate: TemplateRef<any>;
+  @ViewChild("accordion") accordion: ElementRef;
 
   //pagination
   currentPage: number = 1;
@@ -238,6 +240,11 @@ export class ProductsComponent {
     console.log(this.colorVariants);
   }
 */
+
+  toggleAccordion(): void {
+    let bsAccordion = bootstrap.Collapse.getOrCreateInstance(this.accordion.nativeElement);
+    bsAccordion.toggle();
+  }
 
   recheckVariant(): void {
     if(this.currentProduct.variants.length > 0){
