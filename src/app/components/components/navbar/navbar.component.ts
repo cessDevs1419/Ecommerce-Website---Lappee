@@ -18,6 +18,7 @@ import { SiteDetailsService } from 'src/app/services/site-details/site-details.s
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import * as bootstrap from 'bootstrap';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class NavbarComponent {
   subcategories!: Observable<Subcategory[]>;
   @ViewChildren('categoryItems') categoryItems!: QueryList<ElementRef>;
   @ViewChild('modalBackground') modalBg!: ElementRef;
+  @ViewChild('offcanvas') offcanvas: ElementRef;
   lastToggled!: string;
   cartContents!: CartItem[];
   targetElement!: HTMLElement;
@@ -197,4 +199,15 @@ export class NavbarComponent {
     this.router.navigate(['/account']);
   }
 
+  dismissOffcanvas(): void {
+    console.log('offcanvas dismiss');
+    console.log(this.offcanvas);
+    let bsOffcavnas = bootstrap.Offcanvas.getInstance(this.offcanvas.nativeElement);
+    bsOffcavnas?.toggle();
+  }
+
+  toggleOffcanvas(): void {
+    let bsOffcavnas = bootstrap.Offcanvas.getOrCreateInstance(this.offcanvas.nativeElement);
+    bsOffcavnas?.show()
+  }
 }

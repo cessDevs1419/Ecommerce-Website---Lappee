@@ -81,7 +81,7 @@
     
     <nav id="navbarLinksBg" class="navbar navbar-expand-md">
         <div class="container-md d-flex flex-row justify-content-between">
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <button class="navbar-toggler" type="button" (click)="toggleOffcanvas()">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -109,7 +109,7 @@
             </ul> -->
 
             <!-- MOBILE MENU -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" #offcanvas>
                 <div class="offcanvas-header">
                     <a title="Home" [routerLink]="['/']" data-bs-dismiss="offcanvas"><img src="../assets/logo.svg" class="img-fluid"></a>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                     <hr>
-                    <app-searchbar class="d-block d-md-none"></app-searchbar>
+                    <app-searchbar class="d-block d-md-none" (dismissOffcanvas)="dismissOffcanvas()"></app-searchbar>
                     <hr>
                     <ul class="navbar-nav">
                         <!-- <li *ngFor="let category of categories | async" class="nav-item dropdown p-2">

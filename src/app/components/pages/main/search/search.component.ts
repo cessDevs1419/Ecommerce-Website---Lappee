@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
@@ -23,6 +24,7 @@ export class SearchComponent {
   navsubscription: any;
   term: string;
   results: Observable<CategoryProduct[]>
+  isEmptyResult: boolean;
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => this.term = params['searchTerm']);
@@ -32,6 +34,14 @@ export class SearchComponent {
 
   initResults(): void {
     this.results = this.searchService.getSearchResults(this.term).pipe(map((response: any) => formatCategoryProduct(response)));
+    this.results.subscribe({
+      next: (response: any) => {
+
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isEmptyResult = true;
+      }
+    })
   }
 
   ngOnDestroy(): void {

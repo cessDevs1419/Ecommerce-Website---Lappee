@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -11,6 +11,8 @@ export class SearchbarComponent {
   
   constructor (private router: Router) {}
 
+  @Output() dismissOffcanvas: EventEmitter<any> = new EventEmitter<any>();
+
   searchForm: FormGroup = new FormGroup({
     searchTerm: new FormControl('')
   });
@@ -18,7 +20,8 @@ export class SearchbarComponent {
   get searchTerm() { return this.searchForm.get('searchTerm') }
 
   search(): void {
-    let term = this.searchTerm?.value ? this.searchTerm.value : 'a';
+    let term = this.searchTerm?.value ? this.searchTerm.value : '';
     this.router.navigate(['/search', term])
+    this.dismissOffcanvas.emit();
   }
 }

@@ -34,10 +34,10 @@
         </div>
     </div>
 
-    <button class="button-primary position-absolute top-50 start-0 translate-middle-y" type="button" (click)="prev()">
+    <button class="button-primary position-absolute top-50 start-0 translate-middle-y" type="button" (click)="prev()" *ngIf="this.itemGroups.length > 1">
         <span><i class="bi bi-arrow-left"></i></span>
     </button>
-    <button class="button-primary position-absolute top-50 end-0 translate-middle-y" type="button" (click)="next()">
+    <button class="button-primary position-absolute top-50 end-0 translate-middle-y" type="button" (click)="next()" *ngIf="this.itemGroups.length > 1">
         <span><i class="bi bi-arrow-right"></i></span>
     </button>
     
