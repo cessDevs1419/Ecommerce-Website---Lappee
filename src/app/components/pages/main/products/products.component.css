@@ -146,7 +146,7 @@ gallery-image {
     }
 }
 
-@media screen and (max-width: 576px){
+@media screen and (max-width: 991px){
     .sticky-column {
         position: relative;
         height: auto;
