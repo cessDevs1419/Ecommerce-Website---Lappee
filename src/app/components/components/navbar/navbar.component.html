@@ -28,7 +28,7 @@
             <p class="fs-6 my-2" *ngIf="this.accountService.getIsLoggedIn()">
                 <a title="User Profile" [routerLink]="['/profile']" class="text-reset" >
                     <div class="d-flex flex-row" *ngIf="this.accountService.getLoggedUser() | async; let user">
-                        <img class="navbar-profile-pic me-2" src="https://picsum.photos/500">
+                        <img class="navbar-profile-pic me-2" src="../../../../../assets/images/profile_placeholder.png">
                         {{ user.fname ? user.fname : user.email}}
                     </div>
                 </a>
@@ -127,7 +127,7 @@
                                 <a [routerLink]="['profile']" data-bs-dismiss="offcanvas"><span class="link-span"></span></a>
                                 <div class="d-flex flex-column align-items-center" *ngIf="this.accountService.getLoggedUser() | async; let user">
                                     <div>
-                                        <img src="https://picsum.photos/200" class="navbar-profile-pic-lg me-3">
+                                        <img src="../../../../../assets/images/profile_placeholder.png" class="navbar-profile-pic-lg me-3">
                                     </div>
                                     <div class="d-flex flex-column align-items-start justify-content-center" >
                                         <p class="color-primary fw-bold fs-3 m-0">{{ user.fname ? user.fname : user.email}}</p>

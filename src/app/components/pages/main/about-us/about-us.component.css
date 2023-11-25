@@ -5,3 +5,9 @@
 .tos-section {
     width: 75%;
 }
+
+@media screen and (max-width: 767px) {
+    .tos-section {
+        width: 90%;
+    }
+}
