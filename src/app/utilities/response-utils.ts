@@ -13,6 +13,7 @@ import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, Si
 import { AttributeList, Attributes } from "src/assets/models/attributes";
 import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
 import { parse } from 'date-fns';
+import { Chats, ChatsList } from "src/assets/models/chats";
 
 // Formatting
 
@@ -83,6 +84,19 @@ export function formatAdminProducts(response: AdminProductList): AdminProduct[] 
     name: data.name,
     price: data.price,
     preview_image: data.preview_image
+  }));
+}
+
+export function formatChats(response: ChatsList): Chats[] {
+  return response.data.map((data: Chats) => ({
+    id: data.id,
+    conversation_id: data.conversation_id,
+    sender: data.sender,
+    message: data.message,
+    attachment: data.attachment,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    is_deleted: data.is_deleted
   }));
 }
 
@@ -260,6 +274,7 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
   return response.data.map((data: AdminOrder) => ({
     id: data.id,
     user_id: data.user_id,
+    conversation_id: data.conversation_id,
     status: data.status,
     created_at: formatDate(data.created_at, 'medium', 'en_PH'),
     updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
@@ -289,6 +304,7 @@ export function formatAdminCancelledOrder(response: AdminCancelledOrderList): Ad
   return response.data.map((data: AdminCancelledOrder) => ({
     id: data.id,
     user_id: data.user_id,
+    conversation_id: '',
     status: data.status,
     created_at: formatDate(data.created_at, 'medium', 'en_PH'),
     updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
@@ -352,6 +368,7 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
   return response.data.details.map((data: OrderDetail) => ({
     order_id: data.order_id,
     ordered_on: data.ordered_on,
+    conversation_id: data.conversation_id,
     order_contents: data.order_contents,
     status: data.status,
     status_name: data.status_name,

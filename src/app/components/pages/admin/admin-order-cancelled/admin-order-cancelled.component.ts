@@ -6,7 +6,7 @@ import { ToasterComponent } from 'src/app/components/components/toaster/toaster/
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminCancelledOrder, formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
-import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
+import { AdminCancelledOrder, AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
 
 @Component({
   selector: 'app-admin-order-cancelled',
@@ -22,7 +22,7 @@ export class AdminOrderCancelledComponent {
   toastHeader: string = "";
   toastTheme: string = "default";  
 
-orders!: Observable<AdminOrder[]>;
+orders!: Observable<AdminCancelledOrder[]>;
 ordersDetails!: Observable<AdminOrderDetail>;
 ordersContents$: Observable<AdminOrderContent[]>;
 

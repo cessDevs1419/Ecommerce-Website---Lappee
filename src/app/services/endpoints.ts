@@ -108,6 +108,10 @@ export const GETInquiry: string = api + "api/admin/inquiry";
 export const GETInquiryById: string = api + "api/admin/inquiry/view/";
 export const POSTInquiry: string = api + "api/client/inquiry/store";
 
+//Chats Endpoint
+export const POSTSendConvo: string = api + "api/client/chat/message/send";
+export const DELETEConvo: string = api + "api/client/chat/message/delete";
+export const GETConversation: string = api + "api/client/chat/message/list/";
 // Search Endpoints
 export const GETSearchResults: string = api + "api/client/products/search/";
 

@@ -63,32 +63,41 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" (click)="getData(item)">
+                                                <!-- <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" (click)="getData(item)">
                                                     <i class="bi bi-info-circle text-white fs-3"></i>
-                                                </button>
+                                                </button> -->
                                                 
                                             </div>
                                         </div>
                                     </div>
 
                                     <div [ngClass]="active ? 'chat-history-active' : ''" class="chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1">
-                                        <ul class="chat-body-container  px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
-                                            <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
-                                                <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                    <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                                    <div class="message-data mt-1">
-                                                        <span class="time text-white-50">10:10 </span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
-                                                <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                    <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                                                    <div class="message-data mt-1">
-                                                        <span class="time text-white-50">10:10</span>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                        <ul class="chat-body-container overflow-hidden px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
+                                            <ng-container *ngFor="let item of chatsList | async; let i = index">
+                                                <ng-container *ngIf="(this.accountService.getLoggedUser() | async) as user">
+                                                    <ng-template #admin>
+                                                        <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
+                                                            <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
+                                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                                <div class="message-data mt-1">
+                                                                    <span class="time text-white-50">{{item.created_at}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ng-template>
+                                                    <ng-container *ngIf="item.sender === user.user_id; else admin">
+                                                        <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
+                                                            <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
+                                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                                <div class="message-data mt-1 w-100 text-end">
+                                                                    <span class="time text-white-50 fs-6">{{item.created_at}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ng-container> 
+                                                </ng-container>
+                                            </ng-container>
+                                           
                                         </ul>
                                     </div>
                                     
@@ -119,7 +128,7 @@
                                                         <input type="file" class="d-none" multiple (change)="handleFileInput($event)" #fileInputs>
                                                         <i class="bi bi-paperclip text-white-50 m-0"></i>
                                                     </button>
-                                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " (click)="send()">
+                                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
                                                         <i class="bi bi-send text-white-50 m-0"></i>
                                                     </button>
                                                 </span>
@@ -151,7 +160,7 @@
                                     </button> -->
                                     <div class="user-items p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
                                         <div class="content overflow-hidden ">
-                                            <h4 class="{{text_color}} mb-0">Lappee Admin</h4>
+                                            <h4 class="{{text_color}} mb-0"># {{ ChatTitle | uppercase}}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -162,9 +171,9 @@
                                     </button>
                                 </ng-container>
                                 <ng-template #view>
-                                    <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" >
+                                    <!-- <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" >
                                         <i class="bi bi-info-circle {{text_color}} fs-3"></i>
-                                    </button>
+                                    </button> -->
                                 </ng-template>
                                 
                             </div>
@@ -172,23 +181,33 @@
                     </div>
 
                     <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1 mb-0">
-                        <ul class="chat-body-container  px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
-                            <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
-                                <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
-                                    <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    <div class="message-data mt-1">
-                                        <span class="time text-white-50">10:10 </span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
-                                <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
-                                    <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                                    <div class="message-data mt-1 w-100 text-end">
-                                        <span class="time text-white-50 fs-6">10:10 AM</span>
-                                    </div>
-                                </div>
-                            </li>
+                        
+                        <ul class="chat-body-container overflow-hidden px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
+                            <ng-container *ngFor="let item of chatsList | async; let i = index">
+                                <ng-container *ngIf="(this.accountService.getLoggedUser() | async) as user">
+                                    <ng-container *ngIf="item.sender === user.user_id; else sender">
+                                        <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
+                                            <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
+                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                <div class="message-data mt-1">
+                                                    <span class="time text-white-50">{{item.created_at}}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ng-container>
+                                    <ng-template #sender>
+                                        <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
+                                            <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
+                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                <div class="message-data mt-1 w-100 text-end">
+                                                    <span class="time text-white-50 fs-6">{{item.created_at}}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ng-template> 
+                                </ng-container>
+                            </ng-container>
+                           
                         </ul>
                     </div>
                     
@@ -219,7 +238,7 @@
                                         <input type="file" class="d-none" multiple (change)="handleFileInput($event)" #fileInputs>
                                         <i class="bi bi-paperclip {{text_color}} m-0"></i>
                                     </button>
-                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " (click)="send()">
+                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
                                         <i class="bi bi-send text-white-50 m-0"></i>
                                     </button>
                                 </span>

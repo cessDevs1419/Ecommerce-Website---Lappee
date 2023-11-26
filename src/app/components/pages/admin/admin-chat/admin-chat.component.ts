@@ -1,10 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
-import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, Subject, filter, map, of, startWith, switchMap, tap } from 'rxjs';
 import { ChatsComponent } from 'src/app/components/components/chats/chats.component';
+import { ChatsService } from 'src/app/services/chats/chats.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UsersService } from 'src/app/services/users/users.service';
-import { formatAdminOrder, formatAdminOrderDetail, formatUser } from 'src/app/utilities/response-utils';
+import { formatAdminOrder, formatAdminOrderDetail, formatChats, formatUser } from 'src/app/utilities/response-utils';
+import { Chats } from 'src/assets/models/chats';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
 import { User } from 'src/assets/models/user';
 
@@ -23,10 +26,13 @@ export class AdminChatComponent {
   ordersDetails!: Observable<AdminOrderDetail>;
   ordersContents$: Observable<AdminOrderContent[]>;
 
+  chatsList!: Observable<Chats[]>;
   
   constructor(
 		private user_service: UsersService,
     private service: OrderService,
+    private chatsService: ChatsService,
+    private route: ActivatedRoute
 	) {
     
 	}
@@ -46,6 +52,7 @@ export class AdminChatComponent {
             this.chats.loaded()
         })
     );
+		
   }
 
   refreshTableData(): void {

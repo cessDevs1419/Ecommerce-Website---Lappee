@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrdersComponent } from '../../orders/orders.component';
 import { OrderService } from 'src/app/services/order/order.service';
 import { Order } from 'src/assets/models/products';
-import { OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-details';
-import { formatOrderDetails } from 'src/app/utilities/response-utils';
-import { Observable, map } from 'rxjs';
+import { AdminOrder, OrderContent, OrderDetail, OrderList } from 'src/assets/models/order-details';
+import { formatAdminOrder, formatOrderDetails } from 'src/app/utilities/response-utils';
+import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { POSTCancelOrder } from 'src/app/services/endpoints';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -30,11 +30,14 @@ export class OrderDetailsComponent {
   mode: string;
   orderId: string = "";
   orderDetails: Observable<OrderDetail[]>;
+  orders!: Observable<AdminOrder[]>;
+
   orderSubtotal: number = 0;
   isCancelRequest: boolean = false;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
-
+	private refreshData$ = new Subject<void>();
+  
   ngOnInit(): void {
     this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
     this.orderDetails.subscribe((orders: OrderDetail[]) => {
@@ -45,7 +48,12 @@ export class OrderDetailsComponent {
         this.isCancelRequest = true;
       }
     }) 
+
   }
+
+  refreshTableData(): void {
+    this.refreshData$.next();
+}
 
   addReview(item: OrderContent) {
     this.mode = 'add-review';
@@ -83,6 +91,7 @@ export class OrderDetailsComponent {
   }
 
   chat(id: string){
+    console.log(id)
     this.router.navigate(['/profile/orders/details/chats', id]);
   }
 } 

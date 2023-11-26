@@ -12,6 +12,7 @@ export interface OrderListInfo {
 export interface OrderDetail {
     order_id: string,
     ordered_on: string,
+    conversation_id: string,
     status: number,
     status_name: string,
     confirmed_on: string,
@@ -48,6 +49,7 @@ export interface AdminOrderList {
 export interface AdminOrder {
     id: string,
     user_id: string,
+    conversation_id: string,
     status: number,
     created_at: string,
     updated_at: string,

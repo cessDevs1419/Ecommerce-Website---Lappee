@@ -46,7 +46,7 @@
 
 .message-container{
     max-width: 20rem;
-    min-width: 10rem;
+    min-width: 1rem;
 }
 
 .rounded-top-left{

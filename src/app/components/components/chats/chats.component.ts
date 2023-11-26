@@ -1,9 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import channels from 'pusher-js/types/src/core/channels/channels';
-import { Observable } from 'rxjs';
+import { Observable, Subject, filter, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ChatsService } from 'src/app/services/chats/chats.service';
+import { formatChats, formatUser } from 'src/app/utilities/response-utils';
+import { Chats } from 'src/assets/models/chats';
+import { User } from 'src/assets/models/user';
 
 interface CustomFile extends File {
   url?: string;
@@ -27,7 +32,9 @@ export class ChatsComponent {
   @Input() chatRows: any[];
   @Input() selectedRowData: any;
   @Input() closeBtn!: boolean;
+  @Input() ChatTitle: string = ''
 
+  private refreshData$ = new Subject<void>();
   containerbordercolor: string = ''
   panel_bg: string = ''
   text_color: string = ''
@@ -38,18 +45,24 @@ export class ChatsComponent {
   public openedAccount: any[] = []
   public convo_active: boolean[] = [];
   
+  chatsList!: Observable<Chats[]>;
+  user: Observable<User[]>;
+
   messageContent: FormGroup;
   isLoading: boolean = true;
   files: any[] = []
   imageSrc: string;
   file: string
   active: boolean = false;
-  
+  loggedInUserId: string | null; 
+  conversation_id: string;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private chats: ChatsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private chatsService: ChatsService,
+    public accountService: AccountsService
   ){
     this.chats.removeChat()
     this.openedAccount = this.chats.getActiveChats()
@@ -57,6 +70,12 @@ export class ChatsComponent {
     this.messageContent = new FormGroup({
       content: new FormControl('', Validators.required)
     });
+
+    this.user = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.accountService.getLoggedUser()),
+      map((Response: any) => formatUser(Response))
+  );
 
   }
 
@@ -72,10 +91,35 @@ export class ChatsComponent {
     }
     this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
-      console.log(id)
+
+      this.chatsList = this.refreshData$.pipe(
+        startWith(undefined),
+        switchMap(() => {
+          if (id !== null) {
+            return this.chatsService.getConversation(id);
+          } else {
+            return of(null);
+          }
+        }),
+        filter(response => response !== null), 
+        map((response: any) => formatChats(response)),
+        tap(() => {
+            this.loaded()
+        })
+      );
+
+      this.conversation_id = id !== null ? id : ''; 
+      console.log(this.chatsList)
+
 		});
+
   }
   
+  refreshTableData(): void {
+    this.refreshData$.next();
+  }
+
+
 	loaded(){
 		this.isLoading = false
 	}
@@ -126,15 +170,64 @@ export class ChatsComponent {
     this.active = false
   }
 
-  send(){
+  send(id: string){
     const contentValue = this.messageContent.get('content')?.value;
-    const currentTime = new Date().toLocaleTimeString(); // Get current time
+    const currentTime = new Date().toLocaleTimeString(); 
     
-    console.log('Content:', contentValue);
-    console.log('file', this.files)
-    console.log('Current Time:', currentTime);
+
+    let formData: any = new FormData();
+    formData.append('conversation_id',  this.conversation_id)
+    formData.append('message', contentValue)
+    // console.log('file', this.files)
+    // console.log('Current Time:', currentTime);
     this.messageContent.reset()
     this.active = false
+
+    formData.forEach((value: any, key: number) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    this.chatsService.sendConvo(formData).subscribe({
+      next: (response: any) => { 
+        console.log(response)
+      },
+      error: (error: HttpErrorResponse) => {
+          // if (error.error?.data?.error) {
+          //     const fieldErrors = error.error.data.error;
+          //     const errorsArray = [];
+          
+          //     for (const field in fieldErrors) {
+          //         if (fieldErrors.hasOwnProperty(field)) {
+          //             const messages = fieldErrors[field];
+          //             let errorMessage = messages;
+          //             if (Array.isArray(messages)) {
+          //                 errorMessage = messages.join(' '); // Concatenate error messages into a single string
+          //             }
+          //             errorsArray.push(errorMessage);
+          //         }
+          //     }
+          
+          //     const errorDataforProduct = {
+          //         head: 'Error Invalid Inputs',
+          //         sub: errorsArray,
+          //     };
+          
+          //     this.CategoryWarn.emit(errorDataforProduct);
+          // } else {
+          
+          //     const errorDataforProduct = {
+          //         head: 'Error Invalid Inputs',
+          //         sub: 'Please Try Another One',
+          //     };
+          //     this.CategoryError.emit(errorDataforProduct);
+          // }
+          console.log(error)
+          return throwError(() => error);
+          
+      }
+    });
+
+
   }
 
   getData(data: any){
@@ -152,12 +245,14 @@ export class ChatsComponent {
     this.convo_active = Array(this.openedAccount.length).fill(false);
     this.convo_active[index] = true;
   }
+
   back(){
     this.router.navigate(['/admin/chats']);
 
     this.channelboxContainer = ''
     this.chatboxContainer = ''
   }
+
   closeChat(){
     this.closeModal.emit()
   }

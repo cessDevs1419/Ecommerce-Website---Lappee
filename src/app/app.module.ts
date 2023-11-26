@@ -260,7 +260,7 @@ import { ElResizableDirective } from '../assets/directives/elresizable/el-resiza
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
       {path: 'profile/orders/details/:orderId', component: OrderDetailsComponent, canActivate: [authGuard], title: 'Order Details'},
-      {path: 'profile/orders/details/chats/:orderId', component: OrderChatsComponent, canActivate: [authGuard], title: 'Order Chats'},
+      {path: 'profile/orders/details/chats/:id', component: OrderChatsComponent, canActivate: [authGuard], title: 'Order Chats'},
       {path: 'contactus', component: ContactusComponent, title: 'Contact Us'},
       {path: 'search/:searchTerm', component: SearchComponent, title: 'Search'},
       {path: 'about-us', component: AboutUsComponent, title: 'About Us'},
