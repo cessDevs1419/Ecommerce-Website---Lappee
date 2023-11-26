@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef, ChangeDetectorRef, SimpleChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, ElementRef, TemplateRef, ChangeDetectorRef, SimpleChanges, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, Subject, Subscription, catchError, combineLatest, debounceTime, filter, first, forkJoin, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 
@@ -28,7 +28,7 @@ import { RichTextEditorComponent } from '../../rich-text-editor/rich-text-editor
     templateUrl: './product-form.component.html',
     styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements AfterViewInit {
     
     //theme
     formColor: string = "dark-form-bg"
@@ -47,7 +47,9 @@ export class ProductFormComponent {
     @ViewChild('openModalBtn') openModalBtn!: ElementRef;
     @ViewChild('modalRef') modalRef!: ElementRef;
     @ViewChild('dismiss1') dismissModal1: ElementRef;
+    @ViewChild(RichTextEditorComponent) editor: RichTextEditorComponent;
     
+
     @Output() Index: EventEmitter<any> = new EventEmitter();
     @Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
@@ -116,6 +118,7 @@ export class ProductFormComponent {
     addedAttributes: Attributes[] = [];
     originalSelectedAttribute: Attributes[] = [];
     variantForms: any[] = []; 
+    editvariantForms: any[] = []; 
     savedVariantForms: any[] = [];
     dynamicFormValues: any[] = [];
     selectedVariantIndex: number | null = null;
@@ -123,6 +126,7 @@ export class ProductFormComponent {
     hideVariantValidationContainer: boolean = true;
     showVariantFormContainer: boolean = false;
     fileUrlMap: Map<File, string> = new Map();
+    mystyleImagesMap: Map<File, string> = new Map();
     rowActionVisibility: boolean[] = [];
 	activeButtonIndex: number | null = null;
     imageMessage: string
@@ -134,10 +138,11 @@ export class ProductFormComponent {
     attributesArrays: FormArray;
     rtfValue: string;
     variantsLists: any[] =[]
-    variantData: any[] = []
+    variantsListsData: any[] = []
     private attributeServiceData: any[] = [];
+    private editorInitializedSubject: Subject<void> = new Subject<void>();
 	isLoading: boolean = true;
-
+    isProductInclude: boolean = false;
     constructor(
 	    private http: HttpClient,
 	    private category_service: CategoriesService,
@@ -159,7 +164,6 @@ export class ProductFormComponent {
 
         this.selectedAttributeForms = this.attribute_service.getSelectedAttributesForm();
         this.attributesList = this.attribute_service.getSelectedAttributes()
-        this.imageList = this.product_service.getImageList()
         this.variantsList = this.variantService.getVariants()
         
         this.selectedAttributeForm = this.formBuilder.group({
@@ -171,13 +175,15 @@ export class ProductFormComponent {
             name: ['', Validators.required],
             category: ['', Validators.required],
             description: [''],
+            include: [false],
             variants: this.formBuilder.array([]), 
         });
 
         this.editProductForm = this.formBuilder.group({
             name: ['', Validators.required],
             category: ['', Validators.required],
-            description: ['', Validators.required],
+            description: [''],
+            include: [false],
             variants: this.formBuilder.array([]), 
         });
         
@@ -186,6 +192,7 @@ export class ProductFormComponent {
             stock: [1 , [Validators.required]],
             price: [1 , [Validators.required]],
             images: this.formBuilder.array([]),
+            mystyle: this.formBuilder.array([]),
             attributes: this.formBuilder.array([])
         });
 
@@ -194,6 +201,7 @@ export class ProductFormComponent {
             stock: ['', Validators.required],
             price: ['', Validators.required],
             images: this.formBuilder.array([]),
+            mystyle: this.formBuilder.array([]),
             attributes: this.formBuilder.array([]),
         });
 
@@ -214,14 +222,103 @@ export class ProductFormComponent {
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
+        
         if (this.selectedRowData) {
             this.productDetails = this.product_service.getProductDetails(this.selectedRowData).pipe(map((Response: any) => formatProductObj(Response)));
+            this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
+                const formattedProduct = formatProductObj(response);
+                const variants = formattedProduct.variants
+                
+                this.addProductForm.get('name')?.setValue(formattedProduct.name);
+                this.addProductForm.get('category')?.setValue(formattedProduct.category);
+                this.addProductForm.get('category')?.disable()
+
+                
+                for (const variant of variants) {
+                    const newVariantGroup = this.formBuilder.group({
+                        variant_id: [variant.variant_id],
+                        product_id: [variant.product_id],
+                        name: [variant.variant_name],
+                        price: [variant.price],
+                        stock: [variant.stock],
+                        attributes: this.formBuilder.array(variant.attributes),
+                        images: this.formBuilder.array(variant.images),
+                        // mystyle: this.formBuilder.array(variant.mystyle)
+                    });
+                    this.variantsListsData.push(newVariantGroup);
+                }
+                
+                if (!this.isFormSave || this.editvariantForms.length < 1) {
+                    const newIndex = this.editvariantForms.length; 
+                    this.editvariantForms.push({ index: newIndex, isVisible: false }); 
+                    
+                    this.isFormSave = true;
+                }else{
+                    const productWarn = {
+                        head: 'Add Variant',
+                        sub: 'Save Before You Add Another One!'
+                    };
+                    this.ProductWarning.emit(productWarn)
+                }
+                
+                this.categoryAttributes = this.category_service.getCategoryAttribute(formattedProduct.category).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
+                this.categoryAttributes.subscribe((data: NewAdminCategory) => {
+                    if (data && data.attributes) {
+                        
+                        for (const attribute of data.attributes) {
+                            const addAttributeForm = {
+                                id: attribute.category_attribute_id,
+                                name: attribute.name,
+                                value: ''
+                            }; 
+                            this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
+                            this.attributeFormsArray.push(addAttributeForm);
+                            
+                        }
+                    }
+                });
+
+                console.log(this.attributeFormsArray)
+                console.log(this.variantsListsData)
+            });
         }
-        
+
+
     }
+
+    ngAfterViewInit(): void {
+        if (this.selectedRowData) {
+            this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
+              const formattedProduct = formatProductObj(response);
+              this.editor.editorSetValue(formattedProduct.description);
+            });
+          }
+
+    }
+
+    ngOnDestroy(): void {
+        // Clean up the object URLs to avoid memory leaks
+        this.variantsListsData.forEach((variantGroup) => {
+            const images = variantGroup.get('images') as FormArray;
+            images.controls.forEach((imageControl) => {
+                const file = imageControl.value;
+                if (file instanceof File) {
+                    URL.revokeObjectURL(this.getSafeImageUrl(file) as string);
+                }
+            });
+        });
+    }
+    
+
 	loaded(){
 		this.isLoading = false
 	}
+
+    isInclude() {
+        const currentValue = this.addProductForm.get('include')?.value;
+        this.addProductForm.get('include')?.setValue(!currentValue);
+        this.isProductInclude = !this.isProductInclude
+      }
     isStockZeroOrNegative(form: FormGroup): boolean {
         const stockControl = form.get('stock');
         if (stockControl?.value <= 0) {
@@ -248,6 +345,8 @@ export class ProductFormComponent {
         const objectURL = URL.createObjectURL(file);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
+
+    
 
     refreshTableData(): void {
         this.refreshData$.next();
@@ -410,15 +509,71 @@ export class ProductFormComponent {
         // editInput?.click();
     }
 
+    selectFileForAddingMyStyleImg() {
+
+        const imageArray = this.getFileKeysMyStyles().length
+        if(imageArray >= 1){
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+        }else{
+
+            const addInput = document.getElementById('addimagesmystyles');
+            addInput?.click();
+        }
+
+    }
+
+    selectFileForEditingMyStyleImg(index: number) {
+        const variantArray =  this.variantsArray
+        const variant = variantArray.controls[index]
+        const imageArrays = variant.value.images
+
+        const imageArray = this.getFileKeysMyStyles.length
+        if(imageArray + imageArrays.length >= 1){
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 1',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+        }else{
+
+            const addInput = document.getElementById('addimageseditmystyles');
+            addInput?.click();
+        }
+        
+        // const editInput = document.getElementById('editimages');
+        // editInput?.click();
+    }
+
     getFileKeys(): File[] {
         return Array.from(this.fileUrlMap.keys());
     }
+
+    getFileKeysMyStyles(): File[] {
+        return Array.from(this.mystyleImagesMap.keys());
+    }
+
 
     convertFileToUrl(file: File) {
         const reader = new FileReader();
 
         reader.onload = (event) => {
             this.fileUrlMap.set(file, event.target?.result as string);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    convertFileToUrlMyStyles(file: File) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            this.mystyleImagesMap.set(file, event.target?.result as string);
         };
 
         reader.readAsDataURL(file);
@@ -450,9 +605,8 @@ export class ProductFormComponent {
                     }
                 });
 
-                const fileControl = this.formBuilder.control(file);
+
                 imagesArray.push(this.formBuilder.control(file));
-                this.product_service.addImageToList(fileControl);
                 this.convertFileToUrl(file);
             }
 
@@ -537,6 +691,117 @@ export class ProductFormComponent {
 
     }
     
+    handleFileInputMyStyles(event: any) {
+        const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
+        const files = event.target.files;
+
+        if (files.length > 1) {
+        
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 1',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+
+            for (let i = 0; i < Math.min(files.length, 1); i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                imagesArray.push(this.formBuilder.control(file));
+                this.convertFileToUrlMyStyles(file);
+            }
+
+        }else{
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrlMyStyles(file);
+            }
+
+        }
+
+    }
+
+    handleFileInputForEditMyStyles(event: any) {
+        const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
+        const files = event.target.files;
+
+        if (files.length > 1) {
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
+            };
+        
+            this.ProductWarning.emit(errorDataforProduct);
+
+            for (let i = 0; i < Math.min(files.length, 3); i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrlMyStyles(file);
+            }
+
+        }else{
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                const fileControl = this.formBuilder.control(file);
+                imagesArray.push(this.formBuilder.control(file));
+                this.product_service.addImageToList(fileControl);
+                this.convertFileToUrlMyStyles(file);
+            }
+
+        }
+
+    }
+
     removeImage(index: number) {
         const imagesArray = this.addVariantForm.get('images') as FormArray;
         this.product_service.removeImg(index);
@@ -553,6 +818,31 @@ export class ProductFormComponent {
     
         if (variantFormGroup) {
             const imagesControl = variantFormGroup.get('images');
+            
+            if (imagesControl instanceof FormArray) {
+                if (imageIndex >= 0 && imageIndex < imagesControl.length) {
+                    imagesControl.removeAt(imageIndex);
+
+                } 
+            }
+        } 
+    }
+
+    removeImageMystyleimages(index: number) {
+        const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
+        const files = this.getFileKeysMyStyles();
+        if (index >= 0 && index < files.length) {
+            const fileToRemove = files[index];
+            this.mystyleImagesMap.delete(fileToRemove);
+            imagesArray.removeAt(index);
+        }
+    }
+
+    removeImageFromEditFormMystyleimages(imageIndex: number, variantIndex: number) {
+        const variantFormGroup = this.variantsLists.at(variantIndex) as FormGroup;
+    
+        if (variantFormGroup) {
+            const imagesControl = variantFormGroup.get('mystyle');
             
             if (imagesControl instanceof FormArray) {
                 if (imageIndex >= 0 && imageIndex < imagesControl.length) {
@@ -712,11 +1002,25 @@ export class ProductFormComponent {
         this.variantForms[index].isVisible = !this.variantForms[index].isVisible;
 
     }
+
+    toggleEditAccordion(index: number) {
+        for (let i = 0; i < this.editvariantForms.length; i++) {
+            if (i !== index) {
+                this.editvariantForms[i].isVisible = false;
+            }
+        }
+        this.editvariantForms[index].isVisible = !this.editvariantForms[index].isVisible;
+
+    }
     
     selectVariantItem( index: number){
         this.removeVariant(index)
     }
-    
+
+    selectVariantDataItem(id: string){
+        this.removeEditVariant(id)
+    }
+
     editVariant(index: any){
         this.toggleAccordion(index) 
         this.hideVariantValidationContainer = false
@@ -728,6 +1032,35 @@ export class ProductFormComponent {
             name: this.variantsLists[index].value.name,
             stock: this.variantsLists[index].value.stock,
             price: this.variantsLists[index].value.price,
+        });
+    }
+
+    editDataVariant(index: any){
+        this.toggleEditAccordion(index)
+        //     this.hideVariantValidationContainer = false
+        //     this.addBtn = false;
+        //     this.editBtn = true;
+        //     this.editAttributes = false
+        //     this.editImages = false
+        //     this.addVariantForm.patchValue({
+        //         name: this.variantsLists[index].value.name,
+        //         stock: this.variantsLists[index].value.stock,
+        //         price: this.variantsLists[index].value.price,
+        //     });
+        // 
+    }
+
+
+    editProductVariant(index: any){
+        this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
+            const formattedProduct = formatProductObj(response);
+            const variants = formattedProduct.variants[index]
+            const attributes = variants.attributes
+            this.addVariantForm.patchValue({
+                name: variants.variant_name,
+                stock: variants.stock,
+                price: variants.price,
+            });
         });
     }
 
@@ -873,7 +1206,8 @@ export class ProductFormComponent {
                 price: [addVariantForm.value.price],
                 stock: [addVariantForm.value.stock],
                 attributes: [addVariantForm.value.attributes],
-                images: this.formBuilder.array(addVariantForm.value.images)
+                images: this.formBuilder.array(addVariantForm.value.images),
+                mystyle: this.formBuilder.array(addVariantForm.value.mystyle)
             });
             
             const newVariantVisible = this.formBuilder.group({
@@ -901,6 +1235,7 @@ export class ProductFormComponent {
             }
             this.addAttributeForm.reset();
             this.fileUrlMap.clear();
+            this.mystyleImagesMap.clear();
             while (attributesArray.length !== 0) {
                 attributesArray.removeAt(0);
             }
@@ -947,6 +1282,7 @@ export class ProductFormComponent {
         const variantsArray = this.addProductForm.get('variants') as FormArray;
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const mystyle = this.addVariantForm.get('mystyle') as FormArray;
         const formControls = this.addAttributeForm.controls;
         const attributeFormsArray = this.attributeFormsArray;
         const attribute = variantsArray.value[index].attributes
@@ -1003,12 +1339,25 @@ export class ProductFormComponent {
             price: [variants.value.price],
             stock: [variants.value.stock],
             attributes: [variants.value.attributes],
-            images: this.formBuilder.array([])
+            images: this.formBuilder.array([]),
+            mystyle: this.formBuilder.array([])
         });
 
         if (Array.isArray(imagesArray.value)) {
             const imagesArrays = newVariantGroup.get('images') as FormArray;
             imagesArrays.clear();
+
+            for (const item of variantsList[index].value.images) {
+                newVariantGroup.value.images?.push(item);
+            }
+            for (const item of imagesArray.value) {
+                newVariantGroup.value.images?.push(item);
+            }
+        }
+
+        if (Array.isArray(mystyle.value)) {
+            const mystyle = newVariantGroup.get('mystyle') as FormArray;
+            mystyle.clear();
 
             for (const item of variantsList[index].value.images) {
                 newVariantGroup.value.images?.push(item);
@@ -1059,6 +1408,7 @@ export class ProductFormComponent {
                     }
                     this.addAttributeForm.reset();
                     this.fileUrlMap.clear();
+                    this.mystyleImagesMap.clear();
                     while (attributesArray .length !== 0) {
                         attributesArray .removeAt(0);
                     }
@@ -1078,11 +1428,13 @@ export class ProductFormComponent {
     removeVariant(index: any){
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const myStyle = this.addVariantForm.get('images') as FormArray;
         const variants = this.addVariantForm.get('variants') as FormArray;
         this.newvariantsArray.removeAt(index)
         this.variantForms.splice(index, 1);
         this.addAttributeForm.reset();
         this.fileUrlMap.clear();
+        this.mystyleImagesMap.clear();
         // variants.removeAt(index)
 
         if(this.variantForms.length < 1){
@@ -1096,7 +1448,15 @@ export class ProductFormComponent {
             imagesArray.removeAt(0);
             imagesArray.clear();
         }
+        while (myStyle.length !== 0) {
+            myStyle.removeAt(0);
+            myStyle.clear();
+        }
         this.isFormSave = false;
+    }
+
+    removeEditVariant(id: any){
+        console.log(id)
     }
 
     getVariantIndex(index: any) {
@@ -1157,6 +1517,7 @@ export class ProductFormComponent {
         productFormData.append('name', capitalizedName)
         productFormData.append('category', this.addProductForm.get('category')?.value);
         productFormData.append('description', this.rtfValue);
+        // productFormData.append('includes', this.addProductForm.get('include')?.value);
 
         // Get Variants
         const variantsList = this.variantsLists;
@@ -1176,6 +1537,12 @@ export class ProductFormComponent {
                 productFormData.append(`variants[${i}][images][${imageIndex}]`, image);
                 imageIndex++;
             }
+
+            // for (let image of variant.mystyle) {
+            //     productFormData.append(`variants[${i}][mystyle_images][${imageIndex}]`, image);
+            //     imageIndex++;
+            // }
+
 
             for (let attribute of variant.attributes) {
                 let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
@@ -1274,6 +1641,145 @@ export class ProductFormComponent {
 
             this.ProductError.emit(errorDataforProduct);
         }
+    
+    }
+
+    async onProductEditSubmit(): Promise<void> {
+
+        // // console.log(this.addProductForm)
+
+        // const productFormData: FormData = new FormData();
+        // let productName = this.addProductForm.get('name')?.value;
+        // const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1);
+        
+        // // Add Product Fields
+        // productFormData.append('name', capitalizedName)
+        // productFormData.append('category', this.addProductForm.get('category')?.value);
+        // productFormData.append('description', this.rtfValue);
+        // // productFormData.append('includes', this.addProductForm.get('include')?.value);
+
+        // // Get Variants
+        // const variantsList = this.variantsLists;
+
+        // for (let i = 0; i < variantsList.length; i++) {
+        //     const variantFormGroup = variantsList.at(i) as FormGroup;
+        //     const variant = variantFormGroup.value;
+        
+        //     productFormData.append(`variants[${i}][name]`, variant.name);
+        //     productFormData.append(`variants[${i}][stock]`, variant.stock);
+        //     productFormData.append(`variants[${i}][price]`, variant.price.toFixed(2));
+
+        //     let imageIndex = 0;
+        //     let attributeIndex = 0;
+
+        //     for (let image of variant.images) {
+        //         productFormData.append(`variants[${i}][images][${imageIndex}]`, image);
+        //         imageIndex++;
+        //     }
+
+        //     // for (let image of variant.mystyle) {
+        //     //     productFormData.append(`variants[${i}][mystyle_images][${imageIndex}]`, image);
+        //     //     imageIndex++;
+        //     // }
+
+
+        //     for (let attribute of variant.attributes) {
+        //         let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
+        //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
+        //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
+        //         attributeIndex++;
+        //     }
+        // }
+
+        // // Display the FormData entries
+        // productFormData.forEach((value, key) => {
+        //     console.log(`${key}: ${value}`);
+        // });
+        
+        // if(this.addProductForm.valid){
+        
+        //     this.product_service.postProduct(productFormData).subscribe({
+        //         next: (response: any) => { 
+                    
+        //             const productSuccess = {
+        //                 head: 'Add Product',
+        //                 sub: response.message
+        //             };
+                
+        //             this.RefreshTable.emit();
+        //             this.ProductSuccess.emit(productSuccess);
+        //             this.addProductForm.reset();
+        //             this.addVariantForm.reset();
+        //             this.addAttributeForm.reset();
+        //             this.variantsArray.reset();
+        //             this.variantsList.clear();
+        //             this.variantForms.splice(0);
+        //             this.attributeFormsArray.splice(0);
+        //             this.newvariantsArray.clear()
+        //             this.imageList.clear();
+        //             this.addBtn = true;
+        //             this.editBtn = false;
+        //             this.editAttributes = true
+        //             this.variantsLists.splice(0)
+        //             this.childComponent.editorReset();
+        //             this.addProductForm.get('category')?.enable()
+        //         },
+        //         error: (error: HttpErrorResponse) => {
+        //             if (error.error?.data?.error) {
+        //                 const fieldErrors = error.error.data.error;
+        //                 const errorsArray = [];
+                    
+        //                 for (const field in fieldErrors) {
+        //                     if (fieldErrors.hasOwnProperty(field)) {
+        //                         const messages = fieldErrors[field];
+        //                         let errorMessage = messages;
+        //                         if (Array.isArray(messages)) {
+        //                             errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                         }
+        //                         errorsArray.push(errorMessage);
+        //                     }
+        //                 }
+                    
+        //                 const errorDataforProduct = {
+        //                     head: 'Error Invalid Inputs',
+        //                     sub: errorsArray,
+        //                 };
+                    
+        //                 this.ProductWarning.emit(errorDataforProduct);
+        //             } else {
+                    
+        //                 const errorDataforProduct = {
+        //                     head: 'Error Invalid Inputs',
+        //                     sub: 'Please Try Another One',
+        //                 };
+        //                 this.ProductError.emit(errorDataforProduct);
+        //             }
+        //             return throwError(() => error);
+                    
+        //         }
+        //     });
+
+        // } else{
+
+        //     this.addProductForm.markAllAsTouched();
+        //     const emptyFields = [];
+        //     for (const controlName in this.addProductForm.controls) {
+        //         if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
+        //             const productcontrol = this.addProductForm.controls[controlName];
+        //             if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+        //                 const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+        //                 emptyFields.push(label);
+        //             }
+        //         }
+        //     }
+            
+        //     const errorDataforProduct = {
+        //         errorMessage: this.errorMessage,
+        //         suberrorMessage: emptyFields.join(', ')
+        //     };
+
+        //     this.ProductError.emit(errorDataforProduct);
+        // }
     
     }
     

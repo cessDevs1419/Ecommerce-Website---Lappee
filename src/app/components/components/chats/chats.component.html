@@ -74,10 +74,10 @@
                                     <div [ngClass]="active ? 'chat-history-active' : ''" class="chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1">
                                         <ul class="chat-body-container  px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                                             <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
-                                                <div class="message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
+                                                <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
                                                     <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                                     <div class="message-data mt-1">
-                                                        <span class="text-white">10:10 AM, Today</span>
+                                                        <span class="time text-white-50">10:10 </span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -85,7 +85,7 @@
                                                 <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
                                                     <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
                                                     <div class="message-data mt-1">
-                                                        <span class="text-white">10:10 AM, Today</span>
+                                                        <span class="time text-white-50">10:10</span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -174,18 +174,18 @@
                     <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1 mb-0">
                         <ul class="chat-body-container  px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                             <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
-                                <div class="message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
+                                <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
                                     <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                                     <div class="message-data mt-1">
-                                        <span class="text-white">10:10 AM, Today</span>
+                                        <span class="time text-white-50">10:10 </span>
                                     </div>
                                 </div>
                             </li>
                             <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
                                 <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
                                     <p class="text-white mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                                    <div class="message-data mt-1">
-                                        <span class="text-white text-end fs-6">10:10 AM, Today</span>
+                                    <div class="message-data mt-1 w-100 text-end">
+                                        <span class="time text-white-50 fs-6">10:10 AM</span>
                                     </div>
                                 </div>
                             </li>

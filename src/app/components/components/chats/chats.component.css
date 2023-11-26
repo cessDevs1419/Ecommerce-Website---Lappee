@@ -49,6 +49,12 @@
     min-width: 10rem;
 }
 
+.rounded-top-left{
+    border-top-left-radius: 0 !important;
+}
+.time{
+    font-size: .8rem;
+}
 .files-container{
     min-width: 10rem;
 }

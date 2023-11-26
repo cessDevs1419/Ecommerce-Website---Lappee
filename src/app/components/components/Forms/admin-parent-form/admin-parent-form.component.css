@@ -1,3 +1,12 @@
 .form-container{
     height: calc(100vh - 70px);
 }
+
+.component-container{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .component-container::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }

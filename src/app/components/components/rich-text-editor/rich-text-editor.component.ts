@@ -10,7 +10,8 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
   
   @Output() value: EventEmitter<string> = new EventEmitter();
   @Input() darkmode!: boolean;
-  
+  @Input() addvalue: string;
+
   editor: Editor;
   html = '';
   
@@ -28,6 +29,7 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.editor = new Editor();
+
   }
 
   // make sure to destory the editor
@@ -37,6 +39,10 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
   
   editorReset(){
     this.editor.setContent('');
+  }
+
+  editorSetValue(value: string){
+    this.editor.setContent(value);
   }
   
   onEditorInput(event: Event): void {
