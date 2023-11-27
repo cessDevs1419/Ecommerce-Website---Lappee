@@ -170,7 +170,7 @@
                     </div>
                     <div class="mt-3" *ngIf="checkoutVariant1 || checkoutVariant2">
                         <hr>
-                        <button class="w-100 rounded-0 button-primary text-decoration-none" (click)="addToCart()"><i class="bi bi-cart-fill me-2"></i>  ADD TO CART</button>
+                        <button class="w-100 rounded-0 button-primary text-decoration-none" (click)="addToCart()"><i class="bi bi-cart-fill me-2"></i>  ADD TO CART <app-outline-circle-spinner class="ms-3 mb-0" [isBlue]="false" *ngIf="isAddToCartLoading"></app-outline-circle-spinner></button>
                     </div>
                 </div>
             </div>

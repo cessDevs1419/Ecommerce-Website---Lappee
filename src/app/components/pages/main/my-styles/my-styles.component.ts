@@ -10,6 +10,8 @@ import { Attribute, CategoryProduct, MyStyleProduct, Product, Variant } from 'sr
 import { CdkDrag } from '@angular/cdk/drag-drop'
 import { CartService } from 'src/app/services/cart/cart.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 class VariantClass  {
   variant_id: string;
@@ -30,7 +32,7 @@ class VariantClass  {
 
 export class MyStylesComponent {
 
-  constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer, private cart: CartService, private router: Router) {}
+  constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer, private cart: CartService, private router: Router, private eh: ErrorHandlerService) {}
   
   products: Observable<Product[]>
   productsCache: Product[]
@@ -62,7 +64,9 @@ export class MyStylesComponent {
 
   mode: string = "";
 
+  // Loading variables
   isLoading: boolean = true;
+  isAddToCartLoading: boolean = false;
 
   isResizing: boolean = false;
 
@@ -327,20 +331,40 @@ export class MyStylesComponent {
   addToCart(): void {
     let product1 = this.matchVariantProduct(this.checkoutVariant1);
     let product2 = this.matchVariantProduct(this.checkoutVariant2);
+    let formData = new FormData;
+    let pair: string[] = [this.checkoutVariant1.variant_id, this.checkoutVariant2.variant_id];
 
-    let var1attr: Map<string, string> = new Map<string, string>();
-    this.checkoutVariant1.attributes.forEach((attr: Attribute) => {
-      var1attr.set(attr.attribute_name, attr.value);
-    })
-    let var2attr: Map<string, string> = new Map<string, string>();
-    this.checkoutVariant2.attributes.forEach((attr: Attribute) => {
-      var2attr.set(attr.attribute_name, attr.value);
+    pair.forEach((id: string) => {
+      formData.append('product_variants[]', id)
     })
 
-    this.cart.addToCart(product1, this.checkoutVariant1.variant_id, var1attr, 1, this.checkoutVariant1.price, this.checkoutVariant1.images)
-    this.cart.addToCart(product2, this.checkoutVariant2.variant_id, var2attr, 1, this.checkoutVariant2.price, this.checkoutVariant2.images)
+    console.log(formData);
+    
+    this.isAddToCartLoading = true;
+    this.productsService.postMyStylesRecord(formData).subscribe({
+      next: (response: any) => {
 
-    this.router.navigate(['/cart']);
+        let var1attr: Map<string, string> = new Map<string, string>();
+        this.checkoutVariant1.attributes.forEach((attr: Attribute) => {
+          var1attr.set(attr.attribute_name, attr.value);
+        })
+        let var2attr: Map<string, string> = new Map<string, string>();
+        this.checkoutVariant2.attributes.forEach((attr: Attribute) => {
+          var2attr.set(attr.attribute_name, attr.value);
+        })
+    
+        this.cart.addToCart(product1, this.checkoutVariant1.variant_id, var1attr, 1, this.checkoutVariant1.price, this.checkoutVariant1.images)
+        this.cart.addToCart(product2, this.checkoutVariant2.variant_id, var2attr, 1, this.checkoutVariant2.price, this.checkoutVariant2.images)
+    
+        this.isAddToCartLoading = false;
+        this.router.navigate(['/cart']);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(this.eh.handle(err))
+        this.isAddToCartLoading = false;
+      }
+    })
+
   }
 
   onResizeChange(state: boolean): void {
