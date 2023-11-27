@@ -1555,7 +1555,7 @@ export class ProductFormComponent implements AfterViewInit {
             }
 
             for (let image of variant.mystyle) {
-                productFormData.append(`variants[${i}][my_style_image][${imageIndex}]`, image);
+                productFormData.append(`variants[${i}][my_style_image]`, image);
                 imageIndex++;
             }
 
