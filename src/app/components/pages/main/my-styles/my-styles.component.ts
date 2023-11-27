@@ -5,8 +5,8 @@ import * as bootstrap from 'bootstrap';
 import { Observable, filter, map } from 'rxjs';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatCategoryProduct, formatProductAll, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
-import { Attribute, CategoryProduct, Product, Variant } from 'src/assets/models/products';
+import { formatCategoryProduct, formatMyStyles, formatProductAll, formatProductObj, formatProducts } from 'src/app/utilities/response-utils';
+import { Attribute, CategoryProduct, MyStyleProduct, Product, Variant } from 'src/assets/models/products';
 import { CdkDrag } from '@angular/cdk/drag-drop'
 import { CartService } from 'src/app/services/cart/cart.service';
 import { Router } from '@angular/router';
@@ -32,8 +32,10 @@ export class MyStylesComponent {
 
   constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer, private cart: CartService, private router: Router) {}
   
-  products: Observable<Product[]>;
-  productsCache: Product[];
+  products: Observable<Product[]>
+  productsCache: Product[]
+  // products: Observable<MyStyleProduct>;
+  // productsCache: MyStyleProduct;
 
   // items in catalogs
   variantsTop: Variant[] = [];
@@ -91,6 +93,7 @@ export class MyStylesComponent {
 
   ngOnInit(): void {
     this.products = this.productsService.getProductsAll().pipe(map((response: any) => formatProductAll(response)));
+    
     this.products.subscribe({
       next: (response: Product[]) => {
         this.productsCache = response;
@@ -98,9 +101,19 @@ export class MyStylesComponent {
         this.setupVariants();
       }
     })
+
+    // MyStylesProduct Model
+    //this.products = this.productsService.getMyStyles().pipe(map((response: any) => formatMyStyles(response)));
+    // this.products.subscribe( (response: MyStyleProduct) => {
+    //     this.productsCache = response;
+    //     console.log(response)
+    //     this.setupVariants();
+    //   }
+    // )
     this.showPrimer();
   }
 
+  // Old setupVariants
   setupVariants(): void {
     let allVariants: Variant[] = [];
     this.productsCache.forEach((product: Product) => {
@@ -122,6 +135,32 @@ export class MyStylesComponent {
     }
     this.isLoading = false;
   }
+
+  // New setupVariants MyStylesProductModel
+  // setupVariants(): void {
+  //   let allVariants: Variant[] = [];
+  //   let allTops: Variant[] = [];
+  //   let allBottoms: Variant[] = [];
+  //   this.variantsTop = this.filterUniqueProductVariants(allTops)
+
+  //   // get all top variants
+  //   this.productsCache.tops.forEach((product: Product) => {
+  //     product.variants.forEach((variant: Variant) => {
+  //       allTops.push(variant);
+  //     })
+  //   })
+  //   this.variantsTop = this.filterUniqueProductVariants(allTops)
+    
+  //   // get all bottom variants
+  //   this.productsCache.bottoms.forEach((product: Product) => {
+  //     product.variants.forEach((variant: Variant) => {
+  //       allBottoms.push(variant);
+  //     })
+  //   })
+  //   this.variantsBot = this.filterUniqueProductVariants(allBottoms)
+
+  //   this.isLoading = false;
+  // }
 
   benchmark(func: Function, n: number): number[]{
     let t0,t1;
@@ -308,3 +347,4 @@ export class MyStylesComponent {
     this.isResizing = state;
   }
 }
+

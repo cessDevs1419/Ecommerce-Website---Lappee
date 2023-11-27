@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CategoryProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductList, CategoryProduct, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -143,6 +143,14 @@ export function formatCategoryProduct(response: any): CategoryProduct[] {
   }))
 }
 
+export function formatMyStyles(response: any): MyStyleProduct {
+  let data: MyStyleProduct = {
+    tops: response.data.tops,
+    bottoms: response.data.bottoms
+  }
+
+  return data;
+}
 
 // returns Attributes array from a ProductList
 export function formatAttributes(response: AttributeList): Attributes[] {
