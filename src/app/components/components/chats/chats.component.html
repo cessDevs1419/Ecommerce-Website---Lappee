@@ -41,6 +41,11 @@
                 <div class="chat-box-container {{chatboxContainer}} col-xl-8 p-0 p-xl-2 ps-xl-2 pe-xl-0">
                     <div class="chat-parent-container {{size}} box-shadow {{containerbordercolor}}">
                         <div class="{{panel_bg}} rounded-4 h-100 overflow-hidden">
+                            <div *ngIf="noChat" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
+                                <div class="container m-auto text-center d-flex justify-content-center align-items-center ">
+                                    <h1 class="text-white-50">Select Conversation</h1>
+                                </div>
+                            </div>
                             <div  class="chat-body position-relative h-100 ">
                                 <ng-container >
                                     <div class="{{panel_bg}} rounded-top-4 box-shadow position-relative rounded-top-0 top-0 w-100 z-2">
