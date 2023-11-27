@@ -26,10 +26,19 @@
                                     *ngFor="let item of (channels | async | searchFilter: searchString)  let i = index" 
                                     (click)="getUser(item, i)"
                                     >
-                                    <img class="img-container rounded-circle bg-white me-2" src="" alt="">
-                                    <div class="content overflow-hidden ">
-                                        <h4 class="text-white-50 mb-0">{{item.title}}</h4>
-                                        <p class="text-white-50 mb-0 text-truncate text-nowrap">{{item.created_at | date}}</p>
+                                    <div class="row w-100">
+                                        <div class="col-lg-10 d-flex align-items-center">
+                                            <div  class="img-container d-flex justify-content-center align-items-center rounded-circle bg-white me-2">
+                                                <i class="bi bi-person-fill fs-2"></i>
+                                            </div>
+                                            <div class="content overflow-hidden ">
+                                                <h4 class="text-white-50 mb-0">{{item.title}}</h4>
+                                                <p class="text-white-50 mb-0 text-truncate text-nowrap">{{item.created_at | date}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 d-flex align-items-center justify-content-end">
+                                            <p class="text-white-50 mb-0 text-truncate text-nowrap ">{{item.updated_at | date: 'hh:mm'}}</p>
+                                        </div>
                                     </div>
                                 </li>
 
