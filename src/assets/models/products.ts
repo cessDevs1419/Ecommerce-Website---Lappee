@@ -30,9 +30,9 @@ export interface Variant {
     variant_name: string,
     stock: number,
     price: string,
-    attributes: Attribute[]
-    images: string[]
-
+    attributes: Attribute[],
+    images: string[],
+    my_styles_image?: string[],
     product_id: string
 }
 
@@ -93,6 +93,9 @@ export interface Order {
     quantity: number
 }
 
-
+export interface MyStyleProduct {
+    tops: Product[],
+    bottoms: Product[]
+}
 
 

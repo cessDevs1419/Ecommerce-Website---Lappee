@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETProductDetails, GETProducts, GETProductsAll, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -136,4 +136,11 @@ export class ProductsService {
     });
   }
 
+  getMyStyles(): Observable<any> {
+    return this.http.get(GETMyStylesProducts);
+  }
+
+  postMyStylesRecord(data: FormData): Observable<any> {
+    return this.http.post(POSTMyStylesRecord, data, this.httpOptions)
+  }
 }
