@@ -722,8 +722,19 @@ export class ProductFormComponent implements AfterViewInit {
                     }
                 });
 
-                imagesArray.push(this.formBuilder.control(file));
-                this.convertFileToUrlMyStyles(file);
+
+                if (file.type === 'image/png') {
+
+                    imagesArray.push(this.formBuilder.control(file));
+                    this.convertFileToUrlMyStyles(file);
+                } else {
+                    // Handle non-PNG files (emit a warning, skip, etc.)
+                    const errorDataforProduct = {
+                        head: 'Add Image',
+                        sub: 'Only PNG files are allowed',
+                    };
+                    this.ProductWarning.emit(errorDataforProduct);
+                }
             }
 
         }else{
@@ -741,10 +752,19 @@ export class ProductFormComponent implements AfterViewInit {
                     }
                 });
 
-                const fileControl = this.formBuilder.control(file);
-                imagesArray.push(this.formBuilder.control(file));
-                this.product_service.addImageToList(fileControl);
-                this.convertFileToUrlMyStyles(file);
+                if (file.type === 'image/png') {
+                    const fileControl = this.formBuilder.control(file);
+                    imagesArray.push(this.formBuilder.control(file));
+                    this.product_service.addImageToList(fileControl);
+                    this.convertFileToUrlMyStyles(file);
+                } else {
+                    
+                    const errorDataforProduct = {
+                        head: 'Add Image',
+                        sub: 'Only PNG files are allowed',
+                    };
+                    this.ProductWarning.emit(errorDataforProduct);
+                }
             }
 
         }
