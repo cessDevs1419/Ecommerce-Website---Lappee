@@ -140,6 +140,14 @@
     background-color: var(--primary-subtle)
 }
 
+.dark-border {
+    border: 1px solid var(--adm-light-gray)
+}
+
+.color-adm-light-gray {
+    color: var(--adm-light-gray)
+}
+
 .color-primary {
     color: var(--primary);
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as bootstrap from 'bootstrap';
@@ -61,8 +61,11 @@ export class MyStylesComponent {
   selectedProduct2: Product;
   @ViewChild('carousel') carousel: ElementRef;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
+  @ViewChildren('tooltip') tooltips: QueryList<ElementRef>;
 
   mode: string = "";
+
+  tooltipArr: bootstrap.Tooltip[] = [];
 
   // Loading variables
   isLoading: boolean = true;
@@ -103,6 +106,7 @@ export class MyStylesComponent {
         this.productsCache = response;
         console.log(this.productsCache)
         this.setupVariants();
+       
       }
     })
 
@@ -115,6 +119,26 @@ export class MyStylesComponent {
     //   }
     // )
     this.showPrimer();
+  }
+
+  ngOnChanges(): void {
+    this.activateTooltip()
+  }
+
+  ngAfterViewInit(): void {
+    this.tooltips.changes.subscribe(() => {
+      console.log("changed tooltips");
+      this.activateTooltip();
+    })
+  }
+
+  activateTooltip(): void {
+    this.tooltips.forEach((el: ElementRef) => {
+      console.log("tooltip", el.nativeElement)
+      let tooltip = new bootstrap.Tooltip(el.nativeElement)
+      this.tooltipArr.push(tooltip)
+    });
+    console.log(this.tooltipArr);
   }
 
   // Old setupVariants
@@ -137,6 +161,8 @@ export class MyStylesComponent {
       this.variantsBot.push(this.variantsTop[i]);
       this.variantsTop.shift();
     }
+
+    this.activateTooltip();
     this.isLoading = false;
   }
 

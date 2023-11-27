@@ -15,10 +15,10 @@
                 <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
                 <div *ngIf="!isLoading">
                     <form [formGroup]="product1Select" class="row px-3">
-                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsTop">
+                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsTop" data-bs-toggle="tooltip" [title]="matchVariantProduct(variant).name + ' (' + variant.variant_name +')'" #tooltip>
                             <label for={{variant.variant_id}} class="variant-label">
                                 <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant1" (click)="selectVariant1(variant)" />
-                                <div class="d-flex flex-row rounded-1 p-3 variant-box">
+                                <div class="d-flex flex-row rounded-1 p-3 variant-box" >
                                     <img [src]="variant.my_styles_image!.length > 0 ? variant.my_styles_image![0] : variant.images[0]" class="img-fluid">
                                 </div>
                             </label>
@@ -39,11 +39,11 @@
                 <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
                 <div *ngIf="!isLoading">
                     <form [formGroup]="product2Select" class="row px-3">
-                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsBot">
+                        <div class="col-4 mb-3 d-flex justify-content-center align-items-center" *ngFor="let variant of variantsBot" data-bs-toggle="tooltip" [title]="matchVariantProduct(variant).name + ' (' + variant.variant_name +')'" #tooltip>
                             <label for={{variant.variant_id}} class="variant-label">
                                 <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} formControlName="variant2" (click)="selectVariant2(variant)" />
                                 <div class="d-flex flex-row rounded-1 p-3 variant-box">
-                                    <img [src]="variant.images[0]" class="img-fluid">
+                                    <img [src]="variant.my_styles_image!.length > 0 ? variant.my_styles_image![0] : variant.images[0]" class="img-fluid">
                                 </div>
                             </label>
                         </div>
@@ -83,7 +83,7 @@
                     <div class="d-flex justify-content-between align-items-center" *ngIf="!selectedVariant1 && !selectedVariant2">
                         No items selected.
                     </div>
-                    <div class="d-flex justify-content-between" *ngIf="checkoutVariant1 as var1">
+                    <div class="d-flex flex-column" *ngIf="checkoutVariant1 as var1">
                         <!-- <div class="d-flex flex-column">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var1).name}}</p>
                             <p class="m-0 muted-text">{{var1.variant_name}}</p>
@@ -96,22 +96,23 @@
                             <p class="m-0 fw-bold">{{var1.price | currency}}</p>
                         </div> -->
 
-                        <div class="d-flex flex-column">
+                        <div class="d-flex  justify-content-between">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var1).name}}</p>
                             <p class="m-0">{{var1.variant_name}}</p>
                         </div>
-                        <div class="d-flex">
-                            <p class="m-0 fw-bold">x1</p>
+
+                        <div class="d-flex p-3 justify-content-center dark-border rounded-2 mt-1 color-adm-light-gray">
+                            PAIRINGS GO HERE
                         </div>
 
                     </div>
-                    <div class="d-flex justify-content-between align-items-center pt-3" [ngClass]="{'border-top-1': checkoutVariant1}" *ngIf="checkoutVariant2 as var2">
-                        <div class="d-flex flex-column">
+                    <div class="d-flex flex-column pt-3" [ngClass]="{'border-top-1': checkoutVariant1}" *ngIf="checkoutVariant2 as var2">
+                        <div class="d-flex justify-content-between">
                             <p class="m-0 fw-bold">{{this.matchVariantProduct(var2).name}}</p>
                             <p class="m-0">{{var2.variant_name}}</p>
                         </div>
-                        <div class="d-flex align-items-center">
-                            <p class="m-0 fw-bold">x1</p>
+                        <div class="d-flex p-3 justify-content-center dark-border rounded-2 mt-1 color-adm-light-gray">
+                            PAIRINGS GO HERE
                         </div>
                     </div>
 
