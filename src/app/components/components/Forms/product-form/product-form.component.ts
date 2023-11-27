@@ -175,7 +175,7 @@ export class ProductFormComponent implements AfterViewInit {
             name: ['', Validators.required],
             category: ['', Validators.required],
             description: [''],
-            include: [false],
+            include: [0],
             variants: this.formBuilder.array([]), 
         });
 
@@ -183,7 +183,7 @@ export class ProductFormComponent implements AfterViewInit {
             name: ['', Validators.required],
             category: ['', Validators.required],
             description: [''],
-            include: [false],
+            include: [0],
             variants: this.formBuilder.array([]), 
         });
         
@@ -246,21 +246,25 @@ export class ProductFormComponent implements AfterViewInit {
                         // mystyle: this.formBuilder.array(variant.mystyle)
                     });
                     this.variantsListsData.push(newVariantGroup);
+
                 }
                 
-                if (!this.isFormSave || this.editvariantForms.length < 1) {
-                    const newIndex = this.editvariantForms.length; 
-                    this.editvariantForms.push({ index: newIndex, isVisible: false }); 
-                    
-                    this.isFormSave = true;
-                }else{
-                    const productWarn = {
-                        head: 'Add Variant',
-                        sub: 'Save Before You Add Another One!'
-                    };
-                    this.ProductWarning.emit(productWarn)
+                for (let i = 0; i < variants.length; i++) {
+                    if (this.editvariantForms.length <= i) {
+                        const newIndex = this.editvariantForms.length; 
+                        this.editvariantForms.push({ index: newIndex, isVisible: false }); 
+                    }
                 }
-                
+
+                this.editAttributes = false
+                this.addAttributeForm.reset()
+                this.attributeFormsArray.splice(0)
+                const formGroup = this.addAttributeForm; 
+                const controlNames = Object.keys(formGroup.controls);
+                controlNames.forEach((controlName) => {
+                    formGroup.removeControl(controlName);
+                });
+
                 this.categoryAttributes = this.category_service.getCategoryAttribute(formattedProduct.category).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
                 this.categoryAttributes.subscribe((data: NewAdminCategory) => {
                     if (data && data.attributes) {
@@ -316,8 +320,9 @@ export class ProductFormComponent implements AfterViewInit {
 
     isInclude() {
         const currentValue = this.addProductForm.get('include')?.value;
-        this.addProductForm.get('include')?.setValue(!currentValue);
-        this.isProductInclude = !this.isProductInclude
+        const newValue = currentValue === 1 ? 0 : 1;
+        this.addProductForm.get('include')?.setValue(newValue);
+        this.isProductInclude = newValue === 1;
       }
     isStockZeroOrNegative(form: FormGroup): boolean {
         const stockControl = form.get('stock');
@@ -1035,7 +1040,7 @@ export class ProductFormComponent implements AfterViewInit {
         });
     }
 
-    editDataVariant(index: any){
+    editDataVariant(index: any, id: string){
         this.toggleEditAccordion(index)
         //     this.hideVariantValidationContainer = false
         //     this.addBtn = false;
@@ -1048,6 +1053,17 @@ export class ProductFormComponent implements AfterViewInit {
         //         price: this.variantsLists[index].value.price,
         //     });
         // 
+
+        const variant = this.variantsListsData[index];
+        console.log(variant.value.attributes)
+        this.attributeFormsArray
+
+        if (variant) {
+            this.addVariantForm.get('name')?.setValue(variant.value.name);
+            this.addVariantForm.get('stock')?.setValue(variant.value.stock);
+            this.addVariantForm.get('price')?.setValue(variant.value.price);
+        }
+
     }
 
 
@@ -1517,8 +1533,8 @@ export class ProductFormComponent implements AfterViewInit {
         productFormData.append('name', capitalizedName)
         productFormData.append('category', this.addProductForm.get('category')?.value);
         productFormData.append('description', this.rtfValue);
-        // productFormData.append('includes', this.addProductForm.get('include')?.value);
-
+        productFormData.append('show_my_styles', this.addProductForm.get('include')?.value);
+        console.log(this.addProductForm.get('include')?.value)
         // Get Variants
         const variantsList = this.variantsLists;
 
@@ -1538,10 +1554,10 @@ export class ProductFormComponent implements AfterViewInit {
                 imageIndex++;
             }
 
-            // for (let image of variant.mystyle) {
-            //     productFormData.append(`variants[${i}][mystyle_images][${imageIndex}]`, image);
-            //     imageIndex++;
-            // }
+            for (let image of variant.mystyle) {
+                productFormData.append(`variants[${i}][my_style_image][${imageIndex}]`, image);
+                imageIndex++;
+            }
 
 
             for (let attribute of variant.attributes) {

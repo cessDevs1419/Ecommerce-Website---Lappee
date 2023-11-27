@@ -29,10 +29,8 @@
 
 }
 .chat-body-container {
-    max-height: 40rem;
-    min-height: 20rem;
+    height: auto;
     padding: 0;
-    overflow-y: auto;
 }
 
 .input{
@@ -46,7 +44,7 @@
 
 .message-container{
     max-width: 20rem;
-    min-width: 1rem;
+    min-width: 5rem;
 }
 
 .rounded-top-left{

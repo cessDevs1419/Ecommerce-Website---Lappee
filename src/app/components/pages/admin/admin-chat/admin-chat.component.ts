@@ -25,7 +25,7 @@ export class AdminChatComponent {
   orders!: Observable<AdminOrder[]>;
   ordersDetails!: Observable<AdminOrderDetail>;
   ordersContents$: Observable<AdminOrderContent[]>;
-
+  order_id: string = ''
   chatsList!: Observable<Chats[]>;
   
   constructor(
@@ -52,7 +52,11 @@ export class AdminChatComponent {
             this.chats.loaded()
         })
     );
-		
+    
+    this.route.paramMap.subscribe((params) => {
+			const id = params.get('id');
+      this.order_id = id !== null ? id : ''; 
+		});
   }
 
   refreshTableData(): void {

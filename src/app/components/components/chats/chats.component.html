@@ -31,7 +31,7 @@
                                 </li>
 
                             </ul>
-                            <div class="position-absolute w-100 d-flex justify-content-center align-items-center">
+                            <div class="position-absolute top-50 w-100 d-flex justify-content-center align-items-center">
                                 <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
                             </div>
                         </div>
@@ -41,60 +41,67 @@
                 <div class="chat-box-container {{chatboxContainer}} col-xl-8 p-0 p-xl-2 ps-xl-2 pe-xl-0">
                     <div class="chat-parent-container {{size}} box-shadow {{containerbordercolor}}">
                         <div class="{{panel_bg}} rounded-4 h-100">
-                            <div *ngIf="openedAccount.length === 0" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
+                            <div *ngIf="(chatsList | async)?.length === 0;" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
                                 <div class="container m-auto text-center d-flex justify-content-center align-items-center ">
                                     <h1>No Chat Selected</h1>
                                 </div>
                             </div>
-                            <div *ngIf="openedAccount.length > 0" class="chat-body position-relative h-100 ">
-                                <ng-container *ngFor="let item of openedAccount">
-                                    <div class="{{panel_bg}} position-relative rounded-top-4  top-0 w-100 z-2">
-                                        <div class="chat-header p-4 rounded-top-4">
+                            <div  class="chat-body position-relative h-100 ">
+                                <ng-container >
+                                    <div class="{{panel_bg}} rounded-top-4 box-shadow position-relative rounded-top-0 top-0 w-100 z-2">
+                                        <div class=" p-2 rounded-top-4">
                                             <div class=" d-flex justify-content-between align-items-center">
                                                 <div class="chat-title d-flex">
-                                                    <button class="backbtn btn bg-none border-0" (click)="back()">
-                                                        <i class="bi bi-arrow-left-circle text-white"></i>
-                                                    </button>
+                                                    <!-- <button class="btn bg-none border-0">
+                                                        <i class="bi bi-arrow-left-circle {{text_color}}"></i>
+                                                    </button> -->
                                                     <div class="user-items p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
-                                                        <img class="img-container rounded-circle bg-white me-2" src="" alt="">
                                                         <div class="content overflow-hidden ">
-                                                            <h4 class="text-white-50 mb-0">{{item.fname}} {{item.mname}} {{item.lname}}</h4>
-                                                            <p class="text-white-50 mb-0 text-truncate text-nowrap">Order Id </p>
+                                                            <h4 class="{{text_color}} mb-0"># {{ ChatTitle | uppercase}}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" (click)="getData(item)">
-                                                    <i class="bi bi-info-circle text-white fs-3"></i>
-                                                </button> -->
+                                                
+                                                <ng-container *ngIf="closeBtn; else view">
+                                                    <button class="btn bg-none border-0" (click)="closeChat()" >
+                                                        <i class="bi bi-x-lg {{text_color}} fs-3"></i>
+                                                    </button>
+                                                </ng-container>
+                                                <ng-template #view>
+                                                    <!-- <button class="btn bg-none border-0" data-bs-toggle="modal" data-bs-target="#view" >
+                                                        <i class="bi bi-info-circle {{text_color}} fs-3"></i>
+                                                    </button> -->
+                                                </ng-template>
                                                 
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div [ngClass]="active ? 'chat-history-active' : ''" class="chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1">
-                                        <ul class="chat-body-container overflow-hidden px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
+                
+                                    <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} overflow-y-auto chat-history position-relative d-flex flex-column-reverse py-1 mb-0">
+                                        
+                                        <ul #chatContainer  class="chat-body-container px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                                             <ng-container *ngFor="let item of chatsList | async; let i = index">
-                                                <ng-container *ngIf="(this.accountService.getLoggedUser() | async) as user">
-                                                    <ng-template #admin>
+                                                <ng-container *ngIf="(accountService.getLoggedUser() | async) as user">
+                                                    <ng-container *ngIf="item.sender !== user.user_id; else sender">
                                                         <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
                                                             <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                                <p class="text-white mb-0 fs-5">{{item.message}}</p>
                                                                 <div class="message-data mt-1">
-                                                                    <span class="time text-white-50">{{item.created_at}}</span>
+                                                                    <span class="time text-white-50">{{item.created_at | date: 'hh:mm'}}</span>
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                    </ng-template>
-                                                    <ng-container *ngIf="item.sender === user.user_id; else admin">
+                                                    </ng-container>
+                                                    <ng-template #sender>
                                                         <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
                                                             <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                                <p class="text-white mb-0 fs-5">{{item.message}}</p>
                                                                 <div class="message-data mt-1 w-100 text-end">
-                                                                    <span class="time text-white-50 fs-6">{{item.created_at}}</span>
+                                                                    <span class="time text-white-50 fs-6">{{item.created_at | date: 'hh:mm'}}</span>
                                                                 </div>
                                                             </div>
                                                         </li>
-                                                    </ng-container> 
+                                                    </ng-template> 
                                                 </ng-container>
                                             </ng-container>
                                            
@@ -119,6 +126,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <form [formGroup]="messageContent" >
                                             <div class="input-group box-shadow light-gray-emphasis rounded-4">
                                                 <textarea rows="1" formControlName="content" class="input form-control text-white-50 light-gray-emphasis border-0 rounded-start-4 " >
@@ -136,7 +144,6 @@
                                         </form>
                                     </div>
                                 </ng-container>
-        
                             </div>
                         </div>
                     </div>
@@ -180,17 +187,17 @@
                         </div>
                     </div>
 
-                    <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} chat-history overflow-y-scroll position-relative d-flex flex-column-reverse py-1 mb-0">
+                    <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} overflow-y-auto chat-history position-relative d-flex flex-column-reverse py-1 mb-0">
                         
-                        <ul class="chat-body-container overflow-hidden px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
+                        <ul class="chat-body-container px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                             <ng-container *ngFor="let item of chatsList | async; let i = index">
-                                <ng-container *ngIf="(this.accountService.getLoggedUser() | async) as user">
-                                    <ng-container *ngIf="item.sender === user.user_id; else sender">
+                                <ng-container *ngIf="(accountService.getLoggedUser() | async) as user">
+                                    <ng-container *ngIf="item.sender !== user.user_id; else sender">
                                         <li  class=" text-decoration-none p-3 d-flex justify-content-start mb-2 w-100">
                                             <div class="rounded-top-left message-container receiver-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                <p class="text-white mb-0 fs-5">{{item.message}}</p>
                                                 <div class="message-data mt-1">
-                                                    <span class="time text-white-50">{{item.created_at}}</span>
+                                                    <span class="time text-white-50">{{item.created_at | date: 'hh:mm'}}</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -198,9 +205,9 @@
                                     <ng-template #sender>
                                         <li  class="text-decoration-none p-3 d-flex justify-content-end mb-2 w-100">
                                             <div class="message-container sender-bg rounded-4 w-auto py-2 px-4 text-start">
-                                                <p class="text-white mb-0">{{item.message}}</p>
+                                                <p class="text-white mb-0 fs-5">{{item.message}}</p>
                                                 <div class="message-data mt-1 w-100 text-end">
-                                                    <span class="time text-white-50 fs-6">{{item.created_at}}</span>
+                                                    <span class="time text-white-50 fs-6">{{item.created_at | date: 'hh:mm'}}</span>
                                                 </div>
                                             </div>
                                         </li>

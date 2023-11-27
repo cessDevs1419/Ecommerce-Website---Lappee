@@ -735,114 +735,7 @@
 
                             
 <!-- variant list from existing -->                     
-                            <!-- <div class="accordion border-0">
-                                <div class="accordion-item mb-3 border-0" *ngFor="let items of products.variants; let i = index">
-                                    <div  class="border-0 p-0" >
 
-                                        <div
-                                            class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
-                                            <div class="m-auto row d-flex align-items-center w-100 ">
-                                                <div class="col-sm-2 me-2">
-                                                    <ng-container *ngIf="items.images.length > 0; else colorTemplate" >
-                                                        <div class="color-container border rounded-3 overflow-hidden" *ngFor="let images of items.images">
-                                                            
-                                                            <img [src]="images" class="w-100 h-100 border" alt="">
-
-                                                        </div>
-                                                    </ng-container>
-                                                    <ng-template #colorTemplate>
-                                                        <ng-container *ngFor="let attributes of items.attributes">
-                                                            <div  class="color-container border rounded-3 overflow-hidden" *ngIf="attributes.attribute_name === 'Color'" >
-                                                                <ng-container >
-                                                                    <div [style.background-color]="attributes.value" class="color w-100 h-100"></div>
-                                                                    {{attributes.value}}
-                                                                </ng-container>
-                                                            </div>
-                                                        </ng-container>
-                                                    </ng-template>
-                                                    
-                                                </div>
-
-                                                <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
-                                                    <div class="data w-100">
-                                                        <div class="row ms-0 m-auto w-100 ">
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden ">
-                                                                <h1 class="fs-4 fw-bold mx-0 text-wrap text-truncate {{formTextColor}}">{{items.variant_name}}</h1>
-                                                            </div>
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center overflow-hidden " >
-                                                                <h1 class="fs-4 fw-bold mx-0 text-nowrap text-truncate max-text {{formTextColor}}" >
-                                                                    <ng-container *ngIf="items.attributes[0].attribute_name === 'Color' || items.attributes[0].attribute_name === 'Colors'; else nocolors">
-                                                                        {{items.attributes[0].value}}
-                                                                    </ng-container>
-                                                                    <ng-template #nocolors >
-                                                                        {{items.attributes[0].value}}
-                                                                    </ng-template>
-                                                                </h1>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row ms-0 m-auto w-100">
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
-                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Stock: {{items.stock}}</p>
-                                                            </div>
-                                                            <div class="col-sm-6 p-0 text-start d-flex align-items-center">
-                                                                <p class="fs-6 m-0 mx-0 {{formTextColor}}">Price: {{items.price}}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="actions position-relative">
-                                                <div class="dropdown-start">
-                                                    <button 
-                                                        id="actionBtn" 
-                                                        class="dark-theme-border actionbtn btn btn-primary m-auto position-relative bg-none rounded-3 d-flex align-items-center justify-content-center p-2 {{formTextColor}}"
-                                                        [class.activebtn]="activeButtonIndex === i"
-                                                        (click)="showAction(i)"
-                                                        data-bs-toggle="dropdown"
-                                                        > 
-                                                        <i class="bi bi-three-dots fs-3 lh-1 dark-theme-color"></i> 
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-dark p-0 border-0 box-shadow mt-2 rounded-3">
-                                                        <ul class="z-3 action-button list-unstyled p-0" >
-                                                            <li class="action-item rounded-3 text-decoration-none">
-                                                                <button 
-                                                                    type="button"
-                                                                    class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
-                                                                    [attr.data-bs-target]="'#collapse' + i" 
-                                                                    
-                                                                    (click)="editProductVariant(i)"
-                                                                > 
-                                                                    Edit 
-                                                                </button>
-
-                                                                <div class="action-border border-1"></div>
-                                                            </li>
-                                                            <li class="action-item text-decoration-none ">
-                                                                <button 
-                                                                    type="button"
-                                                                    class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
-                                                                    (click)="selectVariantItem(i)"
-                                                                > 
-                                                                    Delete
-                                                                </button>
-                                                            </li>
-                                                            
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                    <div [id]="'collapse' + i" class="{{formColor}} p-0 " >
-                                       
-                                    </div> 
-                               
-                                </div>
-                            </div> -->
 
                             <div class="accordion border-0">
                                 <div class="accordion-item mb-3 border-0" *ngFor="let form of editvariantForms; let i = index">
@@ -904,7 +797,7 @@
                                                                     class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
                                                                     [attr.data-bs-target]="'#collapse' + i" 
                                                                     [attr.aria-expanded]="form.isVisible" 
-                                                                    (click)="editDataVariant(i)"
+                                                                    (click)="editDataVariant(i, variantControl.value.variant_id)"
                                                                 > 
                                                                     Edit
                                                                 </button>
@@ -928,7 +821,7 @@
                                     </div>
                                     
                                     <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse': !form.isVisible, 'show': form.isVisible, 'slide-up': !form.isVisible, 'slide-down': form.isVisible}" >
-                                        <!-- <div class="accordion-body p-3">
+                                        <div class="accordion-body p-3">
                                             <form [formGroup]="addVariantForm">
                                                 <div class="w-100 mb-3">
                                                     <label class="form-label {{formTextColor}}">Variant Name</label>
@@ -993,8 +886,6 @@
                                                 </div>
                                             </form>
                                             
-
-                                           
                                             <div class="title-container mb-2 d-flex ">
                                                 <div class="d-flex flex-row p-0 mb-3">
                                                     <div class="blue-accent me-2"></div>
@@ -1011,7 +902,7 @@
                                             <form [formGroup]="addAttributeForm" *ngIf="editAttributes === false">
                                                         <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
                                                                     <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  let ind = index">
-                                                                        <ng-container *ngIf="variantsLists[i]; let variant">
+                                                                        <ng-container *ngIf="variantsListsData[i]; let variant">
                                                                             <ng-container *ngIf="variant.value.attributes as attribute  ">
                                                                                 <div class="position-relative d-flex align-items-center">
                                                                                     <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
@@ -1140,7 +1031,7 @@
                                                 </div>
 
                                                 <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
-                                                    <ng-container *ngIf="variantsLists[i]; let variant">
+                                                    <ng-container *ngIf="variantsListsData[i]; let variant">
                                                         <ng-container *ngFor="let images of variant.value.images; let ind = index">
                                                             <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
                                                                 <div class="tooltips text-center rounded-2 mb-0 px-2">
@@ -1156,7 +1047,7 @@
                                                                 <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
                                                                     <i class="bi bi-x text-white"></i>
                                                                 </button>
-                                                                <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
+                                                                <img [src]="images" alt="Lappee" class="w-100 h-100 border">
                                                                 
                                                             </div>
                                                         </ng-container>
@@ -1337,7 +1228,7 @@
                                                 >Save</button>
                                             </div>
 
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>

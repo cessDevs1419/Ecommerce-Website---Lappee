@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import channels from 'pusher-js/types/src/core/channels/channels';
@@ -21,6 +21,7 @@ interface CustomFile extends File {
 })
 export class ChatsComponent {
   @ViewChild('fileInputs') fileInputs: ElementRef;
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   @Output() rowData: EventEmitter<any> = new EventEmitter();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
   @Input() size: string = ''
@@ -62,7 +63,8 @@ export class ChatsComponent {
     private chats: ChatsService,
     private route: ActivatedRoute,
     private chatsService: ChatsService,
-    public accountService: AccountsService
+    public accountService: AccountsService,
+    private cdr: ChangeDetectorRef
   ){
     this.chats.removeChat()
     this.openedAccount = this.chats.getActiveChats()
@@ -105,21 +107,30 @@ export class ChatsComponent {
         map((response: any) => formatChats(response)),
         tap(() => {
             this.loaded()
+            this.scrollToBottom();
         })
       );
 
       this.conversation_id = id !== null ? id : ''; 
-      console.log(this.chatsList)
 
 		});
 
   }
-  
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
   refreshTableData(): void {
     this.refreshData$.next();
   }
 
-
+  scrollToBottom(): void {
+    if (this.chatContainer) {
+      this.chatContainer.nativeElement.scrollTop = 0;  // Set scrollTop to 0 for flex-column-reverse
+      this.cdr.detectChanges();
+    }
+  }
 	loaded(){
 		this.isLoading = false
 	}
@@ -190,6 +201,7 @@ export class ChatsComponent {
     this.chatsService.sendConvo(formData).subscribe({
       next: (response: any) => { 
         console.log(response)
+        this.refreshTableData()
       },
       error: (error: HttpErrorResponse) => {
           // if (error.error?.data?.error) {
@@ -233,6 +245,8 @@ export class ChatsComponent {
   getData(data: any){
     this.rowData.emit(data)
   }
+
+
 
   getUser(data: any, index: number){
     this.router.navigate(['/admin/chats',data.user_id]);
