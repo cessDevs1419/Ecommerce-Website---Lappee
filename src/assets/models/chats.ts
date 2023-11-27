@@ -1,7 +1,10 @@
 export interface ChatsList {
     success: string,
     message: string,
-    data: Chats[];
+    data: {
+        title: string;
+        messages: Chats[];
+    };
 }
 
 export interface Chats {
@@ -13,4 +16,19 @@ export interface Chats {
     created_at: string,
     updated_at: string,
     is_deleted: number
+}
+
+
+export interface ChatsChannelList {
+    success: string,
+    message: string,
+    data: ChatsChannel[];
+}
+
+export interface ChatsChannel {
+    id: string,
+    created_at: string,
+    updated_at: string,
+    type: number,
+    title: string
 }

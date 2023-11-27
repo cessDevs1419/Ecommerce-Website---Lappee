@@ -104,6 +104,15 @@ textarea {
     display: none;
 }
 
+.chat-history{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .chat-history::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
+
 @media screen and (max-width: 1200px) {
     .chat-box-container{
         display: none;

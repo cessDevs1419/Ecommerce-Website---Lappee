@@ -114,6 +114,8 @@ export const POSTInquiry: string = api + "api/client/inquiry/store";
 export const POSTSendConvo: string = api + "api/client/chat/message/send";
 export const DELETEConvo: string = api + "api/client/chat/message/delete";
 export const GETConversation: string = api + "api/client/chat/message/list/";
+export const GETConversationList: string = api + "api/admin/conversations"
+
 // Search Endpoints
 export const GETSearchResults: string = api + "api/client/products/search/";
 

@@ -4,7 +4,7 @@ import { Observable, Subject, filter, map, of, startWith, switchMap, tap } from 
 import { ChatsComponent } from 'src/app/components/components/chats/chats.component';
 import { ChatsService } from 'src/app/services/chats/chats.service';
 import { formatChats } from 'src/app/utilities/response-utils';
-import { Chats } from 'src/assets/models/chats';
+import { Chats, ChatsList } from 'src/assets/models/chats';
 
 @Component({
   selector: 'app-order-chats',
@@ -29,6 +29,7 @@ export class OrderChatsComponent {
 			const id = params.get('id');
       this.order_id = id !== null ? id : ''; 
 		});
+    
   }
   refreshTableData(): void {
     this.refreshData$.next();

@@ -3,9 +3,8 @@
         <app-chats
             [size]="'chat-body-xl'"
             [admin]="true"
-            [channels]="users"
+            [channels]="chatList"
             (rowData)="this.onRowDataSelected($event)"
-            [ChatTitle]="order_id"
         ></app-chats>
     </div>    
 </div>

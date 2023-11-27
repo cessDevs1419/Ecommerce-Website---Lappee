@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Chats } from 'src/assets/models/chats';
-import { DELETEConvo, GETConversation, POSTSendConvo } from '../endpoints';
+import { Chats, ChatsChannel } from 'src/assets/models/chats';
+import { DELETEConvo, GETConversation, GETConversationList, POSTSendConvo } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,9 @@ export class ChatsService {
   removeChat(){
     this.activeChat.splice(0)
   }
-
+  getAllChats(): Observable<ChatsChannel>{
+    return this.http.get<ChatsChannel>(GETConversationList);
+  }
   getConversation(id: string ): Observable<Chats>{
     return this.http.get<Chats>(GETConversation + id);
   }

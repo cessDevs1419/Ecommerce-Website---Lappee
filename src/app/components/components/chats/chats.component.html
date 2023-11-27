@@ -2,7 +2,10 @@
     <div class="chat-container h-100 mb-0">
             <div class="row w-100 p-0 m-auto ">
                 <div class="channel-box-container {{channelboxContainer}} col-xl-4 p-0 p-xl-2 position-relative ">
-                    <div class="chat-parent-container {{size}} box-shadow {{containerbordercolor}}">
+                    <div class="position-relative chat-parent-container {{size}} box-shadow {{containerbordercolor}}">
+                        <div class="position-absolute top-50 w-100 d-flex justify-content-center align-items-center">
+                            <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                        </div>
                         <div class="{{panel_bg}} h-100 p-4 rounded-4">
                             <div class="input-group mb-3 bg-none border-grey-emphasis rounded-4">
                                 <span class="input-group-text cursor-pointer bg-none border-0 " id="search">
@@ -25,27 +28,19 @@
                                     >
                                     <img class="img-container rounded-circle bg-white me-2" src="" alt="">
                                     <div class="content overflow-hidden ">
-                                        <h4 class="text-white-50 mb-0">{{item.fname}} {{item.mname}} {{item.lname}}</h4>
-                                        <p class="text-white-50 mb-0 text-truncate text-nowrap">content here </p>
+                                        <h4 class="text-white-50 mb-0">{{item.title}}</h4>
+                                        <p class="text-white-50 mb-0 text-truncate text-nowrap">{{item.created_at | date}}</p>
                                     </div>
                                 </li>
 
                             </ul>
-                            <div class="position-absolute top-50 w-100 d-flex justify-content-center align-items-center">
-                                <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="chat-box-container {{chatboxContainer}} col-xl-8 p-0 p-xl-2 ps-xl-2 pe-xl-0">
                     <div class="chat-parent-container {{size}} box-shadow {{containerbordercolor}}">
-                        <div class="{{panel_bg}} rounded-4 h-100">
-                            <div *ngIf="(chatsList | async)?.length === 0;" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
-                                <div class="container m-auto text-center d-flex justify-content-center align-items-center ">
-                                    <h1>No Chat Selected</h1>
-                                </div>
-                            </div>
+                        <div class="{{panel_bg}} rounded-4 h-100 overflow-hidden">
                             <div  class="chat-body position-relative h-100 ">
                                 <ng-container >
                                     <div class="{{panel_bg}} rounded-top-4 box-shadow position-relative rounded-top-0 top-0 w-100 z-2">
@@ -55,9 +50,9 @@
                                                     <!-- <button class="btn bg-none border-0">
                                                         <i class="bi bi-arrow-left-circle {{text_color}}"></i>
                                                     </button> -->
-                                                    <div class="user-items p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
+                                                    <div class="user-item p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
                                                         <div class="content overflow-hidden ">
-                                                            <h4 class="{{text_color}} mb-0"># {{ ChatTitle | uppercase}}</h4>
+                                                            <h4 class="{{text_color}} mb-0">{{ ChatTitle | uppercase}}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -78,7 +73,11 @@
                                     </div>
                 
                                     <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} overflow-y-auto chat-history position-relative d-flex flex-column-reverse py-1 mb-0">
-                                        
+                                        <div *ngIf="(chatsList | async)?.length === 0" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
+                                            <div class="container m-auto text-center d-flex justify-content-center align-items-center ">
+                                                <h1 class="text-white-50">No Conversation</h1>
+                                            </div>
+                                        </div>
                                         <ul #chatContainer  class="chat-body-container px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                                             <ng-container *ngFor="let item of chatsList | async; let i = index">
                                                 <ng-container *ngIf="(accountService.getLoggedUser() | async) as user">
@@ -165,9 +164,9 @@
                                     <!-- <button class="btn bg-none border-0">
                                         <i class="bi bi-arrow-left-circle {{text_color}}"></i>
                                     </button> -->
-                                    <div class="user-items p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
-                                        <div class="content overflow-hidden ">
-                                            <h4 class="{{text_color}} mb-0"># {{ ChatTitle | uppercase}}</h4>
+                                    <div class="user-item p-3 text-decoration-none  cursor-pointer d-flex align-items-center" >
+                                        <div class="content overflow-hidden " >
+                                            <h4 class="{{text_color}} mb-0"> {{ ChatTitle | uppercase}}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +187,14 @@
                     </div>
 
                     <div [ngClass]="active ? 'chat-history-active' : ''" class="{{panel_bg}} overflow-y-auto chat-history position-relative d-flex flex-column-reverse py-1 mb-0">
-                        
+                        <div *ngIf="(chatsList | async)?.length === 0" class="chat-body position-relative d-flex align-items-center justify-content-center h-100 ">
+                            <div class="container m-auto text-center d-flex justify-content-center align-items-center ">
+                                <h1 class="text-dark-emphasis">No Conversation</h1>
+                            </div>
+                        </div>
+                        <div class="position-absolute top-50 w-100 d-flex justify-content-center align-items-center">
+                            <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
+                        </div>
                         <ul class="chat-body-container px-2 d-flex  flex-column position-absolute bottom-0 w-100  list-unstyled ">
                             <ng-container *ngFor="let item of chatsList | async; let i = index">
                                 <ng-container *ngIf="(accountService.getLoggedUser() | async) as user">

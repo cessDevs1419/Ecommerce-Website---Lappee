@@ -6,8 +6,8 @@ import { ChatsComponent } from 'src/app/components/components/chats/chats.compon
 import { ChatsService } from 'src/app/services/chats/chats.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UsersService } from 'src/app/services/users/users.service';
-import { formatAdminOrder, formatAdminOrderDetail, formatChats, formatUser } from 'src/app/utilities/response-utils';
-import { Chats } from 'src/assets/models/chats';
+import { formatAdminOrder, formatAdminOrderDetail, formatChats, formatChatsList, formatUser } from 'src/app/utilities/response-utils';
+import { Chats, ChatsChannel } from 'src/assets/models/chats';
 import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/models/order-details';
 import { User } from 'src/assets/models/user';
 
@@ -20,7 +20,7 @@ export class AdminChatComponent {
 
   @ViewChild(ChatsComponent) chats: ChatsComponent;
   private refreshData$ = new Subject<void>();
-  users!: Observable<User[]>;
+  chatList!: Observable<ChatsChannel[]>;
   selectedRowData!: any;
   orders!: Observable<AdminOrder[]>;
   ordersDetails!: Observable<AdminOrderDetail>;
@@ -44,10 +44,10 @@ export class AdminChatComponent {
       map((Response: any) => formatAdminOrder(Response))
     );
 
-    this.users = this.refreshData$.pipe(
+    this.chatList = this.refreshData$.pipe(
         startWith(undefined),
-        switchMap(() => this.user_service.getUsers()),
-        map((response: any) => formatUser(response)),
+        switchMap(() => this.chatsService.getAllChats()),
+        map((response: any) => formatChatsList(response)),
         tap(() => {
             this.chats.loaded()
         })

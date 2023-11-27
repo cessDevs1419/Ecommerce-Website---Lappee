@@ -57,6 +57,8 @@ export class ChatsComponent {
   active: boolean = false;
   loggedInUserId: string | null; 
   conversation_id: string;
+  noChat: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -67,7 +69,7 @@ export class ChatsComponent {
     private cdr: ChangeDetectorRef
   ){
     this.chats.removeChat()
-    this.openedAccount = this.chats.getActiveChats()
+
     this.convo_active = Array(this.openedAccount.length).fill(false);
     this.messageContent = new FormGroup({
       content: new FormControl('', Validators.required)
@@ -105,18 +107,37 @@ export class ChatsComponent {
         }),
         filter(response => response !== null), 
         map((response: any) => formatChats(response)),
-        tap(() => {
+        tap((chat) => {
             this.loaded()
             this.scrollToBottom();
+            this.noChat = false
         })
       );
 
       this.conversation_id = id !== null ? id : ''; 
+      this.channelboxContainer = 'channel-box-container-inactive'
+      this.chatboxContainer = 'chat-box-container-active'
 
+      this.channels.subscribe(data => {
+        if (id !== null) {
+          const index = data.findIndex((item: any) => item.id === id);
+          if (index !== -1) {
+            console.log('Index found:', data[index]);
+            this.ChatTitle = data[index].title
+            this.convo_active = Array(data.length).fill(false);
+            this.convo_active[index] = true;
+          } 
+        }
+      });
 		});
 
   }
-
+  calculateIndex(data: any[], id: string): number {
+    
+    const targetPropertyValue = id;
+    const index = data.findIndex(item => item.property === targetPropertyValue);
+    return index;
+  }
   ngAfterViewInit() {
     this.scrollToBottom();
   }
@@ -249,15 +270,8 @@ export class ChatsComponent {
 
 
   getUser(data: any, index: number){
-    this.router.navigate(['/admin/chats',data.user_id]);
-    
-    //for showcase only real process will be at the page load
-    this.channelboxContainer = 'channel-box-container-inactive'
-    this.chatboxContainer = 'chat-box-container-active'
-    this.chats.removeChat()
-    this.chats.setActiveChats(data);
-    this.convo_active = Array(this.openedAccount.length).fill(false);
-    this.convo_active[index] = true;
+    this.router.navigate(['/admin/chats',data.id]);
+
   }
 
   back(){

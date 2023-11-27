@@ -13,7 +13,7 @@ import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, Si
 import { AttributeList, Attributes } from "src/assets/models/attributes";
 import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
 import { parse } from 'date-fns';
-import { Chats, ChatsList } from "src/assets/models/chats";
+import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
 
 // Formatting
 
@@ -88,7 +88,7 @@ export function formatAdminProducts(response: AdminProductList): AdminProduct[] 
 }
 
 export function formatChats(response: ChatsList): Chats[] {
-  return response.data.map((data: Chats) => ({
+  return response.data.messages.map((data: Chats) => ({
     id: data.id,
     conversation_id: data.conversation_id,
     sender: data.sender,
@@ -100,6 +100,17 @@ export function formatChats(response: ChatsList): Chats[] {
   }));
 }
 
+
+
+export function formatChatsList(response: ChatsChannelList): ChatsChannel[] {
+  return response.data.map((data: ChatsChannel) => ({
+    id: data.id,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    type: data.type,
+    title: data.title
+  }));
+}
 
 // returns a Product object
 export function formatProductObj(response: any): Product {
