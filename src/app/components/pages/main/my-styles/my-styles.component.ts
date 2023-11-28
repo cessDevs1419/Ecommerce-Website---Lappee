@@ -34,10 +34,10 @@ export class MyStylesComponent {
 
   constructor(private productsService: ProductsService, public domSanitizer: DomSanitizer, private cart: CartService, private router: Router, private eh: ErrorHandlerService) {}
   
-  products: Observable<Product[]>
-  productsCache: Product[]
-  // products: Observable<MyStyleProduct>;
-  // productsCache: MyStyleProduct;
+  // products: Observable<Product[]>
+  // productsCache: Product[]
+  products: Observable<MyStyleProduct>;
+  productsCache: MyStyleProduct;
 
   // items in catalogs
   variantsTop: Variant[] = [];
@@ -99,25 +99,29 @@ export class MyStylesComponent {
   }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProductsAll().pipe(map((response: any) => formatProductAll(response)));
-    
-    this.products.subscribe({
-      next: (response: Product[]) => {
-        this.productsCache = response;
-        console.log(this.productsCache)
-        this.setupVariants();
+
+    // this.products = this.productsService.getProductsAll().pipe(map((response: any) => formatProductAll(response)));
+    // this.products.subscribe({
+    //   next: (response: Product[]) => {
+    //     this.productsCache = response;
+    //     console.log(this.productsCache)
+    //     this.setupVariants();
        
-      }
-    })
+    //   }
+    // })
 
     // MyStylesProduct Model
-    //this.products = this.productsService.getMyStyles().pipe(map((response: any) => formatMyStyles(response)));
-    // this.products.subscribe( (response: MyStyleProduct) => {
-    //     this.productsCache = response;
-    //     console.log(response)
-    //     this.setupVariants();
-    //   }
-    // )
+    this.products = this.productsService.getMyStyles().pipe(map((response: any) => {
+     console.log(response);
+      return formatMyStyles(response);
+    }));
+    this.products.subscribe( (response: MyStyleProduct) => {
+        this.productsCache = response;
+        console.log(response)
+        this.setupVariants();
+      }
+    )
+
     this.showPrimer();
   }
 
@@ -142,55 +146,55 @@ export class MyStylesComponent {
   }
 
   // Old setupVariants
+  // setupVariants(): void {
+  //   let allVariants: Variant[] = [];
+  //   this.productsCache.forEach((product: Product) => {
+  //     product.variants.forEach((variant: Variant) => {
+  //       allVariants.push(variant);
+  //     })
+  //     console.log(allVariants);
+
+  //     // product.variants.forEach((variant: Variant) => {
+  //       //   this.variantsBot.push(variant);
+  //       // })
+  //   })
+  //   this.variantsTop = this.filterUniqueProductVariants(allVariants)    
+
+  //   console.log(this.variantsTop)
+  //   for(let i = 0; i < 1; i++){
+  //     this.variantsBot.push(this.variantsTop[i]);
+  //     this.variantsTop.shift();
+  //   }
+
+  //   this.activateTooltip();
+  //   this.isLoading = false;
+  // }
+
+  // New setupVariants MyStylesProductModel
   setupVariants(): void {
     let allVariants: Variant[] = [];
-    this.productsCache.forEach((product: Product) => {
+    let allTops: Variant[] = [];
+    let allBottoms: Variant[] = [];
+    this.variantsTop = this.filterUniqueProductVariants(allTops)
+
+    // get all top variants
+    this.productsCache.tops.forEach((product: Product) => {
       product.variants.forEach((variant: Variant) => {
-        allVariants.push(variant);
+        allTops.push(variant);
       })
-      console.log(allVariants);
-
-      // product.variants.forEach((variant: Variant) => {
-        //   this.variantsBot.push(variant);
-        // })
     })
-    this.variantsTop = this.filterUniqueProductVariants(allVariants)    
-
-    console.log(this.variantsTop)
-    for(let i = 0; i < 1; i++){
-      this.variantsBot.push(this.variantsTop[i]);
-      this.variantsTop.shift();
-    }
-
+    this.variantsTop = this.filterUniqueProductVariants(allTops)
+    
+    // get all bottom variants
+    this.productsCache.bottoms.forEach((product: Product) => {
+      product.variants.forEach((variant: Variant) => {
+        allBottoms.push(variant);
+      })
+    })
+    this.variantsBot = this.filterUniqueProductVariants(allBottoms)
     this.activateTooltip();
     this.isLoading = false;
   }
-
-  // New setupVariants MyStylesProductModel
-  // setupVariants(): void {
-  //   let allVariants: Variant[] = [];
-  //   let allTops: Variant[] = [];
-  //   let allBottoms: Variant[] = [];
-  //   this.variantsTop = this.filterUniqueProductVariants(allTops)
-
-  //   // get all top variants
-  //   this.productsCache.tops.forEach((product: Product) => {
-  //     product.variants.forEach((variant: Variant) => {
-  //       allTops.push(variant);
-  //     })
-  //   })
-  //   this.variantsTop = this.filterUniqueProductVariants(allTops)
-    
-  //   // get all bottom variants
-  //   this.productsCache.bottoms.forEach((product: Product) => {
-  //     product.variants.forEach((variant: Variant) => {
-  //       allBottoms.push(variant);
-  //     })
-  //   })
-  //   this.variantsBot = this.filterUniqueProductVariants(allBottoms)
-
-  //   this.isLoading = false;
-  // }
 
   benchmark(func: Function, n: number): number[]{
     let t0,t1;
@@ -286,9 +290,17 @@ export class MyStylesComponent {
     return product.variants.findIndex((variant: Variant) => variant.variant_id == variant_id);
   } 
 
+  // matchVariantProduct(variant: Variant): Product {
+  //   let result = this.productsCache.find((product: Product) => product.id === variant.product_id);
+  //   return result!;
+  // }
+
   matchVariantProduct(variant: Variant): Product {
-    let result = this.productsCache.find((product: Product) => product.id === variant.product_id);
-    return result!;
+    let search = this.productsCache.tops.find((product: Product) => product.id === variant.product_id);
+    if(!search) {
+      search = this.productsCache.bottoms.find((product: Product) => product.id === variant.product_id);
+    }
+    return search!;
   }
 
   matchVariantSameColor(variant: Variant): Variant[] {
