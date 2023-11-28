@@ -68,7 +68,7 @@ ngOnInit(): void{
       this.refreshData$.next();
   }
   showPage(data: any){
-    this.router.navigate(['/admin/chats',data.user_id]);
+    this.router.navigate(['/admin/chats',data.conversation_id]);
   }
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;

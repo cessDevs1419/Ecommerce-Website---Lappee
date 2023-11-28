@@ -155,6 +155,8 @@ export class SidebarComponent {
       this.router.url === '/admin/attribute-management' ||
       this.router.url === '/admin/category-management' ||
       this.router.url === '/admin/product-management' ||
+      this.router.url === '/admin/stocks-management' ||
+      this.router.url === '/admin/discounts-management' ||
       this.router.url === '/admin/product-management/product/add' || 
       this.router.url.startsWith('/admin/product-management/product/edit')
     );

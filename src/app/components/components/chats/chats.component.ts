@@ -96,39 +96,47 @@ export class ChatsComponent {
     this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
 
-      this.chatsList = this.refreshData$.pipe(
-        startWith(undefined),
-        switchMap(() => {
+
+      if(this.router.url === '/admin/chats'){
+        this.channelboxContainer = ''
+        this.chatboxContainer = ''
+  
+      }else{
+        this.chatsList = this.refreshData$.pipe(
+          startWith(undefined),
+          switchMap(() => {
+            if (id !== null) {
+              return this.chatsService.getConversation(id);
+            } else {
+              return of(null);
+            }
+          }),
+          filter(response => response !== null), 
+          map((response: any) => formatChats(response)),
+          tap((chat) => {
+              this.loaded()
+              this.scrollToBottom();
+              this.noChat = false
+          })
+        );
+
+        this.conversation_id = id !== null ? id : ''; 
+        this.channelboxContainer = 'channel-box-container-inactive'
+        this.chatboxContainer = 'chat-box-container-active'
+  
+        this.channels.subscribe(data => {
           if (id !== null) {
-            return this.chatsService.getConversation(id);
-          } else {
-            return of(null);
+            const index = data.findIndex((item: any) => item.id === id);
+            if (index !== -1) {
+              console.log('Index found:', data[index]);
+              this.ChatTitle = data[index].title
+              this.convo_active = Array(data.length).fill(false);
+              this.convo_active[index] = true;
+            } 
           }
-        }),
-        filter(response => response !== null), 
-        map((response: any) => formatChats(response)),
-        tap((chat) => {
-            this.loaded()
-            this.scrollToBottom();
-            this.noChat = false
-        })
-      );
+        });
+      }
 
-      this.conversation_id = id !== null ? id : ''; 
-      this.channelboxContainer = 'channel-box-container-inactive'
-      this.chatboxContainer = 'chat-box-container-active'
-
-      this.channels.subscribe(data => {
-        if (id !== null) {
-          const index = data.findIndex((item: any) => item.id === id);
-          if (index !== -1) {
-            console.log('Index found:', data[index]);
-            this.ChatTitle = data[index].title
-            this.convo_active = Array(data.length).fill(false);
-            this.convo_active[index] = true;
-          } 
-        }
-      });
 		});
 
   }

@@ -13,7 +13,9 @@
     height: calc(55.3vh - 100px);
 }
 
-
+.btn-back{
+    display: none;
+}
 .chat-header{
     background: linear-gradient(180deg, #16181F 0%, rgba(22, 24, 31, 0.00) 100%);
 }
@@ -103,7 +105,14 @@ textarea {
 .backbtn{
     display: none;
 }
-
+.panel{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .panel.chat-history::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
 .chat-history{
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
       scrollbar-width: none; 
@@ -114,6 +123,9 @@ textarea {
   }
 
 @media screen and (max-width: 1200px) {
+    .btn-back{
+        display: block;
+    }
     .chat-box-container{
         display: none;
     }

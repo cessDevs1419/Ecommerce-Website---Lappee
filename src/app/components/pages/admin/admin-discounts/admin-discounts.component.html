@@ -1,29 +1,49 @@
+<div class="container-fluid position-relative m-auto h-auto text-center px-0 px-sm-3" >
 
-
-<div class="container-md  m-auto h-auto p-2" >
     <app-table
-        tableTitle="DISCOUNT LIST"
-        subTitle="MANAGEMENT"
-        
-        [tableTools]="true"
-        [searchBar]="true"
-        [Btntools]="true"
-        [addBtn]="true"
-        addbtnName="ADD DISCOUNT"
-        addBtnclass="ms-3"
-        
-        [tableHeader]="['ITEM ID','ITEM NAME','STOCKS', 'PRICE', 'SOLD']"
-        
+        tableTitle="Discounts Management"
+        subTitle="Product Management"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        searchBarclass="me-0"
+        [paginate]="false"
+
+        addbtnName="Add New"
+        [tableAction]="true"
+        [viewBtn]="true"
+        [actionForOrderBtn]="true"
+        [orderBtnSet]="true"
+        [tableHeaderActions]="true"
+        [paymentStatus]="paymentStatus"
+        [shipStatus]="shipStatus"
+        [deliverStatus]="deliverStatus"
+        [packStatus]="packStatus"
+        [setFirstUpper]="true"
+        [tableHeader]="['Start Date','End Date', 'Discount', 'Type']"
+        [tableRows]="['created_at', 'end_at', 'discount', 'type']"
+        [tableData]="attributes"
+
+        (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    <!--MAIN-->
+
+     
 </div>
 
-<!-- <app-admin-parent-form
-modalID="addproduct"
-modalTitle="ADD DISCOUNT"
-modalSubTitle="DISCOUNT MANAGEMENT"
-
-[modalAddDiscount]="true"
-
-></app-admin-parent-form> -->
-
-
+<app-modal
+    modalId="view"
+    modalTitle="Customer Information"
+    modalTitleClass="mb-3"
+    modalSubTitle="{{selectedRowData?.user_id}}"
+    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalClass="modal-md "
+    [modalHideIcon]="true"
+    modalIcon="view"
+    [allowAnotherSub]="true"
+    [modalViewOrders]="true"
+    (RefreshTable)="refreshTableData()"
+    [selectedRowData]="selectedRowData"
+></app-modal>
