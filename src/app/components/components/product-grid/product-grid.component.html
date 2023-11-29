@@ -1,5 +1,5 @@
 <div *ngFor="let product of products | async | searchFilter: searchString" class="col-6 col-lg-4 col-xl-3 mb-3">
-    <a [routerLink]="['/products', product.product_id]" class="text-reset text-decoration-none">
+    <a [routerLink]="" (click)="navigateRoute('/products/' + product.product_id)" class="text-reset text-decoration-none">
         <div class="card product-card h-100">
             <div class="card-img-container d-flex align-items-center" [ngStyle]=" product.preview_image ? { 'background-image': 'url(' + product.preview_image + ')' } : { 'background-image': 'url(https://picsum.photos/700)'}">
                 <!-- <span class="card-image-overlay px-2 py-1 mt-3">- 69%</span> -->
