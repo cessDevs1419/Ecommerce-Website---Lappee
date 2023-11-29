@@ -1,7 +1,3 @@
-.msg-banner {
-        
-}
-
 #searchDiv {
     gap: 2rem;
 }
@@ -21,10 +17,12 @@
 
 .nav-item a:hover {
     text-decoration: underline;
+    color: var(--primary)
 }
 
 .activeLink {
     color: var(--primary);
+    text-decoration: underline;
 }
 
 #categoryDetailsDiv > div {
