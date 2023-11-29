@@ -6,6 +6,7 @@ import channels from 'pusher-js/types/src/core/channels/channels';
 import { Observable, Subject, filter, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { ChatsService } from 'src/app/services/chats/chats.service';
+import { EchoService } from 'src/app/services/echo/echo.service';
 import { formatChats, formatUser } from 'src/app/utilities/response-utils';
 import { Chats } from 'src/assets/models/chats';
 import { User } from 'src/assets/models/user';
@@ -66,7 +67,8 @@ export class ChatsComponent {
     private route: ActivatedRoute,
     private chatsService: ChatsService,
     public accountService: AccountsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private echo: EchoService
   ){
     this.chats.removeChat()
 
@@ -96,6 +98,9 @@ export class ChatsComponent {
     this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
 
+      this.echo.listen('chat.' + id, 'MessageSent', (data: any) => {
+				this.refreshTableData()
+			})
 
       if(this.router.url === '/admin/chats'){
         this.channelboxContainer = ''

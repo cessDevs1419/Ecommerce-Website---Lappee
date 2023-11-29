@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, filter, map, of, startWith, switchMap, tap } from 'rxjs';
 import { ChatsComponent } from 'src/app/components/components/chats/chats.component';
 import { ChatsService } from 'src/app/services/chats/chats.service';
+import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UsersService } from 'src/app/services/users/users.service';
 import { formatAdminOrder, formatAdminOrderDetail, formatChats, formatChatsList, formatUser } from 'src/app/utilities/response-utils';
@@ -32,7 +33,8 @@ export class AdminChatComponent {
 		private user_service: UsersService,
     private service: OrderService,
     private chatsService: ChatsService,
-    private route: ActivatedRoute
+      private route: ActivatedRoute,
+    private echo: EchoService,
 	) {
     
 	}
@@ -43,6 +45,10 @@ export class AdminChatComponent {
       switchMap(() => this.service.getAdminOrdersHold()),
       map((Response: any) => formatAdminOrder(Response))
     );
+
+    this.echo.listen('admin.conversation', 'NewConversation', (data: any) => {
+        this.refreshTableData
+      })
 
     this.chatList = this.refreshData$.pipe(
         startWith(undefined),
