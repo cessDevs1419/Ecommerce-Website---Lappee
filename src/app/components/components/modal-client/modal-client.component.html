@@ -13,7 +13,7 @@
             <div class="modal-body" [ngSwitch]="this.mode"> 
                 <app-review-form *ngSwitchCase="'add-review'" [product]="this.product" (activateToast)="activateToast($event)" (dismiss)="dismiss()"></app-review-form>
                 <app-confirm-dialog *ngSwitchCase="'confirm-dialog'" [product]="this.product" [operation]="this.operation" [context]="this.context" (activateToast)="activateToast($event)" (dismiss)="dismiss()" (emitDeleteTrue)="passConfirmDialogOutput($event)"></app-confirm-dialog>
-                <app-edit-cart-item *ngSwitchCase="'edit-cart-item'" [product]="this.product" (dismiss)="dismiss()"></app-edit-cart-item>
+                <app-edit-cart-item *ngSwitchCase="'edit-cart-item'" [product]="this.product" (dismiss)="dismiss()" (editCartItem)="emitEditCartItem($event)"></app-edit-cart-item>
                 <app-cancel-order *ngSwitchCase="'cancel-order'" [order]="this.order" (dismiss)="dismiss()" (emitCancel)="emitCancelOrder($event)"></app-cancel-order>
                 <app-setup-reminder *ngSwitchCase="'setup-reminder'" (dismiss)="dismiss()"></app-setup-reminder>
                 <app-my-styles-primer *ngSwitchCase="'my-styles-primer'" (dismiss)="dismissMyStyles($event)"></app-my-styles-primer>

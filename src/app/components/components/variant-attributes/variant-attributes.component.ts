@@ -17,6 +17,8 @@ export class VariantAttributesComponent {
 
   @Output() addToCart: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
   @Output() orderNow: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
+  @Output() dismiss: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editCartItem: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
 
   item!: Product;
 
@@ -26,6 +28,7 @@ export class VariantAttributesComponent {
   selectedVariantAttributes: string;
   selectVariantAttrMap: Map<string, string> = new Map();
   selectedVariant: Variant;
+  preselectedVariant: string;
 
   variantForm = new FormGroup({
     variantSize: new FormControl('', Validators.required),
@@ -76,6 +79,7 @@ export class VariantAttributesComponent {
         variantSize: itemSize,
         variantSelect: this.cartItem.variant
       })
+      this.preselectedVariant = this.cartItem.variant;
       this.selectedSize = itemSize;
       this.selectedSizeVariants = this.sizes.get(itemSize)!;
     }
@@ -145,10 +149,21 @@ export class VariantAttributesComponent {
   }
 
   editCartItemEmit(): void {
+    if(this.preselectedVariant != this.variantSelect?.value){
 
+      this.editCartItem.emit({variant: this.selectedVariant, variant_attributes: this.selectVariantAttrMap})
+    }
+    else {
+      this.emitDismiss()
+    }
   }
 
   compare(one: string, two: string){
     console.log()
+  }
+
+  emitDismiss(): void {
+    console.log("emitDismiss");
+    this.dismiss.emit();
   }
 }

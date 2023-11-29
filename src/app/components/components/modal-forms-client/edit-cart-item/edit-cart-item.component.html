@@ -21,7 +21,7 @@
         <div class="mt-3" id="productDescOptions">
             
             <div class="mt-3">
-                <app-variant-attributes [cartItem]="product" mode="CartItem"></app-variant-attributes>
+                <app-variant-attributes [cartItem]="product" mode="CartItem" (dismiss)="emitDismiss()" (editCartItem)="editItem($event)"></app-variant-attributes>
                  <!--
                     <form>
                    

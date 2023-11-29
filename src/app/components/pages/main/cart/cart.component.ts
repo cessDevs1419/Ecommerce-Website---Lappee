@@ -243,6 +243,11 @@ export class CartComponent {
     this.modal.editCartItem(item);
   }
 
+  editCartItemOrder(event: {newCartItem: CartItem, cartIndex: number}): void {
+    this.removeFromOrder(this.cart.items[event.cartIndex]);
+    this.cart.items[event.cartIndex] = event.newCartItem;
+  }
+
   removeFromOrder(sender: CartItem): void {
     let matchIndex = -1;
     let variantIndex = this.matchCartItemAndVariant(sender);

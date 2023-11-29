@@ -22,6 +22,7 @@ export class ModalClientComponent {
   @Output() confirmDialogOutput = new EventEmitter<boolean>();
   @Output() cancelOrderOutput = new EventEmitter<{id: string, reason: string}>();
   @Output() emitActivateToast = new EventEmitter<string[]>();
+  @Output() emitEditCart = new EventEmitter<{newCartItem: CartItem, cartIndex: number}>
   modalTitle!: string;
 
   toastTheme!: string;
@@ -116,6 +117,11 @@ export class ModalClientComponent {
     this.product = item;
     this.modalSize = 'modal-xl';
     this.show();
+  }
+
+  emitEditCartItem(event: {newCartItem: CartItem, cartIndex: number}): void {
+    this.emitEditCart.emit(event)
+    this.dismiss();
   }
 
   show(): void {

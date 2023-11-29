@@ -67,6 +67,7 @@
 </div>
 
 <div class="mt-3 pt-3 border-top d-flex justify-content-end" *ngIf="mode == 'CartItem'">
+    <button class="button-secondary-outline me-3" (click)="emitDismiss()">CANCEL</button>
     <button class="button-primary" (click)="editCartItemEmit()">CONFIRM</button>
 </div>
 
