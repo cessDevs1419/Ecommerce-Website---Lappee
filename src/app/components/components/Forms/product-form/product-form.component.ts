@@ -1620,6 +1620,7 @@ export class ProductFormComponent implements AfterViewInit {
                     this.variantsLists.splice(0)
                     this.childComponent.editorReset();
                     this.addProductForm.get('category')?.enable()
+                    this.addProductForm.get('include')?.enable()
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {
