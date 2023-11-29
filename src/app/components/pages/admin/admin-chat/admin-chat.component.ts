@@ -46,8 +46,9 @@ export class AdminChatComponent {
       map((Response: any) => formatAdminOrder(Response))
     );
 
-    this.echo.listen('admin.conversation', 'NewConversation', (data: any) => {
-        this.refreshTableData
+    this.echo.listen('admin.conversations', 'NewConversation', (data: any) => {
+        this.refreshTableData()
+        console.log('dapat meron')
       })
 
     this.chatList = this.refreshData$.pipe(
