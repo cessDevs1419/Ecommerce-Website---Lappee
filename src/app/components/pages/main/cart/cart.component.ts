@@ -14,6 +14,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-cart',
@@ -33,6 +35,7 @@ export class CartComponent {
   @ViewChild('orderPaymentProofInput') imginput: ElementRef;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
   @ViewChildren('itemCheckbox') itemChkBoxes: QueryList<any>;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
 
   isPage1Validated: boolean;
@@ -83,7 +86,8 @@ export class CartComponent {
               private deliveryInfoService: DeliveryinfoService,
               private orderService: OrderService,
               private productsService: ProductsService,
-              private cdr: ChangeDetectorRef) {}
+              private cdr: ChangeDetectorRef,
+              private eh: ErrorHandlerService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
@@ -410,7 +414,12 @@ export class CartComponent {
           })
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err)
+          if(err.status == 403){
+            this.toaster.showToast("Oops!", "Please verify your email first.", 'negative');
+          }
+          else {
+            this.toaster.showToast("Oops!", this.eh.handle(err), 'negative');
+          }
         }
       })
 
