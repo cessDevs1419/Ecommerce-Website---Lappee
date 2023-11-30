@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col d-flex mt-3 mt-lg-0 justify-content-center justify-content-lg-end">
-        <a class="button-primary text-decoration-none border-1 cursor-pointer" [routerLink]="['/profile/orders']" *ngIf="(this.orders | async) as orders">
+        <a class="button-primary text-decoration-none rounded-0 cursor-pointer" [routerLink]="['/profile/orders']" *ngIf="(this.orders | async) as orders">
             <div class="d-flex flex-column justify-content-center text-center">
                 <p class="fs-4 m-0"><i class="bi bi-box-seam-fill"></i></p>
                 <p class="fw-bold m-0">My Orders</p>

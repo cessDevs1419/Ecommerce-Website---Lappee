@@ -177,10 +177,10 @@ export class ProfileComponent {
           next: (response: any) => {
 
             this.toaster.showToast("Successfully added!", "Your delivery information has been updated.")
+            this.checkAddress();
           },
           error: (err: HttpErrorResponse) => {
             console.log(err)
-
             this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
           },
           complete: () => {

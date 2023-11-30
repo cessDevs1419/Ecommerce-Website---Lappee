@@ -1,4 +1,4 @@
-<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [maxToastsShown]="1"></app-toaster>
+<app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [maxToastsShown]="1" [limitWidth]="false"></app-toaster>
 <!-- <div class="position-fixed vh-100 pe-none z-3 toast-container-parent">
     <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
 </div> -->
@@ -192,7 +192,7 @@
     <div class="row mt-3 p-4 bg-light-gray">
         <div class="col d-flex flex-row justify-content-between align-items-center">
             <p class="m-0 fw-bold fs-3">Logout</p>
-            <button class="button button-primary" (click)="logout()">Log Out</button>
+            <button class="button button-primary rounded-0" (click)="logout()">Log Out</button>
         </div>
     </div>
 
