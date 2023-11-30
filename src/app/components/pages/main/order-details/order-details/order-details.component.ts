@@ -94,4 +94,16 @@ export class OrderDetailsComponent {
     console.log(id)
     this.router.navigate(['/profile/orders/details/chats', id]);
   }
+
+  refreshReviews(): void {
+    this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
+    this.orderDetails.subscribe((orders: OrderDetail[]) => {
+      orders[0].order_contents.forEach((item: OrderContent) => {
+        this.orderSubtotal += this.Number(item.sub_price)
+      })
+      if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
+        this.isCancelRequest = true;
+      }
+    }) 
+  }
 } 

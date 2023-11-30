@@ -16,6 +16,7 @@ export class ReviewFormComponent {
   @Input() product: OrderContent;
   @Output() activateToast = new EventEmitter<string[]>();
   @Output() dismiss = new EventEmitter();
+  @Output() reviewSuccess = new EventEmitter();
 
   @ViewChild(StarRatingsInputComponent) stars: StarRatingsInputComponent;
   @ViewChild('attachmentUpload') imgInput: ElementRef;
@@ -88,6 +89,7 @@ export class ReviewFormComponent {
           this.reviewForm.reset();
           setTimeout(() => {
             this.dismissModal();
+            this.reviewSuccess.emit();
           }, 500)
         },
         error: (err: HttpErrorResponse) => {

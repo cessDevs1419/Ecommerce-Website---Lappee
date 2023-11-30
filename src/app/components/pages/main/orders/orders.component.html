@@ -1,6 +1,6 @@
 
 <div class="container-lg mt-5">
-    <app-modal-client [mode]="this.mode" (emitActivateToast)="toast($event)"></app-modal-client>
+    <app-modal-client [mode]="this.mode" (emitActivateToast)="toast($event)" (reviewSuccess)="refreshReviews()"></app-modal-client>
     <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [limitWidth]="false" [maxToastsShown]="1" #toaster></app-toaster>
     <app-profile-banner></app-profile-banner>
     

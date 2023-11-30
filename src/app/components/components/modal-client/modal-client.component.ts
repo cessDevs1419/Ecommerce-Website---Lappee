@@ -23,6 +23,7 @@ export class ModalClientComponent {
   @Output() cancelOrderOutput = new EventEmitter<{id: string, reason: string}>();
   @Output() emitActivateToast = new EventEmitter<string[]>();
   @Output() emitEditCart = new EventEmitter<{newCartItem: CartItem, cartIndex: number}>
+  @Output() reviewSuccess = new EventEmitter();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -95,6 +96,10 @@ export class ModalClientComponent {
     this.modalTitle = "Add Review";
     this.product = item;
     this.show();
+  }
+
+  emitReviewSuccess(): void {
+    this.reviewSuccess.emit();
   }
 
   // Confirm Dialog Methods

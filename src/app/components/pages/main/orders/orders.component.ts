@@ -52,6 +52,10 @@ export class OrdersComponent {
               private productService: ProductsService) {}
 
   ngOnInit(): void {
+    this.setupData();
+  }
+  
+  setupData(): void {
     this.orders = this.orderService.getOrderDetailByUser().pipe(map((response: any) => formatOrderDetails(response)));
     this.products = this.productService.getProducts().pipe(map((response: any) => formatProducts(response)));
     this.userOrders = orderSortByDate(this.orders, 'descending');
@@ -171,5 +175,10 @@ export class OrdersComponent {
 
   toast(data: string[]){
     this.toaster.showToast(data[0], data[1], data[2])
+  }
+
+  refreshReviews(): void {
+    console.log('refresh reviews')
+    this.setupData();
   }
 }
