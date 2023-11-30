@@ -11,7 +11,7 @@
                     <input type="text" class="form-control border-start-0" placeholder="Search for items...">
                 </div>                  
             </div>
-            <div class="bg-primary-subtle p-3">
+            <div class="bg-light-gray p-3">
                 <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
                 <div *ngIf="!isLoading">
                     <form [formGroup]="product1Select" class="row px-3">
@@ -35,7 +35,7 @@
                     <input type="text" class="form-control border-start-0" placeholder="Search for items...">
                 </div>                  
             </div>
-            <div class="bg-primary-subtle p-3">
+            <div class="bg-light-gray p-3">
                 <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
                 <div *ngIf="!isLoading">
                     <form [formGroup]="product2Select" class="row px-3">
@@ -59,7 +59,7 @@
                     Reset
                 </button> -->
             </div>
-            <div class="bg-primary-subtle p-3 preview-panel d-flex flex-column justify-content-center align-items-center overflow-hidden">
+            <div class="bg-light-gray p-3 preview-panel d-flex flex-column justify-content-center align-items-center overflow-hidden">
                 <div class="preview-image position-relative" *ngIf="selectedVariant1" cdkDragBoundary=".preview-panel" cdkDrag ElResizable (emitIsResizing)="onResizeChange($event)" [cdkDragDisabled]="isResizing" > 
                     <img [src]="selectedVariant1.my_styles_image!.length > 0 ? selectedVariant1.my_styles_image![0] : selectedVariant1.images[0]" class="img-fluid">
                     <div class="resize-handle d-flex align-items-center justify-content-center" (mousedown)="isResizing = true">
@@ -79,7 +79,7 @@
                 <div class="dark-subtle-bg p-3">
                     <p class="fw-bold text-white fs-5 m-0">Recommended Pairs</p> 
                 </div>
-                <div class="bg-primary-subtle p-3">
+                <div class="bg-light-gray p-3">
                     <div class="d-flex justify-content-between align-items-center" *ngIf="!selectedVariant1 && !selectedVariant2">
                         No items selected.
                     </div>
@@ -131,14 +131,14 @@
                 <div class="dark-subtle-bg p-3">
                     <p class="fw-bold text-white fs-5 m-0">Size Selection</p> 
                 </div>
-                <div class="bg-primary-subtle p-3">
+                <div class="bg-light-gray p-3">
                     <div class="d-flex justify-content-between align-items-center" *ngIf="!selectedVariant1 && !selectedVariant2">
                         No items selected.
                     </div>
                     <div class="d-flex justify-content-between" *ngIf="checkoutVariant1 as var1">
                         <div class="d-flex flex-column">
-                            <p class="m-0 fw-bold">{{this.matchVariantProduct(var1).name}}</p>
-                            <p class="m-0">{{var1.variant_name}}</p>
+                            <p class="m-0 fw-bold fs-5">{{this.matchVariantProduct(var1).name}}</p>
+                            <p class="m-0 sub-font-grey">{{var1.variant_name}}</p>
                             <p class="m-0 mt-2">Available sizes: </p>
                             <div class="d-flex size-grid">
                                 <div class="" *ngFor="let variant of matchVariantSameColor(var1)" (click)="modelCV1Change(variant)">
@@ -154,8 +154,8 @@
                     </div>
                     <div class="d-flex justify-content-between mt-3" *ngIf="checkoutVariant2 as var2">
                         <div class="d-flex flex-column">
-                            <p class="m-0 fw-bold">{{this.matchVariantProduct(var2).name}}</p>
-                            <p class="m-0">{{var2.variant_name}}</p>
+                            <p class="m-0 fw-bold fs-5">{{this.matchVariantProduct(var2).name}}</p>
+                            <p class="m-0 sub-font-grey">{{var2.variant_name}}</p>
                             <p class="m-0 mt-2">Available sizes: </p>
                             <div class="d-flex size-grid">
                                 <div class="" *ngFor="let variant of matchVariantSameColor(var2)" (click)="modelCV2Change(variant)">
@@ -223,7 +223,7 @@
                                 <div class="dark-subtle-bg p-3">
                                     <p class="fw-bold text-white fs-5 m-0">Product Description</p> 
                                 </div>
-                                <div class="bg-primary-subtle p-3">
+                                <div class="bg-light-gray p-3">
                                     <p *ngIf="!selectedProduct1" class="text-center m-0">No product selected.</p>
                                     <div *ngIf="selectedProduct1 as selected" class="row" >
                                         <div class="col-6">
@@ -242,7 +242,7 @@
                                 <div class="dark-subtle-bg p-3">
                                     <p class="fw-bold text-white fs-5 m-0">Product Variants</p> 
                                 </div>
-                                <div class="bg-primary-subtle p-3">
+                                <div class="bg-light-gray p-3">
                                     <p *ngIf="!selectedProduct1" class="text-center m-0">No product selected.</p>
                                     <div *ngIf="selectedProduct1 as selected" class="row" >
                                         <div *ngFor="let variant of selected.variants" class="select-container">
@@ -320,7 +320,7 @@
                                 <div class="dark-subtle-bg p-3">
                                     <p class="fw-bold text-white fs-5 m-0">Product Description</p> 
                                 </div>
-                                <div class="bg-primary-subtle p-3">
+                                <div class="bg-light-gray p-3">
                                     <p *ngIf="!selectedProduct2" class="text-center m-0">No product selected.</p>
                                     <div *ngIf="selectedProduct2 as selected" class="row" >
                                         <div class="col-6">
@@ -339,7 +339,7 @@
                                 <div class="dark-subtle-bg p-3">
                                     <p class="fw-bold text-white fs-5 m-0">Product Variants</p> 
                                 </div>
-                                <div class="bg-primary-subtle p-3">
+                                <div class="bg-light-gray p-3">
                                     <p *ngIf="!selectedProduct2" class="text-center m-0">No product selected.</p>
                                     <div *ngIf="selectedProduct2 as selected" class="row" >
                                         <div *ngFor="let variant of selected.variants" class="select-container">
@@ -395,7 +395,7 @@
                                     <div class="dark-subtle-bg p-3">
                                         <p class="fw-bold text-white fs-5 m-0">Recommended Products</p> 
                                     </div>
-                                    <div class="p-3 bg-primary-subtle">
+                                    <div class="p-3 bg-light-gray">
                                         
                                     </div>
                                 </div>
@@ -406,7 +406,7 @@
                         <div class="dark-subtle-bg p-3">
                             <p class="fw-bold text-white fs-5 m-0">Payment</p> 
                         </div>
-                        <div class="p-3 bg-primary-subtle">
+                        <div class="p-3 bg-light-gray">
                             
                         </div>
                     </div>
