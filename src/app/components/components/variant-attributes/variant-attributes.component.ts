@@ -90,6 +90,11 @@ export class VariantAttributesComponent {
   changeSize(size: string){
     this.selectedSize = size;
     this.selectedSizeVariants = this.sizes.get(size)!;
+    if(this.selectedSizeVariants.length == 1) {
+      this.changeVariant(this.selectedSizeVariants[0]);
+      this.variantSelect?.setValue(this.selectedSizeVariants[0].variant_id);
+      this.selectedVariant = this.selectedSizeVariants[0];
+    }
     console.log(this.selectedSizeVariants);
     console.log(this.sizes.get(size));
 
