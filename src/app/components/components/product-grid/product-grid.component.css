@@ -1,13 +1,13 @@
 .product-card {
     border: none;
     transition: box-shadow .2s;
-    
+    border-radius: 0 !important;
 }
 
 .card-img-container {
     height: 25rem;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-size: cover;
@@ -25,7 +25,7 @@
 }
 
 .product-card:hover {
-    box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
 }
 
 .card-image-overlay {
