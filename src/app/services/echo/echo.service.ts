@@ -17,12 +17,9 @@ export class EchoService {
 
     this.echo = new Echo({
       broadcaster: 'pusher',
-      key: 'ABCDEFG',
-      cluster: 'mt1',
+      key: 'e6abd9e384866fecf4b7',
+      cluster: 'ap1',
       forceTLS: false,
-      wsHost: window.location.hostname,
-      wsPort: 6001,
-      disableStats: true,
       authorizer: (channel: any, options: any) => {
         return {
           authorize: (socketId: any, callback: any) => {
