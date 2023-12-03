@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GETInquiry, GETInquiryById, POSTInquiry } from '../endpoints';
+import { GETInquiry, GETInquiryById, POSTInquiry, POSTReplyInquiry } from '../endpoints';
 import { Inquiry, InquiryContentList, InquiryList } from 'src/assets/models/inquiry';
 
 @Injectable({
@@ -22,6 +22,10 @@ export class InquiryService {
 
   postInquiry(data: FormData): Observable<any> {
     return this.http.post(POSTInquiry, data, this.httpOptions);
+  }
+
+  postReplyInquiry(data: FormData): Observable<any> {
+    return this.http.post(POSTReplyInquiry, data, this.httpOptions);
   }
 
   getInquiry(): Observable<InquiryList>

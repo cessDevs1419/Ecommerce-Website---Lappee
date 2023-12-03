@@ -1,5 +1,5 @@
 <div class="component-container overflow-y-auto">
-  <div class="container-fluid m-auto h-auto pb-4 px-0 px-sm-3">
+  <div class="container-fluid position-relative m-auto h-auto pb-4 px-0 px-sm-3">
     <app-table
       tableTitle="Inquiries"
       subTitle="Messages from customers"
@@ -23,6 +23,8 @@
       (rowDataSelected)="getRowData($event)"
 
     ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
   </div>  
 </div>
 
@@ -37,7 +39,7 @@
               <div class="modal-title text-start">
                   <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" ><i class="bi bi-chat-left-text-fill fs-5 me-2 "></i>  Reply</h1>
               </div>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button #closeBtn type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p class="text-white ">

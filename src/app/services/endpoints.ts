@@ -108,7 +108,9 @@ export const PATCHMarkAllReadNotifications: string = api + "api/admin/notif/mark
 //Inquiry Endpoints
 export const GETInquiry: string = api + "api/admin/inquiry";
 export const GETInquiryById: string = api + "api/admin/inquiry/view/";
+export const POSTReplyInquiry: string = api + "api/admin/inquiry/reply";
 export const POSTInquiry: string = api + "api/client/inquiry/store";
+
 
 //Chats Endpoint
 export const POSTSendConvo: string = api + "api/client/chat/message/send";
