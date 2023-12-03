@@ -53,4 +53,8 @@ export class EchoService {
     this.echo.private(channel).listen(event, callback)
   }
 
+  disconnect() {
+    this.echo.disconnect();
+  }
+
 }

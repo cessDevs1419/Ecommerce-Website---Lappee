@@ -7,6 +7,7 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
+import { EchoService } from 'src/app/services/echo/echo.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
@@ -59,7 +60,7 @@ export class ProfileComponent {
   provinces: Province[];
   cities: City[];
 
-  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService, private eh: ErrorHandlerService) {}
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService, private eh: ErrorHandlerService, private echo: EchoService) {}
   
 
   ngOnInit(): void {
@@ -232,6 +233,7 @@ export class ProfileComponent {
     this.accountService.logoutUser().subscribe({
       next: (response: any) => {
         console.log(response);
+        this.echo.disconnect();
         this.accountService.checkLoggedIn().subscribe();
         this.router.navigate(['/home']);
       },
