@@ -12,15 +12,13 @@
       [tableTools]="true"
       [searchBar]="true"
       [tableAction]="true"
-      [viewBtn]="true"
       [actionForOrderBtn]="true"
-
+      [chatModal]="true"
       [tableHeader]="['Name', 'Email', 'Sent on']"
       [tableRows]="['name', 'email', 'created_at']"
       [tableData]="inquiries"
       [tableAction]="true"
 
-      [viewBtn]="true"
 
       (rowDataSelected)="getRowData($event)"
 
@@ -32,24 +30,35 @@
 
 
 
-<div class="modal fade" id="view"  tabindex="-1">
+<div class="modal fade" id="inquiry"  tabindex="-1">
   <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
-      <div class="modal-content content-form">
+      <div class="modal-content content-form rounded-4">
           <div class="modal-header mb-0 d-flex justify-content-between align-items-start border-0">
               <div class="modal-title text-start">
-                  <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Inquiry #{{ inquiryContent.id | uppercase }}</h1>
-                  <div class="modal-sub-title text-dark-emphasis fs-6">Content Management</div>
+                  <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" ><i class="bi bi-chat-left-text-fill fs-5 me-2 "></i>  Reply</h1>
               </div>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="text-white">
+            <p class="text-white ">
               {{ inquiryContent.message }}
             </p>
+            <hr class="divider border my-4">
+            <form [formGroup]="InquiryForm" (ngSubmit)="send()">
+              <div class="form-floating mt-0 ">
+                <textarea formControlName="message" style="height: 10rem;" class=" form-control rounded-4 bg-transparent text-white-50 px-4 py-2"  rows="50"></textarea>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                <button 
+                  type="submit" 
+                  class="btn btn-primary bg-light-primary rounded-3 glow-primary" 
+                >
+                    Send
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="modal-footer border-0">
-            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" data-bs-dismiss="modal">Cancel</button>
-        </div>
       </div> 
   </div>
 </div>

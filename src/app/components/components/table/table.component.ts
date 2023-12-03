@@ -117,6 +117,7 @@ export class TableComponent {
 	@Input() showMinus!: boolean;
 	@Input() checkBtn!: boolean;
 	@Input() chatBtn!: boolean;
+	@Input() chatModal!: boolean;
 	showCheckboxMinus: boolean;
 	isAllChecked: boolean;
 	selectedIds: number[] = [];

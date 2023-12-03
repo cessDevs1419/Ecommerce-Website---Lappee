@@ -237,7 +237,7 @@
                     <hr class="divider  {{modalBorderColor}}">
                     <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Cancellation Summary</h1>
                     <ul class="list-unstyled" *ngFor="let item of modalCancelledData | async">
-                        <li class="text-decoration-none row mb-2">
+                        <li class="text-decoration-none row mb-2" *ngIf="item.user_id === modalSubTitle">
                             <div class="col-sm-8 text-start">
                                 <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">Reason: {{item.cancellation_reason}}</p>
                                 <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{modalitemColor}}">Cancelled On: {{item.cancelled_on}}</p>

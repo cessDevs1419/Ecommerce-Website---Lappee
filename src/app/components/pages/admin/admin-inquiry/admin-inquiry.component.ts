@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
@@ -15,7 +16,7 @@ import { Inquiry, InquiryList } from 'src/assets/models/inquiry';
 export class AdminInquiryComponent {
   inquiries!: Observable<Inquiry[]>;
   @ViewChild(TableComponent) table: TableComponent;
-  titleColor: string = 'text-white';
+  titleColor: string = 'color-adm-light-gray';
   textColor: string = 'text-secondary';
   borderColor: string = '';
   backGround: string = '';
@@ -32,11 +33,18 @@ export class AdminInquiryComponent {
     is_read: false,
   };
   selectedRowData:any;
+  InquiryForm: FormGroup;
 
   constructor(
     private inquiryService: InquiryService,
-    private router:  Router
-  ) {}
+    private router:  Router,
+    private formBuilder: FormBuilder,
+  ) {
+
+    this.InquiryForm = new FormGroup({
+      message: new FormControl('', Validators.required),
+    });
+  }
 
   ngOnInit() {
     this.inquiries = this.inquiryService.getInquiry().pipe(
@@ -61,5 +69,8 @@ export class AdminInquiryComponent {
         console.log(error);
       }
     });
+  }
+  send(){
+    console.log(this.InquiryForm.get('message')?.value)
   }
 }
