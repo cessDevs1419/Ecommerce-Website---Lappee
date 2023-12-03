@@ -3,6 +3,7 @@ import { CsrfService } from '../csrf/csrf.service';
 import Echo from 'laravel-echo';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class EchoService {
 
     this.echo = new Echo({
       broadcaster: 'pusher',
-      key: 'e6abd9e384866fecf4b7',
-      cluster: 'ap1',
+      key: environment.PUSHER_APP_KEY,
+      cluster: environment.PUSHER_APP_CLUSTER,
       forceTLS: false,
       authorizer: (channel: any, options: any) => {
         return {
