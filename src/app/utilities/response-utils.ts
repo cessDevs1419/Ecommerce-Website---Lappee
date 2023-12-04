@@ -7,7 +7,7 @@ import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest, AdminCancelledOrderList, AdminCancelledOrder } from "src/assets/models/order-details";
-import { Inquiry, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
+import { Inquiry, InquiryContent, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
 import { AttributeList, Attributes } from "src/assets/models/attributes";
@@ -416,16 +416,22 @@ export function formatInquiries(response: InquiryList): Inquiry[] {
   }));
 }
 
-export function formatInquiryContent(response: InquiryContentList): Inquiry {
+export function formatInquiryContent(response: InquiryContentList): InquiryContent {
+  // return {
+  //   id: response.data.id,
+  //   email: response.data.email,
+  //   name: response.data.name,
+  //   message: response.data.message,
+  //   created_at: formatDate(response.data.created_at, 'medium', 'en_PH'),
+  //   updated_at: response.data.updated_at,
+  //   is_read: response.data.is_read,
+  // };
+
   return {
-    id: response.data.id,
-    email: response.data.email,
-    name: response.data.name,
-    message: response.data.message,
-    created_at: formatDate(response.data.created_at, 'medium', 'en_PH'),
-    updated_at: response.data.updated_at,
-    is_read: response.data.is_read,
-  };
+    inquiry: response.data.inquiry,
+    replies: response.data.replies
+  }
+
 }
 
 export function formatAboutUsTos(response: AboutUsTosList): AboutUsTosSection[] {
