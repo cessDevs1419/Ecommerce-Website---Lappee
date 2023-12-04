@@ -4,6 +4,12 @@ export interface InquiryList {
   data: Inquiry[],
 }
 
+export interface InquiryContentList {
+  success: string,
+  message: string,
+  data: Inquiry
+}
+
 export interface Inquiry {
   id: string,
   email: string,
@@ -14,8 +20,12 @@ export interface Inquiry {
   is_read: boolean
 }
 
-export interface InquiryContentList {
-  success: string,
+export interface Replies {
+  id: string,
+  inquiry_id: string,
+  user_id: string,
   message: string,
-  data: Inquiry
+  created_at: string,
+  updated_at: string,
+  attachments: []
 }

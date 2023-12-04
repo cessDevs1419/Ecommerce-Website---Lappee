@@ -213,7 +213,13 @@ export class SidebarComponent {
   isTermsSiteActive(): boolean {
     return this.router.url === '/admin/manage-tos';
   }
-
+  isReasonSiteActive(): boolean {
+    return this.router.url === '/admin/manage-hold-deny-reasons';
+  }
+  isGroupSiteActive(): boolean {
+    return this.router.url === '/admin/manage-product-group';
+  }
+  
   refreshTableData(): void {
       this.refreshData$.next();
   }

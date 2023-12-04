@@ -124,6 +124,8 @@ import { MaintenanceModeComponent } from './components/pages/maintenance-mode/ma
 import { FloatingChatContainerComponent } from './components/components/floating-chat-container/floating-chat-container.component';
 import { OrderChatsComponent } from './components/pages/main/order-chats/order-chats.component';
 import { ElResizableDirective } from '../assets/directives/elresizable/el-resizable.directive';
+import { AdminHoldDenyReasonsComponent } from './components/pages/admin/admin-hold-deny-reasons/admin-hold-deny-reasons.component';
+import { AdminProductGroupComponent } from './components/pages/admin/admin-product-group/admin-product-group.component';
 
 @NgModule({
   declarations: [
@@ -233,6 +235,8 @@ import { ElResizableDirective } from '../assets/directives/elresizable/el-resiza
     FloatingChatContainerComponent,
     OrderChatsComponent,
     ElResizableDirective,
+    AdminHoldDenyReasonsComponent,
+    AdminProductGroupComponent,
   ],
   imports: [
     BrowserModule,

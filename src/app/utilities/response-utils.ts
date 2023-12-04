@@ -408,7 +408,7 @@ export function formatInquiries(response: InquiryList): Inquiry[] {
   return response.data.map((data: Inquiry) => ({
     id: data.id,
     email: data.email,
-    name: data.email,
+    name: data.name,
     message: data.message,
     created_at: formatDate(data.created_at, 'medium', 'en_PH'),
     updated_at: data.updated_at,
@@ -420,7 +420,7 @@ export function formatInquiryContent(response: InquiryContentList): Inquiry {
   return {
     id: response.data.id,
     email: response.data.email,
-    name: response.data.email,
+    name: response.data.name,
     message: response.data.message,
     created_at: formatDate(response.data.created_at, 'medium', 'en_PH'),
     updated_at: response.data.updated_at,

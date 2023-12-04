@@ -239,6 +239,24 @@
                                 Terms Of Service
                             </a>
                         </li>
+
+                        <li [routerLink]="'/admin/manage-hold-deny-reasons'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isReasonSiteActive()" class="ms-4 nav-link text-white text-decoration-none">
+                                Hold/Deny Reason
+                            </a>
+                            <a *ngIf="!isReasonSiteActive()" class="ms-4 nav-link text-dark-subtle-noactive text-decoration-none">
+                                Hold/Deny Reason
+                            </a>
+                        </li>
+
+                        <li [routerLink]="'/admin/manage-product-group'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isGroupSiteActive()" class="ms-4 nav-link text-white text-decoration-none">
+                                Product Group
+                            </a>
+                            <a *ngIf="!isGroupSiteActive()" class="ms-4 nav-link text-dark-subtle-noactive text-decoration-none">
+                                Product Group
+                            </a>
+                        </li>
             
                     </div>
                     
