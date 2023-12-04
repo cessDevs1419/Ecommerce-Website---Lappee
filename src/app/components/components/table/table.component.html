@@ -744,6 +744,7 @@
         
         </div>
     </div>
+
     <div *ngIf="selectedIds.length > 0" class="actionbar  w-100 m-0 ms-0 start-0 position-absolute  d-flex justify-content-center  bottom-0 mb-3">
         <div class="bar rounded-5 p-2 box-shadow">
             <div class="row align-items-center p-2">
@@ -757,12 +758,12 @@
                 <div class="col-sm-6 d-flex justify-content-end">
                     <button  
                         type="button"
-                        data-bs-toggle="modal" data-bs-target="#deleteMultiple"
+                        data-bs-toggle="modal" data-bs-target="#openOverlay"
                         [title]="'Delete'"
                         class="btn rounded-5 {{tabletitlecolor}} {{actionbarbtnbg}}"
                     >
-                        <i class="bi bi-trash"></i>
-                        Delete
+                        <i class="bi {{OverlayIcon}}"></i>
+                        {{OverlayBtnText}}
                     </button>
                 </div>
             </div>

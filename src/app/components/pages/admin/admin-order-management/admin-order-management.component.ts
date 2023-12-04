@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
+import { ModalComponent } from 'src/app/components/components/modal/modal.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -22,13 +23,14 @@ export class AdminOrderManagementComponent {
 
     @ViewChild(ToasterComponent) toaster: ToasterComponent;
     @ViewChild(TableComponent) table: TableComponent;
+    @ViewChild(ModalComponent) modal: ModalComponent;
     backdrop: string = 'true';
     toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default";  
 
     orders!: Observable<AdminOrder[]>;
-	ordersDetails!: Observable<AdminOrderDetail>;
+	ordersDetails$!: Observable<any>;
     ordersContents$: Observable<AdminOrderContent[]>;
 
     
@@ -67,17 +69,17 @@ export class AdminOrderManagementComponent {
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
-
         this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
             next: (response: any) => {
                 const data = formatAdminOrderDetail(response);
                 this.ordersContents$ = of(data.order_contents); 
+                this.ordersDetails$ = of(data); 
             },
             error: (error: HttpErrorResponse) => {
                 console.log(error);
             }
         }); 
-
+        
     }
         
     getDate(event: any){

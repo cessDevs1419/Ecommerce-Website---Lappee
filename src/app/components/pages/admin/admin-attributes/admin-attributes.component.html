@@ -26,6 +26,8 @@
         [tableHeader]="['ID','Name', 'Products']"
         [tableRows]="['id', 'name', 'products']"
         [tableData]="attributes"
+        OverlayBtnText="Delete"
+        OverlayIcon="bi-trash"
         #triggerFunction
     ></app-table>
     
@@ -84,7 +86,7 @@
     ></app-modal>  
     
     <app-modal
-        modalId="deleteMultiple"
+        modalId="openOverlay"
         modalTitle="Delete Attributes"
         modalClass="modal-md"
         [modalHideIcon]="true"

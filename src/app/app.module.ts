@@ -126,6 +126,9 @@ import { OrderChatsComponent } from './components/pages/main/order-chats/order-c
 import { ElResizableDirective } from '../assets/directives/elresizable/el-resizable.directive';
 import { AdminHoldDenyReasonsComponent } from './components/pages/admin/admin-hold-deny-reasons/admin-hold-deny-reasons.component';
 import { AdminProductGroupComponent } from './components/pages/admin/admin-product-group/admin-product-group.component';
+import { ReasonFormComponent } from './components/components/Forms/reason-form/reason-form.component';
+import { ProductGroupFormComponent } from './components/components/Forms/product-group-form/product-group-form.component';
+import { RestockFormComponent } from './components/components/Forms/restock-form/restock-form.component';
 
 @NgModule({
   declarations: [
@@ -237,6 +240,9 @@ import { AdminProductGroupComponent } from './components/pages/admin/admin-produ
     ElResizableDirective,
     AdminHoldDenyReasonsComponent,
     AdminProductGroupComponent,
+    ReasonFormComponent,
+    ProductGroupFormComponent,
+    RestockFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -309,6 +315,8 @@ import { AdminProductGroupComponent } from './components/pages/admin/admin-produ
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent, title: 'Content Management'},
           {path: 'manage-about-us', component: AdminManageAboutUsComponent, title: 'Content Management'},
           {path: 'manage-tos', component: AdminManageTosComponent, title: 'Content Management'},
+          {path: 'manage-hold-deny-reasons', component: AdminHoldDenyReasonsComponent, title: 'Content Management'},
+          {path: 'manage-product-group', component: AdminProductGroupComponent, title: 'Content Management'},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

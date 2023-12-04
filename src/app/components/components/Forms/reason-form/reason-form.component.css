@@ -1,0 +1,7 @@
+input:focus {
+    background-color: transparent;
+}
+
+textarea:focus {
+    background-color: transparent;
+}

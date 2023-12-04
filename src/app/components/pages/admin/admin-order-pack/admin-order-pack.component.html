@@ -17,6 +17,8 @@
         [actionForOrderBtn]="true"
         [orderBtnSet]="true"
         [tableHeaderActions]="true"
+        [showMinus]="false"
+        [showMultipleSelection]="true"
         [paymentStatus]="paymentStatus"
         [shipStatus]="shipStatus"
         [deliverStatus]="deliverStatus"
@@ -26,6 +28,10 @@
         [tableRows]="['id', 'created_at', 'status_name' ]"
         [tableData]="orders"
 
+        OverlayBtnText="Mark as to Ship"
+        OverlayIcon="bi-box2"
+
+        (rowDataForDelete)="onRowDataForDelete($event)"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
 
@@ -131,7 +137,20 @@
 ></app-modal>
 
 <app-modal
-    modalId="delete"
+    modalId="openOverlay"
+    modalTitle="Mark as to Ship"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    
+    [modalMultipleOrder]="true"
+    (hideMinus)="showMinusFunction()"
+    [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+    (RefreshTable)="refreshTableData()"
 ></app-modal>
 
 

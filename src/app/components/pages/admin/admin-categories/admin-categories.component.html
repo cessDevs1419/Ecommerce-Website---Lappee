@@ -22,6 +22,8 @@
         
         [tableHeader]="['ID', 'Name']"
         [tableRows]="['id','name']"
+        OverlayBtnText="Delete"
+        OverlayIcon="bi-trash"
         [tableData]="categories"
         [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
@@ -81,7 +83,7 @@
 
 
     <app-modal
-        modalId="deleteMultiple"
+        modalId="openOverlay"
         modalTitle="Delete Category"
         modalClass="modal-md"
         [modalHideIcon]="true"

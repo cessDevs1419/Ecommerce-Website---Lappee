@@ -8,6 +8,7 @@ import { formatAdminOrderDetail, formatProducts } from 'src/app/utilities/respon
 import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { OrdersFormComponent } from '../Forms/orders-form/orders-form/orders-form.component';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ModalComponent {
 	//Delete Item
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
+	@ViewChild(OrdersFormComponent) orders: OrdersFormComponent;
 	@ViewChild('modalRef') modalRef!: ElementRef;
     @ViewChild('dismiss') dismiss: ElementRef;
 
@@ -76,11 +78,19 @@ export class ModalComponent {
     @Input() modalPacked!: boolean;  
 	@Input() modalShip!: boolean; 
 	@Input() modalDeliver!: boolean;
+    @Input() modalAddReason!: boolean;
+    @Input() modalAddProductGroup!: boolean;
+    @Input() modalAddDiscounts!: boolean;
+    @Input() modalRestocks!: boolean;
+    @Input() modalMultipleOrder!: boolean;
+
     @Input() modalCancel!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
+    @Input() modalDataImg!: Observable<any>;
+
 	selectedAttributeData: any;
 	//modal theme
 	modalTheme: string = 'table-bg-dark';
@@ -90,7 +100,8 @@ export class ModalComponent {
 	modalitemColor: string = 'text-white-50';
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
-    
+    ordersDetails!: Observable<AdminOrderDetail>;
+
     backdrop: string = 'true';
 	toastContent: string = "";
     toastHeader: string = "";
@@ -111,6 +122,8 @@ export class ModalComponent {
 	ngOnInit(): void{
 
 	}
+
+
 
     refreshTableData(): void {
         this.RefreshTable.emit();

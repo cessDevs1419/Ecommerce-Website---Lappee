@@ -267,9 +267,10 @@
                     [selectedRowData]="selectedRowData"
                     (RefreshTable)="refreshTableData()"
                     [modalConfirmData]="modalSubData"
+                    [modalDataImg]="modalDataImg"
                     [modalData]="orderData"
                 >
-                
+
                 </app-orders-form>
 
                 <app-orders-form
@@ -342,6 +343,43 @@
                 
                 </app-orders-form>
 
+                <app-orders-form
+                    *ngIf="modalMultipleOrder"
+                    [formMultipleOrders]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (RefreshTable)="refreshTableData()"
+                >
+                
+                </app-orders-form>
+
+                <app-reason-form
+                    *ngIf="modalAddReason"
+                    [formAddReason]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                >
+                </app-reason-form>
+
+                <app-product-group-form
+                    *ngIf="modalAddProductGroup"
+                    [formAddProductGroup]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                >
+                </app-product-group-form>
                 <app-chats
                     *ngIf="modalChat"
                     [size]="'chat-body-lg'"

@@ -1,8 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
+import { formatAdminOrderDetail } from 'src/app/utilities/response-utils';
+import { AdminOrderDetail } from 'src/assets/models/order-details';
 
 @Component({
     selector: 'app-orders-form',
@@ -35,8 +37,11 @@ export class OrdersFormComponent {
     @Input() formDelivered!: boolean;
     @Input() formCancel!: boolean;
     @Input() modalConfirmData!: any;
+    @Input() modalDataImg!: Observable<any>;
     @Input() modalData!: any;
-
+    @Input() formMultipleOrders!: boolean;
+    @Input() selectedRowDataForDelete: any[] = [];
+    
     showAmount: boolean = false;
     showReason: boolean = false;
     formHold: boolean = false;
@@ -47,9 +52,12 @@ export class OrdersFormComponent {
     Delivered: FormGroup;
     canceled: FormGroup;
     HoldsOrder: FormGroup;
-
+	ordersDetails!: Observable<AdminOrderDetail>;
+    fetchedData: AdminOrderDetail | undefined;
+    
     constructor(
-        private orderService: OrderService
+        private orderService: OrderService,
+
     ){
         
         this.tobePack = new FormGroup({
@@ -76,8 +84,8 @@ export class OrdersFormComponent {
     
     
     ngOnInit(): void{
-        this.imageSrc = 'https://picsum.photos/200/300';
-	}
+
+    }
 	
     asyncTask(): Promise<void> {
         // Simulate an asynchronous task with a delay
@@ -119,7 +127,11 @@ export class OrdersFormComponent {
           }        
       this.selectedReason = reason;
     }
-    
+
+    hasData(data: any): boolean {
+        return !!data && (Array.isArray(data) ? data.length === 0 : Object.keys(data).length === 0);
+    }      
+
     confirmPayment(){  
         
         let formData: any = new FormData();
@@ -557,5 +569,9 @@ export class OrdersFormComponent {
             }
             
         });
+    }
+
+    onOrderUpdate(){
+
     }
 }

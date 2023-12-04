@@ -7,7 +7,7 @@ import { TableComponent } from 'src/app/components/components/table/table.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { InquiryService } from 'src/app/services/inquiry/inquiry.service';
 import { formatInquiries, formatInquiryContent } from 'src/app/utilities/response-utils';
-import { Inquiry, InquiryList } from 'src/assets/models/inquiry';
+import { Inquiry, InquiryList, Replies } from 'src/assets/models/inquiry';
 
 @Component({
   selector: 'app-admin-inquiry',
@@ -36,6 +36,9 @@ export class AdminInquiryComponent {
     updated_at: '',
     is_read: false,
   };
+  
+  replyContent: Replies[] = []
+
   selectedRowData:any;
   InquiryForm: FormGroup;
 
@@ -70,7 +73,9 @@ export class AdminInquiryComponent {
     this.inquiryService.getInquiryById(this.selectedRowData.id).subscribe({
       next: (response: any) => {
         const data = formatInquiryContent(response);
-        this.inquiryContent = data;
+        this.inquiryContent = data.inquiry;
+        this.replyContent = data.replies
+        console.log(data)
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);

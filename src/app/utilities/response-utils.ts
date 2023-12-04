@@ -316,6 +316,7 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     hold_reason: data.hold_reason,
     hold_date: data.hold_date,
     status_name: data.status_name,
+
   }))
 }
 
@@ -378,7 +379,8 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
       city: data.data.city,
       province: data.data.province,
       zip_code: data.data.zip_code,
-      order_contents: data.data.order_contents
+      order_contents: data.data.order_contents,
+      payment_proofs: data.data.payment_proofs
   };
 }
 
@@ -401,6 +403,7 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     province: data.province,
     zip_code: data.zip_code,
     contact_number: data.contact_number,
+    payment_proofs: data.payment_proofs
   }))
 }
 

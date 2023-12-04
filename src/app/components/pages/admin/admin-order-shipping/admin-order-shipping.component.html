@@ -25,7 +25,11 @@
         [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
         [tableRows]="['id', 'created_at', 'status_name' ]"
         [tableData]="orders"
-
+        [showMinus]="false"
+        [showMultipleSelection]="true"
+        OverlayBtnText="Mark as Delivered"
+        OverlayIcon="bi-truck"
+        (rowDataForDelete)="onRowDataForDelete($event)"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
 
@@ -131,7 +135,20 @@
 ></app-modal>
 
 <app-modal
-    modalId="delete"
+    modalId="openOverlay"
+    modalTitle="Mark as Delivered"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    
+    [modalMultipleOrder]="true"
+    (hideMinus)="showMinusFunction()"
+    [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+    (RefreshTable)="refreshTableData()"
 ></app-modal>
 
 

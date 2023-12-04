@@ -16,7 +16,8 @@ import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/mode
 export class AdminOrderPackComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild(TableComponent) table: TableComponent;
-
+  @ViewChild('triggerFunction') childComponent: TableComponent;
+  
   backdrop: string = 'true';
   toastContent: string = "";
   toastHeader: string = "";
@@ -31,10 +32,12 @@ ordersDetails!: Observable<AdminOrderDetail>;
   packStatus: number = 100; 
 shipStatus: number = 150;
 deliverStatus: number = 175; 
+showMinus: boolean = false
 
 private refreshData$ = new Subject<void>();
   selectedRowData!: any;
-  
+  selectedRowDataForDelete: any;
+
   constructor(
   private echo: EchoService, 
   private service: OrderService,
@@ -60,7 +63,14 @@ ngOnInit(): void{
   refreshTableData(): void {
       this.refreshData$.next();
   }
-  
+  showMinusFunction(){
+    this.childComponent.removeAllSelected();
+  }
+
+  onRowDataForDelete(rowData: any){
+    this.selectedRowDataForDelete = rowData; 
+  }
+
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;
 

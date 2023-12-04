@@ -26,6 +26,7 @@ export interface OrderDetail {
     province: string,
     zip_code: string,
     contact_number: string|null,
+    payment_proofs: string[]
 }
     
 
@@ -72,6 +73,7 @@ export interface AdminOrder {
     hold_reason: string,
     hold_date: string,
     status_name: string,
+    
 }
 
 export interface AdminOrderListCancelRequest {
@@ -145,7 +147,8 @@ export interface AdminOrderDetail {
     city: string,
     province: string,
     zip_code: number,
-    order_contents: AdminOrderContent[]
+    order_contents: AdminOrderContent[],
+    payment_proofs: string[]
 }
 
 export interface AdminOrderContent {

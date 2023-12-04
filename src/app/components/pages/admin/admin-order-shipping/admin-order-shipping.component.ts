@@ -16,6 +16,7 @@ import { AdminOrder, AdminOrderContent, AdminOrderDetail } from 'src/assets/mode
 export class AdminOrderShippingComponent {
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
   @ViewChild(TableComponent) table: TableComponent;
+  @ViewChild('triggerFunction') childComponent: TableComponent;
   
   backdrop: string = 'true';
   toastContent: string = "";
@@ -34,7 +35,7 @@ deliverStatus: number = 175;
 
 private refreshData$ = new Subject<void>();
   selectedRowData!: any;
-  
+  selectedRowDataForDelete: any;
   constructor(
   private echo: EchoService, 
   private service: OrderService,
@@ -60,7 +61,13 @@ ngOnInit(): void{
   refreshTableData(): void {
       this.refreshData$.next();
   }
-  
+  showMinusFunction(){
+    this.childComponent.removeAllSelected();
+  }
+
+  onRowDataForDelete(rowData: any){
+    this.selectedRowDataForDelete = rowData; 
+  }
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;
 
