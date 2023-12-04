@@ -7,7 +7,12 @@ export interface InquiryList {
 export interface InquiryContentList {
   success: string,
   message: string,
-  data: Inquiry
+  data: InquiryContent
+}
+
+export interface InquiryContent {
+  inquiry: Inquiry,
+  replies: Replies[]
 }
 
 export interface Inquiry {
@@ -27,5 +32,5 @@ export interface Replies {
   message: string,
   created_at: string,
   updated_at: string,
-  attachments: []
+  attachments: string[]
 }
