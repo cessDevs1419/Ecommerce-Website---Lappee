@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, Subject, map, of, tap } from 'rxjs';
+import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { InquiryService } from 'src/app/services/inquiry/inquiry.service';
@@ -54,13 +54,28 @@ export class AdminInquiryComponent {
   }
 
   ngOnInit() {
-    this.inquiries = this.inquiryService.getInquiry().pipe(
-      map((response: any) => formatInquiries(response)),
+    this.inquiries = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.inquiryService.getInquiry()),
+      map((Response: any) => formatInquiries(Response)),
       tap(() => {
-          this.table.loaded()
+        this.table.loaded()
       })
-      
     );
+
+    this.refreshData$.pipe(
+      switchMap(() => this.inquiryService.getInquiryById(this.selectedRowData.id))
+    ).subscribe({
+      next: (response: any) => {
+        const data = formatInquiryContent(response);
+        this.inquiryContent = data.inquiry;
+        this.replyContent = data.replies;
+        console.log(data);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+      }
+    });
   }
   refreshTableData(): void {
     this.refreshData$.next();
@@ -103,10 +118,11 @@ export class AdminInquiryComponent {
             };
             
 
+
             this.refreshTableData();
             this.SuccessToast(successMessage);
             this.InquiryForm.reset()
-            this.close.nativeElement.click()
+            // this.close.nativeElement.click()
 
         },
         error: (error: HttpErrorResponse) => {

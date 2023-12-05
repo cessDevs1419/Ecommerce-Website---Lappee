@@ -19,7 +19,15 @@
 * {
     font-family: Mulish, sans-serif;
 }
-
+.component-container{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .component-container::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
+  
 .component-container{
     height: calc(100vh - 80px);
 }

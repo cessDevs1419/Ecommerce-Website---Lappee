@@ -1,0 +1,41 @@
+input::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+  }
+  
+  input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+  }
+  
+  input::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+  }
+
+
+  select::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+  }
+  
+  select:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+  }
+  
+  select::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+  }
+
+  input:focus{
+    background: transparent;
+    color: #959BA5;
+  }
+
+  select:focus{
+    background: transparent;
+    color: #959BA5;
+  }
+
+  select option:focus{
+    background: transparent;
+    color: #959BA5;
+  }

@@ -286,9 +286,47 @@ td{
       border-top-right-radius: 16px; 
   }
 
-
+  .table-child-container{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .table-child-container::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
   
+  }
 
+  .table-parent-container{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .table-parent-container::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
+
+  .table-container{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none; 
+  }
+  .table-container::-webkit-scrollbar{
+    display: none;  /* Safari and Chrome */
+  
+  }
+  
+  input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #555;
+    border-radius: 4px;
+    outline: none;
+    margin-right: 5px; 
+  }
+
+  input[type="radio"]:checked {
+    background-color: #2196F3; 
+  }
 
 
   @keyframes fadeInAnimation {

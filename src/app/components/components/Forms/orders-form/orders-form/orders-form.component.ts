@@ -39,7 +39,9 @@ export class OrdersFormComponent {
     @Input() modalConfirmData!: any;
     @Input() modalDataImg!: Observable<any>;
     @Input() modalData!: any;
-    @Input() formMultipleOrders!: boolean;
+    @Input() formMultipleShipOrders!: boolean;
+    @Input() formMultipleShippingOrders!: boolean;
+    @Input() formMultipleDeliveredOrders!: boolean;
     @Input() selectedRowDataForDelete: any[] = [];
     
     showAmount: boolean = false;
@@ -571,7 +573,13 @@ export class OrdersFormComponent {
         });
     }
 
-    onOrderUpdate(){
-
+    onOrderShipUpdate(){
+        console.log(this.selectedRowDataForDelete)
+    }
+    onOrderShippingUpdate(){
+        console.log(this.selectedRowDataForDelete)
+    }
+    onOrderDeliveredUpdate(){
+        console.log(this.selectedRowDataForDelete)
     }
 }

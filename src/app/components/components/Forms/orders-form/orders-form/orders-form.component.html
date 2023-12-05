@@ -285,9 +285,31 @@
     </form>
 </div>
 
-<form *ngIf="formMultipleOrders" (ngSubmit)="onOrderUpdate()">
+<form *ngIf="formMultipleShipOrders" (ngSubmit)="onOrderShipUpdate()">
     <div  class="modal-body text-center pt-0 pb-0">
-        <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to mark this all?</p>
+        <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to mark this all to ship?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
+    </div>
+</form>
+
+<form *ngIf="formMultipleShippingOrders" (ngSubmit)="onOrderShippingUpdate()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to mark this all as shipping?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
+    </div>
+</form>
+
+<form *ngIf="formMultipleDeliveredOrders" (ngSubmit)="onOrderDeliveredUpdate()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to mark this all to as delivered?</p>
         <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
     </div>
     <div class="modal-footer border-0 justify-content-center">

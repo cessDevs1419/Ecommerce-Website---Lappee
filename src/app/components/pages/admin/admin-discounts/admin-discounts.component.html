@@ -10,6 +10,7 @@
         [paginate]="false"
 
         addbtnName="Add New"
+        [addBtn]="true"
         [tableAction]="true"
         [viewBtn]="true"
         [actionForOrderBtn]="true"
@@ -47,3 +48,20 @@
     (RefreshTable)="refreshTableData()"
     [selectedRowData]="selectedRowData"
 ></app-modal>
+
+<app-modal
+    modalId="add"
+    modalTitle="Add Discounts"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    [modalHideCloseBtn]="false"
+    modalIcon="add"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+
+    [modalAddDiscounts]="true"
+    [selectedRowData]="selectedRowData"
+    [selectedRowDataForDelete]="selectedRowDataForDelete"
+    (RefreshTable)="refreshTableData()"
+></app-modal> 

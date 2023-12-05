@@ -4,6 +4,7 @@ import { map , startWith } from 'rxjs';
 import { Product } from 'src/assets/models/products';
 import { ModalComponent } from '../modal/modal.component';
 import { FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 interface TableItem {
     property: string;
@@ -29,6 +30,7 @@ export class TableComponent {
 	@Output() FilterValue: EventEmitter<any> = new EventEmitter<any>();
 	@Output() DateValue: EventEmitter<any> = new EventEmitter<any>();
 	@Output() showEvent: EventEmitter<any> = new EventEmitter<any>();
+	@Output() getSelectedGroup: EventEmitter<any> = new EventEmitter<any>();
 	
 	//table theme
 	table_container_bg: string = 'table-bg-dark'
@@ -45,6 +47,7 @@ export class TableComponent {
 	btnborders: string = 'border-dark-subtle'
 	
 	public searchString: string;
+	public dateString: string;
 	selectedStatus: string = 'Status';
 	sortedData: any[] = [];
 
@@ -59,6 +62,8 @@ export class TableComponent {
 	@Input() searchBar!: boolean;
 	@Input() Btntools!: boolean;
 	@Input() tableHeaderActions!: boolean;
+	@Input() tableFrameLess!: boolean;
+	
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addProdBtn!: boolean;
@@ -141,6 +146,8 @@ export class TableComponent {
 	searchFilter: string = '';
 	sortedTableData: any[];
 	isLoading: boolean = true;
+	selectedItems: string[] = [];
+	selectedItemsPerGroup: { id: any; value: string }[] = [];
 
 	constructor(private cdr: ChangeDetectorRef) {} 
 	
@@ -150,7 +157,21 @@ export class TableComponent {
 		// Now you can use selectAllCheckbox as needed
 	}
 
-	
+	logSelection(item: any, selectedValue: string) {
+		const selectedItem = { id: item.id, value: selectedValue };
+		const existingIndex = this.selectedItemsPerGroup.findIndex(
+		  (item) => item.id === selectedItem.id
+		);
+	  
+		if (existingIndex !== -1) {
+		  this.selectedItemsPerGroup.splice(existingIndex, 1);
+		}
+
+		this.selectedItemsPerGroup.push(selectedItem);
+		this.getSelectedGroup.emit(this.selectedItemsPerGroup);
+	}
+	  
+
 	loaded(){
 		this.isLoading = false
 	}
@@ -201,10 +222,13 @@ export class TableComponent {
 	}
 
 	getDateValue(event: any) {
-		// this.selectedDate = event.target.value;
-		this.DateValue.emit(event.target.value)
+		this.dateString = event.target.value;
 	}
+	  
+	  
 
+	  
+	  
 	
 	selectAll() {
 		this.tableData.subscribe((data) => {

@@ -1,5 +1,5 @@
 
-<div class="container-fluid position-relative pb-4 " >
+<div class="container-fluid position-relative pb-4 " *ngIf="!tableFrameLess">
 
     <div class="table-border {{tablebordercolor}} box-shadow">
     
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row w-100 mt-4 flex-xl-row flex-column-reverse mx-auto" *ngIf="tableHeaderActions">
+                <div class="row w-100 mt-4 align-items-center flex-xl-row flex-column-reverse mx-auto" *ngIf="tableHeaderActions">
                     <div class="col-xl-6 mx-0 mt-4 mt-xl-0 p-0">
                         <div class="d-flex align-items-center ">
                             
@@ -316,7 +316,7 @@
                         </thead>
 
                         <tbody class="">
-                            <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString)  let i = index" >
+                            <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString | searchFilter: dateString)  let i = index" >
                                 <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
                                     <div class=" m-auto d-flex align-items-center justify-content-center p-2">
                                         <label class="position-relative p-0 cursor-pointer">
@@ -341,7 +341,11 @@
                                             <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
                                             <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                             <ng-template #notPrice>
-                                                {{ item[row] }}
+                                                <ng-container *ngIf="row === 'created_at' || row === 'updated_at'; else notDate">{{ item[row] | date}}</ng-container>
+                                                <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                                                <ng-template #notDate>
+                                                    {{ item[row]}}
+                                                </ng-template>
                                             </ng-template>
                                         </label>
                                     </ng-template>
@@ -770,3 +774,79 @@
         </div>
     </div>
 </div>
+
+<table class="table h-auto" *ngIf="tableFrameLess">
+                        
+    <thead >
+        <tr >
+            <th colspan="2" class="" *ngFor="let item of tableHeader">
+                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                    {{item}}
+                </div>
+            </th>
+            <th colspan="1" class="" *ngFor="let item of tableHeader">
+                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                    Tops
+                </div>
+            </th>
+            <th colspan="1" class="" *ngFor="let item of tableHeader">
+                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                    Bottoms
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody class="">
+        <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString | searchFilter: dateString)  let i = index" >
+            <td colspan="2" class="m-auto text-center" *ngFor="let row of tableRows">
+                <ng-container *ngIf="row === 'preview_image'; else notImage">
+                    <img [src]="item[row]" alt="Product Image" class="img-thumbnail" />
+                </ng-container>
+                <ng-template #notImage>
+                    <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="text-center mt-1 {{textcolor}}">
+                        <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
+                        <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                        <ng-template #notPrice>
+                            <ng-container *ngIf="row === 'created_at' || row === 'updated_at'; else notDate">{{ item[row] | date}}</ng-container>
+                            <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                            <ng-template #notDate>
+                                {{ item[row]}}
+                            </ng-template>
+                        </ng-template>
+                    </label>
+                </ng-template>
+            </td>
+            
+            <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
+                <div class=" m-auto d-flex align-items-center justify-content-center p-2">
+                    <label class="position-relative p-0 cursor-pointer">
+                        <input 
+                            class="form-check-input mt-2 bg-none border-1 me-2" 
+                            type="radio" 
+                            [value]="'Tops'"
+                            [name]="item+i"
+                            [(ngModel)]="selectedItems[i]"
+                            (change)="logSelection(item, selectedItems[i])"
+                        >
+                    </label>
+                </div>
+            </td>
+
+            <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
+                <div class=" m-auto d-flex align-items-center justify-content-center p-2">
+                    <label class="position-relative p-0 cursor-pointer">
+                        <input 
+                            class="form-check-input mt-2 bg-none border-1 me-2" 
+                            type="radio" 
+                            [value]="'Bottom'"
+                            [name]="item+i"
+                            [(ngModel)]="selectedItems[i]"
+                            (change)="logSelection(item, selectedItems[i])"
+                        >
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

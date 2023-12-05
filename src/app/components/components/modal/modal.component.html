@@ -344,8 +344,32 @@
                 </app-orders-form>
 
                 <app-orders-form
-                    *ngIf="modalMultipleOrder"
-                    [formMultipleOrders]="true"
+                    *ngIf="modalMultipleShipOrder"
+                    [formMultipleShipOrders]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (RefreshTable)="refreshTableData()"
+                ></app-orders-form>
+
+                <app-orders-form
+                    *ngIf="modalMultipleShippingOrder"
+                    [formMultipleShippingOrders]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (RefreshTable)="refreshTableData()"
+                ></app-orders-form>
+                
+                <app-orders-form
+                    *ngIf="modalMultipleDeliveredOrder"
+                    [formMultipleDeliveredOrders]="true"
                     (CloseModal)="closeModal()"
                     (OrderSuccess)="deleteSuccessToast($event)"
                     (OrderError)="ErrorToast($event)"
@@ -380,6 +404,13 @@
                     (RefreshTable)="refreshTableData()"
                 >
                 </app-product-group-form>
+
+                <app-discount-form
+                    *ngIf="modalAddDiscounts"
+                    [formAddDiscount]="true"
+                >
+
+                </app-discount-form>
                 <app-chats
                     *ngIf="modalChat"
                     [size]="'chat-body-lg'"

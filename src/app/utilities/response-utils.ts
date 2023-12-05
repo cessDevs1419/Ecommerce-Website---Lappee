@@ -295,7 +295,7 @@ export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {
     user_id: data.user_id,
     conversation_id: data.conversation_id,
     status: data.status,
-    created_at: formatDate(data.created_at, 'medium', 'en_PH'),
+    created_at: data.created_at,
     updated_at: formatDate(data.updated_at, 'medium', 'en_PH'),
     paid: data.paid,
     tracking_no: formatDate(data.tracking_no, 'medium', 'en_PH'),

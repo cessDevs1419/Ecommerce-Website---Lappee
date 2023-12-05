@@ -5,3 +5,22 @@
 .content-form {
     background-color: #1E2029;
 }
+
+.form-control::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+}
+
+.img-container{
+    max-width: 2.5rem;
+    min-width: 2.5rem;
+    height: 2.5rem;
+}
