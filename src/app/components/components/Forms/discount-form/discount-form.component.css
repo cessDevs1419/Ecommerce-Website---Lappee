@@ -39,3 +39,32 @@ input::placeholder {
     background: transparent;
     color: #959BA5;
   }
+
+  .bg-primary-subtles{
+    background: #1C92FF;
+  }
+
+  .hold{
+    transform: translateX(200%);
+    
+  }
+  .maxheight{
+    min-height: 75vh;
+  }
+  .transition{
+      transition: .3s ease-in-out;
+  }
+  .toleft{
+      transform: translateX(0%);
+
+  }
+  .active-hold{
+      transform: translateX(-200%);
+
+  }
+
+@media screen and (max-height: 900px) {
+  .modal-footer{
+    position: relative !important;
+  }
+}

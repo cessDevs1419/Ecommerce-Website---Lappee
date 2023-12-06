@@ -63,7 +63,7 @@ export class TableComponent {
 	@Input() Btntools!: boolean;
 	@Input() tableHeaderActions!: boolean;
 	@Input() tableFrameLess!: boolean;
-	
+	@Input() tableFrameLessProductGroup!: boolean;
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addProdBtn!: boolean;
@@ -169,6 +169,17 @@ export class TableComponent {
 
 		this.selectedItemsPerGroup.push(selectedItem);
 		this.getSelectedGroup.emit(this.selectedItemsPerGroup);
+	}
+	  
+	selectedProductForDiscount(item: any) {
+		const index = this.selectedItems.indexOf(item.product_id);
+	  
+		if (index !== -1) {
+		  this.selectedItems.splice(index, 1);
+		} else {
+		  this.selectedItems.push(item.product_id);
+		}
+		this.getSelectedGroup.emit(this.selectedItems);
 	}
 	  
 

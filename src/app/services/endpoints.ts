@@ -111,6 +111,11 @@ export const GETInquiryById: string = api + "api/admin/inquiry/view/";
 export const POSTReplyInquiry: string = api + "api/admin/inquiry/reply";
 export const POSTInquiry: string = api + "api/client/inquiry/store";
 
+//Discounts Endpoint
+export const GETDiscountProducList: string = api + "api/admin/products/discounts/product-list";
+export const POSTDiscount: string = api + "api/admin/products/discounts/store";
+
+
 
 //Chats Endpoint
 export const POSTSendConvo: string = api + "api/client/chat/message/send";

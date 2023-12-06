@@ -167,6 +167,20 @@ export class ModalComponent {
             this.modalTitle = 'Confirm Payment'
         }
     }
+    setmodalname(isHold: boolean){
+        if(isHold){
+            this.modalTitle = 'Select Products'
+            this.modalSubTitle = 'Discount Applications'
+            this.modalClass = ' modal-dialog-scrollable modal-lg'
+            this.modalIcon = 'edit'
+        }else{
+            this.modalTitle = 'Add Discount'
+            this.modalSubTitle = ''
+            this.modalClass = 'modal-mg'
+            this.modalIcon = 'add'
+        }
+    }
+
     sendAttribute(value: any){
         this.selectedAttributeData = value
     }

@@ -27,6 +27,7 @@ export class ProductGroupFormComponent {
   itemColor: string = 'text-white-50';
   selectedReason: string = '';
   categories!: Observable<AdminCategory[]>;
+  
 	selectedItemsPerGroup: { id: any; value: string }[] = [];
 
   @Input() selectedRowData!: any;

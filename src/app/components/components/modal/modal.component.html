@@ -1,7 +1,7 @@
 <div class="modal fade" id={{modalId}} data-bs-backdrop="static"  tabindex="-1" #modalRef>
     
     <div class="modal-dialog modal-dialog-centered rounded-0  {{modalClass}}" >
-        <div class="modal-content rounded-4 p-2 {{modalClass}} {{modalTheme}}">
+        <div class="modal-content rounded-4 p-2 overflow-y-auto {{modalClass}} {{modalTheme}}">
 
             <div class="modal-title-container mb-0 container">
                 <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
@@ -17,9 +17,12 @@
                                 <i *ngIf="modalIcon === 'ship'"  class="bi bi-box2-fill fs-5 me-2 {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'delivered'"  class="bi bi-truck fs-5 me-2 {{modalTitleColor}}"></i>
                             </ng-container>
-                            <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
+                            <div class="title">
+                                <h1  class="modal-title fs-4 fw-bolder lh-1 {{modalTitleColor}} {{modalTitleClass}}">{{modalTitle}}</h1>
+                                <div class="modal-sub-title fs-6 fw-bold {{modalTitleColor}}">{{modalSubTitle}}</div>
+                            </div>
                         </div>
-                        <div class="modal-sub-title fs-6 fw-bold {{modalTitleColor}}">{{modalSubTitle}}</div>
+                        
                         <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " *ngIf="allowAnotherSub">
                             <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
                             <p class="user-info m-0 p-o lh-1 text-wrap {{modalitemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
@@ -408,6 +411,10 @@
                 <app-discount-form
                     *ngIf="modalAddDiscounts"
                     [formAddDiscount]="true"
+                    (Select)="setmodalname($event)"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
                 >
 
                 </app-discount-form>

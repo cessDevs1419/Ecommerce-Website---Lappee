@@ -1,5 +1,5 @@
 
-<div class="container-fluid position-relative pb-4 " *ngIf="!tableFrameLess">
+<div class="container-fluid position-relative pb-4 " *ngIf="!tableFrameLess && !tableFrameLessProductGroup">
 
     <div class="table-border {{tablebordercolor}} box-shadow">
     
@@ -784,12 +784,12 @@
                     {{item}}
                 </div>
             </th>
-            <th colspan="1" class="" *ngFor="let item of tableHeader">
+            <th colspan="1" class="" >
                 <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
                     Tops
                 </div>
             </th>
-            <th colspan="1" class="" *ngFor="let item of tableHeader">
+            <th colspan="1" class="" >
                 <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
                     Bottoms
                 </div>
@@ -847,6 +847,62 @@
                     </label>
                 </div>
             </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table h-auto " *ngIf="tableFrameLessProductGroup">
+                        
+    <thead >
+        <tr >
+            <th colspan="2" class="" *ngFor="let item of tableHeader">
+                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                    {{item}}
+                </div>
+            </th>
+            <th colspan="1" class="" >
+                <div class="bg-container h-100 w-100 th fw-bold fs-6 text-center text-white text-nowrap">
+                    Selection
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody class="">
+        <tr class="border-0  {{bordercolor}}" *ngFor="let item of (tableData | async | searchFilter: searchString | searchFilter: dateString)  let i = index" >
+            <td colspan="2" class="m-auto text-center" *ngFor="let row of tableRows">
+                <ng-container *ngIf="row === 'preview_image'; else notImage">
+                    <img [src]="item[row]" alt="Product Image" class="img-thumbnail" />
+                </ng-container>
+                <ng-template #notImage>
+                    <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="text-center mt-1 {{textcolor}}">
+                        <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
+                        <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                        <ng-template #notPrice>
+                            <ng-container *ngIf="row === 'created_at' || row === 'updated_at'; else notDate">{{ item[row] | date}}</ng-container>
+                            <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
+                            <ng-template #notDate>
+                                {{ item[row]}}
+                            </ng-template>
+                        </ng-template>
+                    </label>
+                </ng-template>
+            </td>
+            
+            <td *ngIf="showMultipleSelection" colspan="1" class="{{textcolor}} ">
+                <div class=" m-auto d-flex align-items-center justify-content-center p-2">
+                    <label class="position-relative p-0 cursor-pointer">
+                        <input 
+                            class="form-check-input mt-2 bg-none border-1 me-2" 
+                            type="checkbox" 
+                            [value]="item"
+                            [name]="item"
+                            (change)="selectedProductForDiscount(item)"
+                        >
+                    </label>
+                </div>
+            </td>
+
         </tr>
     </tbody>
 </table>

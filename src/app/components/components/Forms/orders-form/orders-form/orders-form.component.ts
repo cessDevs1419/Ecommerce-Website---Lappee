@@ -471,7 +471,6 @@ export class OrdersFormComponent {
     }
 
     hold(){
-        // this.formConfirm = false
         this.formHold = true
         this.Hold.emit(true)
     }

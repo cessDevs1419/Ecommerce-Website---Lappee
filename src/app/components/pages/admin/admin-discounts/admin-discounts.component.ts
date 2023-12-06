@@ -34,6 +34,7 @@ export class AdminDiscountsComponent {
   packStatus: number = 100; 
   shipStatus: number = 150;
   deliverStatus: number = 175; 
+  modalSize: string = 'modal-md'
 
   private refreshData$ = new Subject<void>();
   
@@ -57,6 +58,10 @@ export class AdminDiscountsComponent {
 
 
   }
+
+changeModalSize(){
+  this.modalSize = 'modal-lg'
+}
 
 refreshTableData(): void {
   this.refreshData$.next();
