@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgZone, ViewChild } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { Observable } from 'rxjs';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-donut-chart',
@@ -8,15 +9,16 @@ import { Observable } from 'rxjs';
   styleUrls: ['./donut-chart.component.css']
 })
 export class DonutChartComponent {
-  @Input() data: Observable<any[]>;
-  @Input() colors: string[] = [];
-
   bgColor: string = 'table-bg-dark';
   fontColor: string = 'font-grey';
   titleColor: string = 'font-grey';
   itemColor: string = 'font-grey';
   subitemColor: string = 'sub-font-grey';
 
+  data: any[];
+  @Input() colors: string[] = [];
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  
   public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
     { data: [],
       label: 'My Chart Label', 
@@ -28,34 +30,33 @@ export class DonutChartComponent {
   };
   public doughnutChartColors: any[] = [{}];
 
-
+  constructor(private zone: NgZone, private cdr: ChangeDetectorRef) {}
+  
   ngOnInit() {
-    // this.data.subscribe((dataItems: any[]) => {
-    //   if (dataItems && dataItems.length > 0) {
-    //     const values = dataItems.slice(0, 5).map((item) => item.percent);
-
-    //     this.doughnutChartDatasets[0].data = values;
-    //     this.doughnutChartDatasets[0].backgroundColor = this.colors;
-
-    //     console.log('Values:', values);
-        
-    //     console.log('Chart Data:', this.doughnutChartDatasets[0].data);
-    //   }
-    // });
+   
   }
 
-  loadData(data: any){
-    this.data = data
-    data.subscribe((dataItems: any[]) => {
-      if (dataItems && dataItems.length > 0) {
-        const values = dataItems.slice(0, 5).map((item) => item.percent);
+  loadData(data: any) {
+    this.data = data;
 
-        this.doughnutChartDatasets[0].data = values;
-        this.doughnutChartDatasets[0].backgroundColor = this.colors;
+    const newData: number[] = [];
+    const backgroundColors: string[] = [];
 
-      }
-    });
+    for (const item of data) {
+      newData.push(item.product_sold || 0);
+      backgroundColors.push(this.colors[newData.length - 1]);
+    }
 
+    // Set a default value if all values are zero
+    const hasNonZeroValues = newData.some(value => value !== 0);
+    if (!hasNonZeroValues) {
+      newData[0] = 1; // Set a default non-zero value
+      backgroundColors[0] = this.colors[0] || 'rgba(0, 0, 0, 0)'; // Use a transparent color if colors array is empty
+    }
+    
+    this.doughnutChartDatasets[0].data = newData;
+    this.doughnutChartDatasets[0].backgroundColor = backgroundColors;
+    this.chart?.update();
   }
   
 }

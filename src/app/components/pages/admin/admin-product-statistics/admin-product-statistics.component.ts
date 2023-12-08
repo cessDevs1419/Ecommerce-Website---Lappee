@@ -9,14 +9,6 @@ import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-st
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
 import { Monthly, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 
-export class MostSellingVariantsSampleData {
-  constructor(
-    public id: number,
-    public name: string,
-    public percent: number,
-  ) {}
-}
-
 export class ProductStatisticsVariant {
   constructor(
     public id: string, 
@@ -54,7 +46,7 @@ export class AdminProductStatisticsComponent {
     percent: number = (this.outerData  / this.total) * 100;
     colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
 
-  variants$: Observable<ProductStatisticsVariant[]>;
+  variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
   private refreshData$ = new Subject<void>();
   lineChartData: { label: string, value: number }[] = [];
@@ -116,7 +108,6 @@ export class AdminProductStatisticsComponent {
     showZeroOuterStroke: true
   }
   
-
 
 	ngOnInit() {
 		this.route.paramMap.subscribe((params) => {
@@ -198,13 +189,8 @@ export class AdminProductStatisticsComponent {
       this.variants = {... this.orders.variants}
       this.monthly = { ...this.salesCount.monthly };
 
-      for(const item of this.orders.variants){
-        this.variants$ = of([
-          new ProductStatisticsVariant(item.id, item.name, item.percent, item.product_sold),
-        ])
-      }
+      this.variants$ = this.orders.variants
 
-      console.log(this.orders.variants)
       this.donut.loadData(this.variants$)
       this.line.runChart(this.monthly)
     })

@@ -55,21 +55,21 @@ export class LineGraphComponent {
   private drawChart() {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
-    const data = this.lineChartData
-
+    const data = this.lineChartData;
+  
     // Clear the canvas
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
   
     const chartHeight = canvas.height - 0;
     const chartWidth = canvas.width - 0;
-
   
     // Find the maximum and minimum data values
     const values = data.map(item => item.value);
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
   
-    const valueRange = maxValue - minValue;
+    // Ensure a non-zero range to avoid division by zero
+    const valueRange = maxValue !== minValue ? maxValue - minValue : 1;
   
     // Calculate the height ratio based on the data range and canvas height
     const heightRatio = chartHeight / valueRange;
@@ -97,7 +97,7 @@ export class LineGraphComponent {
     ctx?.lineTo(canvas.width - 0, canvas.height); // End at the bottom right corner
     ctx?.closePath();
   
-    if(ctx){
+    if (ctx) {
       ctx.fillStyle = gradient || 'white'; // Use the gradient as the fill style
     }
   
@@ -114,21 +114,20 @@ export class LineGraphComponent {
       const y = canvas.height - (data[i].value - minValue) * heightRatio;
       ctx?.lineTo(x, y);
     }
-    
-
-    if(ctx){
+  
+    if (ctx) {
       ctx.lineWidth = 0;
-      ctx.strokeStyle = '#1E2029';    
+      ctx.strokeStyle = '#1E2029';
     }
     ctx?.stroke();
     ctx?.closePath();
   
     // Draw data point circles
     ctx?.beginPath();
-    if(ctx){
+    if (ctx) {
       ctx.fillStyle = '#67B6FF';
     }
-    
+  
     for (let i = 0; i < data.length; i++) {
       const x = i * dataPointWidth + 0;
       const y = canvas.height - (data[i].value - minValue) * heightRatio;
@@ -136,7 +135,7 @@ export class LineGraphComponent {
       ctx?.fill();
       ctx?.closePath();
     }
-
+  
     // const handleMouseMove = (event: MouseEvent) => {
     //   const mouseX = event.clientX - canvas.getBoundingClientRect().left;
     //   const mouseY = event.clientY - canvas.getBoundingClientRect().top;
