@@ -41,7 +41,7 @@ export class AdminProductStatisticsComponent {
     innerColor: string = '#094175'
     outerData: number = 300;
     innerData: number = 100;
-    totalIncome: number
+    totalIncome: string
     total: number = this.outerData + this.innerData
     percent: number = (this.outerData  / this.total) * 100;
     colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
@@ -185,7 +185,7 @@ export class AdminProductStatisticsComponent {
       this.rating = {...item.rating}
       this.orders = {...item.orders}
       this.salesCount = {... this.orders.sales}
-      this.totalIncome = parseFloat(this.salesCount.total)
+      this.totalIncome = this.salesCount.total
       this.variants = {... this.orders.variants}
       this.monthly = { ...this.salesCount.monthly };
 

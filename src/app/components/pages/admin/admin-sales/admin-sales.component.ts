@@ -37,7 +37,7 @@ export class AdminSalesComponent {
   innerData: number = 0;
   total: number = 0;
   percent: number = 0;
-  totalIncome: number;
+  totalIncome: string;
   monthlyValue: any
 
   private refreshData$ = new Subject<void>();
@@ -168,7 +168,7 @@ export class AdminSalesComponent {
       this.innerData = this.orderCount.incomplete
       this.total = this.orderCount.all
       this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
-      this.totalIncome = parseFloat(this.salesCount.total)
+      this.totalIncome = this.salesCount.total
       this.monthly = { ...this.salesCount.monthly };
 
       this.outerDataOptions = {
