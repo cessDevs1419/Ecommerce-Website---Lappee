@@ -14,6 +14,8 @@ import { AttributeList, Attributes } from "src/assets/models/attributes";
 import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
 import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
+import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
+import { SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 
 // Formatting
 
@@ -277,6 +279,14 @@ export function formatBannedUser(response: any): BannedUser[] {
     }));
 }
 
+export function formatProductDiscountList(response: DiscountProductList): DiscountProducts[] {
+  return response.data.map((data: DiscountProducts) => ({
+      id: data.id,
+      name: data.name,
+      category_id: data.category_id
+    }));
+}
+
 export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
   return response.data.map((data: DeliveryInfo) => ({
     user_id: data.user_id,
@@ -287,6 +297,15 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     id: data.id,
     number: data.number
   }))
+}
+
+
+export function formatSalesStatistics(response: SalesStatisticsList): SalesStatistics {
+  return {
+    order_count: response.data.order_count,
+    sales: response.data.sales
+  }
+
 }
 
 export function formatAdminOrder(response: AdminOrderList): AdminOrder[] {

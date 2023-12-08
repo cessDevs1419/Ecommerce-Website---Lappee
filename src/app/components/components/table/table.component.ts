@@ -172,12 +172,12 @@ export class TableComponent {
 	}
 	  
 	selectedProductForDiscount(item: any) {
-		const index = this.selectedItems.indexOf(item.product_id);
+		const index = this.selectedItems.indexOf(item.id);
 	  
 		if (index !== -1) {
 		  this.selectedItems.splice(index, 1);
 		} else {
-		  this.selectedItems.push(item.product_id);
+		  this.selectedItems.push(item.id);
 		}
 		this.getSelectedGroup.emit(this.selectedItems);
 	}

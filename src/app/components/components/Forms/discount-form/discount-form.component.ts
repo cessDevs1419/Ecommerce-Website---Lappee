@@ -5,8 +5,9 @@ import { Observable, Subject, map, startWith, switchMap, throwError } from 'rxjs
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { DiscountsService } from 'src/app/services/discounts/discounts.service';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { formatAdminCategories, formatAdminProducts } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminProducts, formatProductDiscountList } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
+import { DiscountProducts } from 'src/assets/models/discounts';
 import { AdminProduct } from 'src/assets/models/products';
 
 @Component({
@@ -48,7 +49,7 @@ export class DiscountFormComponent {
     categories!: Observable<AdminCategory[]>;
     private refreshData$ = new Subject<void>();
     selectedItems: any
-    products!: Observable<AdminProduct[]>;
+    products!: Observable<DiscountProducts[]>;
     
     constructor(
         private category_service: CategoriesService,
@@ -66,8 +67,8 @@ export class DiscountFormComponent {
     ngOnInit(): void{
 		this.products = this.refreshData$.pipe(
             startWith(undefined), 
-            switchMap(() => this.service.getAdminProducts()),
-            map((Response: any) => formatAdminProducts(Response))  
+            switchMap(() => this.discounts.getProductDiscountList()),
+            map((Response: any) => formatProductDiscountList(Response))  
         );
     }
     
@@ -130,7 +131,13 @@ export class DiscountFormComponent {
             formData.append('value', this.addDiscountForm.get('value')?.value.toFixed(2));
             formData.append('starts_on', this.addDiscountForm.get('duration_from')?.value);
             formData.append('expires_on', this.addDiscountForm.get('duration_to')?.value);
-            formData.append('products[]', this.selectedItems);
+            
+            for (let items of this.selectedItems) {
+                let index = 0;
+                formData.append(`products[${index}]`, items);
+                index++;
+            }
+
         
             formData.forEach((value, key) => {
                 console.log(`${key}: ${value}`);

@@ -115,6 +115,10 @@ export const POSTInquiry: string = api + "api/client/inquiry/store";
 export const GETDiscountProducList: string = api + "api/admin/products/discounts/product-list";
 export const POSTDiscount: string = api + "api/admin/products/discounts/store";
 
+//Sales Overview Endpoint
+export const GETProductStatistics: string = api + "api/admin/statistics/product/";
+export const GETSalesStatistics: string = api + "api/admin/statistics/overview";
+
 
 
 //Chats Endpoint
