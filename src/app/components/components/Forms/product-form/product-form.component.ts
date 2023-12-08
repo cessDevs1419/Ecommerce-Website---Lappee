@@ -588,7 +588,7 @@ export class ProductFormComponent implements AfterViewInit {
         const imagesArray = this.addVariantForm.get('images') as FormArray;
         const files = event.target.files;
 
-        if (files.length > 3) {
+        if (files.length + imagesArray.length > 3) {
         
             const errorDataforProduct = {
                 head: 'Add Image',
@@ -597,23 +597,23 @@ export class ProductFormComponent implements AfterViewInit {
         
             this.ProductWarning.emit(errorDataforProduct);
 
-            for (let i = 0; i < Math.min(files.length, 3); i++) {
-                const file = files[i];
+            // for (let i = 0; i < Math.min(files.length, 3); i++) {
+            //     const file = files[i];
 
-                this.checkImageResolution(file, (width, height, fileName) => {
-                    if (width < 720 || height < 1080) {
-                        this.imageResolutionStates[fileName] = true;
-                    } else if(width > 2560 || height > 1440){
-                        this.imageResolutionStates[fileName] = true;
-                    } else {
-                        this.imageResolutionStates[fileName] = false;
-                    }
-                });
+            //     this.checkImageResolution(file, (width, height, fileName) => {
+            //         if (width < 720 || height < 1080) {
+            //             this.imageResolutionStates[fileName] = true;
+            //         } else if(width > 2560 || height > 1440){
+            //             this.imageResolutionStates[fileName] = true;
+            //         } else {
+            //             this.imageResolutionStates[fileName] = false;
+            //         }
+            //     });
 
 
-                imagesArray.push(this.formBuilder.control(file));
-                this.convertFileToUrl(file);
-            }
+            //     imagesArray.push(this.formBuilder.control(file));
+            //     this.convertFileToUrl(file);
+            // }
 
         }else{
 
@@ -644,7 +644,7 @@ export class ProductFormComponent implements AfterViewInit {
         const imagesArray = this.addVariantForm.get('images') as FormArray;
         const files = event.target.files;
 
-        if (files.length > 3) {
+        if (files.length + imagesArray.length > 3) {
             const errorDataforProduct = {
                 head: 'Add Image',
                 sub: 'Image must be no more than 3',
@@ -700,7 +700,7 @@ export class ProductFormComponent implements AfterViewInit {
         const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
         const files = event.target.files;
 
-        if (files.length > 1) {
+        if (files.length + imagesArray.length > 1) {
         
             const errorDataforProduct = {
                 head: 'Add Image',
@@ -775,7 +775,7 @@ export class ProductFormComponent implements AfterViewInit {
         const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
         const files = event.target.files;
 
-        if (files.length > 1) {
+        if (files.length + imagesArray.length > 1) {
             const errorDataforProduct = {
                 head: 'Add Image',
                 sub: 'Image must be no more than 3',
