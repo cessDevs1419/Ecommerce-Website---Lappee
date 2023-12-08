@@ -30,13 +30,32 @@ export class DonutChartComponent {
 
 
   ngOnInit() {
-    this.data.subscribe((dataItems: any[]) => {
+    // this.data.subscribe((dataItems: any[]) => {
+    //   if (dataItems && dataItems.length > 0) {
+    //     const values = dataItems.slice(0, 5).map((item) => item.percent);
+
+    //     this.doughnutChartDatasets[0].data = values;
+    //     this.doughnutChartDatasets[0].backgroundColor = this.colors;
+
+    //     console.log('Values:', values);
+        
+    //     console.log('Chart Data:', this.doughnutChartDatasets[0].data);
+    //   }
+    // });
+  }
+
+  loadData(data: any){
+    this.data = data
+    data.subscribe((dataItems: any[]) => {
       if (dataItems && dataItems.length > 0) {
         const values = dataItems.slice(0, 5).map((item) => item.percent);
 
         this.doughnutChartDatasets[0].data = values;
-        this.doughnutChartDatasets[0].backgroundColor = this.colors;  
+        this.doughnutChartDatasets[0].backgroundColor = this.colors;
+
       }
     });
+
   }
+  
 }

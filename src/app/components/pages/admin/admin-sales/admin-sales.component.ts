@@ -172,7 +172,7 @@ export class AdminSalesComponent {
       this.monthly = { ...this.salesCount.monthly };
 
       this.outerDataOptions = {
-        title: `${this.percent}`,
+        title: `${this.total}`,
         percent: this.percent,
         radius: 60,
         outerStrokeWidth: 12,
@@ -230,6 +230,7 @@ export class AdminSalesComponent {
       }
 
       this.line.runChart(this.monthly)
+      console.log('sales', this.monthly)
     })
 
 

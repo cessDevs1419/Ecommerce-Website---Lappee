@@ -48,6 +48,7 @@ export class LineGraphComponent {
       value: parseFloat(value)
     }));
     
+    
     this.drawChart()
   }
 
@@ -55,6 +56,7 @@ export class LineGraphComponent {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
     const data = this.lineChartData
+
     // Clear the canvas
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
   
@@ -135,49 +137,49 @@ export class LineGraphComponent {
       ctx?.closePath();
     }
 
-    const handleMouseMove = (event: MouseEvent) => {
-      const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-      const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+    // const handleMouseMove = (event: MouseEvent) => {
+    //   const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+    //   const mouseY = event.clientY - canvas.getBoundingClientRect().top;
   
-      // Remove the event listener temporarily
+    //   // Remove the event listener temporarily
      
   
-      // Iterate through data points to find the one closest to the mouse position
-      // for (let i = 0; i < data.length; i++) {
-      //   const x = i * dataPointWidth + 0;
-      //   const y = canvas.height - (data[i].value - minValue) * heightRatio;
+    //   // Iterate through data points to find the one closest to the mouse position
+    //   // for (let i = 0; i < data.length; i++) {
+    //   //   const x = i * dataPointWidth + 0;
+    //   //   const y = canvas.height - (data[i].value - minValue) * heightRatio;
 
-      //   // Check if the mouse is close to the data point
-      //   if (Math.abs(mouseX - x) < 10 && Math.abs(mouseY - y) < 10) {
-      //     const label = `Value: ${data[i].value}`;
-      //     ctx?.clearRect(0, 0, canvas.width, canvas.height);
+    //   //   // Check if the mouse is close to the data point
+    //   //   if (Math.abs(mouseX - x) < 10 && Math.abs(mouseY - y) < 10) {
+    //   //     const label = `Value: ${data[i].value}`;
+    //   //     ctx?.clearRect(0, 0, canvas.width, canvas.height);
 
-      //     // Draw the chart without labels only if the label hasn't been drawn yet
-      //     if (this.isDrawingLabel) {
-      //       this.isDrawingLabel = false; 
-      //       this.drawChart();
-      //     }
+    //   //     // Draw the chart without labels only if the label hasn't been drawn yet
+    //   //     if (this.isDrawingLabel) {
+    //   //       this.isDrawingLabel = false; 
+    //   //       this.drawChart();
+    //   //     }
 
-      //     // Display label near the hovered data point
-      //     // ctx?.fillStyle = 'black';
-      //     // ctx?.font = '12px Arial';
-      //     ctx?.fillText(label, x, y - 10);
-      //     break; // Exit the loop once a data point is found
-      //   }
-      // }
+    //   //     // Display label near the hovered data point
+    //   //     // ctx?.fillStyle = 'black';
+    //   //     // ctx?.font = '12px Arial';
+    //   //     ctx?.fillText(label, x, y - 10);
+    //   //     break; // Exit the loop once a data point is found
+    //   //   }
+    //   // }
   
-      console.log('nagana')
-      // Reattach the event listener
+    //   console.log('nagana')
+    //   // Reattach the event listener
      
-    };
+    // };
   
-    // Attach the initial event listener
-    canvas.addEventListener('mousemove', handleMouseMove);
+    // // Attach the initial event listener
+    // canvas.addEventListener('mousemove', handleMouseMove);
   
-    // Event listener for mouseout to clear the canvas and redraw the chart without labels
-    canvas.addEventListener('mouseout', () => {
+    // // Event listener for mouseout to clear the canvas and redraw the chart without labels
+    // canvas.addEventListener('mouseout', () => {
       
-    });
+    // });
 
   }
 

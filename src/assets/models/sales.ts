@@ -54,23 +54,32 @@ export interface ProductStatisticsDetails{
 }
 
 export interface ProductStatisticsRating{
-    last_month: number,
-    current_month: number,
+    last_month: '',
+    current_month: '',
     increase: boolean,
-    percent: number
+    percent: ''
 }
 
 export interface ProductStatisticsSolds{
-    last_month: number,
-    current_month: number,
+    last_month: '',
+    current_month: '',
     increase: boolean,
-    percent: number
+    percent: ''
 }
 
 export interface ProductStatisticsOrders{
-    last_month: number,
-    current_month: number,
+    last_month: '',
+    current_month: '',
     increase: boolean,
+    percent: ''
+    sales: Sales
+    variants: ProductStatisticsVariants[]
+}
+
+export interface ProductStatisticsVariants{
+    id: string,
+    name: string,
+    product_sold: number,
     percent: number
 }
 

@@ -1,11 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, take } from 'rxjs';
+import { DonutChartComponent } from 'src/app/components/components/donut-chart/donut-chart.component';
+import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
-import { ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds } from 'src/assets/models/sales';
+import { Monthly, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 
 export class MostSellingVariantsSampleData {
   constructor(
@@ -15,12 +17,24 @@ export class MostSellingVariantsSampleData {
   ) {}
 }
 
+export class ProductStatisticsVariant {
+  constructor(
+    public id: string, 
+    public name: string, 
+    public percent: number, 
+    public product_sold: number
+  ) {}
+}
+
 @Component({
   selector: 'app-admin-product-statistics',
   templateUrl: './admin-product-statistics.component.html',
   styleUrls: ['./admin-product-statistics.component.css']
 })
 export class AdminProductStatisticsComponent {
+  @ViewChild(LineGraphComponent) line: LineGraphComponent
+  @ViewChild(DonutChartComponent) donut: DonutChartComponent
+
 	constructor(
     private route: ActivatedRoute,
     private sales: SalesStatisticsService
@@ -35,11 +49,12 @@ export class AdminProductStatisticsComponent {
     innerColor: string = '#094175'
     outerData: number = 300;
     innerData: number = 100;
+    totalIncome: number
     total: number = this.outerData + this.innerData
     percent: number = (this.outerData  / this.total) * 100;
     colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
 
-  variants$: Observable<MostSellingVariantsSampleData[]>;
+  variants$: Observable<ProductStatisticsVariant[]>;
   productStatistics$: Observable<ProductStatistics>
   private refreshData$ = new Subject<void>();
   lineChartData: { label: string, value: number }[] = [];
@@ -109,16 +124,34 @@ export class AdminProductStatisticsComponent {
       this.loadProductStatistics(id)
 		});
 
-    this.variants$ = of([
-      new MostSellingVariantsSampleData(1, 'Variant A', 20, ),
-      new MostSellingVariantsSampleData(2, 'Variant B', 10, ),
-      new MostSellingVariantsSampleData(3, 'Variant C', 20, ),
-      new MostSellingVariantsSampleData(4, 'Variant D', 30, ),
-      new MostSellingVariantsSampleData(5, 'Variant E', 20, ),
-    ])
-
-
 	}
+  
+  monthly: Monthly = {
+    January: '',
+    February: '',
+    March: '',
+    April: '',
+    May: '',
+    June: '',
+    July: '',
+    August: '',
+    September: '',
+    October: '',
+    November: '',
+    December: ''
+  }
+  
+  salesCount: Sales = {
+    monthly: this.monthly,
+    total: '',
+  }
+
+  variants: ProductStatisticsVariants[] = [{
+    id: '',
+    name: '',
+    product_sold: 0,
+    percent: 0
+  }]
 
   product_detail: ProductStatisticsDetails = {
     id: '',
@@ -126,24 +159,26 @@ export class AdminProductStatisticsComponent {
   }
 
   product_sold: ProductStatisticsSolds = {
-    current_month: 0,
+    current_month: '',
     increase: false,
-    last_month: 0,
-    percent: 0
+    last_month: '',
+    percent: ''
   }
 
   rating: ProductStatisticsRating = {
-    current_month: 0,
+    current_month: '',
     increase: false,
-    last_month: 0,
-    percent: 0
+    last_month: '',
+    percent: ''
   }
 
   orders: ProductStatisticsOrders = {
-    current_month: 0,
+    current_month: '',
     increase: false,
-    last_month: 0,
-    percent: 0
+    last_month: '',
+    percent: '',
+    sales: this.salesCount,
+    variants: this.variants
   }
 
   loadProductStatistics(id: string | null){
@@ -158,8 +193,20 @@ export class AdminProductStatisticsComponent {
       this.product_sold = {...item.product_sold}
       this.rating = {...item.rating}
       this.orders = {...item.orders}
+      this.salesCount = {... this.orders.sales}
+      this.totalIncome = parseFloat(this.salesCount.total)
+      this.variants = {... this.orders.variants}
+      this.monthly = { ...this.salesCount.monthly };
 
-      console.log(this.rating)
+      for(const item of this.orders.variants){
+        this.variants$ = of([
+          new ProductStatisticsVariant(item.id, item.name, item.percent, item.product_sold),
+        ])
+      }
+
+      console.log(this.orders.variants)
+      this.donut.loadData(this.variants$)
+      this.line.runChart(this.monthly)
     })
   }
   refreshTableData(): void {
