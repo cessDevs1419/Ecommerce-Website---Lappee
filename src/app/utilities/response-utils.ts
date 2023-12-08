@@ -15,7 +15,7 @@ import { AdminNotificationList, AdminNotification } from "src/assets/models/admi
 import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
 import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
-import { SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
+import { ProductStatistics, ProductStatisticsList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 
 // Formatting
 
@@ -304,6 +304,16 @@ export function formatSalesStatistics(response: SalesStatisticsList): SalesStati
   return {
     order_count: response.data.order_count,
     sales: response.data.sales
+  }
+
+}
+
+export function formatProductStatistics(response: ProductStatisticsList): ProductStatistics {
+  return {
+    product_details: response.data.product_details,
+    rating: response.data.rating,
+    product_sold: response.data.product_sold,
+    orders: response.data.orders,
   }
 
 }

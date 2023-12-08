@@ -15,8 +15,8 @@ export class SalesStatisticsService {
     return this.http.get<SalesStatisticsList>(GETSalesStatistics);
   }
 
-  getProductStatistics(): Observable<any>{
-    return this.http.get<ProductStatisticsList>(GETProductStatistics);
+  getProductStatistics(id: string | null): Observable<any>{
+    return this.http.get<ProductStatisticsList>(GETProductStatistics + id);
   }
 
 }

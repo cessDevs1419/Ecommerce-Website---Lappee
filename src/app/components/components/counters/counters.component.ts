@@ -12,4 +12,8 @@ export class CountersComponent {
 
   @Input() title: string;
   @Input() data: any;
+  @Input() total: any;
+  @Input() rating: any;
+  @Input() percent: any;
+  @Input() success: boolean
 }

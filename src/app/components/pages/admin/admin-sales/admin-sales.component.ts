@@ -248,7 +248,6 @@ export class AdminSalesComponent {
   }
   
   showPage(row: any){
-    console.log(row)
     this.router.navigate(['/admin/product-statistics', row.product_id]);
   }
   

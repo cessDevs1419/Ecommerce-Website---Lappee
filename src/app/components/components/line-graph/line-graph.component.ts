@@ -55,8 +55,6 @@ export class LineGraphComponent {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
     const data = this.lineChartData
-
-    console.log(this.lineChartData)
     // Clear the canvas
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
   

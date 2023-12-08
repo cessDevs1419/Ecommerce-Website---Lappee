@@ -76,6 +76,7 @@ export class AdminInquiryComponent {
         console.log(error);
       }
     });
+
   }
   refreshTableData(): void {
     this.refreshData$.next();
