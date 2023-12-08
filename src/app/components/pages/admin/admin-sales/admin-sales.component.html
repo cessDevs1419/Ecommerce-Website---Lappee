@@ -63,22 +63,15 @@
                         <div class="box-shadow linear-gradient-border">
                             <div class="container rounded-4 p-0 {{bgColor}}">
                                 <div class="select-data-container p-2 text-center">
-                                    <div class="select-container cursor-pointer position-relative d-flex align-items-center justify-content-between">
-                                        <select class="form-select cursor-pointer border-0 {{bgColor}} {{titleColor}}" #selectBox>
-                                            <option selected>Select Graph Data</option>
-                                            <option value="yearly">Yearly Sales Graphs</option>
-                                            <option value="monthly">Monthly Sales Graphs</option>
-                                            <option value="weekly">Weekly Sales Graphs</option>
-                                        </select>
-                                        <i class="bi bi-caret-down-fill position-absolute end-0 me-3 {{titleColor}}"  ></i>
+                                    <div class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
+                                        <h6 class="fs-6 fw-bold mb-0 {{titleColor}}">Yearly Total Income</h6>
                                     </div>
                                     <div class="data-text-container ">
-                                        <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">₱102.7k</h1>
+                                        <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">₱ {{totalIncome}}</h1>
                                     </div>
                                 </div>
                                 
                                 <app-line-graph
-                                    [data]="lineChartData"
                                     width="1000"
                                     height="129"
                                 >

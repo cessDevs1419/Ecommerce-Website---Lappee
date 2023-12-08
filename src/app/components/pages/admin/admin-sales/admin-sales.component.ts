@@ -1,7 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
+import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
@@ -18,6 +19,7 @@ import { Monthly, OrderCount, Sales, SalesStatistics } from 'src/assets/models/s
 })
 export class AdminSalesComponent {
   @ViewChild(TableComponent) table: TableComponent;
+  @ViewChild(LineGraphComponent) line: LineGraphComponent
   @ViewChild('circleProgress') circleProgress: CircleProgressComponent;
   @ViewChild('selectBox', { static: true }) selectBox: ElementRef;
   
@@ -35,6 +37,8 @@ export class AdminSalesComponent {
   innerData: number = 0;
   total: number = 0;
   percent: number = 0;
+  totalIncome: number;
+  monthlyValue: any
 
   private refreshData$ = new Subject<void>();
 
@@ -95,17 +99,9 @@ export class AdminSalesComponent {
     responsive: false,
     showZeroOuterStroke: true
   }
-  lineChartData: { label: string, value: number }[] = [
-    { label: 'January', value: 50 },
-    { label: 'February', value: 30 },
-    { label: 'March', value: 60 },
-    { label: 'April', value: 70 },
-    { label: 'January', value: 50 },
-    { label: 'February', value: 30 },
-    { label: 'March', value: 60 },
-    { label: 'April', value: 70 }
-  ];
-  
+
+
+
   products$: Observable<AdminProduct[]>;
   sales$: Observable<SalesStatistics>;
 
@@ -113,7 +109,8 @@ export class AdminSalesComponent {
   constructor(
 		private router: Router,
     private service: ProductsService,
-    private sales: SalesStatisticsService
+    private sales: SalesStatisticsService,
+    private cdr: ChangeDetectorRef
 	) {}
 	
   monthly: Monthly = {
@@ -162,6 +159,8 @@ export class AdminSalesComponent {
       map((Response: any) => formatSalesStatistics(Response))  
     );
 
+
+
     this.sales$.subscribe(data => {
       this.orderCount = data.order_count
       this.salesCount = data.sales
@@ -169,7 +168,9 @@ export class AdminSalesComponent {
       this.innerData = this.orderCount.incomplete
       this.total = this.orderCount.all
       this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
-      
+      this.totalIncome = parseFloat(this.salesCount.total)
+      this.monthly = { ...this.salesCount.monthly };
+
       this.outerDataOptions = {
         title: `${this.percent}`,
         percent: this.percent,
@@ -227,19 +228,14 @@ export class AdminSalesComponent {
         responsive: false,
         showZeroOuterStroke: true
       }
+
+      this.line.runChart(this.monthly)
     })
 
-    
 
 
-    
   }
-  
-  
-  
-  
- 
-  
+
 
   
 

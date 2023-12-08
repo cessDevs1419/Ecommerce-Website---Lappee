@@ -1,5 +1,7 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartType, ChartOptions, ChartData } from 'chart.js';
+import { throttle } from 'rxjs';
+import { Monthly } from 'src/assets/models/sales';
 
 
 @Component({
@@ -8,17 +10,20 @@ import { ChartType, ChartOptions, ChartData } from 'chart.js';
   styleUrls: ['./line-graph.component.css']
 })
 export class LineGraphComponent {
-  @Input() data: { label: string, value: number }[];
+  @ViewChild('canvas', { static: true }) canvasRef: ElementRef;
+  @Input() data: { label: string, value: number }[] = [];
   @Input() theme: string;
   @Input() width: string;
   @Input() height: string;
-  @ViewChild('canvas', { static: true }) canvasRef: ElementRef;
+  lineChartData: { label: string, value: number }[] = [];
   
   backGround: string;
   fontColor: string;
   borderColor: string;
+  isDrawingLabel: boolean = false;
   
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
+
 
   ngOnInit() {
     switch(this.theme){
@@ -29,23 +34,35 @@ export class LineGraphComponent {
         this.theme = ''
       break;
     }
+
   }
 
   ngAfterViewInit() {
-    this.drawChart();
+    
+  }
+
+  runChart(data: Monthly){
+
+    this.lineChartData = Object.entries(data).map(([label, value]) => ({
+      label: label,
+      value: parseFloat(value)
+    }));
+    
+    this.drawChart()
   }
 
   private drawChart() {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
-    const data = this.data;
-  
-  
+    const data = this.lineChartData
+
+    console.log(this.lineChartData)
     // Clear the canvas
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
   
     const chartHeight = canvas.height - 0;
     const chartWidth = canvas.width - 0;
+
   
     // Find the maximum and minimum data values
     const values = data.map(item => item.value);
@@ -97,7 +114,7 @@ export class LineGraphComponent {
       const y = canvas.height - (data[i].value - minValue) * heightRatio;
       ctx?.lineTo(x, y);
     }
-  
+    
 
     if(ctx){
       ctx.lineWidth = 0;
@@ -119,7 +136,54 @@ export class LineGraphComponent {
       ctx?.fill();
       ctx?.closePath();
     }
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+      const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+  
+      // Remove the event listener temporarily
+     
+  
+      // Iterate through data points to find the one closest to the mouse position
+      // for (let i = 0; i < data.length; i++) {
+      //   const x = i * dataPointWidth + 0;
+      //   const y = canvas.height - (data[i].value - minValue) * heightRatio;
+
+      //   // Check if the mouse is close to the data point
+      //   if (Math.abs(mouseX - x) < 10 && Math.abs(mouseY - y) < 10) {
+      //     const label = `Value: ${data[i].value}`;
+      //     ctx?.clearRect(0, 0, canvas.width, canvas.height);
+
+      //     // Draw the chart without labels only if the label hasn't been drawn yet
+      //     if (this.isDrawingLabel) {
+      //       this.isDrawingLabel = false; 
+      //       this.drawChart();
+      //     }
+
+      //     // Display label near the hovered data point
+      //     // ctx?.fillStyle = 'black';
+      //     // ctx?.font = '12px Arial';
+      //     ctx?.fillText(label, x, y - 10);
+      //     break; // Exit the loop once a data point is found
+      //   }
+      // }
+  
+      console.log('nagana')
+      // Reattach the event listener
+     
+    };
+  
+    // Attach the initial event listener
+    canvas.addEventListener('mousemove', handleMouseMove);
+  
+    // Event listener for mouseout to clear the canvas and redraw the chart without labels
+    canvas.addEventListener('mouseout', () => {
+      
+    });
+
   }
+
+
   
   
   
