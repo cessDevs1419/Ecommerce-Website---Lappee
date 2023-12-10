@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -20,8 +21,18 @@ export class LoginComponent {
 
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
-  constructor(private cookieService: CookieService, public accountService: AccountsService, private eh: ErrorHandlerService){
+  constructor(private cookieService: CookieService, public accountService: AccountsService, private eh: ErrorHandlerService, private route: ActivatedRoute){
     
+  }
+
+  ngAfterViewInit(): void {
+    if(this.route.snapshot.queryParamMap.has("context")){
+      if(this.route.snapshot.queryParamMap.get("context") == "unauthorized"){
+        setTimeout(() => {
+          this.toaster.showToast("Oops!", "Please log-in to your account first.", 'negative');
+        }, 500)
+      }
+    }
   }
 
   signInToggle(): void {

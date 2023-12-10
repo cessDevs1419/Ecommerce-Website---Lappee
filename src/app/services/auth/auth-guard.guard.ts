@@ -3,16 +3,22 @@ import { Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AccountsService } from '../accounts/accounts.service';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { User } from 'src/assets/models/user';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlTree> {
     const accountService = inject(AccountsService);
     const router = inject(Router);
     let loginState$ = accountService.checkLoggedIn();
 
+
+
     const blockedRoutes: string[] = [
       "profile", "admin", "cart"
     ]
+
+    function createParam(name: string, value: string): string {
+      return "?" + name + "=" + value
+    }
 
     return loginState$.pipe(
       switchMap((loginState: any) => {
@@ -22,7 +28,8 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
         if (!loginState && blockedRoutes.includes(route.url.toString())) {
           // redirect users not logged in
           console.log("Please log-in.");
-          return of(router.parseUrl('/login'));
+          console.log("/login" + createParam('context', 'unauthorized'));
+          return of(router.parseUrl('/login' + createParam('context', 'unauthorized')));
         }
 
         if(!loginState){
