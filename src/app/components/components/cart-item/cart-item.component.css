@@ -26,3 +26,16 @@ td {
 .cart-item-action:hover {
     color: var(--primary);
 }
+
+.form-check-input {
+    border: 1px solid var(--primary) !important;
+}
+
+.form-check-input[type='checkbox'] {
+    height: 1.25em;
+    width: 1.25em;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+}
