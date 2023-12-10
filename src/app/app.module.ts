@@ -266,7 +266,7 @@ import { RestockFormComponent } from './components/components/Forms/restock-form
       {path: 'subcategory/:subcategoryId', component: SubcategoriesComponent},
       {path: 'category/:categoryId' , component: CategoryProductsComponent},
       {path: 'products/:productId', component: ProductsComponent},
-      {path: 'cart', component: CartComponent, title: 'Cart'},
+      {path: 'cart', component: CartComponent, title: 'Cart', canActivate: [authGuard]},
       {path: 'profile', component: ProfileComponent, canActivate: [authGuard], title: 'Profile'},
       {path: 'profile/orders', component: OrdersComponent, canActivate: [authGuard], title: 'Orders'},
       {path: 'profile/orders/details/:orderId', component: OrderDetailsComponent, canActivate: [authGuard], title: 'Order Details'},
