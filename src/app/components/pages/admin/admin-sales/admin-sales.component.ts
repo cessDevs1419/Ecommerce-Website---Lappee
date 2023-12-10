@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
+import { SidebarComponent } from 'src/app/components/components/sidebar/sidebar.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
@@ -22,8 +23,18 @@ export class AdminSalesComponent {
   @ViewChild(LineGraphComponent) line: LineGraphComponent
   @ViewChild('circleProgress') circleProgress: CircleProgressComponent;
   @ViewChild('selectBox', { static: true }) selectBox: ElementRef;
-  
+  @ViewChild(SidebarComponent) sb: SidebarComponent;
+  @ViewChild('date1') date1: ElementRef;
+  @ViewChild('date2') date2: ElementRef;
 
+  
+  productSuccessMessage = 'Product: ';
+  errorMessage = 'Please fill in all the required fields.';
+  inputColor: string = "text-white"
+  borderColor: string = "border-grey"
+  textcolor: string = 'text-light-subtle'
+  bordercolor: string = 'dark-subtle-borders'
+  selectedReason: string = '';
 
   bgColor: string = 'table-bg-dark';
   fontColor: string = 'font-grey';
@@ -39,6 +50,8 @@ export class AdminSalesComponent {
   percent: number = 0;
   totalIncome: string;
   monthlyValue: any
+  from: string = 'Select Date From';
+  to: string = 'Select Date To'; 
 
   private refreshData$ = new Subject<void>();
 
@@ -111,6 +124,7 @@ export class AdminSalesComponent {
     private service: ProductsService,
     private sales: SalesStatisticsService,
     private cdr: ChangeDetectorRef
+
 	) {}
 	
   monthly: Monthly = {
@@ -153,12 +167,18 @@ export class AdminSalesComponent {
       })
     );
 
+    const sales = {
+      title: '',
+      from: '2023',
+      to: '2024'
+    }
+
+    this.sales.triggerFunction(sales)
     this.sales$ = this.refreshData$.pipe(
       startWith(undefined), 
       switchMap(() => this.sales.getSalesStatistics()),
       map((Response: any) => formatSalesStatistics(Response))  
     );
-
 
 
     this.sales$.subscribe(data => {
@@ -230,7 +250,7 @@ export class AdminSalesComponent {
       }
 
       this.line.runChart(this.monthly)
-      console.log('sales', this.monthly)
+
     })
 
 
@@ -238,7 +258,24 @@ export class AdminSalesComponent {
   }
 
 
-  
+
+  selectFromDate(){
+    this.date1.nativeElement.showPicker()
+  }
+
+    selectToDate(){
+    this.date2.nativeElement.showPicker()
+  }
+
+  getDateFromValue(event: any) {
+    const date = event.target.value;
+        this.from = date
+  }
+
+    getDateToValue(event: any) {
+    const date = event.target.value;
+        this.to = date
+  }
 
   refreshTableData(): void {
     this.refreshData$.next();

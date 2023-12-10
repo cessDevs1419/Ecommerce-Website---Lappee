@@ -34,18 +34,18 @@
                     *ngFor="let item of todayItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
                     (click)="route(item.id, item.type)"
                     >
-                    <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
+                    <div class="col-md-2 d-none d-md-flex position-relative p-2 px-0  justify-content-center">
                         <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
                             <i class="bi {{changeIcon(item.type)}} text-dark-subtle-grey fs-2"></i>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 col-11">
                         <div class="body">
                             <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
                             <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
                         </div>
                     </div> 
-                    <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
+                    <div class="col-1 d-flex p-0 justify-content-center align-items-center">
                         <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
                     </div>
                 </li>
@@ -59,18 +59,18 @@
                     *ngFor="let item of earlierThisWeekItems" class="text-decoration-none dropdown-item mx-0 d-flex align-items-center row px-0 rounded-3 cursor-pointer"
                     (click)="route(item.id, item.type)"
                     >
-                    <div class="col-md-2 position-relative p-2 px-0 d-flex justify-content-center">
+                    <div class="col-md-2 d-none d-md-flex position-relative p-2 px-0 justify-content-center">
                         <div class="icon-container border border-2 rounded-circle d-flex justify-content-center align-items-center img-container">
                             <i class="bi {{changeIcon(item.type)}} text-dark-subtle-grey fs-2"></i>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 col-11">
                         <div class="body">
                             <p class=" fs-5 text-wrap {{font_dark_subtle}} mb-0">{{item.content}}</p>
                             <span class="fs-6 text-primary-subtle">{{ getRelativeTime(item.created_at) }}</span>
                         </div>
                     </div> 
-                    <div class="col-md-1 d-flex p-0 justify-content-center align-items-center">
+                    <div class="col-1 d-flex p-0 justify-content-center align-items-center">
                         <div class="bg-notification-tip notification-tip-glow rounded-circle glow-primary" *ngIf="!item.is_read"></div>
                     </div>
                 </li>

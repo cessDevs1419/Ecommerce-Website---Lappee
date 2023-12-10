@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, take } from 'rxjs';
@@ -26,7 +26,9 @@ export class ProductStatisticsVariant {
 export class AdminProductStatisticsComponent {
   @ViewChild(LineGraphComponent) line: LineGraphComponent
   @ViewChild(DonutChartComponent) donut: DonutChartComponent
-
+  @ViewChild('date1') date1: ElementRef;
+  @ViewChild('date2') date2: ElementRef;
+  
 	constructor(
     private route: ActivatedRoute,
     private sales: SalesStatisticsService
@@ -36,6 +38,13 @@ export class AdminProductStatisticsComponent {
     titleColor: string = 'font-grey';
     itemColor: string = 'font-grey';
     subitemColor: string = 'sub-font-grey';
+    productSuccessMessage = 'Product: ';
+    errorMessage = 'Please fill in all the required fields.';
+    inputColor: string = "text-white"
+    borderColor: string = "border-grey"
+    textcolor: string = 'text-light-subtle'
+    bordercolor: string = 'dark-subtle-borders'
+    selectedReason: string = '';
     
     outerColor: string = '#1C92FF'
     innerColor: string = '#094175'
@@ -45,6 +54,8 @@ export class AdminProductStatisticsComponent {
     total: number = this.outerData + this.innerData
     percent: number = (this.outerData  / this.total) * 100;
     colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
+    from: string = 'Select Date From';
+    to: string = 'Select Date To'; 
 
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
@@ -193,10 +204,36 @@ export class AdminProductStatisticsComponent {
 
       this.donut.loadData(this.variants$)
       this.line.runChart(this.monthly)
+      
+      const sales = {
+        title: this.product_detail.name,
+        from: '2023',
+        to: '2024'
+      }
+  
+      this.sales.triggerFunction(sales)
     })
   }
   refreshTableData(): void {
     this.refreshData$.next();
+  }
+
+  selectFromDate(){
+    this.date1.nativeElement.showPicker()
+  }
+
+    selectToDate(){
+    this.date2.nativeElement.showPicker()
+  }
+
+  getDateFromValue(event: any) {
+    const date = event.target.value;
+        this.from = date
+  }
+
+    getDateToValue(event: any) {
+    const date = event.target.value;
+        this.to = date
   }
 
 

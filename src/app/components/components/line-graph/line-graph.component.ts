@@ -88,7 +88,7 @@ export class LineGraphComponent {
     ctx?.lineTo(0, canvas.height - (data[0].value - minValue) * heightRatio); // Move to the first data point
   
     // Draw lines to connect each data point
-    for (let i = 1; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const x = i * dataPointWidth + 0;
       const y = canvas.height - (data[i].value - minValue) * heightRatio;
       ctx?.lineTo(x, y);

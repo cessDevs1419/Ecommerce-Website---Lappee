@@ -83,3 +83,8 @@ export interface ProductStatisticsVariants{
     percent: number
 }
 
+export interface SalesModel{
+    title: string, 
+    from: string, 
+    to: string,
+}

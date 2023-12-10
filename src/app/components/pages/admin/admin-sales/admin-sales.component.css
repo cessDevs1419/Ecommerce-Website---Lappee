@@ -2,6 +2,10 @@
     max-width: 220px;
 }
 
+.content-form {
+    background-color: #1E2029;
+}
+
 .color{
     width: 1rem;
     height: 1rem;

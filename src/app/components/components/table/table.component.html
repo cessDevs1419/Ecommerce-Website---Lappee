@@ -114,7 +114,7 @@
                                     <div class="input-group position-relative cursor-pointer border border-2 border-secondary rounded-4 w-100" (click)="selectDate()">
                                         <input type="date" class="visually-hidden " (change)="getDateValue($event)" #date>
                                         <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  {{table_container_bg}}">
-                                            <label class="text-nowrap text-truncate mb-0  {{textcolor}}">Order By Date</label>
+                                            <label class="text-nowrap text-truncate mb-0  {{textcolor}}">{{dateText}}</label>
                                         </div>
                                         <button (click)="selectDate()" class="input-group-text bg-none border-0  {{textcolor}}  {{table_container_bg}}" >
                                             <i class="bi bi-caret-down"></i>

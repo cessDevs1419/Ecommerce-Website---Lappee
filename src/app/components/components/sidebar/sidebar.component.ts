@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { NotificationDropdownComponent } from '../notification-dropdown/notification-dropdown.component';
+import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -27,7 +28,10 @@ export class SidebarComponent {
   ProductMenu: boolean = false;
   OrderMenu: boolean = false;
   overviewClass: boolean = false;
-
+  salesHeader: boolean = false;
+  salesProductTitle: string;
+  from: string;
+  to: string;
   admin_bg: string = "admin-bg-dark";
   header_bg: string = "admin-bg-dark";
   sidebar_bg: string = "sidebar-bg-dark";
@@ -53,7 +57,8 @@ export class SidebarComponent {
     private notification_service: NotificationsService,
     private cdr: ChangeDetectorRef,
     private echo: EchoService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sales: SalesStatisticsService,
     ) {
 
     }
@@ -97,11 +102,20 @@ export class SidebarComponent {
 			const page = params.get('page');
 			const action = params.get('action');
 			const id = params.get('id') || null;
-
+      
 		});
+
+    this.sales.triggerFunction$.subscribe((data: any) => {
+      this.formatHeader(data);
+    });
   }
 
 
+  formatHeader(data: any){
+    this.salesProductTitle = data.title
+    this.from = data.from
+    this.to = data.to
+  }
   closeContent(){
     this.ContentMenu = false
     this.toggleContent = false
@@ -118,7 +132,6 @@ export class SidebarComponent {
     this.ProductMenu = false
     this.toggleProduct = false
     this.overviewClass = true
-    console.log(this.overviewClass )
   }
   
   
@@ -187,6 +200,7 @@ export class SidebarComponent {
   }
   
   isManageSalesReportActive(): boolean {
+    this.salesHeader = true
     return (
       this.router.url === '/admin/sales-management' || 
       this.router.url.startsWith('/admin/product-statistics')

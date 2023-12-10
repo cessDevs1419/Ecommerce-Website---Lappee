@@ -41,6 +41,7 @@ export class DiscountFormComponent {
     
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
+    
     addDiscountForm: FormGroup;
 	editDiscountForm: FormGroup;
 	deleteDiscountForm: FormGroup;

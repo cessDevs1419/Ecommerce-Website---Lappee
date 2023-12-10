@@ -48,6 +48,7 @@ export class TableComponent {
 	
 	public searchString: string;
 	public dateString: string;
+	dateText: string = 'Order by Date';
 	selectedStatus: string = 'Status';
 	sortedData: any[] = [];
 
@@ -234,6 +235,7 @@ export class TableComponent {
 
 	getDateValue(event: any) {
 		this.dateString = event.target.value;
+		this.dateText = event.target.value;
 	}
 	  
 	  

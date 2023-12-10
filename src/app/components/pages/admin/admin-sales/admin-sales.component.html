@@ -107,5 +107,51 @@
 </div>
 
 
-
+<div class="modal fade" id="filter"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-md" >
+        <div class="modal-content content-form rounded-4">
+            <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title text-start">
+                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" ><i class="bi bi-calendar fs-5 me-2 "></i>  Filter By Date</h1>
+                </div>
+                <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-2">
+                <form  >
+                    <div  class="modal-body pt-0 pb-0">
+                        <div class="row">   
+                            <label for="addDiscountDate" class="{{textcolor}} form-label">Discount Date</label>
+                            <div class="col-sm-6 mb-3 ">
+                                <div class="input-group position-relative cursor-pointer border border-2 border-secondary rounded-3 w-100" (click)="selectFromDate()">
+                                    <button (click)="selectFromDate()" class="input-group-text  btn btn-primary bg-primary-subtles border-0 text-white " >
+                                        <i class="bi bi-calendar"></i>
+                                    </button>
+                                    <input formControlName="duration_from" type="date" class="visually-hidden " (change)="getDateFromValue($event)" #date1>
+                                    <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  ">
+                                        <label class="text-nowrap text-truncate mb-0  {{textcolor}}">{{from}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-3 ">
+                                <div class="input-group position-relative cursor-pointer border border-2 border-secondary rounded-3 w-100" (click)="selectToDate()">
+                                    <button (click)="selectToDate()" class="input-group-text btn btn-primary bg-primary-subtles  border-0  text-white  " >
+                                        <i class="bi bi-calendar"></i>
+                                    </button>
+                                    <input formControlName="duration_to" type="date" class="visually-hidden " (change)="getDateToValue($event)" #date2>
+                                    <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  ">
+                                        <label class="text-nowrap text-truncate mb-0  {{textcolor}}">{{to}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-end">
+                        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div> 
+    </div>
+  </div>
 
