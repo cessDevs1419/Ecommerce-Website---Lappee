@@ -168,6 +168,7 @@
                                 </div>
                                 <hr class="muted-text">
                                 <button type="button" (click)="validatePage1()" class="button-primary w-100" >Checkout</button>
+                                <p class="m-0 text-center fst-italic    ">Shipping fee will be calculated before placing your order.</p>
                             </div>
                         </div>
 
@@ -315,7 +316,19 @@
                                     <div class="d-flex flex-row justify-content-between mt-3">
                                         <p class="fw-bold">SUBTOTAL</p>
                                         <div class="text-end">
-                                            <p class="fs-3 fw-bold m-0">{{this.subtotal | currency}}</p>
+                                            <p class="fs-5 fw-bold m-0">{{this.subtotal | currency}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-between mt-3" *ngIf="this.filteredInfo | async as info">
+                                        <p class="fw-bold">SHIPPING FEE</p>
+                                        <div class="text-end">
+                                            <p class="fs-5 fw-bold m-0">{{ shipping.getShippingFee(info[0].province) | currency}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-between mt-3" *ngIf="this.filteredInfo | async as info">
+                                        <p class="fw-bold">TOTAL</p>
+                                        <div class="text-end">
+                                            <p class="fs-3 fw-bold m-0">{{ this.subtotal + Number(shipping.getShippingFee(info[0].province)) | currency}}</p>
                                         </div>
                                     </div>
                                     <hr class="muted-text">

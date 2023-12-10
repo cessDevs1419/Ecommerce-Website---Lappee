@@ -16,6 +16,7 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
+import { ShippingService } from 'src/app/services/shipping/shipping.service';
 
 @Component({
   selector: 'app-cart',
@@ -87,7 +88,8 @@ export class CartComponent {
               private orderService: OrderService,
               private productsService: ProductsService,
               private cdr: ChangeDetectorRef,
-              private eh: ErrorHandlerService) {}
+              private eh: ErrorHandlerService,
+              public shipping: ShippingService) {}
 
   ngOnInit() {
     this.cartContents = this.cart.getItems();
