@@ -1,8 +1,8 @@
 <div class="d-flex flex-row justify-content-start align-items-center">
     <div class="input-group">
-        <button class="btn btn-outline-secondary input-group-btn" (click)="change(-1)" [ngClass]="sizeClass"><i class="bi bi-dash"></i></button>
+        <button class="btn btn-outline-secondary input-group-btn rounded-0" (click)="change(-1)" [ngClass]="sizeClass"><i class="bi bi-dash"></i></button>
         <input type="number" class="form-control input-group-border quantity-control text-center" [ngClass]="sizeClass" [(ngModel)]="quantity" [max]="max" (ngModelChange)="check()" #quantity_input />
-        <button class="btn btn-outline-secondary" (click)="change(1)" [ngClass]="sizeClass"><i class="bi bi-plus"></i></button> 
+        <button class="btn btn-outline-secondary rounded-0" (click)="change(1)" [ngClass]="sizeClass"><i class="bi bi-plus"></i></button> 
     </div>
 
     <div *ngIf="showStock">
