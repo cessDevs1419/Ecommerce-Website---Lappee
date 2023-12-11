@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { OnInit } from '@angular/core';
-import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, filter, map, of, startWith, switchMap, tap } from 'rxjs';
 import { AdminNotification, AdminNotificationList } from 'src/assets/models/admin-notifications';
 import { NotificationsService } from 'src/app/services/notfications-service/notifications.service';
 import { formatNotificationsResponse } from 'src/app/utilities/response-utils';
@@ -105,10 +105,27 @@ export class SidebarComponent {
       
 		});
 
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      if (this.router.url === '/admin/sales-management' || this.router.url.startsWith('/admin/product-statistics/')) {
+        this.salesHeader = true;
+      } else {
+        this.salesHeader = false;
+      }
+    });
+
+    if (this.router.url === '/admin/sales-management' || this.router.url.startsWith('/admin/product-statistics/')) {
+      this.salesHeader = true;
+    } else {
+      this.salesHeader = false;
+    }
+    
     this.sales.triggerFunction$.subscribe((data: any) => {
       this.formatHeader(data);
     });
   }
+
 
 
   formatHeader(data: any){
@@ -200,7 +217,7 @@ export class SidebarComponent {
   }
   
   isManageSalesReportActive(): boolean {
-    this.salesHeader = true
+
     return (
       this.router.url === '/admin/sales-management' || 
       this.router.url.startsWith('/admin/product-statistics')
