@@ -79,7 +79,7 @@
                 <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-2">
-                <form  >
+                <form [formGroup]="dateFilterForm" (ngSubmit)="onDateSubmit()" >
                     <div  class="modal-body pt-0 pb-0">
                         <div class="row">   
                             <label for="addDiscountDate" class="{{textcolor}} form-label">Discount Date</label>

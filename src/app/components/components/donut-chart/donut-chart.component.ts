@@ -24,11 +24,14 @@ export class DonutChartComponent {
   public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
     { data: [],
       label: 'My Chart Label', 
-      backgroundColor: []  },
+      borderColor: 'transparent',
+      backgroundColor: [] 
+    },
   ];
 
   public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
+
   };
   public doughnutChartColors: any[] = [{}];
 

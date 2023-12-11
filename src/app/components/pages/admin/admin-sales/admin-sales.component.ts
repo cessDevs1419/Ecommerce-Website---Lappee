@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CircleProgressComponent, CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
@@ -54,6 +55,7 @@ export class AdminSalesComponent {
   from: string = 'Select Date From';
   to: string = 'Select Date To'; 
   selectedOption: string = 'Weekly';
+  dateFilterForm: FormGroup
 
   private refreshData$ = new Subject<void>();
 
@@ -128,7 +130,13 @@ export class AdminSalesComponent {
     private sales: SalesStatisticsService,
     private cdr: ChangeDetectorRef
 
-	) {}
+	) {
+    this.dateFilterForm = new FormGroup({
+      duration_from: new FormControl('', Validators.required),
+      duration_to: new FormControl('', Validators.required),
+  });
+
+  }
 	
   date_range: DateRange = {
     start: '',
@@ -347,7 +355,7 @@ export class AdminSalesComponent {
           this.total = data.order_count.all
           this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
           this.totalIncome = this.salesCount.total
-          
+
           this.outerDataOptions = {
             title: `${this.total}`,
             percent: this.percent,
@@ -442,4 +450,9 @@ export class AdminSalesComponent {
     this.router.navigate(['/admin/product-statistics', row.product_id]);
   }
   
+  onDateSubmit(){
+    const from = this.dateFilterForm.get('duration_from')?.value
+    const to = this.dateFilterForm.get('duration_to')?.value
+    console.log(this.dateFilterForm.value)
+  }
 }

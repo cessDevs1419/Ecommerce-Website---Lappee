@@ -70,8 +70,6 @@ export class LineGraphComponent {
       ]
     };
 
-    console.log(data);
-    console.log(this.lineChartDatas);
   }
 
   private drawChart() {

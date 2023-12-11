@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, take } from 'rxjs';
@@ -32,7 +33,13 @@ export class AdminProductStatisticsComponent {
 	constructor(
     private route: ActivatedRoute,
     private sales: SalesStatisticsService
-    ) {}
+    ) {
+
+      this.dateFilterForm = new FormGroup({
+        duration_from: new FormControl('', Validators.required),
+        duration_to: new FormControl('', Validators.required),
+    });
+    }
     bgColor: string = 'table-bg-dark';
     fontColor: string = 'font-grey';
     titleColor: string = 'font-grey';
@@ -56,6 +63,7 @@ export class AdminProductStatisticsComponent {
     colors: string[] = ['#FE4C34', '#28C81A', '#1C7DD7', 'pink', '#E1E428'];
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
+    dateFilterForm: FormGroup
 
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
@@ -242,6 +250,11 @@ export class AdminProductStatisticsComponent {
         this.to = date
   }
 
+  onDateSubmit(){
+    const from = this.dateFilterForm.get('duration_from')?.value
+    const to = this.dateFilterForm.get('duration_to')?.value
+    console.log(this.dateFilterForm.value)
+  }
 
 
 
