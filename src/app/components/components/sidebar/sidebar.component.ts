@@ -212,7 +212,8 @@ export class SidebarComponent {
       this.router.url === '/admin/manage-tos' ||
       this.router.url === '/admin/site-settings/add'||
       this.router.url === '/admin/manage-hold-deny-reasons'||
-      this.router.url === '/admin/manage-product-group'
+      this.router.url === '/admin/manage-product-group' ||
+      this.router.url === '/admin/shipping-fee'
     );
   }
   
@@ -251,6 +252,10 @@ export class SidebarComponent {
   }
   isGroupSiteActive(): boolean {
     return this.router.url === '/admin/manage-product-group';
+  }
+
+  isShippingSiteActive(): boolean {
+    return this.router.url === '/admin/shipping-fee';
   }
 
   refreshTableData(): void {
