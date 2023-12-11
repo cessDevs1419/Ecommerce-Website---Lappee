@@ -129,6 +129,8 @@ import { AdminProductGroupComponent } from './components/pages/admin/admin-produ
 import { ReasonFormComponent } from './components/components/Forms/reason-form/reason-form.component';
 import { ProductGroupFormComponent } from './components/components/Forms/product-group-form/product-group-form.component';
 import { RestockFormComponent } from './components/components/Forms/restock-form/restock-form.component';
+import { AdminShippingFeeComponent } from './components/pages/admin/admin-shipping-fee/admin-shipping-fee.component';
+import { ShippingFeeFormComponent } from './components/components/Forms/shipping-fee-form/shipping-fee-form.component';
 
 @NgModule({
   declarations: [
@@ -243,6 +245,8 @@ import { RestockFormComponent } from './components/components/Forms/restock-form
     ReasonFormComponent,
     ProductGroupFormComponent,
     RestockFormComponent,
+    AdminShippingFeeComponent,
+    ShippingFeeFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -317,6 +321,7 @@ import { RestockFormComponent } from './components/components/Forms/restock-form
           {path: 'manage-tos', component: AdminManageTosComponent, title: 'Content Management'},
           {path: 'manage-hold-deny-reasons', component: AdminHoldDenyReasonsComponent, title: 'Content Management'},
           {path: 'manage-product-group', component: AdminProductGroupComponent, title: 'Content Management'},
+          {path: 'shipping-fee', component: AdminShippingFeeComponent, title: 'Shipping Fee'},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

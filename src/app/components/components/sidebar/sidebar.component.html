@@ -341,6 +341,22 @@
                 </div>
             </div>
             
+            <div [ngClass]="isManageAccountsActive() ? admin_bg :''">
+                <div [class]="isManageAccountsActive() ? 'active-rounded-top item-container ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
+                    <li [routerLink]="'/admin/shipping-fee'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
+
+                        <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
+                            <i routerLinkActive=" text-white" class="bi bi-truck text-dark-subtle-grey"></i>
+                        </div>
+                        
+                        <a class="nav-link text-dark-subtle-grey text-decoration-none" aria-current="page">
+                            Shipping Fee
+                        </a>
+                    </li>
+                </div>
+            </div>
+
+
             <div [ngClass]="isChatsActive() ? admin_bg :''">
                 <div [class]="isChatsActive() ? 'p-3 active-rounded-top item-container ' + sidebar_bg :''  " >
                     

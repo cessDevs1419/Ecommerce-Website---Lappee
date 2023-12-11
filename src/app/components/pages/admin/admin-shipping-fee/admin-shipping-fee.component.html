@@ -1,0 +1,45 @@
+<div class="container-fluid m-auto h-auto px-0 px-sm-3" >
+
+    <app-table
+        tableTitle="Shipping Fees"
+        subTitle="Manage shipping fee values"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        [paginate]="false"
+        
+        [tableTools]="true"
+        [searchBar]="true"
+        [tableAction]="true"
+        [Btntools]="true"
+        [addBtn]="true"
+        addbtnName="Add New"
+        [addBtnclass]="'w-100'"
+        
+        [tableHeader]="['Province','Price']"
+        [tableRows]="['province', 'price']"
+        [tableData]="users"
+        [editBtn]="true"
+        [deleteBtn]="true"
+        (rowDataSelected)="onRowDataSelected($event)"
+    ></app-table>
+    
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+    
+
+</div>
+    <app-modal
+        modalId="add"
+        modalClass="modal-md"
+        [modalTitle]="'Add Shipping Fee'"
+        modalSubTitle="Content Management"
+        [modalShippingFee]="true"
+        (RefreshTable)="refreshTableData()"
+        [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+    ></app-modal>
+
+

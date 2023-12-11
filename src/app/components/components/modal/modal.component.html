@@ -209,6 +209,12 @@
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
                 ></app-accounts-form>
+
+                <app-shipping-fee-form
+                    *ngIf="modalShippingFee"
+                >
+                    
+                </app-shipping-fee-form>
                 
                 <div class="container m-auto p-2" *ngIf="modalData">
                     <hr class="divider  {{modalBorderColor}}">

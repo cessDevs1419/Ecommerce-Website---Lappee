@@ -86,6 +86,7 @@ export class ModalComponent {
     @Input() modalMultipleShippingOrder!: boolean;
     @Input() modalMultipleDeliveredOrder!: boolean;
     @Input() modalCancel!: boolean;
+    @Input() modalShippingFee!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
