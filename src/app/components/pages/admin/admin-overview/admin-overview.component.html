@@ -44,7 +44,15 @@
                         <div class="container rounded-4 p-0 {{bgColor}}">
                             <div class="select-data-container p-2 text-center">
                                 <div class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
-                                    <h6 class="fs-6 fw-bold mb-0 {{titleColor}}">Yearly Total Income</h6>
+                                    <div class="dropdown w-100">
+                                        <button class="border-0 d-flex justify-content-between align-items-center btn px-4 w-100 bg-transparent btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          {{selectedOption}}
+                                        </button>
+                                        <ul class="dropdown-menu box-shadow bg-dark">
+                                            <li class="select-item {{titleColor}} py-2 ps-4" (click)="selectOption('Weekly')">Weekly</li>
+                                            <li class="select-item {{titleColor}} py-2 ps-4" (click)="selectOption('Monthly')">Monthly</li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="data-text-container ">
                                     <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">{{totalIncome | currency: 'PHP'}}</h1>

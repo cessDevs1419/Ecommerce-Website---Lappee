@@ -146,7 +146,9 @@
 .bg-primary-subtle {
     background-color: var(--primary-subtle)
 }
-
+.select-item:hover{
+    background-color: #272A36;
+}
 .dark-border {
     border: 1px solid var(--adm-light-gray)
 }

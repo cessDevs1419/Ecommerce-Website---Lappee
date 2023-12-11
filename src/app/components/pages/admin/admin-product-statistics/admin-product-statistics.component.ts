@@ -200,71 +200,14 @@ export class AdminProductStatisticsComponent {
     })
   }
   selectedOption: string = 'Weekly';
-  onOptionChange() {
+  selectOption(option: string) {
+    this.selectedOption = option;
     // switch(this.selectedOption){
-    //   case 'monthly':
+    //   case 'Monthly':
     //     this.salesYear$.subscribe(data => {
     //       this.salesCount = data.sales
 
     //       this.line.runChart(this.salesCount.line_graph_data)
-    
-    //       // this.outerDataOptions = {
-    //       //   title: `${this.total}`,
-    //       //   percent: this.percent,
-    //       //   radius: 60,
-    //       //   outerStrokeWidth: 12,
-    //       //   innerStrokeWidth: 12,
-    //       //   space: -12,
-    //       //   outerStrokeColor: this.outerColor,
-    //       //   innerStrokeColor: this.innerColor,
-    //       //   showBackground: false,
-    //       //   animateTitle: false,
-    //       //   clockwise: false,
-    //       //   showUnits: false,
-    //       //   showTitle:true,
-    //       //   showSubtitle:false,
-    //       //   animationDuration: 500,
-    //       //   startFromZero: false,
-    //       //   outerStrokeGradient: true,
-    //       //   outerStrokeGradientStopColor: this.outerColor,
-    //       //   lazy: true,
-    //       //   subtitleFormat: (percent: number): string => {
-    //       //     return `${percent}%`;
-    //       //   },
-    //       //   class: '',
-    //       //   backgroundGradient: false,
-    //       //   backgroundColor: '',
-    //       //   backgroundGradientStopColor: '',
-    //       //   backgroundOpacity: 0,
-    //       //   backgroundStroke: '',
-    //       //   backgroundStrokeWidth: 0,
-    //       //   backgroundPadding: 0,
-    //       //   toFixed: 0,
-    //       //   maxPercent: this.total,
-    //       //   renderOnClick: false,
-    //       //   units: '',
-    //       //   unitsFontSize: '',
-    //       //   unitsFontWeight: '',
-    //       //   unitsColor: '',
-    //       //   outerStrokeLinecap: 'round',
-    //       //   titleFormat: undefined,
-    //       //   titleColor: 'white',
-    //       //   titleFontSize: '40',
-    //       //   titleFontWeight: '700',
-    //       //   subtitle: '',
-    //       //   subtitleColor: '',
-    //       //   subtitleFontSize: '',
-    //       //   subtitleFontWeight: '',
-    //       //   imageSrc: undefined,
-    //       //   imageHeight: 0,
-    //       //   imageWidth: 0,
-    //       //   animation: true,
-    //       //   animateSubtitle: false,
-    //       //   showImage: false,
-    //       //   showInnerStroke: true,
-    //       //   responsive: false,
-    //       //   showZeroOuterStroke: true
-    //       // }
     //     })
     //   break;
     //   default:
@@ -272,64 +215,7 @@ export class AdminProductStatisticsComponent {
     //       this.salesCount = data.sales
 
     //       this.line.runChart(this.salesCount.line_graph_data)
-    
-    //       // this.outerDataOptions = {
-    //       //   title: `${this.total}`,
-    //       //   percent: this.percent,
-    //       //   radius: 60,
-    //       //   outerStrokeWidth: 12,
-    //       //   innerStrokeWidth: 12,
-    //       //   space: -12,
-    //       //   outerStrokeColor: this.outerColor,
-    //       //   innerStrokeColor: this.innerColor,
-    //       //   showBackground: false,
-    //       //   animateTitle: false,
-    //       //   clockwise: false,
-    //       //   showUnits: false,
-    //       //   showTitle:true,
-    //       //   showSubtitle:false,
-    //       //   animationDuration: 500,
-    //       //   startFromZero: false,
-    //       //   outerStrokeGradient: true,
-    //       //   outerStrokeGradientStopColor: this.outerColor,
-    //       //   lazy: true,
-    //       //   subtitleFormat: (percent: number): string => {
-    //       //     return `${percent}%`;
-    //       //   },
-    //       //   class: '',
-    //       //   backgroundGradient: false,
-    //       //   backgroundColor: '',
-    //       //   backgroundGradientStopColor: '',
-    //       //   backgroundOpacity: 0,
-    //       //   backgroundStroke: '',
-    //       //   backgroundStrokeWidth: 0,
-    //       //   backgroundPadding: 0,
-    //       //   toFixed: 0,
-    //       //   maxPercent: this.total,
-    //       //   renderOnClick: false,
-    //       //   units: '',
-    //       //   unitsFontSize: '',
-    //       //   unitsFontWeight: '',
-    //       //   unitsColor: '',
-    //       //   outerStrokeLinecap: 'round',
-    //       //   titleFormat: undefined,
-    //       //   titleColor: 'white',
-    //       //   titleFontSize: '40',
-    //       //   titleFontWeight: '700',
-    //       //   subtitle: '',
-    //       //   subtitleColor: '',
-    //       //   subtitleFontSize: '',
-    //       //   subtitleFontWeight: '',
-    //       //   imageSrc: undefined,
-    //       //   imageHeight: 0,
-    //       //   imageWidth: 0,
-    //       //   animation: true,
-    //       //   animateSubtitle: false,
-    //       //   showImage: false,
-    //       //   showInnerStroke: true,
-    //       //   responsive: false,
-    //       //   showZeroOuterStroke: true
-    //       // }
+
     //     })
     //   break;
     // }

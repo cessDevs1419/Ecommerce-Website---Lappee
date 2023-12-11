@@ -47,70 +47,71 @@ export class AdminOverviewComponent {
     colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
+    selectedOption: string = 'Weekly';
 
-  variants$: ProductStatisticsVariant[];
-  productStatistics$: Observable<ProductStatistics>
-  private refreshData$ = new Subject<void>();
-  
-  lineChartData: { label: string, value: number }[] = [];
-  outerDataOptions: CircleProgressOptions = {
-    title: `${this.percent}`,
-    percent: this.percent,
-    radius: 60,
-    outerStrokeWidth: 12,
-    innerStrokeWidth: 12,
-    space: -12,
-    outerStrokeColor: this.outerColor,
-    innerStrokeColor: this.innerColor,
-    showBackground: false,
-    animateTitle: false,
-    clockwise: false,
-    showUnits: false,
-    showTitle:true,
-    showSubtitle:false,
-    animationDuration: 500,
-    startFromZero: false,
-    outerStrokeGradient: true,
-    outerStrokeGradientStopColor: this.outerColor,
-    lazy: true,
-    subtitleFormat: (percent: number): string => {
-      return `${percent}%`;
-    },
-    class: '',
-    backgroundGradient: false,
-    backgroundColor: '',
-    backgroundGradientStopColor: '',
-    backgroundOpacity: 0,
-    backgroundStroke: '',
-    backgroundStrokeWidth: 0,
-    backgroundPadding: 0,
-    toFixed: 0,
-    maxPercent: this.total,
-    renderOnClick: false,
-    units: '',
-    unitsFontSize: '',
-    unitsFontWeight: '',
-    unitsColor: '',
-    outerStrokeLinecap: 'round',
-    titleFormat: undefined,
-    titleColor: 'white',
-    titleFontSize: '40',
-    titleFontWeight: '700',
-    subtitle: '',
-    subtitleColor: '',
-    subtitleFontSize: '',
-    subtitleFontWeight: '',
-    imageSrc: undefined,
-    imageHeight: 0,
-    imageWidth: 0,
-    animation: true,
-    animateSubtitle: false,
-    showImage: false,
-    showInnerStroke: true,
-    responsive: false,
-    showZeroOuterStroke: true
-  }
-  
+    variants$: ProductStatisticsVariant[];
+    productStatistics$: Observable<ProductStatistics>
+    private refreshData$ = new Subject<void>();
+    
+    lineChartData: { label: string, value: number }[] = [];
+    outerDataOptions: CircleProgressOptions = {
+      title: `${this.percent}`,
+      percent: this.percent,
+      radius: 60,
+      outerStrokeWidth: 12,
+      innerStrokeWidth: 12,
+      space: -12,
+      outerStrokeColor: this.outerColor,
+      innerStrokeColor: this.innerColor,
+      showBackground: false,
+      animateTitle: false,
+      clockwise: false,
+      showUnits: false,
+      showTitle:true,
+      showSubtitle:false,
+      animationDuration: 500,
+      startFromZero: false,
+      outerStrokeGradient: true,
+      outerStrokeGradientStopColor: this.outerColor,
+      lazy: true,
+      subtitleFormat: (percent: number): string => {
+        return `${percent}%`;
+      },
+      class: '',
+      backgroundGradient: false,
+      backgroundColor: '',
+      backgroundGradientStopColor: '',
+      backgroundOpacity: 0,
+      backgroundStroke: '',
+      backgroundStrokeWidth: 0,
+      backgroundPadding: 0,
+      toFixed: 0,
+      maxPercent: this.total,
+      renderOnClick: false,
+      units: '',
+      unitsFontSize: '',
+      unitsFontWeight: '',
+      unitsColor: '',
+      outerStrokeLinecap: 'round',
+      titleFormat: undefined,
+      titleColor: 'white',
+      titleFontSize: '40',
+      titleFontWeight: '700',
+      subtitle: '',
+      subtitleColor: '',
+      subtitleFontSize: '',
+      subtitleFontWeight: '',
+      imageSrc: undefined,
+      imageHeight: 0,
+      imageWidth: 0,
+      animation: true,
+      animateSubtitle: false,
+      showImage: false,
+      showInnerStroke: true,
+      responsive: false,
+      showZeroOuterStroke: true
+    }
+    
 
 	ngOnInit() {
 		this.route.paramMap.subscribe((params) => {
@@ -192,6 +193,27 @@ export class AdminOverviewComponent {
   
     //   this.sales.triggerFunction(sales)
     // })
+  }
+
+  selectOption(option: string) {
+    this.selectedOption = option;
+    // switch(this.selectedOption){
+    //   case 'Monthly':
+    //     this.salesYear$.subscribe(data => {
+    //       this.salesCount = data.sales
+
+    //       this.line.runChart(this.salesCount.line_graph_data)
+    //     })
+    //   break;
+    //   default:
+    //     this.sales$.subscribe(data => {
+    //       this.salesCount = data.sales
+
+    //       this.line.runChart(this.salesCount.line_graph_data)
+
+    //     })
+    //   break;
+    // }
   }
   refreshTableData(): void {
     this.refreshData$.next();
