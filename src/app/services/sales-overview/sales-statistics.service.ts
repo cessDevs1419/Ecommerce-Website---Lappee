@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ProductStatisticsList, SalesModel, SalesStatisticsList } from 'src/assets/models/sales';
-import { GETProductStatistics, GETSalesStatistics } from '../endpoints';
+import { GETProductStatistics, GETSalesStatistics, GETSalesStatisticsMonth, GETSalesStatisticsYear } from '../endpoints';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -18,6 +18,12 @@ export class SalesStatisticsService {
 
   getSalesStatistics(): Observable<any>{
     return this.http.get<SalesStatisticsList>(GETSalesStatistics);
+  }
+  getSalesStatisticsMonthly(): Observable<any>{
+    return this.http.get<SalesStatisticsList>(GETSalesStatisticsMonth);
+  }
+  getSalesStatisticsYearly(): Observable<any>{
+    return this.http.get<SalesStatisticsList>(GETSalesStatisticsYear);
   }
 
   getProductStatistics(id: string | null): Observable<any>{

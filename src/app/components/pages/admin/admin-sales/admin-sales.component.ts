@@ -9,7 +9,7 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatAdminProducts, formatSalesStatistics } from 'src/app/utilities/response-utils';
 import { AdminProduct } from 'src/assets/models/products';
-import { Monthly, OrderCount, Sales, SalesStatistics } from 'src/assets/models/sales';
+import { DateRange, OrderCount, Sales, SalesStatistics } from 'src/assets/models/sales';
 
 
 
@@ -52,6 +52,7 @@ export class AdminSalesComponent {
   monthlyValue: any
   from: string = 'Select Date From';
   to: string = 'Select Date To'; 
+  selectedOption: string = 'Weekly';
 
   private refreshData$ = new Subject<void>();
 
@@ -117,7 +118,8 @@ export class AdminSalesComponent {
 
   products$: Observable<AdminProduct[]>;
   sales$: Observable<SalesStatistics>;
-
+  salesMonth$: Observable<SalesStatistics>;
+  salesYear$: Observable<SalesStatistics>;
 
   constructor(
 		private router: Router,
@@ -127,19 +129,9 @@ export class AdminSalesComponent {
 
 	) {}
 	
-  monthly: Monthly = {
-    January: '',
-    February: '',
-    March: '',
-    April: '',
-    May: '',
-    June: '',
-    July: '',
-    August: '',
-    September: '',
-    October: '',
-    November: '',
-    December: ''
+  date_range: DateRange = {
+    start: '',
+    end: ''
   }
 
   orderCount: OrderCount = {
@@ -149,8 +141,8 @@ export class AdminSalesComponent {
   }
 
   salesCount: Sales = {
-    monthly: this.monthly,
-    total: '',
+    line_graph_data: [],
+    total: ''
   }
 
 
@@ -167,29 +159,45 @@ export class AdminSalesComponent {
       })
     );
 
-    const sales = {
-      title: '',
-      from: '2023',
-      to: '2024'
-    }
 
-    this.sales.triggerFunction(sales)
     this.sales$ = this.refreshData$.pipe(
       startWith(undefined), 
       switchMap(() => this.sales.getSalesStatistics()),
       map((Response: any) => formatSalesStatistics(Response))  
     );
 
+    this.salesMonth$ = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.sales.getSalesStatisticsMonthly()),
+      map((Response: any) => formatSalesStatistics(Response))  
+    );
+
+    this.salesYear$ = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.sales.getSalesStatisticsYearly()),
+      map((Response: any) => formatSalesStatistics(Response))  
+    );
+
+
 
     this.sales$.subscribe(data => {
-      this.orderCount = data.order_count
+      this.date_range = data.date_range
       this.salesCount = data.sales
+      this.orderCount = data.order_count
+      
       this.outerData = this.orderCount.complete
       this.innerData = this.orderCount.incomplete
       this.total = this.orderCount.all
       this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
       this.totalIncome = this.salesCount.total
-      this.monthly = { ...this.salesCount.monthly };
+
+      const sales = {
+        title: '',
+        from: this.date_range.start,
+        to: this.date_range.end
+      }
+      this.sales.triggerFunction(sales)
+      this.line.runChart(this.salesCount.line_graph_data)
 
       this.outerDataOptions = {
         title: `${this.total}`,
@@ -248,16 +256,146 @@ export class AdminSalesComponent {
         responsive: false,
         showZeroOuterStroke: true
       }
-
-      this.line.runChart(this.monthly)
-
     })
 
 
 
   }
 
+  onOptionChange() {
+    switch(this.selectedOption){
+      case 'monthly':
+        this.salesYear$.subscribe(data => {
+          this.salesCount = data.sales
 
+          this.line.runChart(this.salesCount.line_graph_data)
+    
+          // this.outerDataOptions = {
+          //   title: `${this.total}`,
+          //   percent: this.percent,
+          //   radius: 60,
+          //   outerStrokeWidth: 12,
+          //   innerStrokeWidth: 12,
+          //   space: -12,
+          //   outerStrokeColor: this.outerColor,
+          //   innerStrokeColor: this.innerColor,
+          //   showBackground: false,
+          //   animateTitle: false,
+          //   clockwise: false,
+          //   showUnits: false,
+          //   showTitle:true,
+          //   showSubtitle:false,
+          //   animationDuration: 500,
+          //   startFromZero: false,
+          //   outerStrokeGradient: true,
+          //   outerStrokeGradientStopColor: this.outerColor,
+          //   lazy: true,
+          //   subtitleFormat: (percent: number): string => {
+          //     return `${percent}%`;
+          //   },
+          //   class: '',
+          //   backgroundGradient: false,
+          //   backgroundColor: '',
+          //   backgroundGradientStopColor: '',
+          //   backgroundOpacity: 0,
+          //   backgroundStroke: '',
+          //   backgroundStrokeWidth: 0,
+          //   backgroundPadding: 0,
+          //   toFixed: 0,
+          //   maxPercent: this.total,
+          //   renderOnClick: false,
+          //   units: '',
+          //   unitsFontSize: '',
+          //   unitsFontWeight: '',
+          //   unitsColor: '',
+          //   outerStrokeLinecap: 'round',
+          //   titleFormat: undefined,
+          //   titleColor: 'white',
+          //   titleFontSize: '40',
+          //   titleFontWeight: '700',
+          //   subtitle: '',
+          //   subtitleColor: '',
+          //   subtitleFontSize: '',
+          //   subtitleFontWeight: '',
+          //   imageSrc: undefined,
+          //   imageHeight: 0,
+          //   imageWidth: 0,
+          //   animation: true,
+          //   animateSubtitle: false,
+          //   showImage: false,
+          //   showInnerStroke: true,
+          //   responsive: false,
+          //   showZeroOuterStroke: true
+          // }
+        })
+      break;
+      default:
+        this.sales$.subscribe(data => {
+          this.salesCount = data.sales
+
+          this.line.runChart(this.salesCount.line_graph_data)
+    
+          // this.outerDataOptions = {
+          //   title: `${this.total}`,
+          //   percent: this.percent,
+          //   radius: 60,
+          //   outerStrokeWidth: 12,
+          //   innerStrokeWidth: 12,
+          //   space: -12,
+          //   outerStrokeColor: this.outerColor,
+          //   innerStrokeColor: this.innerColor,
+          //   showBackground: false,
+          //   animateTitle: false,
+          //   clockwise: false,
+          //   showUnits: false,
+          //   showTitle:true,
+          //   showSubtitle:false,
+          //   animationDuration: 500,
+          //   startFromZero: false,
+          //   outerStrokeGradient: true,
+          //   outerStrokeGradientStopColor: this.outerColor,
+          //   lazy: true,
+          //   subtitleFormat: (percent: number): string => {
+          //     return `${percent}%`;
+          //   },
+          //   class: '',
+          //   backgroundGradient: false,
+          //   backgroundColor: '',
+          //   backgroundGradientStopColor: '',
+          //   backgroundOpacity: 0,
+          //   backgroundStroke: '',
+          //   backgroundStrokeWidth: 0,
+          //   backgroundPadding: 0,
+          //   toFixed: 0,
+          //   maxPercent: this.total,
+          //   renderOnClick: false,
+          //   units: '',
+          //   unitsFontSize: '',
+          //   unitsFontWeight: '',
+          //   unitsColor: '',
+          //   outerStrokeLinecap: 'round',
+          //   titleFormat: undefined,
+          //   titleColor: 'white',
+          //   titleFontSize: '40',
+          //   titleFontWeight: '700',
+          //   subtitle: '',
+          //   subtitleColor: '',
+          //   subtitleFontSize: '',
+          //   subtitleFontWeight: '',
+          //   imageSrc: undefined,
+          //   imageHeight: 0,
+          //   imageWidth: 0,
+          //   animation: true,
+          //   animateSubtitle: false,
+          //   showImage: false,
+          //   showInnerStroke: true,
+          //   responsive: false,
+          //   showZeroOuterStroke: true
+          // }
+        })
+      break;
+    }
+  }
 
   selectFromDate(){
     this.date1.nativeElement.showPicker()

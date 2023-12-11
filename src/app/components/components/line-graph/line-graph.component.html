@@ -1,3 +1,12 @@
-<div class="d-block w-100 pt-2 overflow-x-auto position-relative">
+<!-- <div class="d-block w-100 pt-2 overflow-x-auto position-relative">
     <canvas  #canvas [width]="width" [height]="height"></canvas>
-</div>
+</div> -->
+
+<div style="display: block;">
+    <canvas baseChart #canvas [width]="width" [height]="height"
+      [type]="'line'"
+      [data]="lineChartDatas"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend">
+    </canvas>
+  </div>

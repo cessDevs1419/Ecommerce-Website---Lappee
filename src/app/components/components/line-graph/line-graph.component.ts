@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { ChartType, ChartOptions, ChartData } from 'chart.js';
+import { ChartType, ChartOptions, ChartData, ChartConfiguration } from 'chart.js';
 import { throttle } from 'rxjs';
-import { Monthly } from 'src/assets/models/sales';
-
 
 @Component({
   selector: 'app-line-graph',
@@ -16,7 +14,7 @@ export class LineGraphComponent {
   @Input() width: string;
   @Input() height: string;
   lineChartData: { label: string, value: number }[] = [];
-  
+
   backGround: string;
   fontColor: string;
   borderColor: string;
@@ -41,15 +39,39 @@ export class LineGraphComponent {
     
   }
 
-  runChart(data: Monthly){
+  runChart(data: { label: string, data: string }[]){
+    
+    // this.lineChartData = Object.entries(data).map(([label, value]) => ({
+    //   label: label,
+    //   value: parseFloat(value)
+    // }));
+    
+    
+    // this.drawChart()
 
-    this.lineChartData = Object.entries(data).map(([label, value]) => ({
-      label: label,
-      value: parseFloat(value)
-    }));
-    
-    
-    this.drawChart()
+    const labels = data.map(item => item.label);
+    const datasetData = data.map(item => parseFloat(item.data)); // Convert data to a numeric type if needed
+    const gradient = this.canvasRef.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 600);
+    gradient.addColorStop(0, 'rgba(28, 146, 255, 0.47)');
+    gradient.addColorStop(1, 'rgba(28, 146, 255, 0.00)');
+
+    this.lineChartDatas = {
+      labels: labels,
+      datasets: [
+        {
+          data: datasetData,
+          label: '',
+          fill: false,
+          tension: 0.5,
+          borderColor: '#1C92FF',
+          backgroundColor: gradient,
+          pointBackgroundColor: 'black'
+        }
+      ]
+    };
+
+    console.log(data);
+    console.log(this.lineChartDatas);
   }
 
   private drawChart() {
@@ -181,6 +203,33 @@ export class LineGraphComponent {
     // });
 
   }
+
+  public lineChartDatas: ChartConfiguration<'line'>['data'] = { 
+    labels: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July'
+    ],
+    datasets: [
+      {
+        data: [ 65, 59, 80, 81, 56, 55, 40 ],
+        label: 'Series A',
+        fill: false,
+        tension: 0.5,
+        borderColor: '#1C92FF',
+        backgroundColor: 'transparent',
+        pointBackgroundColor: 'black'
+      }
+    ]
+  };
+  public lineChartOptions: ChartOptions<'line'> = {
+    responsive: false,
+  };
+  public lineChartLegend = false;
 
 
   

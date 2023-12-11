@@ -5,9 +5,27 @@ export interface SalesStatisticsList{
 }
 
 export interface SalesStatistics{
+    date_range: DateRange
+    sales: Sales,
     order_count: OrderCount,
-    sales: Sales
 }
+
+
+export interface DateRange{
+    start: ''
+    end: '',
+}
+
+export interface Sales{
+    line_graph_data: LineGraph[],
+    total: string,
+}
+
+export interface LineGraph{
+    label: '',
+    data: ''
+}
+
 
 export interface OrderCount{
     incomplete: number,
@@ -15,25 +33,6 @@ export interface OrderCount{
     all: number,
 }
 
-export interface Sales{
-    monthly: Monthly,
-    total: string,
-}
-
-export interface Monthly{
-    January: string,
-    February: string,
-    March: string,
-    April: string,
-    May: string,
-    June: string,
-    July: string,
-    August: string,
-    September: string,
-    October: string,
-    November: string,
-    December: string
-}
 
 export interface ProductStatisticsList{
     success: string,

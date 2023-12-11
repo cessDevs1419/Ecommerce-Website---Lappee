@@ -302,8 +302,9 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
 
 export function formatSalesStatistics(response: SalesStatisticsList): SalesStatistics {
   return {
-    order_count: response.data.order_count,
-    sales: response.data.sales
+    date_range: response.data.date_range,
+    sales: response.data.sales,
+    order_count: response.data.order_count
   }
 
 }

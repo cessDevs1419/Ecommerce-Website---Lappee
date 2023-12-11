@@ -7,7 +7,7 @@ import { DonutChartComponent } from 'src/app/components/components/donut-chart/d
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
-import { Monthly, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
+import { LineGraph, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 
 export class ProductStatisticsVariant {
   constructor(
@@ -53,7 +53,7 @@ export class AdminProductStatisticsComponent {
     totalIncome: string
     total: number = this.outerData + this.innerData
     percent: number = (this.outerData  / this.total) * 100;
-    colors: string[] = ['red', 'green', 'blue', 'pink', 'yellow'];
+    colors: string[] = ['#FE4C34', '#28C81A', '#1C7DD7', 'pink', '#E1E428'];
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
 
@@ -128,23 +128,9 @@ export class AdminProductStatisticsComponent {
 
 	}
   
-  monthly: Monthly = {
-    January: '',
-    February: '',
-    March: '',
-    April: '',
-    May: '',
-    June: '',
-    July: '',
-    August: '',
-    September: '',
-    October: '',
-    November: '',
-    December: ''
-  }
-  
+
   salesCount: Sales = {
-    monthly: this.monthly,
+    line_graph_data: [],
     total: '',
   }
 
@@ -198,12 +184,11 @@ export class AdminProductStatisticsComponent {
       this.salesCount = {... this.orders.sales}
       this.totalIncome = this.salesCount.total
       this.variants = {... this.orders.variants}
-      this.monthly = { ...this.salesCount.monthly };
 
       this.variants$ = this.orders.variants
 
       this.donut.loadData(this.variants$)
-      this.line.runChart(this.monthly)
+
       
       const sales = {
         title: this.product_detail.name,
@@ -213,6 +198,141 @@ export class AdminProductStatisticsComponent {
   
       this.sales.triggerFunction(sales)
     })
+  }
+  selectedOption: string = 'Weekly';
+  onOptionChange() {
+    // switch(this.selectedOption){
+    //   case 'monthly':
+    //     this.salesYear$.subscribe(data => {
+    //       this.salesCount = data.sales
+
+    //       this.line.runChart(this.salesCount.line_graph_data)
+    
+    //       // this.outerDataOptions = {
+    //       //   title: `${this.total}`,
+    //       //   percent: this.percent,
+    //       //   radius: 60,
+    //       //   outerStrokeWidth: 12,
+    //       //   innerStrokeWidth: 12,
+    //       //   space: -12,
+    //       //   outerStrokeColor: this.outerColor,
+    //       //   innerStrokeColor: this.innerColor,
+    //       //   showBackground: false,
+    //       //   animateTitle: false,
+    //       //   clockwise: false,
+    //       //   showUnits: false,
+    //       //   showTitle:true,
+    //       //   showSubtitle:false,
+    //       //   animationDuration: 500,
+    //       //   startFromZero: false,
+    //       //   outerStrokeGradient: true,
+    //       //   outerStrokeGradientStopColor: this.outerColor,
+    //       //   lazy: true,
+    //       //   subtitleFormat: (percent: number): string => {
+    //       //     return `${percent}%`;
+    //       //   },
+    //       //   class: '',
+    //       //   backgroundGradient: false,
+    //       //   backgroundColor: '',
+    //       //   backgroundGradientStopColor: '',
+    //       //   backgroundOpacity: 0,
+    //       //   backgroundStroke: '',
+    //       //   backgroundStrokeWidth: 0,
+    //       //   backgroundPadding: 0,
+    //       //   toFixed: 0,
+    //       //   maxPercent: this.total,
+    //       //   renderOnClick: false,
+    //       //   units: '',
+    //       //   unitsFontSize: '',
+    //       //   unitsFontWeight: '',
+    //       //   unitsColor: '',
+    //       //   outerStrokeLinecap: 'round',
+    //       //   titleFormat: undefined,
+    //       //   titleColor: 'white',
+    //       //   titleFontSize: '40',
+    //       //   titleFontWeight: '700',
+    //       //   subtitle: '',
+    //       //   subtitleColor: '',
+    //       //   subtitleFontSize: '',
+    //       //   subtitleFontWeight: '',
+    //       //   imageSrc: undefined,
+    //       //   imageHeight: 0,
+    //       //   imageWidth: 0,
+    //       //   animation: true,
+    //       //   animateSubtitle: false,
+    //       //   showImage: false,
+    //       //   showInnerStroke: true,
+    //       //   responsive: false,
+    //       //   showZeroOuterStroke: true
+    //       // }
+    //     })
+    //   break;
+    //   default:
+    //     this.sales$.subscribe(data => {
+    //       this.salesCount = data.sales
+
+    //       this.line.runChart(this.salesCount.line_graph_data)
+    
+    //       // this.outerDataOptions = {
+    //       //   title: `${this.total}`,
+    //       //   percent: this.percent,
+    //       //   radius: 60,
+    //       //   outerStrokeWidth: 12,
+    //       //   innerStrokeWidth: 12,
+    //       //   space: -12,
+    //       //   outerStrokeColor: this.outerColor,
+    //       //   innerStrokeColor: this.innerColor,
+    //       //   showBackground: false,
+    //       //   animateTitle: false,
+    //       //   clockwise: false,
+    //       //   showUnits: false,
+    //       //   showTitle:true,
+    //       //   showSubtitle:false,
+    //       //   animationDuration: 500,
+    //       //   startFromZero: false,
+    //       //   outerStrokeGradient: true,
+    //       //   outerStrokeGradientStopColor: this.outerColor,
+    //       //   lazy: true,
+    //       //   subtitleFormat: (percent: number): string => {
+    //       //     return `${percent}%`;
+    //       //   },
+    //       //   class: '',
+    //       //   backgroundGradient: false,
+    //       //   backgroundColor: '',
+    //       //   backgroundGradientStopColor: '',
+    //       //   backgroundOpacity: 0,
+    //       //   backgroundStroke: '',
+    //       //   backgroundStrokeWidth: 0,
+    //       //   backgroundPadding: 0,
+    //       //   toFixed: 0,
+    //       //   maxPercent: this.total,
+    //       //   renderOnClick: false,
+    //       //   units: '',
+    //       //   unitsFontSize: '',
+    //       //   unitsFontWeight: '',
+    //       //   unitsColor: '',
+    //       //   outerStrokeLinecap: 'round',
+    //       //   titleFormat: undefined,
+    //       //   titleColor: 'white',
+    //       //   titleFontSize: '40',
+    //       //   titleFontWeight: '700',
+    //       //   subtitle: '',
+    //       //   subtitleColor: '',
+    //       //   subtitleFontSize: '',
+    //       //   subtitleFontWeight: '',
+    //       //   imageSrc: undefined,
+    //       //   imageHeight: 0,
+    //       //   imageWidth: 0,
+    //       //   animation: true,
+    //       //   animateSubtitle: false,
+    //       //   showImage: false,
+    //       //   showInnerStroke: true,
+    //       //   responsive: false,
+    //       //   showZeroOuterStroke: true
+    //       // }
+    //     })
+    //   break;
+    // }
   }
   refreshTableData(): void {
     this.refreshData$.next();

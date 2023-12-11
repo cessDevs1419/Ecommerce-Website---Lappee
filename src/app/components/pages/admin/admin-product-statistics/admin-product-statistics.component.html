@@ -35,7 +35,10 @@
                         <div class="container rounded-4 p-0 {{bgColor}}">
                             <div class="select-data-container p-2 text-center">
                                 <div class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
-                                    <h6 class="fs-6 fw-bold mb-0 {{titleColor}}">Yearly Total Income</h6>
+                                    <select class="form-select bg-dark {{titleColor}} border-0" [(ngModel)]="selectedOption" (ngModelChange)="onOptionChange()" >
+                                        <option selected value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
                                 </div>
                                 <div class="data-text-container ">
                                     <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">{{totalIncome | currency: 'PHP'}}</h1>
@@ -53,6 +56,7 @@
             </div>
             <div class="col-lg-4">
                 <app-donut-chart
+                    title="Most Selling Variants"
                     [colors]="colors"
                 ></app-donut-chart>
             </div>

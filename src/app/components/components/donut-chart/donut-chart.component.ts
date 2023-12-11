@@ -17,6 +17,8 @@ export class DonutChartComponent {
 
   data: any[];
   @Input() colors: string[] = [];
+  @Input() title: string;
+  @Input() subTitle: string;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   
   public doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [

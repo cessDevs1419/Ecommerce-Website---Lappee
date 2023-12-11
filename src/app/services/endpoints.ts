@@ -118,6 +118,8 @@ export const POSTDiscount: string = api + "api/admin/products/discounts/store";
 //Sales Overview Endpoint
 export const GETProductStatistics: string = api + "api/admin/statistics/product/";
 export const GETSalesStatistics: string = api + "api/admin/statistics/overview";
+export const GETSalesStatisticsMonth: string = api + "api/admin/statistics/month/overview ";
+export const GETSalesStatisticsYear: string = api + "api/admin/statistics/year/overview";
 
 
 

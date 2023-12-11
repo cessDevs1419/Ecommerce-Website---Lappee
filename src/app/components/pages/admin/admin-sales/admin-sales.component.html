@@ -54,7 +54,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                
                                 </div>
                             </div>
                         </div>
@@ -64,7 +63,10 @@
                             <div class="container rounded-4 p-0 {{bgColor}}">
                                 <div class="select-data-container p-2 text-center">
                                     <div class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
-                                        <h6 class="fs-6 fw-bold mb-0 {{titleColor}}">Yearly Total Income</h6>
+                                        <select class="form-select bg-dark {{titleColor}} border-0" [(ngModel)]="selectedOption" (ngModelChange)="onOptionChange()" >
+                                            <option selected value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
                                     </div>
                                     <div class="data-text-container ">
                                         <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">{{totalIncome | currency: 'PHP'}}</h1>
@@ -117,7 +119,7 @@
                 <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-2">
-                <form  >
+                <!-- <form  >
                     <div  class="modal-body pt-0 pb-0">
                         <div class="row">   
                             <label for="addDiscountDate" class="{{textcolor}} form-label">Discount Date</label>
@@ -149,7 +151,7 @@
                         <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
                     </div>
-                </form>
+                </form> -->
             </div>
         </div> 
     </div>
