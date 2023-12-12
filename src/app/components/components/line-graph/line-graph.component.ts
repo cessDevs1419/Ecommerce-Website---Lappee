@@ -61,13 +61,14 @@ export class LineGraphComponent {
         {
           data: datasetData,
           label: '',
-          fill: false,
+          fill: true,
           tension: 0.5,
           borderColor: '#1C92FF',
           backgroundColor: gradient,
           pointBackgroundColor: 'black'
         }
-      ]
+      ],
+      
     };
 
   }
@@ -226,6 +227,23 @@ export class LineGraphComponent {
   };
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: false,
+    scales: {
+      x: {
+        ticks: {
+          display: false, 
+        },
+      },
+
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
+    },
   };
   public lineChartLegend = false;
 

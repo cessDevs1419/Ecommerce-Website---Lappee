@@ -271,9 +271,6 @@ export class AdminSalesComponent {
 
   }
 
-
-  
-
   selectOption(option: string) {
     this.selectedOption = option;
     
@@ -344,6 +341,12 @@ export class AdminSalesComponent {
             responsive: false,
             showZeroOuterStroke: true
           }
+          const sales = {
+            title: '',
+            from: data.date_range.start,
+            to: data.date_range.end
+          }
+          this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
         })
       break;
@@ -413,6 +416,12 @@ export class AdminSalesComponent {
             responsive: false,
             showZeroOuterStroke: true
           }
+          const sales = {
+            title: '',
+            from: data.date_range.start,
+            to: data.date_range.end
+          }
+          this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
 
         })

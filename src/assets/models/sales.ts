@@ -41,6 +41,7 @@ export interface ProductStatisticsList{
 }
 
 export interface ProductStatistics{
+    date_range: DateRange,
     product_details: ProductStatisticsDetails,
     rating: ProductStatisticsRating,
     product_sold: ProductStatisticsSolds,
@@ -72,8 +73,21 @@ export interface ProductStatisticsOrders{
     increase: boolean,
     percent: ''
     sales: Sales
+    list: List
     variants: ProductStatisticsVariants[]
 }
+
+export interface List{
+    id: string,
+    order_content_id: string,
+    name: string,
+    created_at: string,
+    status: number,
+    total_price: string,
+    variant_id: string
+}
+
+
 
 export interface ProductStatisticsVariants{
     id: string,

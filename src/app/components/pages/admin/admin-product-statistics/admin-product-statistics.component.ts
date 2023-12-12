@@ -8,7 +8,7 @@ import { DonutChartComponent } from 'src/app/components/components/donut-chart/d
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
-import { LineGraph, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
+import { DateRange, LineGraph, List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 
 export class ProductStatisticsVariant {
   constructor(
@@ -64,7 +64,7 @@ export class AdminProductStatisticsComponent {
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
     dateFilterForm: FormGroup
-
+    product_id: string | null;
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
   private refreshData$ = new Subject<void>();
@@ -132,8 +132,9 @@ export class AdminProductStatisticsComponent {
 		this.route.paramMap.subscribe((params) => {
 			const id = params.get('id') || null;
       this.loadProductStatistics(id)
+      this.product_id = id
 		});
-
+    
 	}
   
 
@@ -148,6 +149,11 @@ export class AdminProductStatisticsComponent {
     product_sold: 0,
     percent: 0
   }]
+
+  date_range: DateRange = {
+    start: '',
+    end: ''
+  }
 
   product_detail: ProductStatisticsDetails = {
     id: '',
@@ -168,12 +174,23 @@ export class AdminProductStatisticsComponent {
     percent: ''
   }
 
+  list: List = {
+    id: '',
+    order_content_id: '',
+    name: '',
+    created_at: '',
+    status: 0,
+    total_price: '',
+    variant_id: ''
+  }
+
   orders: ProductStatisticsOrders = {
     current_month: '',
     increase: false,
     last_month: '',
     percent: '',
     sales: this.salesCount,
+    list: this.list,
     variants: this.variants
   }
 
@@ -185,6 +202,7 @@ export class AdminProductStatisticsComponent {
     );
     
     this.productStatistics$.subscribe(item => {
+      this.date_range = item.date_range
       this.product_detail = {...item.product_details}
       this.product_sold = {...item.product_sold}
       this.rating = {...item.rating}
@@ -200,11 +218,12 @@ export class AdminProductStatisticsComponent {
       
       const sales = {
         title: this.product_detail.name,
-        from: '2023',
-        to: '2024'
+        from: item.date_range.start,
+        to: item.date_range.end
       }
   
       this.sales.triggerFunction(sales)
+      this.line.runChart(this.salesCount.line_graph_data)
     })
   }
   selectedOption: string = 'Weekly';
@@ -236,7 +255,7 @@ export class AdminProductStatisticsComponent {
     this.date1.nativeElement.showPicker()
   }
 
-    selectToDate(){
+  selectToDate(){
     this.date2.nativeElement.showPicker()
   }
 
@@ -245,7 +264,7 @@ export class AdminProductStatisticsComponent {
         this.from = date
   }
 
-    getDateToValue(event: any) {
+  getDateToValue(event: any) {
     const date = event.target.value;
         this.to = date
   }
@@ -253,7 +272,37 @@ export class AdminProductStatisticsComponent {
   onDateSubmit(){
     const from = this.dateFilterForm.get('duration_from')?.value
     const to = this.dateFilterForm.get('duration_to')?.value
-    console.log(this.dateFilterForm.value)
+
+    this.sales.getDatedProductStatistics(this.product_id, from, to).subscribe((data: any) => {
+      // Assuming formatProductStatistics returns an object with the specified properties
+      const formattedData = formatProductStatistics(data);
+    
+      this.date_range = formattedData.date_range;
+      this.product_detail = { ...formattedData.product_details };
+      this.product_sold = { ...formattedData.product_sold };
+      this.rating = { ...formattedData.rating };
+      this.orders = { ...formattedData.orders };
+      this.salesCount = { ...this.orders.sales };
+      this.totalIncome = this.salesCount.total;
+      this.variants = { ...this.orders.variants };
+    
+      this.variants$ = this.orders.variants;
+    
+      console.log(formattedData)
+     
+      // this.donut.loadData(this.variants$);
+    
+      const sales = {
+        title: this.product_detail.name,
+        from: formattedData.date_range.start,
+        to: formattedData.date_range.end,
+      };
+    
+     
+      this.sales.triggerFunction(sales);
+      this.line.runChart(this.salesCount.line_graph_data);
+    });
+    
   }
 
 

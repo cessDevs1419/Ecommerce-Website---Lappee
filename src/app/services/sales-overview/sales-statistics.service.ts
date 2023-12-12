@@ -13,7 +13,8 @@ export class SalesStatisticsService {
   private triggerFunctionSubject = new Subject<any>();
   triggerFunction$ = this.triggerFunctionSubject.asObservable();
   headerFormat: SalesModel
-  
+  api = "http://localhost:8000/"
+
   constructor(private http: HttpClient) { }
 
   getSalesStatistics(): Observable<any>{
@@ -29,8 +30,13 @@ export class SalesStatisticsService {
   getProductStatistics(id: string | null): Observable<any>{
     return this.http.get<ProductStatisticsList>(GETProductStatistics + id);
   }
-  
 
+  getDatedProductStatistics(id: string | null, start: string, end: string): Observable<any>{
+    console.log(this.api + 'api/admin/statistics/product/'+ id +'/from/'+ start+'/to/' + end)
+    return this.http.get<ProductStatisticsList>(this.api + 'api/admin/statistics/product/'+ id +'/from/'+ start+'/to/' + end);
+  }
+  
+  
   triggerFunction(data: any) {
     this.triggerFunctionSubject.next(data);
   }

@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
-import {ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
+import {List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 import { ProductStatisticsVariant } from '../admin-product-statistics/admin-product-statistics.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { ActivatedRoute } from '@angular/router';
@@ -153,6 +153,16 @@ export class AdminOverviewComponent {
     last_month: '',
     percent: ''
   }
+  
+  list: List = {
+    id: '',
+    order_content_id: '',
+    name: '',
+    created_at: '',
+    status: 0,
+    total_price: '',
+    variant_id: ''
+  }
 
   orders: ProductStatisticsOrders = {
     current_month: '',
@@ -160,6 +170,7 @@ export class AdminOverviewComponent {
     last_month: '',
     percent: '',
     sales: this.salesCount,
+    list: this.list,
     variants: this.variants
   }
 

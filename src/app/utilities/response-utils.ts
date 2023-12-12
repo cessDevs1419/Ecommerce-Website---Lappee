@@ -311,6 +311,7 @@ export function formatSalesStatistics(response: SalesStatisticsList): SalesStati
 
 export function formatProductStatistics(response: ProductStatisticsList): ProductStatistics {
   return {
+    date_range: response.data.date_range,
     product_details: response.data.product_details,
     rating: response.data.rating,
     product_sold: response.data.product_sold,
