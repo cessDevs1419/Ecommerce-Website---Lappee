@@ -4,7 +4,7 @@
 
         <div *ngFor="let section of sections | async; let i = index;">
             <p class="fw-bold m-0">{{(i + 1) == 1 ? '' : i + "."}} {{ (i + 1) == 1 ? '' : section.title}}</p>
-            <p class="whitespace-prewrap">{{section.content}}</p>
+            <p class="whitespace-prewrap" [innerHTML]="domSanitizer.bypassSecurityTrustHtml(section.content)"></p>
         </div>
     </div>
 </div>

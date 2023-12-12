@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
@@ -11,7 +12,7 @@ import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 })
 export class TosComponent {
   
-  constructor(private aboutustosService: AboutUsTosService) {}
+  constructor(private aboutustosService: AboutUsTosService, public domSanitizer: DomSanitizer) {}
   
   sections: Observable<AboutUsTosSection[]>;
 
