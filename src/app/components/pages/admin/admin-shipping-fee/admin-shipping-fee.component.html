@@ -11,10 +11,6 @@
         [tableTools]="true"
         [searchBar]="true"
         [tableAction]="true"
-        [viewBtn]="true"
-        [editBtn]="true"
-        [deleteBtn]="true"
-        [actionBtn]="true"
         [Btntools]="true"
         [addBtn]="true"
         addbtnName="Add New"
@@ -22,11 +18,12 @@
         dropdowdnClass="dropdown-menu-lg"
         [tableHeader]="['Scope', 'Provinces','Price']"  
         [tableRows]="['scope', 'provinces' ,'price']"
-
-        [actionForOrderBtn]="true"
+        
+        
         [viewBtn]="true"
         [editBtn]="true"
         [deleteBtn]="true"
+        [actionBtn]="true"
 
         [tableData]="shippingFees"
         (rowDataSelected)="onRowDataSelected($event)"
@@ -43,6 +40,7 @@
         [modalTitle]="'Add Shipping Fee'"
         modalSubTitle="Content Management"
         [modalShippingFee]="true"
+        [modalShippingFeeModeAdd]="true"
         (RefreshTable)="refreshTableData()"
         [selectedRowData]="selectedRowData"
         (SuccessToast)="SuccessToast($event)"
@@ -50,5 +48,33 @@
         (ErrorToasts)="ErrorToast($event)"
     ></app-modal>
 
+    <app-modal
+        modalId="view"
+        modalClass="modal-md"
+        [modalTitle]="'Shipping Fee'"
+        modalSubTitle="Content Management"
+        [modalShippingFee]="true"
+        [modalShippingFeeModeView]="true"
+        [modalShippingFeeViewObject]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+        [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+    ></app-modal>
+
+    <app-modal
+        modalId="edit"
+        modalClass="modal-md"
+        [modalTitle]="'Edit Shipping Fee'"
+        modalSubTitle="Content Management"
+        [modalShippingFee]="true"
+        [modalShippingFeeEditObject]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+        [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+    ></app-modal>
 
 

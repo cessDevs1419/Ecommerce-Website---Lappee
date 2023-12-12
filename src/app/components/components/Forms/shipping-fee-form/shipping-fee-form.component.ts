@@ -18,6 +18,10 @@ export class ShippingFeeFormComponent {
   @Output() closeModal: EventEmitter<any>  = new EventEmitter<any>();
 
   @Input() editShipping: ShippingFee;
+  @Input() viewShipping: ShippingFee;
+  @Input() modeView: boolean;
+  @Input() modeAdd: boolean;
+  @Input() modeEdit: boolean;
 
   @ViewChild('tooltip') tooltip: ElementRef;
   provinces: Province[] = []
@@ -70,7 +74,7 @@ export class ShippingFeeFormComponent {
 
   addProvince(): void {
     console.log(this.provinceSelect.name);
-    if(this.provinceSelect) {
+    if(this.provinceSelect && this.provinceSelect.name) {
       this.selectedProvinces.push(this.provinceSelect);
     }
   }

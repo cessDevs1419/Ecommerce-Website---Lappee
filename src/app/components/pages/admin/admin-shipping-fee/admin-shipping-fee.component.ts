@@ -26,6 +26,7 @@ export class AdminShippingFeeComponent {
     toastTheme: string = "default";  
     
     shippingFees!: Observable<ShippingFee[]>;
+    editShippingObject!: ShippingFee;
     private refreshData$ = new Subject<void>();
     
     modalTitle: string;
@@ -52,6 +53,7 @@ export class AdminShippingFeeComponent {
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
+        console.log(rowData);
 
         // Update modalBanAccounts, modalUnBanAccounts, and modalTitle when rowData is available
         // if (this.bannedStatus[this.selectedRowData.user_id]) {
