@@ -2,9 +2,9 @@
 <div class="container-md" id="homeContainer">
     <!-- <a [routerLink]="['/my-styles']" class="button-primary">My Styles</a> -->
     <!-- Banners -->
-    <div class="d-flex justify-content-center align-items-center my-5 flex-column">
+    <div class="d-flex justify-content-center my-5 flex-column">
         <a href="#" *ngFor="let banner of banners | async">
-            <img class="img-fluid mb-2" [src]="banner.path" [alt]="banner.label">
+            <img class="img-fluid mb-3 w-100" [src]="banner.path" [alt]="banner.label">
         </a>
     </div>
 
