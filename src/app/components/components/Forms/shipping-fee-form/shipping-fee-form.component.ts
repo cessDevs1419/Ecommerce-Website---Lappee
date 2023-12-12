@@ -1,8 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { Province } from 'src/assets/models/province-city';
+import { Output } from '@angular/core';
 
 @Component({
   selector: 'app-shipping-fee-form',
@@ -12,6 +13,8 @@ import { Province } from 'src/assets/models/province-city';
 export class ShippingFeeFormComponent {
 
   constructor(private province: ProvinceCityService) {}
+
+  @Output() closeModal: EventEmitter<any>  = new EventEmitter<any>();
 
   @ViewChild('tooltip') tooltip: ElementRef;
   provinces: Province[] = []
@@ -27,6 +30,7 @@ export class ShippingFeeFormComponent {
     //provinces: new FormControl('', Validators.required),
     price: new FormControl(1, Validators.required)
   })
+  isSelectedProvincesEmpty: boolean;
 
   get shippingScope() { return this.shippingFeeForm.get('scope') }
   get shippingPrice() { return this.shippingFeeForm.get('price') }
@@ -59,16 +63,34 @@ export class ShippingFeeFormComponent {
   }
 
   postShippingFee(): void {
-    let formdata = new FormData();
-    formdata.append('scope', String(this.shippingScope?.value));
-    formdata.append('price', String(this.shippingPrice?.value));
-
-    if(this.shippingScope?.value == 'specific'){
-      this.selectedProvinces.forEach(province => {
-        formdata.append('provinces[]', province.name)
-      })
+    if(this.shippingFeeForm.valid){
+      let formdata = new FormData();
+      formdata.append('scope', String(this.shippingScope?.value));
+      formdata.append('price', String(this.shippingPrice?.value));
+  
+      if(this.shippingScope?.value == 'specific'){
+        if(this.selectedProvinces.length > 0){
+          this.selectedProvinces.forEach(province => {
+            formdata.append('provinces[]', province.name)
+          })
+        }
+        else {
+          this.isSelectedProvincesEmpty = true;
+        }
+      }
+      
+      console.log(formdata);
+      this.closeModal.emit();
+      this.shippingFeeForm.reset();
+      this.shippingFeeForm.patchValue({
+        scope: 'general',
+        price: 1
+      });
+      this.selectedProvinces = [];
     }
-
-    console.log(formdata);
+    else {
+      this.shippingFeeForm.markAllAsTouched();
+    }
+      
   }
 } 
