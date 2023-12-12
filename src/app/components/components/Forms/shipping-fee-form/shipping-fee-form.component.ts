@@ -16,12 +16,15 @@ export class ShippingFeeFormComponent {
   constructor(private province: ProvinceCityService) {}
 
   @Output() closeModal: EventEmitter<any>  = new EventEmitter<any>();
+  @Output() deleteShippingFee: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() editShipping: ShippingFee;
   @Input() viewShipping: ShippingFee;
+  @Input() deleteShipping: ShippingFee;
   @Input() modeView: boolean;
   @Input() modeAdd: boolean;
   @Input() modeEdit: boolean;
+  @Input() modeDelete: boolean;
 
   @ViewChild('tooltip') tooltip: ElementRef;
   provinces: Province[] = []
@@ -102,17 +105,28 @@ export class ShippingFeeFormComponent {
       }
       
       console.log(formdata);
-      this.closeModal.emit();
-      this.shippingFeeForm.reset();
-      this.shippingFeeForm.patchValue({
-        scope: 'general',
-        price: 1
-      });
-      this.selectedProvinces = [];
+      this.closeModalAndReset();
     }
     else {
       this.shippingFeeForm.markAllAsTouched();
     }
       
+  }
+
+  closeModalAndReset(): void {
+      this.closeModal.emit();
+      if(this.modeAdd){
+        this.shippingFeeForm.reset();
+        this.shippingFeeForm.patchValue({
+          scope: 'general',
+          price: 1
+        });
+        this.selectedProvinces = [];
+      }
+  }
+
+  emitShippingDelete(): void {
+    this.deleteShippingFee.emit(this.deleteShipping.id);
+    this.closeModalAndReset();
   }
 } 

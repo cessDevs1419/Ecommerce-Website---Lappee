@@ -40,6 +40,7 @@ export class ModalComponent {
 	@Output() ErrorToasts: EventEmitter<any> = new EventEmitter();
     @Output() WarningToasts: EventEmitter<any> = new EventEmitter();
     @Output() hideMinus: EventEmitter<any> = new EventEmitter();
+    @Output() emitDeleteShippingFee: EventEmitter<any> = new EventEmitter();
 
 
 	@Input() modalId!: string;
@@ -90,8 +91,10 @@ export class ModalComponent {
     @Input() modalShippingFee!: boolean;
     @Input() modalShippingFeeEditObject!: ShippingFee;
     @Input() modalShippingFeeViewObject!: ShippingFee;
+    @Input() modalShippingFeeDeleteObject!: ShippingFee;
     @Input() modalShippingFeeModeAdd!: boolean;
     @Input() modalShippingFeeModeView!: boolean;
+    @Input() modalShippingFeeModeDelete!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
@@ -127,10 +130,7 @@ export class ModalComponent {
 	}
 
 	ngOnInit(): void{
-        console.log("modalEdit", this.modalShippingFeeEditObject);
-        console.log("modalAdd", this.modalShippingFeeModeAdd);
-        console.log("modalView", this.modalShippingFeeModeView);
-        console.log("modal", this.modalShippingFee);
+
 	}
 
     ngOnChanges(): void {}
@@ -151,6 +151,10 @@ export class ModalComponent {
     
     shipPackage(){
         this.ship.emit()
+    }
+
+    deleteShippingFee(id: string){
+        this.emitDeleteShippingFee.emit(id)
     }
     
     deliverPackage(){

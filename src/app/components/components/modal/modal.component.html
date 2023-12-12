@@ -236,6 +236,16 @@
 
                 </app-shipping-fee-form>
 
+                 <app-shipping-fee-form
+                    *ngIf="modalShippingFee && modalShippingFeeDeleteObject"
+                    [modeDelete]="true"
+                    [deleteShipping]="modalShippingFeeDeleteObject"
+                    (closeModal)="closeModal()"
+                    (deleteShippingFee)="deleteShippingFee($event)"
+                >
+
+                </app-shipping-fee-form>
+
                 <div class="container m-auto p-2" *ngIf="modalData">
                     <hr class="divider  {{modalBorderColor}}">
                     <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Order Summarry</h1>

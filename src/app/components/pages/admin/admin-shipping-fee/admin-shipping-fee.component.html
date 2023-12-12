@@ -51,8 +51,8 @@
     <app-modal
         modalId="view"
         modalClass="modal-md"
-        [modalTitle]="'Shipping Fee'"
-        modalSubTitle="Content Management"
+        [modalTitle]="'View Shipping Fee'"
+        modalSubTitle={{selectedRowData.id}}
         [modalShippingFee]="true"
         [modalShippingFeeModeView]="true"
         [modalShippingFeeViewObject]="selectedRowData"
@@ -67,7 +67,7 @@
         modalId="edit"
         modalClass="modal-md"
         [modalTitle]="'Edit Shipping Fee'"
-        modalSubTitle="Content Management"
+        modalSubTitle={{selectedRowData.id}}
         [modalShippingFee]="true"
         [modalShippingFeeEditObject]="selectedRowData"
         (RefreshTable)="refreshTableData()"
@@ -76,5 +76,21 @@
         (WarningToasts)="WarningToast($event)"
         (ErrorToasts)="ErrorToast($event)"
     ></app-modal>
+
+    <app-modal
+        modalId="delete"
+        modalClass="modal-md"
+        [modalTitle]="'Delete Shipping Fee'"
+        modalSubTitle={{selectedRowData.id}}
+        [modalShippingFee]="true"
+        [modalShippingFeeDeleteObject]="selectedRowData"
+        (emitDeleteShippingFee)="deleteShippingFee($event)"
+        (RefreshTable)="refreshTableData()"
+        [selectedRowData]="selectedRowData"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+    ></app-modal>
+
 
 
