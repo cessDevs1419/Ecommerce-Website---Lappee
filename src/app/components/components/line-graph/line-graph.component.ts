@@ -205,17 +205,11 @@ export class LineGraphComponent {
 
   public lineChartDatas: ChartConfiguration<'line'>['data'] = { 
     labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
+      ''
     ],
     datasets: [
       {
-        data: [ 65, 59, 80, 81, 56, 55, 40 ],
+        data: [ 0 ],
         label: 'Series A',
         fill: false,
         tension: 0.5,
