@@ -54,6 +54,9 @@ ngOnInit(): void{
       this.echo.listen('admin.notifications.orders', 'OrderStatusAlert', (data: any) => {
         this.refreshTableData();
     })
+    this.echo.listen('admin.notifications.orders.cancelled', 'OrderCancelled', (data: any) => {
+      this.refreshTableData();
+    })
 }
 
   refreshTableData(): void {
