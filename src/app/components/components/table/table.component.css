@@ -310,7 +310,18 @@ td{
   
   }
 
+.max-wd-label{
+  max-width: 600px;
+}
 
+.max-wd-label{
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; 
+}
+.max-wd-label::-webkit-scrollbar{
+  display: none;  /* Safari and Chrome */
+
+}
   
   input[type="radio"] {
     width: 20px;
