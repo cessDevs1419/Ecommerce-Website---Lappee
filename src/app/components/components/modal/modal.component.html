@@ -211,12 +211,31 @@
                 ></app-accounts-form>
 
                 <app-shipping-fee-form
-                    *ngIf="modalShippingFee"
+                    *ngIf="modalShippingFee && modalShippingFeeModeAdd"
+                    [modeAdd]="true"
                     (closeModal)="closeModal()"
                 >
                     
                 </app-shipping-fee-form>
+
+                <app-shipping-fee-form
+                    *ngIf="modalShippingFee && modalShippingFeeEditObject"
+                    [modeEdit]="true"
+                    [editShipping]="modalShippingFeeEditObject"
+                    (closeModal)="closeModal()"
+                >
+
+                </app-shipping-fee-form>
                 
+                <app-shipping-fee-form
+                    *ngIf="modalShippingFee && modalShippingFeeViewObject"
+                    [modeView]="true"
+                    [viewShipping]="modalShippingFeeViewObject"
+                    (closeModal)="closeModal()"
+                >
+
+                </app-shipping-fee-form>
+
                 <div class="container m-auto p-2" *ngIf="modalData">
                     <hr class="divider  {{modalBorderColor}}">
                     <h1 class="form-title fs-4 fw-bolder mb-4 {{modalTitleColor}}" >Order Summarry</h1>

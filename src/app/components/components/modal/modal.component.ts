@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { OrdersFormComponent } from '../Forms/orders-form/orders-form/orders-form.component';
+import { ShippingFee } from 'src/assets/models/shipping';
 
 
 @Component({
@@ -87,6 +88,10 @@ export class ModalComponent {
     @Input() modalMultipleDeliveredOrder!: boolean;
     @Input() modalCancel!: boolean;
     @Input() modalShippingFee!: boolean;
+    @Input() modalShippingFeeEditObject!: ShippingFee;
+    @Input() modalShippingFeeViewObject!: ShippingFee;
+    @Input() modalShippingFeeModeAdd!: boolean;
+    @Input() modalShippingFeeModeView!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
@@ -122,8 +127,13 @@ export class ModalComponent {
 	}
 
 	ngOnInit(): void{
-
+        console.log("modalEdit", this.modalShippingFeeEditObject);
+        console.log("modalAdd", this.modalShippingFeeModeAdd);
+        console.log("modalView", this.modalShippingFeeModeView);
+        console.log("modal", this.modalShippingFee);
 	}
+
+    ngOnChanges(): void {}
 
 
 

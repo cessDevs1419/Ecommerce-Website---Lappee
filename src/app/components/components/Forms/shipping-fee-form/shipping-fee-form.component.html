@@ -1,6 +1,5 @@
 <div class="container text-start text-light-subtle">
-    <form [formGroup]="shippingFeeForm">
-
+    <form [formGroup]="shippingFeeForm" *ngIf="modeAdd || modeEdit">
         <div class="mb-3 d-flex flex-column">
             <div class="text-light-subtle fw-bold">
                 <p class="mb-2">Scope <i class="bi bi-question-circle-fill ms-2" data-bs-toggle="tooltip" [title]="'Specific is for setting prices to certain provinces. General applies to all other provinces.'" data-bs-placement="right" #tooltip></i></p> 
@@ -27,8 +26,7 @@
 
             <div class="input-group mb-3">
                 <select class="form-select form-select-sm bg-transparent text-light-subtle" id="edit-stateprovince" [(ngModel)]="provinceSelect"  [ngModelOptions]="{standalone: true}">
-                    <option selected hidden value="">Select Province</option>
-                    <option *ngFor="let province of provinces" [ngValue]="province">{{province.name}}</option>
+                    <option *ngFor="let province of provinces; index as i" [ngValue]="province" [selected]="i == 0">{{province.name}}</option>
                 </select>
 
                 <button class="button-primary" (click)="addProvince()">Add</button>
@@ -73,4 +71,8 @@
             </button>
         </div>
     </form>
+
+    <div *ngIf="modeView">
+        View Mode
+    </div>
 </div>
