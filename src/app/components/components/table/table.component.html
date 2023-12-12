@@ -172,8 +172,8 @@
             </div>
     
             
-            <div class="table-parent-container overflow-y-auto ">
-                <div class="table-child-contaner position-relative  h-auto overflow-auto">
+            <div class="table-parent-container h-100">
+                <div class="table-child-contaner position-relative  h-100 ">
                     <!--With Pagination-->
                     <table class="table table-striped" *ngIf="paginate === true">
                         <thead>
@@ -363,7 +363,7 @@
                                                 > 
                                                 <i class="bi bi-three-dots fs-5"></i> 
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-dark p-0  border-0 box-shadow mt-2 rounded-3">
+                                            <div class="{{dropdowdnClass}} z-3 dropdown-menu dropdown-menu-dark p-0  border-0 box-shadow mt-2 rounded-3">
                                                 <ul class="z-3 action-button list-unstyled p-0" >
                                                     <li class="action-item rounded-3 text-decoration-none">
                                                         <button 
@@ -383,6 +383,7 @@
                                                             > 
                                                             Edit
                                                         </button>
+                                                        <div class="action-border"></div>
                                                         <button 
                                                             *ngIf="viewBtn"
                                                             type="button"

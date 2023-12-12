@@ -46,6 +46,7 @@ export class TableComponent {
 	checkboxcolor: string = 'dark-border-checkbox'
 	btnborders: string = 'border-dark-subtle'
 	
+
 	public searchString: string;
 	public dateString: string;
 	dateText: string = 'Order by Date';
@@ -65,6 +66,7 @@ export class TableComponent {
 	@Input() tableHeaderActions!: boolean;
 	@Input() tableFrameLess!: boolean;
 	@Input() tableFrameLessProductGroup!: boolean;
+	@Input() dropdowdnClass: string;
 	//addBtn Details
 	@Input() addBtn!: boolean;
 	@Input() addProdBtn!: boolean;
