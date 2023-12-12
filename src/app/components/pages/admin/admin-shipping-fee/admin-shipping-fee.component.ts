@@ -44,12 +44,16 @@ export class AdminShippingFeeComponent {
             })
         );
 	}
+
+    deleteShippingFee(id: string): void {
+        console.log(id);
+    }
 	
     refreshTableData(): void {
         this.refreshData$.next();
     }
     
-    selectedRowData: any;
+    selectedRowData: any = "";
     
     onRowDataSelected(rowData: any) {
         this.selectedRowData = rowData;
