@@ -220,7 +220,7 @@ export class AdminSalesComponent {
       this.outerDataOptions = {
         title: `${this.total}`,
         percent: this.percent,
-        radius: 60,
+        radius: 71,
         outerStrokeWidth: 12,
         innerStrokeWidth: 12,
         space: -12,
@@ -296,7 +296,7 @@ export class AdminSalesComponent {
           this.outerDataOptions = {
             title: `${this.total}`,
             percent: this.percent,
-            radius: 60,
+            radius: 71,
             outerStrokeWidth: 12,
             innerStrokeWidth: 12,
             space: -12,
@@ -372,7 +372,7 @@ export class AdminSalesComponent {
           this.outerDataOptions = {
             title: `${this.total}`,
             percent: this.percent,
-            radius: 60,
+            radius: 71,
             outerStrokeWidth: 12,
             innerStrokeWidth: 12,
             space: -12,
@@ -487,7 +487,7 @@ export class AdminSalesComponent {
         this.outerDataOptions = {
           title: `${this.total}`,
           percent: this.percent,
-          radius: 60,
+          radius: 71,
           outerStrokeWidth: 12,
           innerStrokeWidth: 12,
           space: -12,

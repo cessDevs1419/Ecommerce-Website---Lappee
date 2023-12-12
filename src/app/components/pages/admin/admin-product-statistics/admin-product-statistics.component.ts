@@ -79,6 +79,7 @@ export class AdminProductStatisticsComponent {
 
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
+  productStatsYear: Observable<ProductStatistics>
   private refreshData$ = new Subject<void>();
   lineChartData: { label: string, value: number }[] = [];
   outerDataOptions: CircleProgressOptions = {
@@ -213,6 +214,12 @@ export class AdminProductStatisticsComponent {
       map((Response: any) => formatProductStatistics(Response))  
     );
     
+    this.productStatsYear = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.sales.getProductStatisticsYear(id)),
+      map((Response: any) => formatProductStatistics(Response))  
+    );
+
     this.productStatistics$.subscribe(item => {
       this.date_range = item.date_range
       this.product_detail = {...item.product_details}
@@ -245,23 +252,66 @@ export class AdminProductStatisticsComponent {
 
   selectOption(option: string) {
     this.selectedOption = option;
-    // switch(this.selectedOption){
-    //   case 'Monthly':
-    //     this.salesYear$.subscribe(data => {
-    //       this.salesCount = data.sales
-
-    //       this.line.runChart(this.salesCount.line_graph_data)
-    //     })
-    //   break;
-    //   default:
-    //     this.sales$.subscribe(data => {
-    //       this.salesCount = data.sales
-
-    //       this.line.runChart(this.salesCount.line_graph_data)
-
-    //     })
-    //   break;
-    // }
+    switch(this.selectedOption){
+      case 'Monthly':
+        this.productStatsYear.subscribe(item => {
+          this.date_range = item.date_range
+          this.product_detail = {...item.product_details}
+          this.product_sold = {...item.product_sold}
+          this.rating = {...item.rating}
+          this.orders = {...item.orders}
+          this.salesCount = {... this.orders.sales}
+          this.totalIncome = this.salesCount.total
+          this.variants = {... this.orders.variants}
+          
+          this.variants$ = this.orders.variants
+          this.showSuccess = true
+          this.showGraphSelection = true
+          this.donut.loadData(this.variants$)
+    
+          
+          const sales = {
+            title: this.product_detail.name,
+            from: item.date_range.start,
+            to: item.date_range.end
+          }
+      
+          this.orderList$ = of(Object.values(item.orders.list))
+          this.table.loaded()
+          this.sales.triggerFunction(sales)
+          this.line.runChart(this.salesCount.line_graph_data)
+        })
+      break;
+      default:
+        this.productStatistics$.subscribe(item => {
+          this.date_range = item.date_range
+          this.product_detail = {...item.product_details}
+          this.product_sold = {...item.product_sold}
+          this.rating = {...item.rating}
+          this.orders = {...item.orders}
+          this.salesCount = {... this.orders.sales}
+          this.totalIncome = this.salesCount.total
+          this.variants = {... this.orders.variants}
+          
+          this.variants$ = this.orders.variants
+          this.showSuccess = true
+          this.showGraphSelection = true
+          this.donut.loadData(this.variants$)
+    
+          
+          const sales = {
+            title: this.product_detail.name,
+            from: item.date_range.start,
+            to: item.date_range.end
+          }
+      
+          this.orderList$ = of(Object.values(item.orders.list))
+          this.table.loaded()
+          this.sales.triggerFunction(sales)
+          this.line.runChart(this.salesCount.line_graph_data)
+        })
+      break;
+    }
   }
   refreshTableData(): void {
     this.refreshData$.next();

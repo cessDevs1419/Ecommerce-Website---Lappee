@@ -38,7 +38,10 @@ export class SalesStatisticsService {
   getDatedProductStatistics(id: string | null, start: string, end: string): Observable<any>{
     return this.http.get<ProductStatisticsList>(this.api + 'api/admin/statistics/product/'+ id +'/from/'+ start+'/to/' + end);
   }
-  
+
+  getProductStatisticsYear(id: string | null): Observable<any>{
+    return this.http.get<ProductStatisticsList>(this.api + 'api/admin/statistics/product/'+id+'/year');
+  }
   
   triggerFunction(data: any) {
     this.triggerFunctionSubject.next(data);

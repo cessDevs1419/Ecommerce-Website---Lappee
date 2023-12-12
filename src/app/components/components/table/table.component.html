@@ -1,7 +1,7 @@
 
 <div class="container-fluid position-relative pb-4 " *ngIf="!tableFrameLess && !tableFrameLessProductGroup">
 
-    <div class="table-border {{tablebordercolor}} box-shadow">
+    <div class="table-border {{tablebordercolor}} box-shadow ">
     
         <div class="{{tableContainerClass}} table-container w-100 position-relative rounded-4 overflow-x-auto {{table_container_bg}}  ">
         
@@ -173,7 +173,7 @@
     
             
             <div class="table-parent-container h-100">
-                <div class="table-child-contaner position-relative  h-100 ">
+                <div class="table-child-contaner position-relative   h-100 ">
                     <!--With Pagination-->
                     <table class="table table-striped" *ngIf="paginate === true">
                         <thead>
@@ -383,7 +383,7 @@
                                                             > 
                                                             Edit
                                                         </button>
-                                                        <div class="action-border"></div>
+                                                        <div *ngIf="editSubBtn || editBtn" class="action-border"></div>
                                                         <button 
                                                             *ngIf="viewBtn"
                                                             type="button"
@@ -393,7 +393,7 @@
                                                             > 
                                                             View
                                                         </button>
-                                                        <div class="action-border"></div>
+                                                        <div *ngIf="viewBtn" class="action-border"></div>
                                                     </li>
                                                     <li class="action-item text-decoration-none ">
                                                         <button 

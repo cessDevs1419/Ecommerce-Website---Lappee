@@ -31,3 +31,7 @@
     background: linear-gradient(180deg, #64B5FF 0%, #0E76D6 100%);
     color: #FFF;
 }
+
+.select-data-container{
+    max-width: 220px;
+}

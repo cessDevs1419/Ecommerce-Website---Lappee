@@ -221,13 +221,16 @@ export class LineGraphComponent {
     ]
   };
   public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false,
+    responsive: true,
     scales: {
       x: {
         ticks: {
           display: false, 
         },
       },
+      y: {
+        beginAtZero: true
+      }
 
     },
     plugins: {

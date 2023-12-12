@@ -224,6 +224,9 @@ td{
 
   .dropdown-menu-lg{
     height: 6.2rem;
+  }  
+  .dropdown-menu-sm{
+    height: 2rem;
   }
   .actn-btn:hover{
     color: #272A36;
@@ -307,14 +310,7 @@ td{
   
   }
 
-  .table-container{
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-      scrollbar-width: none; 
-  }
-  .table-container::-webkit-scrollbar{
-    display: none;  /* Safari and Chrome */
-  
-  }
+
   
   input[type="radio"] {
     width: 20px;
