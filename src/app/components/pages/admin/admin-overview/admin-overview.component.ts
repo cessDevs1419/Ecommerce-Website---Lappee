@@ -154,7 +154,7 @@ export class AdminOverviewComponent {
     percent: ''
   }
   
-  list: List = {
+  list: List[] = [{
     id: '',
     order_content_id: '',
     name: '',
@@ -162,10 +162,10 @@ export class AdminOverviewComponent {
     status: 0,
     total_price: '',
     variant_id: ''
-  }
+  }]
 
   orders: ProductStatisticsOrders = {
-    current_month: '',
+    current_month: '0',
     increase: false,
     last_month: '',
     percent: '',

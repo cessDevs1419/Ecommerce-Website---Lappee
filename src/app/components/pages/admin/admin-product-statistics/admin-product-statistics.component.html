@@ -1,5 +1,5 @@
 <div class="component-container overflow-y-auto">
-    <div class="container-fluid m-auto h-auto text-center px-0 px-sm-3 ">
+    <div class="mt-4 container-fluid m-auto h-auto text-center px-0 px-sm-3 ">
         <div class="row m-auto w-100 ">
             <div class="col-lg-8">
                 <div class=" w-100">
@@ -69,6 +69,22 @@
                     [colors]="colors"
                 ></app-donut-chart>
             </div>
+        </div>
+        <div class="w-100 mt-4">
+            <app-table
+                tableTitle="Total Sales"
+                subTitle="Per Order"
+                tableContainerClass="p-4 table-container-md"
+                tableChildContainer="table-child-container"
+                [tableHead]="true"
+                [paginate]="false"
+
+                [tableHeader]="['Id','Order Content Id','Name','Created At','Status','Total Price','Variant Id']"
+                [tableRows]="['id','order_content_id','name','created_at','status','total_price','variant_id']"
+                [tableData]="orderList$"
+            >
+
+            </app-table>
         </div>
         <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
     </div>

@@ -73,7 +73,7 @@ export interface ProductStatisticsOrders{
     increase: boolean,
     percent: string
     sales: Sales
-    list: List
+    list: List[]
     variants: ProductStatisticsVariants[]
 }
 

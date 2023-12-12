@@ -3,9 +3,10 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CircleProgressOptions } from 'ng-circle-progress';
-import { Observable, Subject, map, of, startWith, switchMap, take } from 'rxjs';
+import { Observable, Subject, map, of, startWith, switchMap, take, tap } from 'rxjs';
 import { DonutChartComponent } from 'src/app/components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
@@ -27,6 +28,7 @@ export class ProductStatisticsVariant {
   styleUrls: ['./admin-product-statistics.component.css']
 })
 export class AdminProductStatisticsComponent {
+  @ViewChild(TableComponent) table: TableComponent;
   @ViewChild(LineGraphComponent) line: LineGraphComponent
   @ViewChild(DonutChartComponent) donut: DonutChartComponent
   @ViewChild('date1') date1: ElementRef;
@@ -59,6 +61,7 @@ export class AdminProductStatisticsComponent {
     selectedReason: string = '';
     showSuccess: boolean
     showGraphSelection: boolean
+    selectedOption: string = 'Weekly';
 
     outerColor: string = '#1C92FF'
     innerColor: string = '#094175'
@@ -72,6 +75,8 @@ export class AdminProductStatisticsComponent {
     to: string = 'Select Date To'; 
     dateFilterForm: FormGroup
     product_id: string | null;
+    orderList$: Observable<List[]>
+
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
   private refreshData$ = new Subject<void>();
@@ -181,7 +186,7 @@ export class AdminProductStatisticsComponent {
     percent: ''
   }
 
-  list: List = {
+  list: List[] = [{
     id: '',
     order_content_id: '',
     name: '',
@@ -189,7 +194,7 @@ export class AdminProductStatisticsComponent {
     status: 0,
     total_price: '',
     variant_id: ''
-  }
+  }]
 
   orders: ProductStatisticsOrders = {
     current_month: '0',
@@ -230,11 +235,14 @@ export class AdminProductStatisticsComponent {
         to: item.date_range.end
       }
   
+      this.orderList$ = of(Object.values(item.orders.list))
+      this.table.loaded()
       this.sales.triggerFunction(sales)
       this.line.runChart(this.salesCount.line_graph_data)
     })
   }
-  selectedOption: string = 'Weekly';
+
+
   selectOption(option: string) {
     this.selectedOption = option;
     // switch(this.selectedOption){
