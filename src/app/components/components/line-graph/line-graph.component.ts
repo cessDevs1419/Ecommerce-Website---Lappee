@@ -13,6 +13,7 @@ export class LineGraphComponent {
   @Input() theme: string;
   @Input() width: string;
   @Input() height: string;
+  @Input() showGraphSelection: boolean
   lineChartData: { label: string, value: number }[] = [];
 
   backGround: string;

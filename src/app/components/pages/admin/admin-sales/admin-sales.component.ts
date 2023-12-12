@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +7,8 @@ import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { SidebarComponent } from 'src/app/components/components/sidebar/sidebar.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatAdminProducts, formatSalesStatistics } from 'src/app/utilities/response-utils';
@@ -27,8 +30,9 @@ export class AdminSalesComponent {
   @ViewChild(SidebarComponent) sb: SidebarComponent;
   @ViewChild('date1') date1: ElementRef;
   @ViewChild('date2') date2: ElementRef;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
+  @ViewChild('closeBtn') modal: ElementRef;
 
-  
   productSuccessMessage = 'Product: ';
   errorMessage = 'Please fill in all the required fields.';
   inputColor: string = "text-white"
@@ -56,6 +60,8 @@ export class AdminSalesComponent {
   to: string = 'Select Date To'; 
   selectedOption: string = 'Weekly';
   dateFilterForm: FormGroup
+  showSuccess: boolean
+  showGraphSelection: boolean
 
   private refreshData$ = new Subject<void>();
 
@@ -128,7 +134,8 @@ export class AdminSalesComponent {
 		private router: Router,
     private service: ProductsService,
     private sales: SalesStatisticsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private err: ErrorHandlerService
 
 	) {
     this.dateFilterForm = new FormGroup({
@@ -205,6 +212,8 @@ export class AdminSalesComponent {
         from: this.date_range.start,
         to: this.date_range.end
       }
+
+      this.showGraphSelection = true
       this.sales.triggerFunction(sales)
       this.line.runChart(this.salesCount.line_graph_data)
 
@@ -346,6 +355,7 @@ export class AdminSalesComponent {
             from: data.date_range.start,
             to: data.date_range.end
           }
+          this.showGraphSelection = true
           this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
         })
@@ -421,6 +431,7 @@ export class AdminSalesComponent {
             from: data.date_range.start,
             to: data.date_range.end
           }
+          this.showGraphSelection = true
           this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
 
@@ -462,6 +473,107 @@ export class AdminSalesComponent {
   onDateSubmit(){
     const from = this.dateFilterForm.get('duration_from')?.value
     const to = this.dateFilterForm.get('duration_to')?.value
-    console.log(this.dateFilterForm.value)
+
+    this.sales.getDatedSalesStatistics(from, to).subscribe({
+      next: (response: any) => {
+        const data = formatSalesStatistics(response);
+        this.salesCount = data.sales
+        this.outerData = data.order_count.complete
+        this.innerData = data.order_count.incomplete
+        this.total = data.order_count.all
+        this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
+        this.totalIncome = this.salesCount.total
+
+        this.outerDataOptions = {
+          title: `${this.total}`,
+          percent: this.percent,
+          radius: 60,
+          outerStrokeWidth: 12,
+          innerStrokeWidth: 12,
+          space: -12,
+          outerStrokeColor: this.outerColor,
+          innerStrokeColor: this.innerColor,
+          showBackground: false,
+          animateTitle: false,
+          clockwise: false,
+          showUnits: false,
+          showTitle:true,
+          showSubtitle:false,
+          animationDuration: 500,
+          startFromZero: false,
+          outerStrokeGradient: true,
+          outerStrokeGradientStopColor: this.outerColor,
+          lazy: true,
+          subtitleFormat: (percent: number): string => {
+            return `${percent}%`;
+          },
+          class: '',
+          backgroundGradient: false,
+          backgroundColor: '',
+          backgroundGradientStopColor: '',
+          backgroundOpacity: 0,
+          backgroundStroke: '',
+          backgroundStrokeWidth: 0,
+          backgroundPadding: 0,
+          toFixed: 0,
+          maxPercent: this.total,
+          renderOnClick: false,
+          units: '',
+          unitsFontSize: '',
+          unitsFontWeight: '',
+          unitsColor: '',
+          outerStrokeLinecap: 'round',
+          titleFormat: undefined,
+          titleColor: 'white',
+          titleFontSize: '40',
+          titleFontWeight: '700',
+          subtitle: '',
+          subtitleColor: '',
+          subtitleFontSize: '',
+          subtitleFontWeight: '',
+          imageSrc: undefined,
+          imageHeight: 0,
+          imageWidth: 0,
+          animation: true,
+          animateSubtitle: false,
+          showImage: false,
+          showInnerStroke: true,
+          responsive: false,
+          showZeroOuterStroke: true
+        }
+        const sales = {
+          title: '',
+          from: data.date_range.start,
+          to: data.date_range.end
+        }
+        this.sales.triggerFunction(sales)
+      
+        this.modal.nativeElement.click()
+        this.showGraphSelection = false
+        this.sales.triggerFunction(sales);
+        this.line.runChart(this.salesCount.line_graph_data);
+      },
+      error: (error: HttpErrorResponse) => {
+        const errors = this.err.handle(error)
+        const errorHandle = {
+          head: 'Date Filter',
+          sub: errors
+        }
+        this.ErrorToast(errorHandle)
+      }
+    });
+    
+  }
+
+  SuccessToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'default', '', )
+  }
+  
+  WarningToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'warn', '', )
+  }
+  
+  ErrorToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'negative', '', )
   }
 }

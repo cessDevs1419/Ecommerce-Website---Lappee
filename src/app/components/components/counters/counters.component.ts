@@ -16,4 +16,5 @@ export class CountersComponent {
   @Input() rating: any;
   @Input() percent: any;
   @Input() success: boolean
+  @Input() showSuccess: boolean
 }

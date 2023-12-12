@@ -3,11 +3,11 @@
         <div class="panel-body position-relative p-3 py-2">
             <div class="title-container mt-1 text-start">
                 <p class="card-sub-title {{text_color}} fs-5 fw-bolder lh-1">{{title}}</p>
-                <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 text-truncate" *ngIf="total; else rate" >{{total}}</h1>
-                <ng-template #rate >
-                    <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 text-truncate"  >{{rating}} / 5</h1>
+                <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 text-truncate" *ngIf="rating; else totals" >{{rating}} / 5</h1>
+                <ng-template #totals >
+                    <h1 class="card-title {{counter_heading_text_color}} fw-bolder lh-1 text-truncate"  >{{total}}</h1>
                 </ng-template>
-                <div class="rate d-flex align-items-center mt-2">
+                <div class="rate d-flex align-items-center mt-2" *ngIf="showSuccess">
                     <i class="bi bi-caret-up-fill text-success fs-4" *ngIf="success; else fail"></i>
                     <ng-template #fail>
                         <i class="bi bi-caret-down-fill text-danger fs-4" ></i>

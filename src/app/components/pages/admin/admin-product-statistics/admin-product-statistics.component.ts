@@ -6,6 +6,8 @@ import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap, take } from 'rxjs';
 import { DonutChartComponent } from 'src/app/components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
+import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { formatProductStatistics } from 'src/app/utilities/response-utils';
 import { DateRange, LineGraph, List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
@@ -29,10 +31,13 @@ export class AdminProductStatisticsComponent {
   @ViewChild(DonutChartComponent) donut: DonutChartComponent
   @ViewChild('date1') date1: ElementRef;
   @ViewChild('date2') date2: ElementRef;
+  @ViewChild('closeBtn') modal: ElementRef;
+  @ViewChild(ToasterComponent) toaster: ToasterComponent;
   
 	constructor(
     private route: ActivatedRoute,
-    private sales: SalesStatisticsService
+    private sales: SalesStatisticsService,
+    private err: ErrorHandlerService
     ) {
 
       this.dateFilterForm = new FormGroup({
@@ -52,7 +57,9 @@ export class AdminProductStatisticsComponent {
     textcolor: string = 'text-light-subtle'
     bordercolor: string = 'dark-subtle-borders'
     selectedReason: string = '';
-    
+    showSuccess: boolean
+    showGraphSelection: boolean
+
     outerColor: string = '#1C92FF'
     innerColor: string = '#094175'
     outerData: number = 300;
@@ -185,7 +192,7 @@ export class AdminProductStatisticsComponent {
   }
 
   orders: ProductStatisticsOrders = {
-    current_month: '',
+    current_month: '0',
     increase: false,
     last_month: '',
     percent: '',
@@ -210,9 +217,10 @@ export class AdminProductStatisticsComponent {
       this.salesCount = {... this.orders.sales}
       this.totalIncome = this.salesCount.total
       this.variants = {... this.orders.variants}
-
+      
       this.variants$ = this.orders.variants
-
+      this.showSuccess = true
+      this.showGraphSelection = true
       this.donut.loadData(this.variants$)
 
       
@@ -273,39 +281,59 @@ export class AdminProductStatisticsComponent {
     const from = this.dateFilterForm.get('duration_from')?.value
     const to = this.dateFilterForm.get('duration_to')?.value
 
-    this.sales.getDatedProductStatistics(this.product_id, from, to).subscribe((data: any) => {
-      // Assuming formatProductStatistics returns an object with the specified properties
-      const formattedData = formatProductStatistics(data);
+    this.sales.getDatedProductStatistics(this.product_id, from, to).subscribe({
+      next: (response: any) => {
+        const formattedData = formatProductStatistics(response);
     
-      this.date_range = formattedData.date_range;
-      this.product_detail = { ...formattedData.product_details };
-      this.product_sold = { ...formattedData.product_sold };
-      this.rating = { ...formattedData.rating };
-      this.orders = { ...formattedData.orders };
-      this.salesCount = { ...this.orders.sales };
-      this.totalIncome = this.salesCount.total;
-      this.variants = { ...this.orders.variants };
-    
-      this.variants$ = this.orders.variants;
-    
-      console.log(formattedData)
-     
-      // this.donut.loadData(this.variants$);
-    
-      const sales = {
-        title: this.product_detail.name,
-        from: formattedData.date_range.start,
-        to: formattedData.date_range.end,
-      };
-    
-     
-      this.sales.triggerFunction(sales);
-      this.line.runChart(this.salesCount.line_graph_data);
+        this.date_range = formattedData.date_range;
+        this.product_detail = { ...formattedData.product_details };
+        this.product_sold = { ...formattedData.product_sold };
+        this.rating = { ...formattedData.rating };
+        this.salesCount = { ...this.orders.sales };
+        this.totalIncome = this.salesCount.total;
+        this.variants = { ...this.orders.variants };
+        this.orders.current_month = '0'
+        this.variants$ = formattedData.orders.variants;
+      
+        console.log(formattedData)
+       
+        this.donut.loadData(this.variants$);
+      
+        const sales = {
+          title: this.product_detail.name,
+          from: formattedData.date_range.start,
+          to: formattedData.date_range.end,
+        };
+      
+        this.modal.nativeElement.click()
+        this.showSuccess = false
+        this.showGraphSelection = false
+        this.sales.triggerFunction(sales);
+        this.line.runChart(this.salesCount.line_graph_data);
+      },
+      error: (error: HttpErrorResponse) => {
+        const errors = this.err.handle(error)
+        const errorHandle = {
+          head: 'Date Filter',
+          sub: errors
+        }
+        this.ErrorToast(errorHandle)
+      }
     });
     
   }
 
-
-
+  SuccessToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'default', '', )
+  }
+  
+  WarningToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'warn', '', )
+  }
+  
+  ErrorToast(value: any): void {
+    this.toaster.showToast(value.head, value.sub, 'negative', '', )
+  }
+  
 
 }

@@ -62,19 +62,19 @@
                         <div class="box-shadow linear-gradient-border">
                             <div class="container rounded-4 p-0 {{bgColor}}">
                                 <div class="select-data-container p-2 text-center">
-                                    <div class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
-                                        <div class="dropdown w-100">
+                                    <div  class="select-container text-center mb-2 cursor-pointer position-relative d-flex align-items-center justify-content-center">
+                                        <div *ngIf="showGraphSelection"  class="dropdown w-100">
                                             <button class="border-0 d-flex justify-content-between align-items-center btn px-4 w-100 bg-transparent btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                               {{selectedOption}}
                                             </button>
-                                            <ul class="dropdown-menu box-shadow bg-dark">
+                                            <ul class="dropdown-menu box-shadow bg-dark ">
                                                 <li class="select-item {{titleColor}} py-2 ps-4" (click)="selectOption('Weekly')">Weekly</li>
                                                 <li class="select-item {{titleColor}} py-2 ps-4" (click)="selectOption('Monthly')">Monthly</li>
                                             </ul>
                                         </div>
                                     </div>
                                       
-                                    <div class="data-text-container ">
+                                    <div class="data-text-container " [ngClass]="showGraphSelection ? '':' p-3'">
                                         <h1 class="fs-3 fw-bold mb-0 {{titleColor}}">{{totalIncome | currency: 'PHP'}}</h1>
                                     </div>
                                 </div>
@@ -111,6 +111,8 @@
                 [tableData]="products$"
                 
             ></app-table>
+            
+            <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
     </div>
 </div>
 

@@ -27,12 +27,15 @@ export class SalesStatisticsService {
     return this.http.get<SalesStatisticsList>(GETSalesStatisticsYear);
   }
 
+  getDatedSalesStatistics(start: string, end: string): Observable<any>{
+    return this.http.get<SalesStatisticsList>(this.api + 'api/admin/statistics/overview/from/'+start+'/to/'+end);
+  }
+
   getProductStatistics(id: string | null): Observable<any>{
     return this.http.get<ProductStatisticsList>(GETProductStatistics + id);
   }
 
   getDatedProductStatistics(id: string | null, start: string, end: string): Observable<any>{
-    console.log(this.api + 'api/admin/statistics/product/'+ id +'/from/'+ start+'/to/' + end)
     return this.http.get<ProductStatisticsList>(this.api + 'api/admin/statistics/product/'+ id +'/from/'+ start+'/to/' + end);
   }
   
