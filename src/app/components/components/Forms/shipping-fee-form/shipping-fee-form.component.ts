@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
 import { Province } from 'src/assets/models/province-city';
 import { Output } from '@angular/core';
+import { ShippingFee } from 'src/assets/models/shipping';
 
 @Component({
   selector: 'app-shipping-fee-form',
@@ -15,6 +16,8 @@ export class ShippingFeeFormComponent {
   constructor(private province: ProvinceCityService) {}
 
   @Output() closeModal: EventEmitter<any>  = new EventEmitter<any>();
+
+  @Input() editShipping: ShippingFee;
 
   @ViewChild('tooltip') tooltip: ElementRef;
   provinces: Province[] = []
@@ -35,6 +38,15 @@ export class ShippingFeeFormComponent {
   get shippingScope() { return this.shippingFeeForm.get('scope') }
   get shippingPrice() { return this.shippingFeeForm.get('price') }
 
+  ngOnInit(): void {
+    if(this.editShipping){
+      this.shippingFeeForm.patchValue({
+        scope: this.editShipping.scope,
+        price: Number(this.editShipping.price)
+      })
+
+    }
+  }
   
   ngAfterViewInit(): void {
     let tooltipInit = new bootstrap.Tooltip(this.tooltip.nativeElement);
@@ -43,6 +55,12 @@ export class ShippingFeeFormComponent {
     let prov = this.province.getProvinces()
     prov.subscribe((response: Province[]) => {
       this.provinces = response.sort((a, b) => a.name.localeCompare(b.name));
+
+      if(this.editShipping && this.editShipping.scope == 'specific'){
+        this.editShipping.provinces?.forEach((name: string) => {
+          this.selectedProvinces.push(this.provinces.find((province) => province.name == name)!)
+        })
+      }
     })
   }
 

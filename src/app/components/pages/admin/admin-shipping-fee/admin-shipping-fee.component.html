@@ -16,11 +16,15 @@
         addbtnName="Add New"
         [addBtnclass]="'w-100'"
         
-        [tableHeader]="['Scope', 'Provinces','Price']"
+        [tableHeader]="['Scope', 'Provinces','Price']"  
         [tableRows]="['scope', 'provinces' ,'price']"
-        [tableData]="shippingFees"
+
+        [actionForOrderBtn]="true"
+        [viewBtn]="true"
         [editBtn]="true"
         [deleteBtn]="true"
+
+        [tableData]="shippingFees"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
     
