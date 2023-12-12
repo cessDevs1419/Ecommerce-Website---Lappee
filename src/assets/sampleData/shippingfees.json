@@ -1,0 +1,20 @@
+{
+    "success": "true",
+    "message": "success",
+    "data": [
+        {
+            "id": "1",
+            "scope": "general",
+            "price": "50.00"
+        },
+        {
+            "id": "2",
+            "scope": "specific",
+            "price": "25.00",
+            "provinces": [
+                "Cavite",
+                "Metro Manila"
+            ]
+        }
+    ] 
+}

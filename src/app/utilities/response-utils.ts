@@ -16,6 +16,7 @@ import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
 import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
 import { ProductStatistics, ProductStatisticsList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
+import { ShippingFee, ShippingFeeList } from "src/assets/models/shipping";
 
 // Formatting
 
@@ -505,6 +506,15 @@ export function formatProductsAndAttributes(response: ProductList): Product[] {
     description: data.description,
     variants: data.variants,
     category: data.category,
+  }))
+}
+
+export function formatShippingFee(response: ShippingFeeList): ShippingFee[] {
+  return response.data.map((data: ShippingFee) => ({
+    id: data.id,
+    scope: data.scope,
+    provinces: data.provinces,
+    price: data.price
   }))
 }
 
