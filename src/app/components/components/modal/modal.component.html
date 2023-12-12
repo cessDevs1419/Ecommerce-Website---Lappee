@@ -214,6 +214,8 @@
                     *ngIf="modalShippingFee && modalShippingFeeModeAdd"
                     [modeAdd]="true"
                     (closeModal)="closeModal()"
+                    (refreshTable)="refreshTableData()"
+                    (error)="ErrorToast($event)"
                 >
                     
                 </app-shipping-fee-form>

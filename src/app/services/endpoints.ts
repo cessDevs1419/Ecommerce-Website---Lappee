@@ -146,3 +146,5 @@ export const POSTAddABoutUs: string = api + "api/admin/site-settings/about-us/st
 export const POSTAddToS: string = api + "api/admin/site-settings/tos/store";
 export const DELETEAboutUs: string = api + "api/admin/site-settings/about-us/delete";
 export const DELETEToS: string = api + "api/admin/site-settings/tos/delete";
+export const GETAdminShippingFee: string = api + "api/admin/site-settings/shipping-fee";
+export const POSTAdminShippingFee: string = api + "api/admin/site-settings/shipping-fee/store";

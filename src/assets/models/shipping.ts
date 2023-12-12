@@ -1,7 +1,12 @@
 export interface ShippingFeeList {
     success: string,
     message: string,
-    data: ShippingFee[]
+    data: ShippingFeeCategory
+}
+
+export interface ShippingFeeCategory {
+    general: ShippingFee[],
+    specific: ShippingFee[]
 }
 
 export interface ShippingFee {

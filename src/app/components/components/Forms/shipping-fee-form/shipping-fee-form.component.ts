@@ -5,6 +5,8 @@ import { ProvinceCityService } from 'src/app/services/province-city/province-cit
 import { Province } from 'src/assets/models/province-city';
 import { Output } from '@angular/core';
 import { ShippingFee } from 'src/assets/models/shipping';
+import { ShippingService } from 'src/app/services/shipping/shipping.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-shipping-fee-form',
@@ -13,10 +15,12 @@ import { ShippingFee } from 'src/assets/models/shipping';
 })
 export class ShippingFeeFormComponent {
 
-  constructor(private province: ProvinceCityService) {}
+  constructor(private province: ProvinceCityService, private shipping: ShippingService) {}
 
   @Output() closeModal: EventEmitter<any>  = new EventEmitter<any>();
   @Output() deleteShippingFee: EventEmitter<any> = new EventEmitter<any>();
+  @Output() refreshTable: EventEmitter<any> = new EventEmitter<any>();
+  @Output() error: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() editShipping: ShippingFee;
   @Input() viewShipping: ShippingFee;
@@ -96,7 +100,9 @@ export class ShippingFeeFormComponent {
       if(this.shippingScope?.value == 'specific'){
         if(this.selectedProvinces.length > 0){
           this.selectedProvinces.forEach(province => {
-            formdata.append('provinces[]', province.name)
+            if(province.name.length > 0){
+              formdata.append('provinces[]', province.name)
+            }
           })
         }
         else {
@@ -105,6 +111,17 @@ export class ShippingFeeFormComponent {
       }
       
       console.log(formdata);
+      this.shipping.postShippingFee(formdata).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.refreshTable.emit();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
+          this.error.emit(err);
+        }
+      });
+
       this.closeModalAndReset();
     }
     else {

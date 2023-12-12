@@ -4,10 +4,11 @@ import { ChatsComponent } from 'src/app/components/components/chats/chats.compon
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ShippingService } from 'src/app/services/shipping/shipping.service';
 import { UsersService } from 'src/app/services/users/users.service';
-import { formatBannedUser, formatShippingFee, formatUser } from 'src/app/utilities/response-utils';
-import { ShippingFee } from 'src/assets/models/shipping';
+import { formatBannedUser, formatShippingFee, formatShippingFeeFlatten, formatUser } from 'src/app/utilities/response-utils';
+import { ShippingFee, ShippingFeeCategory } from 'src/assets/models/shipping';
 import { User, BannedUser } from 'src/assets/models/user';
 
 @Component({
@@ -32,13 +33,13 @@ export class AdminShippingFeeComponent {
     modalTitle: string;
     modalBanAccounts: boolean;
     modalUnBanAccounts: boolean;
-	constructor(private user_service: UsersService, private shippingFeeService: ShippingService) {}
+	constructor(private user_service: UsersService, private shippingFeeService: ShippingService, private eh: ErrorHandlerService) {}
 	
 	ngOnInit(): void{
         this.shippingFees = this.refreshData$.pipe(
             startWith(undefined),
             switchMap(() => this.shippingFeeService.getAdminShippingFeeList()),
-            map((response: any) => formatShippingFee(response)),
+            map((response: any) => formatShippingFeeFlatten(response)),
             tap(() => {
                 this.table.loaded()
             })
@@ -50,6 +51,7 @@ export class AdminShippingFeeComponent {
     }
 	
     refreshTableData(): void {
+        console.log('refresh')
         this.refreshData$.next();
     }
     
@@ -78,7 +80,7 @@ export class AdminShippingFeeComponent {
     }
     
     ErrorToast(value: any): void {
-        this.toaster.showToast(value.head, value.sub, 'negative', '', )
+        this.toaster.showToast("Oops!", this.eh.handle(value), 'negative', '', )
     }
 
 }
