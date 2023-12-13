@@ -46,6 +46,9 @@ export class AdminProductStatisticsComponent {
         duration_from: new FormControl('', Validators.required),
         duration_to: new FormControl('', Validators.required),
     });
+    const today = new Date();
+    this.maxDate = this.formatDate(today);
+    
     }
     bgColor: string = 'table-bg-dark';
     fontColor: string = 'font-grey';
@@ -76,6 +79,7 @@ export class AdminProductStatisticsComponent {
     dateFilterForm: FormGroup
     product_id: string | null;
     orderList$: Observable<List[]>
+    maxDate: string;
 
   variants$: ProductStatisticsVariant[];
   productStatistics$: Observable<ProductStatistics>
@@ -315,6 +319,13 @@ export class AdminProductStatisticsComponent {
   }
   refreshTableData(): void {
     this.refreshData$.next();
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
 
   selectFromDate(){

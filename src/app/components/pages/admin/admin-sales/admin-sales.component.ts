@@ -64,6 +64,7 @@ export class AdminSalesComponent {
   dateFilterForm: FormGroup
   showSuccess: boolean
   showGraphSelection: boolean
+  maxDate: string;
 
   private refreshData$ = new Subject<void>();
 
@@ -146,8 +147,10 @@ export class AdminSalesComponent {
     this.dateFilterForm = new FormGroup({
       duration_from: new FormControl('', Validators.required),
       duration_to: new FormControl('', Validators.required),
-  });
+    });
 
+    const today = new Date();
+    this.maxDate = this.formatDate(today);
   }
 	
   date_range: DateRange = {
@@ -298,6 +301,7 @@ export class AdminSalesComponent {
 
 
   }
+
 
   selectOption(option: string) {
     this.selectedOption = option;
@@ -499,6 +503,13 @@ export class AdminSalesComponent {
     this.date2.nativeElement.showPicker()
   }
 
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+  
   getDateFromValue(event: any) {
     const date = event.target.value;
         this.from = date

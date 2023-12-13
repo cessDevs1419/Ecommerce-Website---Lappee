@@ -138,7 +138,7 @@
                                     <button (click)="selectFromDate()" class="input-group-text  btn btn-primary bg-primary-subtles border-0 text-white " >
                                         <i class="bi bi-calendar"></i>
                                     </button>
-                                    <input formControlName="duration_from" type="date" class="visually-hidden " (change)="getDateFromValue($event)" #date1>
+                                    <input [max]="maxDate" formControlName="duration_from" type="date" class="visually-hidden " (change)="getDateFromValue($event)" #date1>
                                     <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  ">
                                         <label class="text-nowrap text-truncate mb-0  {{textcolor}}">{{from}}</label>
                                     </div>
@@ -149,7 +149,7 @@
                                     <button (click)="selectToDate()" class="input-group-text btn btn-primary bg-primary-subtles  border-0  text-white  " >
                                         <i class="bi bi-calendar"></i>
                                     </button>
-                                    <input formControlName="duration_to" type="date" class="visually-hidden " (change)="getDateToValue($event)" #date2>
+                                    <input [max]="maxDate" formControlName="duration_to" type="date" class="visually-hidden " (change)="getDateToValue($event)" #date2>
                                     <div class="input-date-container form-control pe-5 pb-0 bg-none border-0 py-1 {{textcolor}}  ">
                                         <label class="text-nowrap text-truncate mb-0  {{textcolor}}">{{to}}</label>
                                     </div>
