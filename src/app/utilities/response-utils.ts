@@ -15,7 +15,7 @@ import { AdminNotificationList, AdminNotification } from "src/assets/models/admi
 import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
 import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
-import { ProductStatistics, ProductStatisticsList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
+import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
 
 // Formatting
@@ -306,6 +306,13 @@ export function formatSalesStatistics(response: SalesStatisticsList): SalesStati
     date_range: response.data.date_range,
     sales: response.data.sales,
     order_count: response.data.order_count
+  }
+
+}
+
+export function formatSalesReport(response: SalesReportList): SalesReport {
+  return {
+    report: response.data.report,
   }
 
 }

@@ -9,19 +9,29 @@
                     <div class="bar3"></div>
                 </div>
             </div>
-            <div *ngIf="salesHeader" class="sales-report px-3 py-0 w-100 d-flex justify-content-between align-items-center">
+            <div *ngIf="salesHeader" class="flex-wrap sales-report px-3 py-0 w-100 d-flex justify-content-between align-items-center">
                 <div class="title ">
                     <h4 class="my-0 fw-bolder font-grey" *ngIf="salesProductTitle">Product Statistics of {{salesProductTitle}}</h4>
                     <p class="my-0 font-grey">Statistics from '{{from}}' to '{{to}}'</p>
                 </div>
-                <button 
-                    class="px-3 btn glow-primary bg-light-primary btn-primary fw-light rounded-4"
-                    type="button" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#filter"
-                >
-                <i class="bi bi-calendar me-2"></i>
-                Filter by Date</button >
+                <div class="d-flex align-items-center">
+                    <button 
+                        class="px-3 me-2 btn glow-primary bg-light-primary btn-primary fw-light rounded-4"
+                        type="button" 
+                        (click)="openTab(link)"
+                    >
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                    Sales Report</button >
+                    <button 
+                        class="px-3 btn glow-primary bg-light-primary btn-primary fw-light rounded-4"
+                        type="button" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#filter"
+                    >
+                    <i class="bi bi-calendar me-2"></i>
+                    Filter by Date</button >
+                </div>
+
             </div>
             <div class="header-tools h-auto d-md-flex justify-content-between px-1 ">
                 <div class="dropdown" >

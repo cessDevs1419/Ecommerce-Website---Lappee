@@ -141,14 +141,14 @@ export class AdminOverviewComponent {
   }
 
   product_sold: ProductStatisticsSolds = {
-    current_month: '',
+    current_month: '0',
     increase: false,
     last_month: '',
     percent: ''
   }
 
   rating: ProductStatisticsRating = {
-    current_month: '',
+    current_month: '0',
     increase: false,
     last_month: '',
     percent: ''

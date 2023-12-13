@@ -111,5 +111,7 @@ export class AdminRoutingComponent {
     return notificationType
   }
   
-  
+  warn(event: any){
+    this.toaster.showToast(event.head, event.sub, 'warn' )
+  }
 }

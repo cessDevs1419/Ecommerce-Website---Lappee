@@ -121,6 +121,10 @@ export const GETSalesStatistics: string = api + "api/admin/statistics/overview";
 export const GETSalesStatisticsMonth: string = api + "api/admin/statistics/month/overview ";
 export const GETSalesStatisticsYear: string = api + "api/admin/statistics/year/overview";
 
+export const GETSalesStatisticsReport: string = api + "api/admin/statistics/overview/report";
+export const GETSalesStatisticsYearReport: string = api + "api/admin/statistics/year/report";
+export const GETSalesStatisticsDatedReport: string = api + "api/admin/statistics/overview/from/";
+
 
 
 //Chats Endpoint

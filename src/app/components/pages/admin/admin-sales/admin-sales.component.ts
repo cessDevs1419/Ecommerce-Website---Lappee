@@ -8,12 +8,13 @@ import { LineGraphComponent } from 'src/app/components/components/line-graph/lin
 import { SidebarComponent } from 'src/app/components/components/sidebar/sidebar.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
+import { GETSalesStatisticsReport, GETSalesStatisticsYearReport } from 'src/app/services/endpoints';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
-import { formatAdminProducts, formatSalesStatistics } from 'src/app/utilities/response-utils';
+import { formatAdminProducts, formatSalesReport, formatSalesStatistics } from 'src/app/utilities/response-utils';
 import { AdminProduct } from 'src/assets/models/products';
-import { DateRange, OrderCount, Sales, SalesStatistics } from 'src/assets/models/sales';
+import { DateRange, OrderCount, Sales, SalesReport, SalesStatistics } from 'src/assets/models/sales';
 
 
 
@@ -56,6 +57,7 @@ export class AdminSalesComponent {
   percent: number = 0;
   totalIncome: string;
   monthlyValue: any
+  progressTitle: string = `This Month's Orders`
   from: string = 'Select Date From';
   to: string = 'Select Date To'; 
   selectedOption: string = 'Weekly';
@@ -129,6 +131,9 @@ export class AdminSalesComponent {
   sales$: Observable<SalesStatistics>;
   salesMonth$: Observable<SalesStatistics>;
   salesYear$: Observable<SalesStatistics>;
+  report: Observable<SalesReport>;
+  reportYear: Observable<SalesReport>;
+  reportDated: Observable<SalesReport>;
 
   constructor(
 		private router: Router,
@@ -276,6 +281,20 @@ export class AdminSalesComponent {
       }
     })
 
+    this.sales.getSalesStatisticsReport().subscribe({
+      next: (response: any) => {
+        const data = formatSalesReport(response);
+        this.sales.triggerLink(data.report)
+      },
+      error: (error: HttpErrorResponse) => {
+        const errors = this.err.handle(error)
+        const errorHandle = {
+          head: 'Sales Report',
+          sub: errors
+        }
+        this.ErrorToast(errorHandle)
+      }
+    });
 
 
   }
@@ -292,7 +311,7 @@ export class AdminSalesComponent {
           this.total = data.order_count.all
           this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
           this.totalIncome = this.salesCount.total
-
+          this.progressTitle = 'Monthly Orders'
           this.outerDataOptions = {
             title: `${this.total}`,
             percent: this.percent,
@@ -359,6 +378,21 @@ export class AdminSalesComponent {
           this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
         })
+
+        this.sales.getSalesStatisticsYearReport().subscribe({
+          next: (response: any) => {
+            const data = formatSalesReport(response);
+            this.sales.triggerLink(data.report)
+          },
+          error: (error: HttpErrorResponse) => {
+            const errors = this.err.handle(error)
+            const errorHandle = {
+              head: 'Sales Report',
+              sub: errors
+            }
+            this.ErrorToast(errorHandle)
+          }
+        });
       break;
       default:
         this.sales$.subscribe(data => {
@@ -368,6 +402,7 @@ export class AdminSalesComponent {
           this.total = data.order_count.all
           this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
           this.totalIncome = this.salesCount.total
+          this.progressTitle = 'This Month Orders'
 
           this.outerDataOptions = {
             title: `${this.total}`,
@@ -432,10 +467,26 @@ export class AdminSalesComponent {
             to: data.date_range.end
           }
           this.showGraphSelection = true
+          this.sales.triggerLink(GETSalesStatisticsReport)
           this.sales.triggerFunction(sales)
           this.line.runChart(this.salesCount.line_graph_data)
 
         })
+
+        this.sales.getSalesStatisticsReport().subscribe({
+          next: (response: any) => {
+            const data = formatSalesReport(response);
+            this.sales.triggerLink(data.report)
+          },
+          error: (error: HttpErrorResponse) => {
+            const errors = this.err.handle(error)
+            const errorHandle = {
+              head: 'Sales Report',
+              sub: errors
+            }
+            this.ErrorToast(errorHandle)
+          }
+        });
       break;
     }
   }
@@ -483,6 +534,7 @@ export class AdminSalesComponent {
         this.total = data.order_count.all
         this.percent = parseFloat(((this.outerData  / this.total) * 100).toFixed(1));
         this.totalIncome = this.salesCount.total
+        this.progressTitle = 'Date To Date Orders'
 
         this.outerDataOptions = {
           title: `${this.total}`,
@@ -562,7 +614,22 @@ export class AdminSalesComponent {
         this.ErrorToast(errorHandle)
       }
     });
-    
+
+    this.sales.getSalesStatisticsDatedReport(from, to).subscribe({
+      next: (response: any) => {
+        const data = formatSalesReport(response);
+        this.sales.triggerLink(data.report)
+      },
+      error: (error: HttpErrorResponse) => {
+        const errors = this.err.handle(error)
+        const errorHandle = {
+          head: 'Date Filter',
+          sub: errors
+        }
+        this.ErrorToast(errorHandle)
+      }
+    });
+
   }
 
   SuccessToast(value: any): void {

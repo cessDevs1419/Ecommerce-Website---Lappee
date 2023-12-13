@@ -73,13 +73,15 @@ export class NotificationDropdownComponent {
         const createdDate = new Date(item.created_at);
         const timeDifference = today.getTime() - createdDate.getTime();
         const daysAgo = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  
+      
+      
         if (daysAgo === 0) {
           this.todayItems.push(item);
-        } else if (daysAgo <= 7) {
+        } else{
           this.earlierThisWeekItems.push(item);
         }
       });
+      
     });
 
   }
@@ -103,7 +105,7 @@ export class NotificationDropdownComponent {
         if (daysAgo === 0) {
           this.todayItems.push(item);
 
-        } else if (daysAgo <= 7) {
+        }else {
           this.earlierThisWeekItems.push(item);
 
         }

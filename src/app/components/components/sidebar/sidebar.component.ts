@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,  Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { Observable, Subject, filter, map, of, startWith, switchMap, tap } from 'rxjs';
@@ -19,7 +19,7 @@ import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-st
 export class SidebarComponent {
 
   @ViewChild(NotificationDropdownComponent) notifs: NotificationDropdownComponent;
-
+  @Output() warn: EventEmitter<any> = new EventEmitter();
   isClassToggled: boolean = false;
   toggleContent: boolean = false;
   toggleProduct: boolean = false;
@@ -41,6 +41,7 @@ export class SidebarComponent {
   notifications: Observable<AdminNotification[]>;
   notificationsLength: Observable<AdminNotification[]>;
   notif: boolean = false;
+  link: string
   id: string
   toggleClass() {
     this.isClassToggled = !this.isClassToggled;
@@ -124,6 +125,11 @@ export class SidebarComponent {
     this.sales.triggerFunction$.subscribe((data: any) => {
       this.formatHeader(data);
     });
+
+    this.sales.triggerLink$.subscribe((data: any) => {
+      this.link = data
+      
+    });
   }
 
 
@@ -133,6 +139,21 @@ export class SidebarComponent {
     this.from = data.from
     this.to = data.to
   }
+
+  openTab(link: string){
+    if(link){
+      window.open(link)
+    }else{
+      console.log('wala')
+      const report = {
+        head: 'Generate Reports',
+        sub: 'No Reports Available'
+      }
+      this.warn.emit(report)
+    }
+   
+  }
+
   closeContent(){
     this.ContentMenu = false
     this.toggleContent = false
@@ -297,5 +318,7 @@ export class SidebarComponent {
       }
 
   });
-}
+  }
+
+  
 }

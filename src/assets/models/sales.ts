@@ -101,3 +101,13 @@ export interface SalesModel{
     from: string, 
     to: string,
 }
+
+export interface SalesReportList{
+    success: string,
+    message: string,
+    data: SalesReport;
+}
+
+export interface SalesReport{
+    report: ''
+}
