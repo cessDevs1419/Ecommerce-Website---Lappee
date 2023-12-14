@@ -1,7 +1,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, concatMap, from, map, startWith, switchMap, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -10,7 +10,7 @@ import { CategoriesService } from 'src/app/services/categories/categories.servic
 import { ProductGroupService } from 'src/app/services/product-group/product-group.service';
 import { formatAdminCategories, formatAttributes, formatProductGroup } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
-import { ProductGroup } from 'src/assets/models/product-groups';
+import { NewProductGroup, ProductGroup, ProductGroupList } from 'src/assets/models/product-groups';
 import { Product } from 'src/assets/models/products';
 
 @Component({
@@ -29,8 +29,8 @@ export class AdminProductGroupComponent {
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
-  productGroup$!: Observable<ProductGroup>;
-
+  productGroup$!: Observable<NewProductGroup[]>;
+  productGroupMain$!: Observable<ProductGroup>;
   backdrop: string = 'true';
 	toastContent: string = "";
   toastHeader: string = "";
@@ -46,18 +46,48 @@ export class AdminProductGroupComponent {
 	
   ngOnInit(): void{
     
-    this.productGroup$ = this.refreshData$.pipe(
-        startWith(undefined), 
-        switchMap(() => this.product_group.getAdminProductGroup()),
-        map((Response: any) => formatProductGroup(Response)),
-        tap(() => {
-          this.table.loaded()
-        })
-    );
+    // this.productGroupMain$ = this.refreshData$.pipe(
+    //     startWith(undefined), 
+    //     switchMap(() => this.product_group.getAdminProductGroup()),
+    //     map((Response: any) => formatProductGroup(Response)),
+    //     tap(() => {
+    //       this.table.loaded()
+    //     })
+    // );
       
-    this.productGroup$.subscribe(data =>{
-      console.log(data)
-    })
+    // this.productGroupMain$.subscribe(data =>{
+    //   console.log(data)
+    // })
+    
+    this.productGroup$ = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.product_group.getAdminProductGroup()),
+      map((response: ProductGroupList) => formatProductGroup(response)),
+      map((data: ProductGroup) => {
+        const newArray: NewProductGroup[] = [];
+    
+        // Find the minimum length between tops and bottoms arrays
+        const minLength = Math.min(data.tops.length, data.bottoms.length);
+    
+        // Iterate through the arrays up to the minimum length
+        for (let i = 0; i < minLength; i++) {
+          newArray.push({
+            tops: data.tops[i],
+            bottoms: data.bottoms[i]
+          });
+        }
+    
+        return newArray;
+      }),
+      tap(() => {
+        this.table.loaded();
+      })
+    );
+    
+    this.productGroup$.subscribe(data => {
+      console.log(data);
+    });
+    
 
 
   }

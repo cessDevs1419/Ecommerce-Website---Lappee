@@ -18,7 +18,7 @@ import { DiscountProductList, DiscountProducts } from "src/assets/models/discoun
 import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
 import { Dashboard, DashboardList } from "src/assets/models/dashboard";
-import { ProductGroup, ProductGroupList } from "src/assets/models/product-groups";
+import { NewProductGroup, NewProductGroupList, ProductGroup, ProductGroupList } from "src/assets/models/product-groups";
 
 // Formatting
 
@@ -306,7 +306,13 @@ export function formatProductGroup(response: ProductGroupList): ProductGroup {
     tops: response.data.tops,
     bottoms: response.data.bottoms,
   }
+}
 
+export function formatNewProductGroup(response: NewProductGroupList): NewProductGroup[] {
+  return response.data.map((data: NewProductGroup) => ({
+      tops: data.tops,
+      bottoms: data.bottoms
+    }));
 }
 
 export function formatDashboard(response: DashboardList): Dashboard {
@@ -314,7 +320,8 @@ export function formatDashboard(response: DashboardList): Dashboard {
     customers: response.data.customers,
     views: response.data.views,
     orders: response.data.orders,
-    recent_orders: response.data.recent_orders
+    recent_orders: response.data.recent_orders,
+    best_sellers: response.data.best_sellers
   }
 
 }

@@ -1,15 +1,15 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleProgressOptions } from 'ng-circle-progress';
 import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
-import { formatDashboard, formatProductStatistics } from 'src/app/utilities/response-utils';
-import {List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
+import { formatDashboard, formatProductStatistics, formatSalesStatistics } from 'src/app/utilities/response-utils';
+import {List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales, SalesStatistics } from 'src/assets/models/sales';
 import { ProductStatisticsVariant } from '../admin-product-statistics/admin-product-statistics.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { ActivatedRoute } from '@angular/router';
 import { DonutChartComponent } from 'src/app/components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
-import { Dashboard, DashboardCustomers, DashboardOrders, DashboardRecentOrders, DashboardViews } from 'src/assets/models/dashboard';
+import { Dashboard, DashboardBestSellers, DashboardCustomers, DashboardOrders, DashboardRecentOrders, DashboardViews } from 'src/assets/models/dashboard';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
@@ -26,7 +26,8 @@ export class AdminOverviewComponent {
   
 	constructor(
     private route: ActivatedRoute,
-    private dashboard: DashboardService
+    private dashboard: DashboardService,
+    private salesService: SalesStatisticsService,
     ) {}
     bgColor: string = 'table-bg-dark';
     fontColor: string = 'font-grey';
@@ -53,9 +54,12 @@ export class AdminOverviewComponent {
     to: string = 'Select Date To'; 
     selectedOption: string = 'Weekly';
     showSuccess: boolean;
+    showGraphSelection: boolean
 
     recentOrders$: Observable<DashboardRecentOrders[]>;
     dashboard$: Observable<Dashboard>
+    sales$: Observable<SalesStatistics>;
+    bestSellers$: DashboardBestSellers[];
     private refreshData$ = new Subject<void>();
     
     lineChartData: { label: string, value: number }[] = [];
@@ -152,6 +156,11 @@ export class AdminOverviewComponent {
       created_at: ''
     }]
 
+    salesCount: Sales = {
+      line_graph_data: [],
+      total: ''
+    }
+
 	ngOnInit() {
     this.dashboard$ = this.refreshData$.pipe(
       startWith(undefined), 
@@ -159,15 +168,35 @@ export class AdminOverviewComponent {
       map((Response: any) => formatDashboard(Response))  
     );
 
+    this.sales$ = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.salesService.getSalesStatistics()),
+      map((Response: any) => formatSalesStatistics(Response))  
+    );
+    
     this.dashboard$.subscribe(data => {
       this.showSuccess = true
       this.customers = {...data.customers}
       this.views = {...data.views}
       this.orders = {...data.orders}
       this.recentOrders$ = of(Object.values(data.recent_orders))
+      this.bestSellers$ = data.best_sellers
+      this.donut.loadData(this.bestSellers$)
+
       this.table.loaded()
-      console.log(data)
+
     })
+    this.sales$.subscribe(data => {
+
+      this.salesCount = data.sales
+      this.totalIncome = data.sales.total
+
+      this.showGraphSelection = true
+      this.line.runChart(this.salesCount.line_graph_data)
+
+
+    })
+
 	}
 
 

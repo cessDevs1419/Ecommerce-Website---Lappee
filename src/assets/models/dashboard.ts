@@ -8,7 +8,8 @@ export interface Dashboard{
     customers: DashboardCustomers,
     views: DashboardViews,
     orders: DashboardOrders,
-    recent_orders: DashboardRecentOrders[]
+    recent_orders: DashboardRecentOrders[],
+    best_sellers: DashboardBestSellers[]
 }
 
 
@@ -40,4 +41,11 @@ export interface DashboardRecentOrders{
     status: string,
     total_price: string,
     created_at: string
+}
+
+export interface DashboardBestSellers{
+    id: string,
+    name: string,
+    product_sold: string,
+    percent: string
 }
