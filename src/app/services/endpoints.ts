@@ -162,3 +162,9 @@ export const DELETEToS: string = api + "api/admin/site-settings/tos/delete";
 export const GETAdminShippingFee: string = api + "api/admin/site-settings/shipping-fee";
 export const POSTAdminShippingFee: string = api + "api/admin/site-settings/shipping-fee/store";
 export const GETShippingFee: string = api + "api/client/orders/shipping-fee"
+
+
+// Cart
+export const GETCartItems: string = api + "api/client/cart";
+export const POSTCartItems: string = api + "api/client/cart/store";
+export const DELETECartItems: string = api + "api/client/cart/delete";

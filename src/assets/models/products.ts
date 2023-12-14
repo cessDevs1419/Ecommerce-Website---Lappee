@@ -81,6 +81,27 @@ export interface CartItem {
     image_url: string[]
 }
 
+export interface CartItemResponse {
+    success: string,
+    message: string,
+    data: CartItemList
+}
+
+export interface CartItemList {
+    id: string,
+    user_id: string,
+    created_at: string,
+    updated_at: string,
+    items: CartItemAPI[]
+
+}
+
+export interface CartItemAPI {
+    product: Product,
+    selected_variant: string,
+    quantity: number
+}
+
 export interface ColorVariant {
     color: string,
     name: string,

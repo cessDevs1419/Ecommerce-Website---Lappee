@@ -226,6 +226,8 @@ export class CartComponent {
         matchIndex = index;
       }
     });
+
+    return sender.product.variants.findIndex((variant: Variant) => sender.variant == variant.variant_id);
     return matchIndex;
   }
 
@@ -248,9 +250,16 @@ export class CartComponent {
   }
 
   confirmRemoveCartItem(params: any) {
+    console.log(params, "params");
     if(params.status){
-      let index = this.matchCartItemAndVariant(params.item);
-      console.log(index);
+      let variantIndex = this.matchCartItemAndVariant(params.item);
+      let index = this.cart.getItems().findIndex((item: CartItem) => item.variant == params.item.variant );
+      console.log(params.item);
+      console.log(this.cart.getItems());
+      console.log(index, "confirmRemove");
+
+
+
       this.cart.removeItem(index);
       this.cartContents = this.cart.getItems();
     }
@@ -263,8 +272,28 @@ export class CartComponent {
   }
 
   editCartItemOrder(event: {newCartItem: CartItem, cartIndex: number}): void {
-    this.removeFromOrder(this.cart.items[event.cartIndex]);
-    this.cart.items[event.cartIndex] = event.newCartItem;
+    
+    let formdata = new FormData();
+    formdata.append('product_id', event.newCartItem.product.id);
+    formdata.append('variant_id', event.newCartItem.variant);
+    formdata.append('quantity', '1');
+
+    let match = this.cart.getItems()[event.cartIndex];
+    let formdatadelete = new FormData();
+    formdata.append('product_id', match.product.id);
+    formdata.append('variant_id', match.variant);
+
+    this.cart.postStoreCart(formdata).subscribe({
+      next: (response: any) => {
+        this.cart.items[event.cartIndex] = event.newCartItem;
+
+        this.cart.deleteStoreCart(formdatadelete).subscribe();
+        this.removeFromOrder(this.cart.items[event.cartIndex]);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
+      }
+    });
   }
 
   removeFromOrder(sender: CartItem): void {
@@ -423,8 +452,17 @@ export class CartComponent {
           //remove ordered items
           this.orderList.forEach((item: CartItem ,index: number) => {
             let itemMatch = this.matchOrderListToCart(index);
+            let foundItem = this.cart.getItems().find((cartItem: CartItem) => cartItem.variant == item.variant);
+      
             if(itemMatch > -1) {
               this.cartContents.splice(itemMatch, 1);
+            }
+
+            if(foundItem){
+              let formdatadelete = new FormData();
+              formdatadelete.append('product_id', foundItem.product.id);
+              formdatadelete.append('variant_id', foundItem.variant);
+              this.cart.deleteStoreCart(formdatadelete).subscribe();
             }
           })
         },

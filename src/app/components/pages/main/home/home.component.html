@@ -2,10 +2,26 @@
 <div class="container-md" id="homeContainer">
     <!-- <a [routerLink]="['/my-styles']" class="button-primary">My Styles</a> -->
     <!-- Banners -->
-    <div class="d-flex justify-content-center my-5 flex-column">
+    <!-- <div class="d-flex justify-content-center my-5 flex-column">
         <a href="#" *ngFor="let banner of banners | async">
             <img class="img-fluid mb-3 w-100" [src]="banner.path" [alt]="banner.label">
         </a>
+    </div> -->
+
+    <div id="carouselExample" class="carousel slide my-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let banner of banners | async; index as i" class="carousel-item active">
+            <img src={{banner.path}} class="img-fluid w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
     </div>
 
     <!-- Category -->
