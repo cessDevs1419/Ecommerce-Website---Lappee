@@ -282,36 +282,44 @@ export class ProductsComponent {
   */
 
   addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): boolean {
+
+    if(this.accountService.getIsLoggedIn()){
+      console.log('trigger')
+      if(!params.variant) {
+        // console.log('no variant selected')
+        this.isVariantSelected = false;
+        this.isTouched = true;
+        return false;
+      }
+  
+      if(params.variant.stock < 1){
+        this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative', '', '', false);
+        return false
+      }
+  
+      else {
+        let details: string[] = [];
+        //console.log(params.variant_attributes);
+        params.variant_attributes.forEach((key, value) => {
+          details.push(value + ": " + key);
+        })
+        // console.log("Before addToCart()", this.cart.getItems())
+        this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
+  
+        // console.warn('added to cart');
+        // console.log("After addToCart()", this.cart.getItems())
     
-    console.log('trigger')
-    if(!params.variant) {
-      // console.log('no variant selected')
-      this.isVariantSelected = false;
-      this.isTouched = true;
+        this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default', '', '', false);
+        // console.log(this.cart.getItems())
+        return true;
+      }
+      
+    }
+    else {
+      this.toaster.showToast('Oops!', 'You must be logged in to add to the cart.', 'negative');
       return false;
     }
 
-    if(params.variant.stock < 1){
-      this.toaster.showToast("Oops!", "There are no more stocks for the selected variant.", 'negative', '', '', false);
-      return false
-    }
-
-    else {
-      let details: string[] = [];
-      //console.log(params.variant_attributes);
-      params.variant_attributes.forEach((key, value) => {
-        details.push(value + ": " + key);
-      })
-      // console.log("Before addToCart()", this.cart.getItems())
-      this.cart.addToCart(this.currentProduct, params.variant.variant_id, params.variant_attributes, 1, params.variant.price, params.variant.images)
-
-      // console.warn('added to cart');
-      // console.log("After addToCart()", this.cart.getItems())
-  
-      this.toaster.showToast("Successful!", "The item has been added to your cart.", 'default', '', '', false);
-      // console.log(this.cart.getItems())
-      return true;
-    }
   }
 
   orderNowAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): void {
