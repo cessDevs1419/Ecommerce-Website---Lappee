@@ -316,7 +316,7 @@ import { UploadShippingProofComponent } from './components/components/modal-form
           {path: 'category-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-management/:page/:action', component: AdminParentFormComponent},
           {path: 'product-statistics/:id', component: AdminProductStatisticsComponent, title: 'Sales Management'},
-          {path: 'inquiry', component: AdminInquiryComponent, title: 'Inquiries Management'},
+          {path: 'inquiry', component: AdminInquiryComponent, title: 'Inquiry Management'},
           {path: 'site-settings', component: AdminSiteSettingsComponent, title: 'Content Management'},
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent, title: 'Content Management'},
           {path: 'manage-about-us', component: AdminManageAboutUsComponent, title: 'Content Management'},
