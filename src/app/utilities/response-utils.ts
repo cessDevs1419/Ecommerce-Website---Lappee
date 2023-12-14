@@ -321,6 +321,7 @@ export function formatDashboard(response: DashboardList): Dashboard {
     customers: response.data.customers,
     views: response.data.views,
     orders: response.data.orders,
+    sales: response.data.sales,
     recent_orders: response.data.recent_orders,
     best_sellers: response.data.best_sellers
   }

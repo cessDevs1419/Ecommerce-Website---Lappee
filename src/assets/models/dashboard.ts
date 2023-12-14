@@ -8,6 +8,7 @@ export interface Dashboard{
     customers: DashboardCustomers,
     views: DashboardViews,
     orders: DashboardOrders,
+    sales: DashboardSales,
     recent_orders: DashboardRecentOrders[],
     best_sellers: DashboardBestSellers[]
 }
@@ -35,6 +36,14 @@ export interface DashboardOrders{
     increase: boolean,
     percent: string
 }
+
+export interface DashboardSales{
+    last_month: string,
+    current_month: string,
+    increase: boolean,
+    percent: string
+}
+
 
 export interface DashboardRecentOrders{
     id: string,

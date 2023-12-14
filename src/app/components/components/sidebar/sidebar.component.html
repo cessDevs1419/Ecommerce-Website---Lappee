@@ -34,8 +34,8 @@
 
             </div>
             <div class="header-tools h-auto d-md-flex justify-content-between px-1 ">
-                <div class="dropdown" >
-                    <div [title]="'Notifications'" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="header-icon-container mx-1 position-relative rounded-circle sidebar-bg-dark d-flex justify-content-center align-items-center cursor-pointer">
+                <div class="dropdown"  >
+                    <div #dropdown [title]="'Notifications'" data-bs-toggle="dropdown" data-bs-auto-close="outside" class="header-icon-container mx-1 position-relative rounded-circle sidebar-bg-dark d-flex justify-content-center align-items-center cursor-pointer">
                         <i class="bi bi-bell-fill text-white fs-6"></i>
                         <ng-container *ngIf="notifications | async as items">
                             <ng-container *ngIf="calculateUnreadCount(items)">
@@ -81,7 +81,7 @@
                         </div>
 
                         <a class="nav-link text-dark-subtle-grey text-decoration-none" aria-current="page">
-                            Overview
+                            Dashboard
                         </a>
                     </li>
                 </div>

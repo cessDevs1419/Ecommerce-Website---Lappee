@@ -179,13 +179,14 @@ export class AdminOverviewComponent {
       this.customers = {...data.customers}
       this.views = {...data.views}
       this.orders = {...data.orders}
+      this.sales = {...data.sales}
       this.recentOrders$ = of(Object.values(data.recent_orders))
       this.bestSellers$ = data.best_sellers
       this.donut.loadData(this.bestSellers$)
 
       this.table.loaded()
-
     })
+
     this.sales$.subscribe(data => {
 
       this.salesCount = data.sales

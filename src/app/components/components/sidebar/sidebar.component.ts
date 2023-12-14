@@ -17,7 +17,7 @@ import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-st
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-
+  @ViewChild('dropdown') dropdown: ElementRef;
   @ViewChild(NotificationDropdownComponent) notifs: NotificationDropdownComponent;
   @Output() warn: EventEmitter<any> = new EventEmitter();
   isClassToggled: boolean = false;
@@ -193,6 +193,7 @@ export class SidebarComponent {
     this.toggleProduct = true
 
     this.router.navigate(['/admin/order-management']);
+
     this.closeContent()
   }
   
