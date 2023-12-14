@@ -1,5 +1,9 @@
-import { Product, CartItem } from 'src/assets/models/products';
+import { Product, CartItem, CartItemAPI, CartItemResponse, CartItemList, Variant } from 'src/assets/models/products';
 import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { DELETECartItems, GETCartItems, POSTCartItems } from '../endpoints';
+import { formatCartItem } from 'src/app/utilities/response-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +12,16 @@ export class CartService {
 
   items: CartItem[] = [];
 
-  constructor() { 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true'
+    })
+  };
+
+
+  constructor(private http: HttpClient) { 
     /*
     this.items.push({
       product: {
@@ -40,11 +53,56 @@ export class CartService {
       image_url: 'https://picsum.photos/800'
     })
     */
+   this.initializeCart();
   }
 
   ngOnInit(): void {
-    
   }
+
+  ngOnChanges(): void {
+    //this.initializeCart();
+  }
+
+  initializeCart(): void {
+    let data: Observable<CartItemList> = this.getCartFromAPI().pipe(map((response: any) => formatCartItem(response) )); 
+    
+    // convert to proper cartitem
+
+    console.log(' init cart ')
+    
+    data.subscribe((data: CartItemList) => {
+      console.log(data)
+      data.items.forEach((item: CartItemAPI) => {
+        let product = item.product;
+        let variantCopy = item.selected_variant;
+        let quantity = item.quantity
+        let variant_details;
+        let price;
+        let imgurl;
+
+        let variantObj: Variant = item.product.variants.find((variant: Variant) => variant.variant_id == variantCopy)!
+
+        // bind variant_details
+        let map = new Map<string, string>();
+        variantObj.attributes.forEach(attr => {
+          map.set(attr.attribute_name, attr.value);
+        })
+        variant_details = map;
+
+        // bind price
+        price = variantObj.price;
+
+        // bind img urls
+        imgurl = variantObj.images;
+
+        // add to cart
+
+        this.addToCart(product, variantCopy, map, quantity, price, imgurl);
+      })
+    })
+  }
+
+  
 
   addToCart(product: Product, variant: string, variant_details: Map<string, string>, quantity: number, price: string, imgurl: string[]): void {
     let duplicate = -1;
@@ -79,17 +137,53 @@ export class CartService {
     else {
       this.items[duplicate].quantity += quantity;
     }
+
+    // submit updated cart item to API
+    let matchIndex = this.getItems().findIndex((item: CartItem) => item.product.id == cartItem.product.id && item.variant == cartItem.variant)
+    let formdata: any = new FormData();
+    formdata.append('product_id', cartItem.product.id);
+    formdata.append('variant_id', cartItem.variant);
+    formdata.append('quantity', this.items[matchIndex].quantity);
+
+    this.postStoreCart(formdata).subscribe({
+      next: (response: any) => {
+        console.log('added');
+        //this.initializeCart();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err)
+      }
+    })
+
     console.log(this.getItems);
   }
 
   removeItem(index: number){
-    if(this.items.length > 1){
-      this.items.splice(index, 1);
-    }
-    else {
-      this.items = [];
-    }
-    console.log(this.items)
+    console.log(index)
+    let product_id = this.items[index].product.id;
+    let variant_id = this.items[index].variant
+
+    let formdata = new FormData()
+    formdata.append('product_id', product_id);
+    formdata.append('variant_id', variant_id)
+
+    this.deleteStoreCart(formdata).subscribe({
+      next: (response:any) => {
+        
+            if(this.items.length > 0){
+              this.items.splice(index, 1);
+            }
+            else {
+              this.items = [];
+            }
+            console.log(this.items)
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log("tulog na")
+      }
+    })
+
+
   }
 
   getItems(): CartItem[] {
@@ -101,6 +195,23 @@ export class CartService {
     return this.items;
   }
   
-  
+  getCartFromAPI(): Observable<CartItemResponse> {
+    return this.http.get<CartItemResponse>(GETCartItems)
+  }
+
+  postStoreCart(data: FormData): Observable<any> {
+    return this.http.post(POSTCartItems, data, this.httpOptions);
+  }
+
+  deleteStoreCart(data: FormData): Observable<any> {
+    return this.http.delete(DELETECartItems, { 
+      body: data,
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
+      })
+    })
+  }
 
 }

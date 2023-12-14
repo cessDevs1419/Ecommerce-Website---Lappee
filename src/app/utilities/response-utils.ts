@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CategoryProduct, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -542,6 +542,16 @@ export function formatProductsAndAttributes(response: ProductList): Product[] {
     variants: data.variants,
     category: data.category,
   }))
+}
+
+export function formatCartItem(response: CartItemResponse): CartItemList {
+  return ({
+    id: response.data.id,
+    user_id: response.data.user_id,
+    created_at: response.data.created_at,
+    updated_at: response.data.updated_at,
+    items: response.data.items
+  })
 }
 
 export function formatShippingFee(response: ShippingFeeList): ShippingFeeCategory {
