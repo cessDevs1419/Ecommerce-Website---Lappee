@@ -452,8 +452,17 @@ export class CartComponent {
           //remove ordered items
           this.orderList.forEach((item: CartItem ,index: number) => {
             let itemMatch = this.matchOrderListToCart(index);
+            let foundItem = this.cart.getItems().find((cartItem: CartItem) => cartItem.variant == item.variant);
+      
             if(itemMatch > -1) {
               this.cartContents.splice(itemMatch, 1);
+            }
+
+            if(foundItem){
+              let formdatadelete = new FormData();
+              formdatadelete.append('product_id', foundItem.product.id);
+              formdatadelete.append('variant_id', foundItem.variant);
+              this.cart.deleteStoreCart(formdatadelete).subscribe();
             }
           })
         },
