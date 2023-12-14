@@ -110,8 +110,9 @@ export function formatChats(response: ChatsList): Chats[] {
 export function formatChatsList(response: ChatsChannelList): ChatsChannel[] {
   return response.data.map((data: ChatsChannel) => ({
     id: data.id,
-    created_at: data.created_at,
-    updated_at: data.updated_at,
+    created_at: data.latest_message_time,
+    updated_at: data.latest_message_time,
+    latest_message_time: data.latest_message_time,
     type: data.type,
     title: data.title
   }));

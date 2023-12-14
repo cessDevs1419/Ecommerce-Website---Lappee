@@ -29,6 +29,7 @@ export interface ChatsChannel {
     id: string,
     created_at: string,
     updated_at: string,
+    latest_message_time: string,
     type: number,
     title: string
 }
