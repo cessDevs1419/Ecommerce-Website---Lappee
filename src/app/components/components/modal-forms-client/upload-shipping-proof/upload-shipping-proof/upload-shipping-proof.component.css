@@ -1,0 +1,9 @@
+input[type=file] {
+    display: none;
+}
+
+.img-name-clamp {
+    max-width: 20rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

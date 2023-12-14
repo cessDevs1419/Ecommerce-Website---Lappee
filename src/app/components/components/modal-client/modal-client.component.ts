@@ -54,6 +54,14 @@ export class ModalClientComponent {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement, {backdrop: 'static', keyboard: false});
   }
 
+  // Upload Shipping Proof
+
+  uploadShippingProof(): void {
+    this.mode = 'upload-shipping-proof';
+    this.modalTitle = 'Upload Proof of Shipping';
+    this.show();
+  }
+
   // My Styles Primer
 
   myStylesPrimer() {

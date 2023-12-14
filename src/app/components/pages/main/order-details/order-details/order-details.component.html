@@ -15,7 +15,15 @@
         </div>
 
         <div class="bg-light-gray p-3 mt-3">
-            <p class="m-0 fw-bold fs-4">Order Status</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="m-0 fw-bold fs-4">Order Status</p>
+                    <p class="m-0 fw-bold fs-4" [hidden]="true">Return Status</p>
+                </div>
+                <div>
+                    <button class="button-primary rounded-0" (click)="triggerUploadShipping()" [hidden]="true"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
+                </div>
+            </div>
             <div class="w-100 border-bottom my-2"></div>
 
             <div class="mt-3 px-3">
@@ -71,6 +79,40 @@
                                 </div>
                                 <p class="steps-label m-0">Delivered</p>
                                 <p class="steps-label m-0" *ngIf="order[0].delivered_date">{{order[0].delivered_date | date:'short'}}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="" *ngIf="false">
+                    <ul class="progress-bar">
+                        <li class="progress-steps active-step">
+                            <div class="d-flex flex-column">
+                                <div class="steps-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <p class="steps-label m-0">Return Placed</p>
+                                <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
+
+                            </div>
+                        </li>
+                        <li class="progress-steps" [ngClass]="order[0].confirmed_on ? 'active-step' : ''">
+                            <div class="d-flex flex-column">
+                                <div class="steps-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <p class="steps-label m-0">In Transit</p>
+                                <p class="steps-label m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p>
+
+                            </div>
+                        </li>
+                        <li class="progress-steps" [ngClass]="order[0].packed_date ? 'active-step' : ''">
+                            <div class="d-flex flex-column">
+                                <div class="steps-icon">
+                                    <i class="bi bi-box-seam"></i>
+                                </div>
+                                <p class="steps-label m-0">Item Returned</p>
+                                <p class="steps-label m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p>
                             </div>
                         </li>
                     </ul>

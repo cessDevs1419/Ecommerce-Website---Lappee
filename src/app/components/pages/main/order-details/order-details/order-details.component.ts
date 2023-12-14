@@ -106,4 +106,9 @@ export class OrderDetailsComponent {
       }
     }) 
   }
+
+  triggerUploadShipping(): void {
+    this.mode = 'upload-shipping-proof'
+    this.modal.uploadShippingProof();
+  }
 } 

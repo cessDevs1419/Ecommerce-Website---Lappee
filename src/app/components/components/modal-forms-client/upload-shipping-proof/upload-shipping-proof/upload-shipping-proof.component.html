@@ -1,0 +1,43 @@
+<form [formGroup]="shippingProofForm">
+    <div class="row px-3">
+        <div *ngIf="this.shippingProofError" class="bg-danger-subtle text-danger p-3 mb-3">
+            <p class="m-0">Please upload a valid image of your shipping receipt.</p>
+        </div>
+        <div class="col-md-5 bg-light-gray p-3">
+            <div class="d-flex align-items-center justify-content-center flex-column h-100 text-center screenshot-card" *ngIf="!imgpath">
+                <p class="m-0">No image uploaded yet.</p>
+            </div>
+            <div *ngIf="imgpath">
+                <img [src]="imgpath" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-md-7 d-flex flex-column justify-content-between mt-3 mt-md-0 px-3">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column">
+                    <p class="fw-bold m-0">Image Upload</p>
+                    <p>Upload the shipping receipt or any proof that you have shipped the item.</p>
+                </div>
+    
+                <div *ngIf="imgpath" class="bg-white d-flex flex-row align-items-center justify-content-between p-3 mt-3 border">
+                    <div class="flex-grow-1 d-flex flex-row">
+                        <i class="bi bi-image me-3"></i>
+                        <p class="m-0 fw-bold img-name-clamp">{{imgname}}</p>
+                    </div>
+                    <div>
+                        <button class="btn bg-none" (click)="clearImg($event)"><i class="bi bi-x-lg"></i></button> 
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mt-3">
+                <label for="proof-upload" class="button-primary w-100 mt-3 mt-md-0">Upload Image</label>
+                <input type="file" id="proof-upload" (change)="imageUpload($event)" formControlName="shippingProof" #shippingProofInput />
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="button-secondary-outline me-3" (click)="dismissModal()">Cancel</button>
+        <button type="button" class="button-primary" (click)="validateUpload()">Proceed</button>
+    </div>
+</form>

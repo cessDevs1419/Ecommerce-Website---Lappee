@@ -131,6 +131,7 @@ import { ProductGroupFormComponent } from './components/components/Forms/product
 import { RestockFormComponent } from './components/components/Forms/restock-form/restock-form.component';
 import { AdminShippingFeeComponent } from './components/pages/admin/admin-shipping-fee/admin-shipping-fee.component';
 import { ShippingFeeFormComponent } from './components/components/Forms/shipping-fee-form/shipping-fee-form.component';
+import { UploadShippingProofComponent } from './components/components/modal-forms-client/upload-shipping-proof/upload-shipping-proof/upload-shipping-proof.component';
 
 @NgModule({
   declarations: [
@@ -247,6 +248,7 @@ import { ShippingFeeFormComponent } from './components/components/Forms/shipping
     RestockFormComponent,
     AdminShippingFeeComponent,
     ShippingFeeFormComponent,
+    UploadShippingProofComponent,
   ],
   imports: [
     BrowserModule,
