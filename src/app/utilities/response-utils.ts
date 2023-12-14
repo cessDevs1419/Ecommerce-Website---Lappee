@@ -17,6 +17,7 @@ import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/mod
 import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
 import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
+import { Dashboard, DashboardList } from "src/assets/models/dashboard";
 
 // Formatting
 
@@ -300,6 +301,15 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
   }))
 }
 
+export function formatDashboard(response: DashboardList): Dashboard {
+  return {
+    customers: response.data.customers,
+    views: response.data.views,
+    orders: response.data.orders,
+    recent_orders: response.data.recent_orders
+  }
+
+}
 
 export function formatSalesStatistics(response: SalesStatisticsList): SalesStatistics {
   return {

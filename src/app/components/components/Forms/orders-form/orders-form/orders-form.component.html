@@ -12,6 +12,7 @@
                         <div [ngClass]="modalDetails.payment_proofs.length === 0 ? 'w-100':''" class="col-lg-6 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
                             <div class="w-100 m-auto p-0  " *ngIf="modalData; let items" >
                                 <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
                                 <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
                                 <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >

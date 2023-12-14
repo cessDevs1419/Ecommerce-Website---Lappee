@@ -1,13 +1,16 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleProgressOptions } from 'ng-circle-progress';
-import { Observable, Subject, map, startWith, switchMap } from 'rxjs';
-import { formatProductStatistics } from 'src/app/utilities/response-utils';
+import { Observable, Subject, map, of, startWith, switchMap } from 'rxjs';
+import { formatDashboard, formatProductStatistics } from 'src/app/utilities/response-utils';
 import {List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 import { ProductStatisticsVariant } from '../admin-product-statistics/admin-product-statistics.component';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
 import { ActivatedRoute } from '@angular/router';
 import { DonutChartComponent } from 'src/app/components/components/donut-chart/donut-chart.component';
 import { LineGraphComponent } from 'src/app/components/components/line-graph/line-graph.component';
+import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
+import { Dashboard, DashboardCustomers, DashboardOrders, DashboardRecentOrders, DashboardViews } from 'src/assets/models/dashboard';
+import { TableComponent } from 'src/app/components/components/table/table.component';
 
 @Component({
   selector: 'app-admin-overview',
@@ -19,10 +22,11 @@ export class AdminOverviewComponent {
   @ViewChild(DonutChartComponent) donut: DonutChartComponent
   @ViewChild('date1') date1: ElementRef;
   @ViewChild('date2') date2: ElementRef;
+  @ViewChild(TableComponent) table: TableComponent;
   
 	constructor(
     private route: ActivatedRoute,
-    private sales: SalesStatisticsService
+    private dashboard: DashboardService
     ) {}
     bgColor: string = 'table-bg-dark';
     fontColor: string = 'font-grey';
@@ -48,9 +52,10 @@ export class AdminOverviewComponent {
     from: string = 'Select Date From';
     to: string = 'Select Date To'; 
     selectedOption: string = 'Weekly';
+    showSuccess: boolean;
 
-    variants$: ProductStatisticsVariant[];
-    productStatistics$: Observable<ProductStatistics>
+    recentOrders$: Observable<DashboardRecentOrders[]>;
+    dashboard$: Observable<Dashboard>
     private refreshData$ = new Subject<void>();
     
     lineChartData: { label: string, value: number }[] = [];
@@ -112,100 +117,61 @@ export class AdminOverviewComponent {
       showZeroOuterStroke: true
     }
     
+    customers: DashboardCustomers = {
+      current_month: '0',
+      increase: false,
+      last_month: '',
+      percent: ''
+    }
+  
+    views: DashboardViews = {
+      current_month: '0',
+      increase: false,
+      last_month: '',
+      percent: ''
+    }
+  
+    orders: DashboardOrders = {
+      current_month: '0',
+      increase: false,
+      last_month: '',
+      percent: '',
+    }
+  
+    sales: DashboardOrders = {
+      current_month: '0',
+      increase: false,
+      last_month: '',
+      percent: '',
+    }
+  
+    recent_orders: DashboardRecentOrders[] = [{
+      id: '',
+      status: '',
+      total_price: '',
+      created_at: ''
+    }]
 
 	ngOnInit() {
-		this.route.paramMap.subscribe((params) => {
-			const id = params.get('id') || null;
-      this.loadProductStatistics(id)
-		});
-
-	}
-  
-
-  
-  salesCount: Sales = {
-    line_graph_data: [],
-    total: '',
-  }
-
-  variants: ProductStatisticsVariants[] = [{
-    id: '',
-    name: '',
-    product_sold: 0,
-    percent: 0
-  }]
-
-  product_detail: ProductStatisticsDetails = {
-    id: '',
-    name: ''
-  }
-
-  product_sold: ProductStatisticsSolds = {
-    current_month: '0',
-    increase: false,
-    last_month: '',
-    percent: ''
-  }
-
-  rating: ProductStatisticsRating = {
-    current_month: '0',
-    increase: false,
-    last_month: '',
-    percent: ''
-  }
-  
-  list: List[] = [{
-    id: '',
-    order_content_id: '',
-    name: '',
-    created_at: '',
-    status: 0,
-    total_price: '',
-    variant_id: ''
-  }]
-
-  orders: ProductStatisticsOrders = {
-    current_month: '0',
-    increase: false,
-    last_month: '',
-    percent: '',
-    sales: this.salesCount,
-    list: this.list,
-    variants: this.variants
-  }
-
-  loadProductStatistics(id: string | null){
-    this.productStatistics$ = this.refreshData$.pipe(
+    this.dashboard$ = this.refreshData$.pipe(
       startWith(undefined), 
-      switchMap(() => this.sales.getProductStatistics(id)),
-      map((Response: any) => formatProductStatistics(Response))  
+      switchMap(() => this.dashboard.getDashboard()),
+      map((Response: any) => formatDashboard(Response))  
     );
-    
-    // this.productStatistics$.subscribe(item => {
-    //   this.product_detail = {...item.product_details}
-    //   this.product_sold = {...item.product_sold}
-    //   this.rating = {...item.rating}
-    //   this.orders = {...item.orders}
-    //   this.salesCount = {... this.orders.sales}
-    //   this.totalIncome = this.salesCount.total
-    //   this.variants = {... this.orders.variants}
-    //   this.monthly = { ...this.salesCount.monthly };
 
-    //   this.variants$ = this.orders.variants
+    this.dashboard$.subscribe(data => {
+      this.showSuccess = true
+      this.customers = {...data.customers}
+      this.views = {...data.views}
+      this.orders = {...data.orders}
+      this.recentOrders$ = of(Object.values(data.recent_orders))
+      this.table.loaded()
+      console.log(data)
+    })
+	}
 
-    //   this.donut.loadData(this.variants$)
-    //   this.line.runChart(this.monthly)
-      
-    //   const sales = {
-    //     title: this.product_detail.name,
-    //     from: '2023',
-    //     to: '2024'
-    //   }
+
   
-    //   this.sales.triggerFunction(sales)
-    // })
-  }
-
   selectOption(option: string) {
     this.selectedOption = option;
     // switch(this.selectedOption){
@@ -226,6 +192,7 @@ export class AdminOverviewComponent {
     //   break;
     // }
   }
+
   refreshTableData(): void {
     this.refreshData$.next();
   }
