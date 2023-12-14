@@ -32,7 +32,7 @@
                                                 <i class="bi bi-person-fill fs-2"></i>
                                             </div>
                                             <div class="content overflow-hidden ">
-                                                <h4 class="text-white-50 mb-0">{{item.title}}</h4>
+                                                <h4 class="text-white-50 mb-0 text-truncate text-nowrap">{{item.title}}</h4>
                                                 <p class="text-white-50 mb-0 text-truncate text-nowrap">{{item.created_at | date}}</p>
                                             </div>
                                         </div>
@@ -142,14 +142,14 @@
 
                                         <form [formGroup]="messageContent" >
                                             <div class="input-group box-shadow light-gray-emphasis rounded-4">
-                                                <textarea rows="1" formControlName="content" class="input form-control text-white-50 light-gray-emphasis border-0 rounded-start-4 " >
-                                                </textarea>
+                                                <input formControlName="content" class="input form-control text-white-50 light-gray-emphasis border-0 rounded-start-4 " >
+
                                                 <span class="input-group-text cursor-pointer bg-none border-0 " >
-                                                    <button class="btn bg-none border-0" (click)="fileInput()">
+                                                    <button type="button" class="btn bg-none border-0" (click)="fileInput()">
                                                         <input type="file" class="d-none" multiple (change)="handleFileInput($event)" #fileInputs>
                                                         <i class="bi bi-paperclip text-white-50 m-0"></i>
                                                     </button>
-                                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
+                                                    <button type="submit" class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
                                                         <i class="bi bi-send text-white-50 m-0"></i>
                                                     </button>
                                                 </span>
@@ -258,14 +258,14 @@
                         </div>
                         <form [formGroup]="messageContent" >
                             <div class="input-group box-shadow rounded-4">
-                                <textarea rows="1" formControlName="content" class="input-client form-control text-dark-emphasis border-1 border-light-subtle border-end-0 rounded-start-4 " >
-                                </textarea>
+                                <input  formControlName="content" class="input-client form-control text-dark-emphasis border-1 border-light-subtle border-end-0 rounded-start-4 " >
+                                
                                 <span class="input-group-text cursor-pointer bg-white border-1 border-start-0 border-light-subtle rounded-end-4 " >
-                                    <button class="btn bg-none border-0" (click)="fileInput()">
+                                    <button type="button" class="btn bg-none border-0" (click)="fileInput()">
                                         <input type="file" class="d-none" multiple (change)="handleFileInput($event)" #fileInputs>
                                         <i class="bi bi-paperclip {{text_color}} m-0"></i>
                                     </button>
-                                    <button class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
+                                    <button type="submit" class="btn btn-primary glow-primary border-0 rounded-4 " *ngIf="(this.accountService.getLoggedUser() | async) as user" (click)="send(user.user_id)">
                                         <i class="bi bi-send text-white-50 m-0"></i>
                                     </button>
                                 </span>
