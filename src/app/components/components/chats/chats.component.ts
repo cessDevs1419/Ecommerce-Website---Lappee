@@ -25,6 +25,8 @@ export class ChatsComponent {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @Output() rowData: EventEmitter<any> = new EventEmitter();
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
+  @Output() refreshData: EventEmitter<any> = new EventEmitter();
+
   @Input() size: string = ''
   @Input() admin!: boolean;
   @Input() individual!: boolean;
@@ -145,12 +147,14 @@ export class ChatsComponent {
 		});
 
   }
+
   calculateIndex(data: any[], id: string): number {
     
     const targetPropertyValue = id;
     const index = data.findIndex(item => item.property === targetPropertyValue);
     return index;
   }
+
   ngAfterViewInit() {
     this.scrollToBottom();
   }
@@ -236,6 +240,7 @@ export class ChatsComponent {
       next: (response: any) => { 
         console.log(response)
         this.refreshTableData()
+        this.refreshData.emit()
       },
       error: (error: HttpErrorResponse) => {
           // if (error.error?.data?.error) {

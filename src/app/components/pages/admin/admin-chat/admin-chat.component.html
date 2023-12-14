@@ -5,6 +5,7 @@
             [admin]="true"
             [channels]="chatList"
             (rowData)="this.onRowDataSelected($event)"
+            (refreshData)="refreshTableData()"
         ></app-chats>
     </div>    
 </div>

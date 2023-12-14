@@ -48,8 +48,7 @@ export class AdminChatComponent {
 
     this.echo.listen('admin.conversations', 'NewConversation', (data: any) => {
         this.refreshTableData()
-        console.log('dapat meron')
-      })
+    })
 
     this.chatList = this.refreshData$.pipe(
         startWith(undefined),
@@ -60,6 +59,9 @@ export class AdminChatComponent {
         })
     );
     
+    this.chatList.subscribe(data => {
+      console.log(data)
+    })
     this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
       this.order_id = id !== null ? id : ''; 
