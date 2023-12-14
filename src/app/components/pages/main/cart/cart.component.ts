@@ -9,7 +9,7 @@ import * as bootstrap from 'bootstrap';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
 import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { Observable, map } from 'rxjs';
-import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProducts } from 'src/app/utilities/response-utils';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProducts, formatShippingFeeFlatten } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
@@ -17,6 +17,7 @@ import { ModalClientComponent } from 'src/app/components/components/modal-client
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ShippingService } from 'src/app/services/shipping/shipping.service';
+import { ShippingFee } from 'src/assets/models/shipping';
 
 @Component({
   selector: 'app-cart',
@@ -70,6 +71,9 @@ export class CartComponent {
 
   selectAllFlag: boolean = false;
 
+  shippingFeeList: ShippingFee[];
+  shippingFee: number = 0
+
   // items are separate from the formgroup but both the orderList array and orderForm must be valid
   orderForm = new FormGroup({
     orderPaymentMethod: new FormControl('', Validators.required),
@@ -104,6 +108,14 @@ export class CartComponent {
         console.log(err)
       }
     })
+    this.shipping.getClientShippingFeeList().pipe(map((response: any) => formatShippingFeeFlatten(response))).subscribe({
+      next: (response: any) => {
+        this.shippingFeeList = response;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toaster.showToast('Oops!', this.eh.handle(err), 'negative');
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -127,6 +139,7 @@ export class CartComponent {
                       next: (info: DeliveryInfo[]) => {
                         if(info){
                           this.isInfoSelected = true;
+                          this.shippingFee = Number(this.shipping.checkProvinceFee(info[0].province, this.shippingFeeList))
                         }
                         else {
                           this.isInfoSelected = false;
