@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, map, startWith, switchMap, tap, throwError } from 'rxjs';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { ProductGroupService } from 'src/app/services/product-group/product-group.service';
 import { formatAdminCategories } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
 
@@ -28,7 +30,7 @@ export class ProductGroupFormComponent {
   selectedReason: string = '';
   categories!: Observable<AdminCategory[]>;
   
-	selectedItemsPerGroup: { id: any; value: string }[] = [];
+	selectedItemsPerGroup: any;
 
   @Input() selectedRowData!: any;
   @Input() formAddProductGroup!: boolean;
@@ -36,6 +38,7 @@ export class ProductGroupFormComponent {
     
   constructor(
 		private category_service: CategoriesService,
+    private product_group: ProductGroupService
 	) {
     
 	}
@@ -54,16 +57,76 @@ export class ProductGroupFormComponent {
       this.refreshData$.next();
   }
 
-  setProductGroup(items: any){
-		const selectedItem = { id: items.id, value: items.value };
-		const existingIndex = this.selectedItemsPerGroup.findIndex(
-		  (item) => item.id === selectedItem.id
-		);
-	  
-		if (existingIndex !== -1) {
-		  this.selectedItemsPerGroup.splice(existingIndex, 1);
-		}
+  setProductGroup(items: { id: string; value: string }){
+    this.selectedItemsPerGroup = items
+  }
 
-		this.selectedItemsPerGroup.push(selectedItem);
+  onSubmitProductGroup(){
+
+    const selectedProductGroup = this.selectedItemsPerGroup;
+    let formData: FormData = new FormData();
+
+  
+    let index = 0;
+
+    for (let val of selectedProductGroup) {
+      const value = val.value
+      if (value === 'Tops') {
+        formData.append('tops[]', val.id);
+      } else {
+        formData.append('bottoms[]', val.id);
+      }
+
+    }
+  
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+    this.product_group.postAdminProductGroup(formData).subscribe({
+      next: async(response: any) => { 
+          const successMessage = {
+              head: 'Product Group',
+              sub: response?.message
+          };
+          
+          this.RefreshTable.emit();
+          this.OrderSuccess.emit(successMessage);
+
+          this.CloseModal.emit();
+      },
+      error: (error: HttpErrorResponse) => {
+          if (error.error?.data?.error) {
+              const fieldErrors = error.error.data.error;
+              const errorsArray = [];
+          
+              for (const field in fieldErrors) {
+                  if (fieldErrors.hasOwnProperty(field)) {
+                      const messages = fieldErrors[field];
+                      let errorMessage = messages;
+                      if (Array.isArray(messages)) {
+                          errorMessage = messages.join(' '); 
+                      }
+                      errorsArray.push(errorMessage);
+                  }
+              }
+          
+              const errorDataforProduct = {
+                  head: 'Error Invalid Inputs',
+                  sub: errorsArray,
+              };
+          
+              this.OrderWarn.emit(errorDataforProduct);
+          } else {
+          
+              const errorDataforProduct = {
+                  head: 'Error Invalid Inputs',
+                  sub: 'Please Try Another One',
+              };
+              this.OrderError.emit(errorDataforProduct);
+          }
+          return throwError(() => error);
+      }
+
+    });
   }
 }

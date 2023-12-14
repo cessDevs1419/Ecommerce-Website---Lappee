@@ -115,19 +115,22 @@ export const POSTInquiry: string = api + "api/client/inquiry/store";
 export const GETDiscountProducList: string = api + "api/admin/products/discounts/product-list";
 export const POSTDiscount: string = api + "api/admin/products/discounts/store";
 
-//Sales Overview Endpoint
+//Dashboard Endpoint
 export const GETDashboard: string = api + "api/admin/dashboard";
 
+
+//Sales Overview Endpoint
 export const GETProductStatistics: string = api + "api/admin/statistics/product/";
 export const GETSalesStatistics: string = api + "api/admin/statistics/overview";
 export const GETSalesStatisticsMonth: string = api + "api/admin/statistics/month/overview ";
 export const GETSalesStatisticsYear: string = api + "api/admin/statistics/year/overview";
-
 export const GETSalesStatisticsReport: string = api + "api/admin/statistics/overview/report";
 export const GETSalesStatisticsYearReport: string = api + "api/admin/statistics/year/report";
 export const GETSalesStatisticsDatedReport: string = api + "api/admin/statistics/overview/from/";
 
-
+//Product Group
+export const POSTProductGroup: string = api + "api/admin/site-settings/product-groups/save";
+export const GETProductGroup: string = api + "api/admin/site-settings/product-groups";
 
 //Chats Endpoint
 export const POSTSendConvo: string = api + "api/client/chat/message/send";

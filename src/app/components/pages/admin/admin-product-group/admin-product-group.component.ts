@@ -7,8 +7,11 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
-import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
+import { ProductGroupService } from 'src/app/services/product-group/product-group.service';
+import { formatAdminCategories, formatAttributes, formatProductGroup } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
+import { ProductGroup } from 'src/assets/models/product-groups';
+import { Product } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-admin-product-group',
@@ -26,6 +29,7 @@ export class AdminProductGroupComponent {
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
+  productGroup$!: Observable<ProductGroup>;
 
   backdrop: string = 'true';
 	toastContent: string = "";
@@ -35,22 +39,25 @@ export class AdminProductGroupComponent {
   private refreshData$ = new Subject<void>();
   
   constructor(
-		  private attribute_service: AttributesService,
+		  private product_group: ProductGroupService,
 	) {
     
 	}
 	
   ngOnInit(): void{
     
-    this.attributes = this.refreshData$.pipe(
+    this.productGroup$ = this.refreshData$.pipe(
         startWith(undefined), 
-        switchMap(() => this.attribute_service.getAttribute()),
-        map((Response: any) => formatAttributes(Response)),
+        switchMap(() => this.product_group.getAdminProductGroup()),
+        map((Response: any) => formatProductGroup(Response)),
         tap(() => {
           this.table.loaded()
         })
     );
-
+      
+    this.productGroup$.subscribe(data =>{
+      console.log(data)
+    })
 
 
   }

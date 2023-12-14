@@ -18,6 +18,7 @@ import { DiscountProductList, DiscountProducts } from "src/assets/models/discoun
 import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
 import { Dashboard, DashboardList } from "src/assets/models/dashboard";
+import { ProductGroup, ProductGroupList } from "src/assets/models/product-groups";
 
 // Formatting
 
@@ -299,6 +300,13 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     id: data.id,
     number: data.number
   }))
+}
+export function formatProductGroup(response: ProductGroupList): ProductGroup {
+  return {
+    tops: response.data.tops,
+    bottoms: response.data.bottoms,
+  }
+
 }
 
 export function formatDashboard(response: DashboardList): Dashboard {

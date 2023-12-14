@@ -22,9 +22,9 @@
         [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
-        [tableHeader]="['ID','Name', 'Products']"
-        [tableRows]="['id', 'name', 'products']"
-        [tableData]="attributes"
+        [tableHeader]="['Tops','Bottoms']"
+        [tableRows]="['tops', 'bottoms']"
+        [tableData]="productGroup$"
         #triggerFunction
     ></app-table>
     
@@ -48,54 +48,5 @@
         (RefreshTable)="refreshTableData()"
     ></app-modal> 
     
-    <app-modal
-        modalId="edit"
-        modalTitle="Edit Attributes"
-        modalClass="modal-md"
-        [modalHideIcon]="true"
-        modalIcon="edit"
-        [modalEditAttribute]="true"
-        (SuccessToast)="SuccessToast($event)"
-        (WarningToasts)="WarningToast($event)"
-        (ErrorToasts)="ErrorToast($event)"
 
-        [selectedRowData]="selectedRowData"
-        [selectedRowDataForDelete]="selectedRowDataForDelete"
-        (RefreshTable)="refreshTableData()"
-    ></app-modal>
-    
-    <app-modal
-        modalId="delete"
-        modalTitle="Delete Attributes"
-        modalClass="modal-md"
-        [modalHideIcon]="true"
-        modalIcon="delete"
-        (SuccessToast)="SuccessToast($event)"
-        (WarningToasts)="WarningToast($event)"
-        (ErrorToasts)="ErrorToast($event)"
-
-        [modalDeleteAttribute]="true"
-        [selectedRowData]="selectedRowData"
-        [selectedRowDataForDelete]="selectedRowDataForDelete"
-        (RefreshTable)="refreshTableData()"
-        (hideMinus)="showMinusFunction()"
-
-    ></app-modal>  
-    
-    <app-modal
-        modalId="deleteMultiple"
-        modalTitle="Delete Attributes"
-        modalClass="modal-md"
-        [modalHideIcon]="true"
-        modalIcon="delete"
-        (SuccessToast)="SuccessToast($event)"
-        (WarningToasts)="WarningToast($event)"
-        (ErrorToasts)="ErrorToast($event)"
-        
-        [modalMultipleDeleteAttribute]="true"
-        (hideMinus)="showMinusFunction()"
-        [selectedRowData]="selectedRowData"
-        [selectedRowDataForDelete]="selectedRowDataForDelete"
-        (RefreshTable)="refreshTableData()"
-    ></app-modal>  
 </div>
