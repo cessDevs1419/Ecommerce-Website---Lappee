@@ -152,8 +152,7 @@ export class CategoryFormComponent {
 
     isChecked(item: any): boolean{
         const selectedAttributes = this.attribute_service.getSelectedAttribute();
-        return selectedAttributes.includes(item);
-        
+        return selectedAttributes.includes(item); 
     }
     
     onCheckboxChange(item: any) {

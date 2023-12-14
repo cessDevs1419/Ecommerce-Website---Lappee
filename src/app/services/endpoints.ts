@@ -118,7 +118,11 @@ export const POSTDiscount: string = api + "api/admin/products/discounts/store";
 //Dashboard Endpoint
 export const GETDashboard: string = api + "api/admin/dashboard";
 
-
+//Product Group
+export const GETProductRestock: string = api + "api/admin/products/restocks/products";
+export const POSTProductRestock: string = api + "api/admin/products/restocks/store";
+export const GETRestockReports: string = api + "api/admin/products/restocks";
+export const GETRestockReportsView: string = api + "api/admin/products/restocks/view/";
 //Sales Overview Endpoint
 export const GETProductStatistics: string = api + "api/admin/statistics/product/";
 export const GETSalesStatistics: string = api + "api/admin/statistics/overview";

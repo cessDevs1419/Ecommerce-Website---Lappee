@@ -456,12 +456,22 @@
                 >
 
                 </app-discount-form>
+
                 <app-chats
                     *ngIf="modalChat"
                     [size]="'chat-body-lg'"
                     [individual]="true"
                     [selectedRowData]="selectedRowData"
                 ></app-chats>
+
+                <app-restock-form
+                    *ngIf="modalRestocks"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                >
+
+                </app-restock-form>
         </div> 
 
     </div>

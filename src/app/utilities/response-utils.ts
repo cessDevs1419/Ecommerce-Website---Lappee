@@ -19,6 +19,7 @@ import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList,
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
 import { Dashboard, DashboardList } from "src/assets/models/dashboard";
 import { NewProductGroup, NewProductGroupList, ProductGroup, ProductGroupList } from "src/assets/models/product-groups";
+import { Restock, RestockList, RestockProducts, RestockProductsList, RestockView, RestockViewList } from "src/assets/models/restock";
 
 // Formatting
 
@@ -302,6 +303,9 @@ export function formatDeliveryInfo(response: DeliveryInfoList): DeliveryInfo[] {
     number: data.number
   }))
 }
+
+
+
 export function formatProductGroup(response: ProductGroupList): ProductGroup {
   return {
     tops: response.data.tops,
@@ -313,6 +317,28 @@ export function formatNewProductGroup(response: NewProductGroupList): NewProduct
   return response.data.map((data: NewProductGroup) => ({
       tops: data.tops,
       bottoms: data.bottoms
+    }));
+}
+
+export function formatRestockProductView(response: RestockViewList): RestockView {
+  return {
+    details: response.data.details,
+    contents: response.data.contents,
+  }
+}
+
+export function formatRestockList(response: RestockList): Restock[] {
+  return response.data.map((data: Restock) => ({
+      restock_id: data.restock_id,
+      items: data.items,
+      date: data.date
+    }));
+}
+
+export function formatRestockProductList(response: RestockProductsList): RestockProducts[] {
+  return response.data.map((data: RestockProducts) => ({
+      variant_id: data.variant_id,
+      name: data.name
     }));
 }
 

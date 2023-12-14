@@ -324,6 +324,7 @@ export class ProductFormComponent implements AfterViewInit {
         this.addProductForm.get('include')?.setValue(newValue);
         this.isProductInclude = newValue === 1;
       }
+      
     isStockZeroOrNegative(form: FormGroup): boolean {
         const stockControl = form.get('stock');
         if (stockControl?.value <= 0) {
@@ -1461,6 +1462,7 @@ export class ProductFormComponent implements AfterViewInit {
 
     }
     
+
     removeVariant(index: any){
         const attributesArray = this.addVariantForm.get('attributes') as FormArray;
         const imagesArray = this.addVariantForm.get('images') as FormArray;

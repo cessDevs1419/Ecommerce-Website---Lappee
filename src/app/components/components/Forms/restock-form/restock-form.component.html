@@ -1,1 +1,161 @@
-<p>restock-form works!</p>
+<div class="container">
+
+    <div class="body pt-0 pb-0  mt-3 ">
+
+        <div class="accordion border-0 ">
+            <div class="accordion-item mb-3 border-1 rounded-3" *ngFor="let form of variantForms; let i = index">
+                <div  class="border-0 p-0" *ngIf="!form.isVisible">
+                    <div *ngIf="variantsLists[i]; let variantControl; "
+                        class="{{formColor}} {{formBorderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                        <div class="m-auto row d-flex align-items-center w-100 ">
+                            <div class="col-sm-2 me-2">
+                                <div class="color-container border rounded-3 overflow-hidden" >
+                                    <i class="bi bi-bag fs-4 text-white"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                <div class="data w-100">
+                                    <div class="w-100 p-0 text-start d-flex align-items-center overflow-hidden mb-0">
+                                        <h1 class="fs-5 fw-bold mx-0 text-wrap text-truncate mb-0 {{formTextColor}}">{{variantControl.value.name}}</h1>
+                                    </div>
+                                    <div class="w-100 p-0 text-start d-flex align-items-center mt-0">
+                                        <p class="fs-6 m-0 mx-0 text-dark-emphasis mt-0">Quantity Restocked: {{variantControl.value.stock}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions position-relative">
+                            <div class="dropdown-start">
+                                <button 
+                                    id="actionBtn" 
+                                    class="dark-theme-border actionbtn btn btn-primary m-auto position-relative bg-none rounded-3 d-flex align-items-center justify-content-center p-2 {{formTextColor}}"
+                                    [class.activebtn]="activeButtonIndex === i"
+                                    (click)="showAction(i)"
+                                    data-bs-toggle="dropdown"
+                                    > 
+                                    <i class="bi bi-three-dots fs-3 lh-1 dark-theme-color"></i> 
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-dark p-0 border-0 box-shadow mt-2 rounded-3">
+                                    <ul class="z-3 action-button list-unstyled p-0" >
+                                        <li class="action-item rounded-3 text-decoration-none">
+                                            <button 
+                                                type="button"
+                                                class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                [attr.data-bs-target]="'#collapse' + i" 
+                                                [attr.aria-expanded]="form.isVisible" 
+                                                (click)="editVariant(i)"
+                                            > 
+                                                Edit
+                                            </button>
+                                            <div class="action-border border-1"></div>
+                                        </li>
+                                        <li class="action-item text-decoration-none ">
+                                            <button 
+                                                type="button"
+                                                class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                (click)="selectVariantItem(i)"
+                                            > 
+                                                Delete
+                                            </button>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                
+                <div [id]="'collapse' + i" class="{{formColor}} p-0 " [ngClass]="{'collapse mt-2': !form.isVisible, 'show ': form.isVisible, 'slide-up': !form.isVisible, 'slide-down': form.isVisible}" >
+                    <div class="accordion-body p-3">
+                        <div class="w-100 mb-3 text-start">
+                            <div  class="attribute-list-container overflow-hidden border border-dark-subtle rounded-3">
+                    
+                                <div class="input-group mb-3">
+                                    <input type="text" class="{{formTextColor}} text-white rounded-corner bg-transparent form-control border-start-0 border-top-0 border-end-0 py-3 px-3" placeholder="Search..." [(ngModel)]="searchString">
+                                    <button class="rounded-corner bg-transparent input-group-text border-start-0 border-top-0 border-end-0  border border-dark-subtle" id="AddVariants">
+                                        <i class="bi bi-search {{formTextColor}}"></i>
+                                    </button>
+                                </div>
+                                <!-- ATTRIBUTE LIST -->
+                                <form [formGroup]="selectedAttributeForm">
+                                    <ul class="attribute-list overflow-y-auto list-unstyled px-4  " >
+                                        <li  class="text-decoration-none mb-2 d-flex" *ngFor="let item of products | async | searchFilter: searchString; let i = index">
+                                            <label  >
+                                                <div class="input-group d-flex align-items-center">
+                                                    <input class="d-none form-check-input rounded-0 mt-0 border-dark-subtle cursor-pointer" 
+                                                        type="checkbox" 
+                                                        [checked]="isChecked(item)"
+                                                        (change)="onCheckboxChange(item)"
+                                                    />
+                                                    <p [ngClass]="isChecked(item) ? 'text-primary': ''" class="mx-2 m-auto cursor-pointer {{formTextColor}}">{{ item.name }}</p>
+                                                </div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </form>
+        
+                            </div>
+                        </div>
+                        <form [formGroup]="addRestocksForm">
+                            
+                            <div class="w-100 mb-3 text-start">
+                                <label for="addvariantQty" class="form-label text-start {{formTextColor}}">Add Stock</label>
+                                <div class="input-group mb-3">
+                                    <input 
+                                        type="number" 
+                                        [ngClass]="{'image-resolution-shadow': stockBorder &&  isStockZeroOrNegative(addRestocksForm)}"
+                                        class="form-control py-3 px-3 rounded-3 rounded-end-0 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
+                                        id="addvariantQty" 
+                                        name="addvariantQty" 
+                                        formControlName="new_stock" 
+                                        [value]="1"
+                                        min="0"  
+                                        step="1"
+                                        pattern="\d+"
+                                        required
+                                    >
+                                    <span class="input-group-text bg-grey " id="basic-addon2">QTY</span>
+                                </div>
+                                <p *ngIf="stockBorder && isStockZeroOrNegative(addRestocksForm)" class="text-danger">
+                                    Quantity should be greater than or equal to 1.
+                                </p>
+                            </div>
+
+                            <div class="modal-footer border-0 px-0">
+                                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary glow-primary" 
+                                    (click)="saveRestock(i)"
+                                >Confirm</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button 
+            type="btn"
+            class="w-100 border-3 rounded-1 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+            (click)="showRestocksForms()"
+            *ngIf="hideStocksValidationContainer"
+        >
+            <h1 class="text-dark-subtle-grey fs-3 lh-1 fw-bolder">+</h1>
+            <h4 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Product</h4>
+        </button>
+    </div>
+    
+        
+    <div class="modal-footer border-0 px-0">
+        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+        <button 
+            type="submit" 
+            class="btn btn-primary glow-primary" 
+            (click)="saveAll()"
+        >Confirm</button>
+    </div>
+</div>

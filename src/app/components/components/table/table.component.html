@@ -341,7 +341,7 @@
                                             <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
                                             <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                             <ng-template #notPrice>
-                                                <ng-container *ngIf="row === 'created_at' || row === 'updated_at'; else notDate">{{ item[row] | date}}</ng-container>
+                                                <ng-container *ngIf="row === 'created_at' || row === 'updated_at' || row === 'date'; else notDate">{{ item[row] | date}}</ng-container>
                                                 <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                                 <ng-template #notDate>
                                                     {{ item[row]}}

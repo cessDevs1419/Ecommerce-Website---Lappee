@@ -23,9 +23,9 @@
         [deliverStatus]="deliverStatus"
         [packStatus]="packStatus"
         [setFirstUpper]="true"
-        [tableHeader]="['Start Date','End Date', 'Discount', 'Type']"
-        [tableRows]="['created_at', 'end_at', 'discount', 'type']"
-        [tableData]="attributes"
+        [tableHeader]="['ID','Items', 'Date', ]"
+        [tableRows]="['restock_id', 'items', 'date']"
+        [tableData]="stocks"
 
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
@@ -34,19 +34,23 @@
     <!--MAIN-->
 
     <app-modal
-        modalId="view"
-        modalTitle="Customer Information"
-        modalTitleClass="mb-3"
-        modalSubTitle="{{selectedRowData?.user_id}}"
-        modalSubTitleClass="mt-3 fs-5 fw-bold"
-        modalClass="modal-md "
+        modalId="add"
+        modalTitle="Restock Items"
+        modalClass="modal-md"
         [modalHideIcon]="true"
-        modalIcon="view"
-        [allowAnotherSub]="true"
-        [modalViewOrders]="true"
-        (RefreshTable)="refreshTableData()"
+        [modalHideCloseBtn]="true"
+        modalIcon="add"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+        
+        [modalRestocks]="true"
         [selectedRowData]="selectedRowData"
-    ></app-modal>
+        [selectedRowDataForDelete]="selectedRowDataForDelete"
+        (RefreshTable)="refreshTableData()"
+    ></app-modal> 
+
+
     
     <app-modal
         modalId="deleteMultiple"
@@ -64,4 +68,46 @@
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
     ></app-modal>  
+
+    <div class="modal fade" id="view"  tabindex="-1">
+        <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-md" >
+            <div class="modal-content content-form rounded-4">
+                <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                    <div class="modal-title text-start">
+                        <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Restock Items </h1>
+                        <p  class="modal-title mt-0 fw-bolder text-dark-emphasis">Date: {{date | date}}</p>
+                    </div>
+                    <button #closeBtn type="button" class="btn-close btn-close-white " data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4">
+                    <ul class="list-unstyled w-100" *ngIf="(stockView | async) as data">
+                        <li class="text-decoration-none w-100" *ngFor="let item of data.contents">
+                          <div class="border-0 p-0">
+                            <div class="{{titleColor}} {{borderColor}} data-container d-flex align-items-center w-100 p-3 rounded rounded-3 border border-2">
+                              <div class="m-auto row d-flex align-items-center w-100 ">
+                                <div class="col-sm-2 me-2">
+                                  <div class="color-container border rounded-3 overflow-hidden" >
+                                    <i class="bi bi-bag fs-4 text-white"></i>
+                                  </div>
+                                </div>
+                                <div class="col-sm-9 d-flex align-content-center mt-2 mt-sm-0">
+                                  <div class="data w-100">
+                                    <div class="w-100 p-0 text-start d-flex align-items-center overflow-hidden mb-0">
+                                      <h1 class="fs-5 fw-bold mx-0 text-wrap text-truncate mb-0 {{titleColor}}">{{item.name}}</h1>
+                                    </div>
+                                    <div class="w-100 p-0 text-start d-flex align-items-center mt-0">
+                                      <p class="fs-6 m-0 mx-0 text-dark-emphasis mt-0">Quantity Restocked: {{item.quantity}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      
+                </div>
+            </div> 
+        </div>
+      </div>
 </div>
