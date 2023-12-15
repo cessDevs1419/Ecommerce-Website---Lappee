@@ -81,6 +81,7 @@ export function formatProducts(response: ProductList): Product[] {
     description: data.description,
     category: data.category,
     variants: data.variants,
+    discount: data.discount
   }));
 }
 
@@ -128,6 +129,7 @@ export function formatProductObj(response: any): Product {
     description: data.description,
     category: data.category,
     variants: data.variants,
+    discount: data.discount
   };
 }
 
@@ -574,6 +576,7 @@ export function formatProductsAndAttributes(response: ProductList): Product[] {
     description: data.description,
     variants: data.variants,
     category: data.category,
+    discount: data.discount
   }))
 }
 
