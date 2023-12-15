@@ -516,6 +516,7 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
       zip_code: data.data.zip_code,
       order_contents: data.data.order_contents,
       payment_proofs: data.data.payment_proofs,
+      name: data.data.name
       
   };
 }

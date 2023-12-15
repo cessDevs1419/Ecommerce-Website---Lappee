@@ -14,7 +14,7 @@
                                 <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
-                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.name}}</div>
+                                <div *ngIf="modalDataImg | async as item" class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{item.name}}</div>
                                 <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
@@ -192,7 +192,7 @@
                                 <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
-                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.name}}</div>
+                                <div *ngIf="modalDataImg | async as item" class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{item.name}}</div>
                                 <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
@@ -465,7 +465,7 @@
                                 <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
                                 <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
-                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.name}}</div>
+                                <div *ngIf="modalDataImg | async as item" class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{item.name}}</div>
                                 <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
                                     <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>

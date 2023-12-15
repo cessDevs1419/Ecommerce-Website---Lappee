@@ -156,6 +156,7 @@ export interface AdminOrderDetail {
     zip_code: number,
     order_contents: AdminOrderContent[],
     payment_proofs: string[],
+    name: string
 }
 
 export interface AdminOrderContent {
