@@ -79,12 +79,6 @@ export class ChatsComponent {
       content: new FormControl('', Validators.required)
     });
 
-    this.user = this.refreshData$.pipe(
-      startWith(undefined), 
-      switchMap(() => this.accountService.getLoggedUser()),
-      map((Response: any) => formatUser(Response))
-  );
-
   }
 
   ngOnInit(): void{
@@ -102,6 +96,7 @@ export class ChatsComponent {
 
       this.echo.listen('chat.' + id, 'MessageSent', (data: any) => {
 				this.refreshTableData()
+        this.refreshData.emit()
 			})
 
       if(this.router.url === '/admin/chats'){

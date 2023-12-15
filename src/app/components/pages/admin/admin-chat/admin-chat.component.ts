@@ -56,7 +56,6 @@ export class AdminChatComponent {
 
     this.echo.listen('admin.conversations', 'NewConversation', (data: any) => {
         this.refreshTableData()
-        console.log(data)
     })
 
     this.route.paramMap.subscribe((params) => {
