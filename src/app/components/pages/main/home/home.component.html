@@ -67,7 +67,7 @@
     </div>
 
     <app-outline-circle-spinner class="ms-3" [isBlue]="true" [size]="'medium'" *ngIf="isLoading"></app-outline-circle-spinner>
-    <app-product-carousel [products]="products" [itemsPerPage]="itemsPerPage"[hidden]="isLoading"></app-product-carousel>
+    <app-product-carousel [products]="bestSeller" [itemsPerPage]="itemsPerPage"[hidden]="isLoading"></app-product-carousel>
 
     <!-- <button class="btn btn-primary mt-5" (click)="toastRand()">Toast!</button> -->
 </div>
