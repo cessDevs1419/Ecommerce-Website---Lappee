@@ -46,8 +46,12 @@ export class OrderDetailsComponent {
       orders[0].order_contents.forEach((item: OrderContent) => {
         this.orderSubtotal += this.Number(item.sub_price)
       })
+
       if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
         this.orderStatusMode = 'cancel';
+      }
+      else if(orders[0].status == 300 || orders[0].status == 310 || orders[0].status == 320 || orders[0].status == 330){
+        this.orderStatusMode = 'return'
       }
       else {
         this.orderStatusMode = 'default';
@@ -131,8 +135,14 @@ export class OrderDetailsComponent {
       orders[0].order_contents.forEach((item: OrderContent) => {
         this.orderSubtotal += this.Number(item.sub_price)
       })
-      if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
-        this.orderStatusMode = 'cancel'
+       if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
+        this.orderStatusMode = 'cancel';
+      }
+      else if(orders[0].status == 300 || orders[0].status == 310 || orders[0].status == 320 || orders[0].status == 330){
+        this.orderStatusMode = 'return'
+      }
+      else {
+        this.orderStatusMode = 'default';
       }
     }) 
   }

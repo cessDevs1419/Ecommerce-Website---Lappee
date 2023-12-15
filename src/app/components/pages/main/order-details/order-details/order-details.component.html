@@ -22,7 +22,7 @@
                     <p class="m-0 fw-bold fs-4" [hidden]="true">Return Status</p>
                 </div>
                 <div>
-                    <button class="button-primary rounded-0" (click)="triggerUploadShipping()" [hidden]="true"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
+                    <button class="button-primary rounded-0" (click)="triggerUploadShipping()" *ngIf="order[0].status == 310"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
                 </div>
             </div>
             <div class="w-100 border-bottom my-2"></div>
@@ -93,39 +93,39 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Requested</p>
-                                <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
+                                <!-- <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p> -->
 
                             </div>
                         </li>
 
-                        <li class="progress-steps active-step">
+                        <li class="progress-steps" [ngClass]="order[0].status == 310 ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Confirmed</p>
-                                <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
+                                <!-- <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p> -->
 
                             </div>
                         </li>
 
-                        <li class="progress-steps" [ngClass]="order[0].confirmed_on ? 'active-step' : ''">
+                        <li class="progress-steps" [ngClass]="order[0].status == 320 ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">In Transit</p>
-                                <p class="steps-label m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p>
+                                <!-- <p class="steps-label m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p> -->
 
                             </div>
                         </li>
-                        <li class="progress-steps" [ngClass]="order[0].packed_date ? 'active-step' : ''">
+                        <li class="progress-steps" [ngClass]="order[0].status == 330 ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
                                     <i class="bi bi-box-seam"></i>
                                 </div>
                                 <p class="steps-label m-0">Item Returned</p>
-                                <p class="steps-label m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p>
+                                <!-- <p class="steps-label m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p> -->
                             </div>
                         </li>
                     </ul>
