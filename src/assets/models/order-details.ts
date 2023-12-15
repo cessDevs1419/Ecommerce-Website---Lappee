@@ -31,7 +31,9 @@ export interface OrderDetail {
     returning_process_date: string,
     return_transit_date: string,
     return_completed_completed: string,
-    shipping_fee: string
+    shipping_fee: string,
+    refund: string[],
+    return_transit_proof: string[]
 }
     
 

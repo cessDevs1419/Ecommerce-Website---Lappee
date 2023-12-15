@@ -13,6 +13,8 @@ import { ToasterComponent } from 'src/app/components/components/toaster/toaster/
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { User } from 'src/assets/models/user';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
+import { Gallery, GalleryItem } from 'ng-gallery';
+import { Lightbox } from 'ng-gallery/lightbox';
 
 @Component({
   selector: 'app-order-details',
@@ -21,9 +23,8 @@ import { ErrorHandlerService } from 'src/app/services/error-handler/error-handle
 })
 export class OrderDetailsComponent {
 
-
   Number = Number;
-  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService, private router: Router, private eh: ErrorHandlerService) {
+  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService, private router: Router, private eh: ErrorHandlerService, public gallery: Gallery, private lightbox: Lightbox) {
     this.orderId = String(this.route.snapshot.paramMap.get('orderId'))
   }
 
@@ -40,6 +41,9 @@ export class OrderDetailsComponent {
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 	private refreshData$ = new Subject<void>();
+
+  galleryId: string = "gallery" + this.orderId;
+  items: GalleryItem[] = [];
   
   ngOnInit(): void {
     this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
@@ -57,13 +61,26 @@ export class OrderDetailsComponent {
       else {
         this.orderStatusMode = 'default';
       }
+
+      this.initGallery([orders[0].return_transit_proof[0], orders[0].refund[0]]);
     }) 
 
   }
 
   refreshTableData(): void {
     this.refreshData$.next();
-}
+  }
+
+  initGallery(imgs: string[]) {
+    const galleryRef = this.gallery.ref(this.galleryId);
+    imgs.forEach((img) => {
+      galleryRef.addImage({src: img, thumb: img});
+    })
+  }
+
+  openLightbox(index: number){
+    this.lightbox.open(index, this.galleryId)
+  }
 
   addReview(item: OrderContent) {
     this.mode = 'add-review';

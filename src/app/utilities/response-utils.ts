@@ -500,7 +500,9 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     returning_process_date: data.returning_process_date,
     return_transit_date: data.return_transit_date,
     return_completed_completed: data.return_completed_completed,
-    shipping_fee: data.shipping_fee
+    shipping_fee: data.shipping_fee,
+    refund: data.refund,
+    return_transit_proof: data.return_transit_proof
   }))
 }
 

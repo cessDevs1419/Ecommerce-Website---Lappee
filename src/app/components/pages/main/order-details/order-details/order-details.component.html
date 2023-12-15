@@ -23,6 +23,7 @@
                 </div>
                 <div>
                     <button class="button-primary rounded-0" (click)="triggerUploadShipping(order[0].order_id)" *ngIf="order[0].status == 310"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
+                    <button class="m-0 button-primary" (click)="openLightbox(0)" *ngIf="order[0].status == 330">View Images</button>
                 </div>
             </div>
             <div class="w-100 border-bottom my-2"></div>
@@ -93,7 +94,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Requested</p>
-                                <p class="steps-label m-0">{{order[0].to_return_date | date:'short'}}</p>
+                                <p class="steps-label m-0">{{order[0].to_return_date | date:'shortDate'}}</p>
 
                             </div>
                         </li>
@@ -104,7 +105,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Confirmed</p>
-                                <p class="steps-label m-0" *ngIf="order[0].returning_process_date">{{order[0].returning_process_date | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].returning_process_date">{{order[0].returning_process_date | date:'shortDate'}}</p>
 
                             </div>
                         </li>
@@ -115,7 +116,7 @@
                                     <i class="bi bi-truck"></i>
                                 </div>
                                 <p class="steps-label m-0">In Transit</p>
-                                <p class="steps-label m-0" *ngIf="order[0].return_transit_date">{{order[0].return_transit_date | date:'short'}}</p> 
+                                <p class="steps-label m-0" *ngIf="order[0].return_transit_date">{{order[0].return_transit_date | date:'shortDate'}}</p> 
 
                             </div>
                         </li>
@@ -125,7 +126,7 @@
                                     <i class="bi bi-box-arrow-in-left"></i>
                                 </div>
                                 <p class="steps-label m-0">Item Returned</p>
-                                <p class="steps-label m-0" *ngIf="order[0].return_completed_completed">{{order[0].return_completed_completed | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].return_completed_completed">{{order[0].return_completed_completed | date:'shortDate'}}</p>
                             </div>
                         </li>
                     </ul>
