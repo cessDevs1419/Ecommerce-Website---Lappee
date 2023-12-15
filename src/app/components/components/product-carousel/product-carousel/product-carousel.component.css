@@ -31,7 +31,7 @@
 .card-image-overlay {
     position: absolute;
     z-index: 1;
-    background-color: var(--body-text);
+    background-color: var(--primary);
     color: #FFFFFF;
 }
 

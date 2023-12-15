@@ -18,6 +18,7 @@ export class ProductCarouselComponent {
   totalItems: number;
   itemGroups: CategoryProduct[][] = [];
   @ViewChild('carousel') carousel: ElementRef;
+  Number = Number
 
   filler: CategoryProduct = {
     product_id: '',
