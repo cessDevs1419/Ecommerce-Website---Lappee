@@ -112,8 +112,9 @@
             </div>
         </div>
 
-        <div class="col-2">
-            <span class="color-primary fw-bold">{{ this.cartItem.price | currency }}</span>
+        <div class="col-2 d-flex flex-column">
+            <span class="color-primary fw-bold">{{ this.priceConvert| currency }}</span>
+            <span class="muted-text text-decoration-line-through" *ngIf="this.cartItem.product.discount.value">{{this.cartItem.price | currency}}</span>
         </div>
 
         <div class="col-2">

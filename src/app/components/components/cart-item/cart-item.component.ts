@@ -25,7 +25,7 @@ export class CartItemComponent {
   maxStock: number = 0;
 
   ngOnInit(): void {
-    this.priceConvert = Number(this.cartItem.price);
+    this.priceConvert = this.calculateDiscount();
     this.updateStockInfo();
   }
 
@@ -98,5 +98,19 @@ export class CartItemComponent {
 
   handleEditItem(item: CartItem): void {
     this.editCartItem.emit(item);
+  }
+
+  calculateDiscount(): number {
+    if(!this.cartItem.product.discount.value){
+      return Number(this.cartItem.price)
+    }
+    else {
+      if(this.cartItem.product.discount.type == 302){
+        return Number(Number(this.cartItem.price) - (Number(this.cartItem.price) * (Number(this.cartItem.product.discount.value)/100)));
+      }
+      else {
+        return Number(Number(this.cartItem.price) - (Number(this.cartItem.product.discount.value)))
+      }
+    }
   }
 }

@@ -184,6 +184,74 @@ export class CartComponent {
     console.log(this.selectAllFlag);
   }
 
+  calculateDiscount(cartIndex: number, variantIndex: number): number {
+    let price = Number(this.cartContents[cartIndex].product.variants[variantIndex].price);
+    let product = this.cartContents[cartIndex].product;
+
+    if(!product.discount.value){
+      
+      return price;
+    }
+
+    else {
+      if(product.discount.type == 302){
+        return Number(price - (price * (Number(product.discount.value)/100)));
+      }
+      else {
+        return Number(price - (Number(product.discount.value)))
+      }
+    }
+  }
+
+  calculateDiscountOrderList(cartIndex: number, variantIndex: number): number {
+    let price = Number(this.orderList[cartIndex].product.variants[variantIndex].price);
+    let product = this.orderList[cartIndex].product;
+
+    if(!product.discount.value){
+      
+      return price;
+    }
+
+    else {
+      if(product.discount.type == 302){
+        return Number(price - (price * (Number(product.discount.value)/100)));
+      }
+      else {
+        return Number(price - (Number(product.discount.value)))
+      }
+    }
+  }
+
+  calculateDiscountCartItemVariant(cartItem: CartItem, variantIndex: number): number {
+    let price = Number(cartItem.product.variants[variantIndex].price)
+
+    if(!cartItem.product.discount.value){
+      return price
+    }
+    else {
+      if(cartItem.product.discount.type == 302){
+        return price - (price * (Number(cartItem.product.discount.value)/100));
+      }
+      else {
+        return Number(price - (Number(cartItem.product.discount.value)))
+      }
+    }
+  }
+
+  calculateDiscountFromItem(cartItem: CartItem): number {
+    if(!cartItem.product.discount.value){
+      return Number(cartItem.price)
+    }
+    else {
+      if(cartItem.product.discount.type == 302){
+        return Number(Number(cartItem.price) - (Number(cartItem.price) * (Number(cartItem.product.discount.value)/100)));
+      }
+      else {
+        return Number(Number(cartItem.price) - (Number(cartItem.product.discount.value)))
+      }
+    }
+  }
+
   matchOrderListToCart(index: number): number {
     let matchindex =-1;
     let orderlistvariant = this.orderList[index].variant;
@@ -236,7 +304,9 @@ export class CartComponent {
 
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
-      this.subtotal += Number(this.cartContents[index].product.variants[variantIndex].price) * this.cartContents[index].quantity;
+      // this.subtotal += Number(this.cartContents[index].product.variants[variantIndex].price) * this.cartContents[index].quantity;
+      console.log(this.calculateDiscount(index, variantIndex))
+      this.subtotal += this.calculateDiscount(index, variantIndex) * this.cartContents[index].quantity;
     }
     /* else {
       this.subtotal += this.cartContents[index].product.price * this.cartContents[index].quantity;
@@ -311,7 +381,7 @@ export class CartComponent {
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
-        this.subtotal -= Number(this.orderList[i].product.variants[variantIndex].price) * this.orderList[i].quantity;
+        this.subtotal -= this.calculateDiscountOrderList(i, variantIndex) * this.orderList[i].quantity;
         console.log('Match found at index ' + i);
       }
     }
@@ -338,7 +408,7 @@ export class CartComponent {
     this.cartContents[Number(params[0])].quantity = Number(params[1]);
     let updatedSubtotal: number = 0;
     this.orderList.forEach(item => {
-      updatedSubtotal += Number(item.product.variants[variantIndex].price) * item.quantity;
+      updatedSubtotal += this.calculateDiscountCartItemVariant(item, variantIndex) * item.quantity;
     })
 
     this.subtotal = updatedSubtotal;
