@@ -11,7 +11,7 @@
     <div id="carouselExample" class="carousel slide my-5" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div *ngFor="let banner of banners | async; index as i" class="carousel-item active">
-            <img src={{banner.path}} class="img-fluid w-100" alt="...">
+            <img src={{banner.path}} class="img-fluid w-100" alt="..." rel="preload">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">

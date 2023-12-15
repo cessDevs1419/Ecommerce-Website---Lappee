@@ -90,6 +90,9 @@ export class CartItemComponent {
   }
 
   handleRemoveItem(variant_id: string): void {
+    if(this.isIncluded){
+      this.removeOrderList.emit(this.cartItem);
+    }
     this.removeCartItem.emit(this.cartItem);
   }
 

@@ -262,6 +262,10 @@ export class CartComponent {
 
       this.cart.removeItem(index);
       this.cartContents = this.cart.getItems();
+
+      if(this.orderList.includes(params.item)){
+        this.removeFromOrder(params.item);  
+      }
     }
   }
 
