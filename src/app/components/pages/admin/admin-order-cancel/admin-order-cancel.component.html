@@ -36,10 +36,7 @@
 
 <app-modal
     modalId="view"
-    modalTitle="Customer Information"
-    modalTitleClass="mb-3"
-    modalSubTitle="{{selectedRowData?.user_id}}"
-    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    [allowAnotherSub]="false"
     modalClass="modal-lg"
     [modalHideIcon]="true"
     modalIcon="view"

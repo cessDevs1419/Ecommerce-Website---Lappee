@@ -5,7 +5,7 @@
 
             <div class="modal-title-container mb-0 container">
                 <div class="modal-header px-0 d-flex justify-content-between align-items-start border-0">
-                    <div class="modal-title text-start">
+                    <div class="modal-title text-start" *ngIf="modalTitle">
                         <div class="title d-flex align-items-center">
                             <ng-container *ngIf="modalHideIcon">
                                 <i *ngIf="modalIcon === 'add'" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
