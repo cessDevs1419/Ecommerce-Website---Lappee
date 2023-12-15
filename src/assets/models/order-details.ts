@@ -26,7 +26,12 @@ export interface OrderDetail {
     province: string,
     zip_code: string,
     contact_number: string|null,
-    payment_proofs: string[]
+    payment_proofs: string[],
+    to_return_date: string,
+    returning_process_date: string,
+    return_transit_date: string,
+    return_completed_completed: string,
+    shipping_fee: string
 }
     
 

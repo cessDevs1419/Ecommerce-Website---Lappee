@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./upload-shipping-proof.component.css']
 })
 export class UploadShippingProofComponent {
+
+  @Input() order: string = ""
 
   imgname: string;
   imgpath: string;
@@ -17,6 +19,7 @@ export class UploadShippingProofComponent {
   @ViewChild('shippingProofInput') imginput: ElementRef;
 
   @Output() dismiss: EventEmitter<any> = new EventEmitter<any>();
+  @Output() emitShippingProof = new EventEmitter<{id: string, file: File}>();
 
   shippingProofForm = new FormGroup({
     shippingProof: new FormControl('', Validators.required)
@@ -52,9 +55,8 @@ export class UploadShippingProofComponent {
 
   validateUpload(): void {
     if(this.shippingProofForm.valid){
-      let formdata: any;
-      formdata.append('image', this.shippingProof?.value);
-
+      this.emitShippingProof.emit({id: this.order, file: this.imgfile});
+      console.log(this.imgfile);
       // send form data
     }
     else {

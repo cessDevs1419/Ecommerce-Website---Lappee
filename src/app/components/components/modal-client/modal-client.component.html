@@ -17,7 +17,7 @@
                 <app-cancel-order *ngSwitchCase="'cancel-order'" [order]="this.order" (dismiss)="dismiss()" (emitCancel)="emitCancelOrder($event)"></app-cancel-order>
                 <app-setup-reminder *ngSwitchCase="'setup-reminder'" (dismiss)="dismiss()"></app-setup-reminder>
                 <app-my-styles-primer *ngSwitchCase="'my-styles-primer'" (dismiss)="dismissMyStyles($event)"></app-my-styles-primer>
-                <app-upload-shipping-proof *ngSwitchCase="'upload-shipping-proof'" (dismiss)="dismiss()"></app-upload-shipping-proof>
+                <app-upload-shipping-proof *ngSwitchCase="'upload-shipping-proof'" (dismiss)="dismiss()" (emitShippingProof)="shippingProofEmit($event)"></app-upload-shipping-proof>
                 <app-return-order *ngSwitchCase="'return-order'" [order]="order" (emitReturn)="emitReturnOrder($event)" (dismiss)="dismiss()"></app-return-order>
             </div>
         </div>

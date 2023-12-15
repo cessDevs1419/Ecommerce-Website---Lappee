@@ -1,5 +1,5 @@
 <div class="container-md mt-5">
-    <app-modal-client [mode]="this.mode" (cancelOrderOutput)="cancelOrderConfirm($event)" (emitActivateToast)="toast($event)" (reviewSuccess)="refreshReviews()" (returnOrderOutput)="returnOrderInitiate($event)"></app-modal-client>
+    <app-modal-client [mode]="this.mode" (cancelOrderOutput)="cancelOrderConfirm($event)" (emitActivateToast)="toast($event)" (reviewSuccess)="refreshReviews()" (returnOrderOutput)="returnOrderInitiate($event)" (emitShippingProof)="shippingProofUpload($event)"></app-modal-client>
     <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [limitWidth]="false" [maxToastsShown]="1" #toaster></app-toaster>
     <div *ngIf="orderDetails | async as order">
         <div class="bg-light-gray p-3 d-flex justify-content-between align-items-center">
@@ -93,7 +93,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Requested</p>
-                                <!-- <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p> -->
+                                <p class="steps-label m-0">{{order[0].to_return_date | date:'short'}}</p>
 
                             </div>
                         </li>
@@ -104,7 +104,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Confirmed</p>
-                                <!-- <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p> -->
+                                <p class="steps-label m-0">*ngIf="order[0].returning_process_date">{{order[0].confirmed_on | date:'short'}}</p>
 
                             </div>
                         </li>
@@ -115,7 +115,7 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">In Transit</p>
-                                <!-- <p class="steps-label m-0" *ngIf="order[0].confirmed_on">{{order[0].confirmed_on | date:'short'}}</p> -->
+                                <p class="steps-label m-0" *ngIf="order[0].return_transit_date">{{order[0].confirmed_on | date:'short'}}</p> 
 
                             </div>
                         </li>
@@ -125,7 +125,7 @@
                                     <i class="bi bi-box-seam"></i>
                                 </div>
                                 <p class="steps-label m-0">Item Returned</p>
-                                <!-- <p class="steps-label m-0" *ngIf="order[0].packed_date">{{order[0].packed_date | date:'short'}}</p> -->
+                                <p class="steps-label m-0" *ngIf="order[0].return_completed_completed">{{order[0].packed_date | date:'short'}}</p>
                             </div>
                         </li>
                     </ul>
@@ -175,12 +175,12 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <p class="m-0 fw-bold">Shipping</p>
-                    <p class="">{{60 | currency}} </p>
+                    <p class="">{{ order[0].shipping_fee | currency}} </p>
                 </div>
                 <div class="w-100 border-bottom my-2"></div>
                 <div class="d-flex justify-content-between align-items-center">
                     <p class="m-0 fw-bold">Grand Total</p>
-                    <p class="fw-bold fs-5 m-0">{{orderSubtotal + 60 | currency}}</p>
+                    <p class="fw-bold fs-5 m-0">{{orderSubtotal + Number(order[0].shipping_fee) | currency}}</p>
                 </div>
                 <div class="w-100 border-bottom my-2"></div>
                 <div class="d-flex justify-content-between align-items-center">

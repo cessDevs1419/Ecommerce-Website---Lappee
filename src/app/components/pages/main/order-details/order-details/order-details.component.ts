@@ -151,4 +151,22 @@ export class OrderDetailsComponent {
     this.mode = 'upload-shipping-proof'
     this.modal.uploadShippingProof();
   }
+
+  shippingProofUpload(params: {id: string, file: File}) {
+    console.log('cancel req')
+    let formData: any = new FormData();
+    formData.append('order_id', params.id);
+    formData.append('proofs[]', params.file);
+    
+    this.orderService.postShippingProof(formData).subscribe({
+      next: (response: any) => {
+        this.toaster.showToast('Success!', 'Your shipping proof has been uploaded.', 'default');
+        this.orderStatusMode = 'return';
+        this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
+      },
+      error: (err: any) => {
+        this.toaster.showToast('Oops!', err.error.message, 'negative');
+      }
+    })
+  }
 } 

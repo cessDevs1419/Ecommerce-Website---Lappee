@@ -25,6 +25,7 @@ export class ModalClientComponent {
   @Output() emitEditCart = new EventEmitter<{newCartItem: CartItem, cartIndex: number}>
   @Output() reviewSuccess = new EventEmitter();
   @Output() returnOrderOutput = new EventEmitter<{id: string, reason: string}>();
+  @Output() emitShippingProof = new EventEmitter<{id: string, file: File}>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -76,6 +77,10 @@ export class ModalClientComponent {
     this.mode = 'upload-shipping-proof';
     this.modalTitle = 'Upload Proof of Shipping';
     this.show();
+  }
+
+  shippingProofEmit(params: {id: string, file: File}){
+    this.emitShippingProof.emit(params);
   }
 
   // My Styles Primer

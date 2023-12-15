@@ -495,7 +495,12 @@ export function formatOrderDetails(response: OrderList): OrderDetail[] {
     province: data.province,
     zip_code: data.zip_code,
     contact_number: data.contact_number,
-    payment_proofs: data.payment_proofs
+    payment_proofs: data.payment_proofs,
+    to_return_date: data.to_return_date,
+    returning_process_date: data.returning_process_date,
+    return_transit_date: data.return_transit_date,
+    return_completed_completed: data.return_completed_completed,
+    shipping_fee: data.shipping_fee
   }))
 }
 
