@@ -1,0 +1,42 @@
+{
+    "success": true,
+    "message": "Success",
+    "data": [
+        {
+            "id": "prod65676338a16ce",
+            "name": "ONLV Trousers",
+            "description": "<p>Specially made trousers for fashionistas.</p>",
+            "category": "cat655bb7d64dfee",
+            "discount": [],
+            "variants": [
+                {
+                    "variant_id": "prodvrnt65676338a2261",
+                    "product_id": "prod65676338a16ce",
+                    "variant_name": "Night Black",
+                    "stock": 1937,
+                    "price": 599,
+                    "attributes": [
+                        {
+                            "attribute_id": "attrib6559e4e8ed8e2",
+                            "category_attribute_id": "655bb7d64e656",
+                            "attribute_name": "Color",
+                            "value": "Arsenic"
+                        },
+                        {
+                            "attribute_id": "attrib6559e4e3a9dd8",
+                            "category_attribute_id": "655bb7d64e659",
+                            "attribute_name": "Size",
+                            "value": "Medium"
+                        }
+                    ],
+                    "my_styles_image": [
+                        "http://localhost:8000/storage/images/products/prod65676338a16ce/variants/prodvrnt65676338a2261/my-styles.png"
+                    ],
+                    "images": [
+                        "http://localhost:8000/storage/images/products/prod65676338a16ce/variants/prodvrnt65676338a2261/MS0o66wVwEs30gmzQVR3S59PktGFzxq2FAW8ez1o.png"
+                    ]
+                }
+            ]
+        }
+    ]
+}
