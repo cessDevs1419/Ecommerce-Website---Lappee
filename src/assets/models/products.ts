@@ -70,8 +70,8 @@ export interface CategoryProduct {
     product_id: string,
     name: string,
     price: number,
+    discount: Discount,
     preview_image: string,
-    discount?: Discount
 }
 
 export interface Discount {

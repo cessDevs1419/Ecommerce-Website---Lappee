@@ -23,7 +23,16 @@ export class ProductCarouselComponent {
     product_id: '',
     name: '',
     price: 0,
-    preview_image: ''
+    preview_image: '',
+    discount: {
+      id: '',
+      type: 0,
+      created_at: '',
+      updated_at: '',
+      from: '',
+      to: '',
+      value: ''
+    }
   }
 
   ngOnInit(): void {

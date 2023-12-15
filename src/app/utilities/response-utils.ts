@@ -150,7 +150,8 @@ export function formatProductSuggestion(response: any): CategoryProduct[] {
         product_id: data.product_id,
         name: data.name,
         price: data.price,
-        preview_image: data.preview_image
+        preview_image: data.preview_image,
+        discount: data.discount
       }))
   }
 
@@ -159,7 +160,8 @@ export function formatCategoryProduct(response: any): CategoryProduct[] {
     product_id: data.product_id,
     name: data.name,
     price: data.price,
-    preview_image: data.preview_image
+    preview_image: data.preview_image,
+    discount: data.discount
   }))
 }
 

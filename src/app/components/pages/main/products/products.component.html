@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="d-flex flex-row" *ngIf="match.discount.type == 302">
-                            <p class="h2 m-0">{{ (this.selectedPrice * ((Number(match.discount.value)/100))) | currency}}</p>
+                            <p class="h2 m-0">{{ this.selectedPrice - (this.selectedPrice * ((Number(match.discount.value)/100))) | currency}}</p>
                             <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
                             <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value}}%</div>
                         </div>
@@ -229,7 +229,7 @@
     <div class="row mt-3">
        <div class="fs-2 p-3">You May Also Like</div>
        <div class="px-3">
-        <app-product-grid [products]="this.suggestProduct" [searchString]="" [selfReload]="true" class="row"></app-product-grid>
+        <app-product-grid [products]="this.suggestProduct" [selfReload]="true" class="row"></app-product-grid>
        </div>
     </div>
 </div>
