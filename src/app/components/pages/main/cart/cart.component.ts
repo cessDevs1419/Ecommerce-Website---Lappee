@@ -444,6 +444,8 @@ export class CartComponent {
         formData.append('proofs[]', this.imgfile);
       }
 
+      formData.append('shipping_fee', String(this.shippingFee))
+
       console.log(formData);
 
       this.orderService.postOrder(formData).subscribe({
