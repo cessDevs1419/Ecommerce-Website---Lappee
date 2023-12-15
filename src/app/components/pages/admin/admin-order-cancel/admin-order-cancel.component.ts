@@ -25,7 +25,7 @@ export class AdminOrderCancelComponent {
   toastTheme: string = "default";  
 
   orders!: Observable<AdminOrderCancelRequest[]>;
-ordersDetails!: Observable<AdminOrderDetail>;
+	ordersDetails$!: Observable<any>;
   ordersContents$: Observable<AdminOrderContent[]>;
 
   

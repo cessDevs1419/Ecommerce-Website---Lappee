@@ -42,15 +42,17 @@
     modalTitleClass="mb-3"
     modalSubTitle="{{selectedRowData?.user_id}}"
     modalSubTitleClass="mt-3 fs-5 fw-bold"
-    modalClass="modal-md "
+    modalClass="modal-lg"
     [modalHideIcon]="true"
     modalIcon="view"
     [allowAnotherSub]="true"
-    [modalViewOrders]="true"
+    [modalViewOrder]="true"
     (RefreshTable)="refreshTableData()"
     [selectedRowData]="selectedRowData"
-    [modalCancelledData]="orders"
+    [orderData]="orders"
     [modalSubData]="ordersContents$"
+    [modalDataImg]="ordersDetails$"
+
 ></app-modal>
 
 <app-modal

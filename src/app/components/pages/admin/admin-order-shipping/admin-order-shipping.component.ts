@@ -24,7 +24,7 @@ export class AdminOrderShippingComponent {
   toastTheme: string = "default";  
 
   orders!: Observable<AdminOrder[]>;
-ordersDetails!: Observable<AdminOrderDetail>;
+	ordersDetails$!: Observable<any>;
   ordersContents$: Observable<AdminOrderContent[]>;
 
   
@@ -69,19 +69,19 @@ ngOnInit(): void{
     this.selectedRowDataForDelete = rowData; 
   }
   onRowDataSelected(rowData: any) {
-      this.selectedRowData = rowData;
-
-      this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
-          next: (response: any) => {
-              const data = formatAdminOrderDetail(response);
-              this.ordersContents$ = of(data.order_contents); 
-          },
-          error: (error: HttpErrorResponse) => {
-              console.log(error);
-          }
-      }); 
-
-  }
+    this.selectedRowData = rowData;
+    this.service.getAdminOrderDetail(this.selectedRowData.id).subscribe({
+        next: (response: any) => {
+            const data = formatAdminOrderDetail(response);
+            this.ordersContents$ = of(data.order_contents); 
+            this.ordersDetails$ = of(data); 
+        },
+        error: (error: HttpErrorResponse) => {
+            console.log(error);
+        }
+    }); 
+    
+}
       
   getDate(event: any){
       console.log(event)

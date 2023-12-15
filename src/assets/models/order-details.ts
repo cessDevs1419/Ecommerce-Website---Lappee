@@ -155,13 +155,34 @@ export interface AdminOrderDetail {
     province: string,
     zip_code: number,
     order_contents: AdminOrderContent[],
-    payment_proofs: string[]
+    payment_proofs: string[],
 }
 
 export interface AdminOrderContent {
-    product_id: string,
-    quantity: number,
-    sub_price: string
+    order_id: string,
+    ordered_on: string,
+    conversation_id: string,
+    status: number,
+    status_name: string,
+    confirmed_on: string,
+    packed_date: string,
+    shipped_date: string,
+    delivered_date: string,
+    order_contents: OrderContent[],
+    cancellable: boolean,
+    address: string,
+    city: string,
+    province: string,
+    zip_code: string,
+    contact_number: string|null,
+    payment_proofs: string[],
+    to_return_date: string,
+    returning_process_date: string,
+    return_transit_date: string,
+    return_completed_completed: string,
+    shipping_fee: string,
+    refund: string[],
+    return_transit_proof: string[]
 }
 
 export interface OrderReturnList {

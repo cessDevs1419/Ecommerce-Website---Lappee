@@ -103,7 +103,6 @@ export class AdminReturnComponent {
                 const data = formatAdminOrderDetail(response);
                 this.ordersContents$ = of(data.order_contents); 
                 this.ordersDetails$ = of(data); 
-                console.log(data)
             },
             error: (error: HttpErrorResponse) => {
                 console.log(error);
