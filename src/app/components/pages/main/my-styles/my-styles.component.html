@@ -110,6 +110,10 @@
                                     </div>
                                 </label>
                             </div>
+
+                            <div class="" *ngIf="Var1Suggestion.length == 0">
+                                There are no popular pairings for this item yet.
+                            </div>
                         </div>
 
                     </div>
@@ -126,6 +130,10 @@
                                         <img [src]="product.variants[0].my_styles_image!.length > 0 ? product.variants[0].my_styles_image![0] : product.variants[0].images[0]" class="img-fluid">
                                     </div>
                                 </label>
+                            </div>
+
+                            <div class="" *ngIf="Var2Suggestion.length == 0">
+                                There are no popular pairings for this item yet.
                             </div>
                         </div>
                     </div>
