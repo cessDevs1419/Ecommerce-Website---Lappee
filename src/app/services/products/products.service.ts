@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -68,6 +68,12 @@ export class ProductsService {
   getProductsTrending(): Observable<any>{
     // console.log(this.http.get<ProductList>(GETProducts))
     return this.http.get<ProductList>(GETProductsTrending);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
+
+  getProductsBestSeller(): Observable<any>{
+    // console.log(this.http.get<ProductList>(GETProducts))
+    return this.http.get<ProductList>(GETProductsBestSeller);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
     
@@ -142,5 +148,10 @@ export class ProductsService {
 
   postMyStylesRecord(data: FormData): Observable<any> {
     return this.http.post(POSTMyStylesRecord, data, this.httpOptions)
+  }
+
+  getMyStylesSuggestions(id: string): Observable<any> {
+    return this.http.get(GETMyStylesSuggest + id, this.httpOptions)
+    //return this.http.get('../../assets/sampleData/product_suggestion.json')
   }
 }

@@ -31,7 +31,7 @@
                         <div class="d-flex flex-row" *ngIf="match.discount.type == 301">
                             <p class="h2 m-0">{{this.selectedPrice - Number(match.discount.value) | currency}}</p>
                             <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
-                            <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value | currency}}</div>
+                            <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value | currency: 'PHP': 'symbol' : '1.0-0'}}</div>
                         </div>
 
                         <div class="d-flex flex-row" *ngIf="match.discount.type == 302">

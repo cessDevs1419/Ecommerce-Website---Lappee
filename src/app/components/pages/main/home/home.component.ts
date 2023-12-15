@@ -30,6 +30,7 @@ export class HomeComponent {
   categories: Observable<Category[]>;
   products: CategoryProduct[] = [];
   trending: CategoryProduct[] = [];
+  bestSeller: CategoryProduct[] = [];
 
   isLoading: boolean = true;
   mode: string = "setup-reminder";
@@ -72,6 +73,13 @@ export class HomeComponent {
     this.productsService.getProductsTrending().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
       next: (products: CategoryProduct[]) => {
         this.trending = products;
+        this.isLoading = false;
+      },
+    });
+
+    this.productsService.getProductsBestSeller().pipe(map((response: any) => formatCategoryProduct(response))).subscribe({
+      next: (products: CategoryProduct[]) => {
+        this.bestSeller = products;
         this.isLoading = false;
       },
     });

@@ -32,7 +32,7 @@
                     
                                             <div *ngIf="item.discount">
                                                 <div class="product-price fs-6 fs-lg-5 fw-bold" *ngIf="item.discount?.type == 301">
-                                                    {{item.price - Number(item.discount.value) | currency}}
+                                                    {{item.price - Number(item.discount.value) | currency: 'PHP': 'symbol' : '1.0-0'}}
                                                 </div>
                     
                                                 <div class="product-price fs-6 fs-lg-5 fw-bold" *ngIf="item.discount?.type == 302">

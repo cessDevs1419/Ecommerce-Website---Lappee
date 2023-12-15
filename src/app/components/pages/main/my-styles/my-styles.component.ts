@@ -39,6 +39,9 @@ export class MyStylesComponent {
   products: Observable<MyStyleProduct>;
   productsCache: MyStyleProduct;
 
+  Var1Suggestion: Product[];
+  Var2Suggestion: Product[];
+
   // items in catalogs
   variantsTop: Variant[] = [];
   variantsBot: Variant[] = [];
@@ -122,7 +125,7 @@ export class MyStylesComponent {
       }
     )
 
-    this.showPrimer();
+    //this.showPrimer();
   }
 
   ngOnChanges(): void {
@@ -259,6 +262,7 @@ export class MyStylesComponent {
     this.checkoutVariant1 = variant;
     this.modelCV1 = variant;
     console.log(this.selectedVariant1);
+    this.loadSuggestionsVar1(variant.variant_id);
   }
 
   selectVariant2(variant: Variant): void {
@@ -266,6 +270,7 @@ export class MyStylesComponent {
     this.checkoutVariant2 = variant;
     this.modelCV2 = variant;
     console.log(this.selectedVariant1);
+    this.loadSuggestionsVar2(variant.variant_id);
   }
 
   modelCV1Change(event: Variant) {
@@ -365,6 +370,32 @@ export class MyStylesComponent {
     let instance = new bootstrap.Carousel(this.carousel.nativeElement);
     instance.prev();
   }
+
+  loadSuggestionsVar1(id: string): void {
+    //activate loader
+
+    this.productsService.getMyStylesSuggestions(id).subscribe({
+      next: (response: any) => {
+        this.Var1Suggestion = formatProducts(response);
+        console.log(response);
+        // end loader
+      }
+    })
+  }
+
+  loadSuggestionsVar2(id: string): void {
+    //activate loader
+
+    this.productsService.getMyStylesSuggestions(id).subscribe({
+      next: (response: any) => {
+        this.Var2Suggestion = formatProducts(response);
+        console.log(response);
+        // end loader
+      }
+    })
+  }
+
+
 
   addToCart(): void {
     let product1 = this.matchVariantProduct(this.checkoutVariant1);

@@ -25,8 +25,10 @@ export const GETProductsByCategory: string = api + "api/client/products/category
 export const GETProductsAll: string = api + "api/client/products/all"
 export const GETProductsSuggestions: string = api + "api/client/products/suggest/"
 export const GETProductsTrending: string = api + "api/client/products/trending"
+export const GETProductsBestSeller: string = api + "api/client/products/best-seller"
 export const GETMyStylesProducts: string = api + "api/client/products/my-styles"
 export const POSTMyStylesRecord: string = api + "api/client/my-style/record"
+export const GETMyStylesSuggest: string = api + "api/client/my-style/suggest/"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";
