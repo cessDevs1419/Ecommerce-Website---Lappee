@@ -9,6 +9,7 @@ export interface Product {
     name: string,
     description: string,
     category: string,
+    discount?: Discount,
     variants: Variant[],
 }
 
@@ -69,7 +70,18 @@ export interface CategoryProduct {
     product_id: string,
     name: string,
     price: number,
-    preview_image: string
+    preview_image: string,
+    discount?: Discount
+}
+
+export interface Discount {
+    id: string,
+    type: number,
+    from: string,
+    to: string,
+    value: string,
+    created_at: string,
+    updated_at: string
 }
 
 export interface CartItem {
