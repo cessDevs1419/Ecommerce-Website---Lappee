@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus, GETAdminOrderToPack, GETAdminOrderToShip, GETAdminOrderShipping, GETAdminOrderDelivered, GETAdminOrderPending, POSTCancelOrder, GETAdminOrderCancel, GETAdminOrderCancelled, PATCHCancel, PATCHDeny, GETAdminOrderHold, PATCHHold, POSTImgReturn, PATCHReturnConfirm, PATCHReturnViewed } from '../endpoints';
+import { GETOrderDetail, GETOrderDetailByUser, POSTOrder, GETAdminOrderDetail, GETOrder, PATCHPackStatus, PATCHShipStatus, PATCHDeliverStatus, PATCHToShipStatus, GETAdminOrderToPack, GETAdminOrderToShip, GETAdminOrderShipping, GETAdminOrderDelivered, GETAdminOrderPending, POSTCancelOrder, GETAdminOrderCancel, GETAdminOrderCancelled, PATCHCancel, PATCHDeny, GETAdminOrderHold, PATCHHold, POSTImgReturn, PATCHReturnConfirm, PATCHReturnViewed, PATCHReqReturn, POSTConfirmTransit } from '../endpoints';
 import { Observable } from 'rxjs';
 import { Order } from 'src/assets/models/products';
 
@@ -103,6 +103,14 @@ export class OrderService {
   
   postImgForReturn(data: FormData): Observable<any> {
     return this.http.post(POSTImgReturn, data, this.httpOptions);
+  }
+
+  patchReturnOrderInitiate(data: FormData): Observable<any> {
+    return this.http.patch(PATCHReqReturn, data, this.httpOptions);
+  }
+
+  postShippingProof(data: FormData): Observable<any> {
+    return this.http.post(POSTConfirmTransit, data, this.httpOptions);
   }
   
 }

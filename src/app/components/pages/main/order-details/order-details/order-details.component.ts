@@ -32,6 +32,8 @@ export class OrderDetailsComponent {
   orderDetails: Observable<OrderDetail[]>;
   orders!: Observable<AdminOrder[]>;
 
+  orderStatusMode: string;
+
   orderSubtotal: number = 0;
   isCancelRequest: boolean = false;
   @ViewChild(ModalClientComponent) modal: ModalClientComponent;
@@ -45,7 +47,10 @@ export class OrderDetailsComponent {
         this.orderSubtotal += this.Number(item.sub_price)
       })
       if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
-        this.isCancelRequest = true;
+        this.orderStatusMode = 'cancel';
+      }
+      else {
+        this.orderStatusMode = 'default';
       }
     }) 
 
@@ -74,7 +79,27 @@ export class OrderDetailsComponent {
     this.modal.returnOrder(order_id);
   }
 
+  returnOrderInitiate(params: {id: string, reason: string}){
+    console.log('return req')
+    let formData: any = new FormData();
+    formData.append('order_id', params.id);
+    formData.append('reason', params.reason);
+
+    this.orderService.patchReturnOrderInitiate(formData).subscribe({
+      next: (response: any) => {
+        this.toaster.showToast('Success!', 'Your return request has been placed.', 'default');
+        this.orderStatusMode = 'return';
+        this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
+      },
+      error: (err: any) => {
+        this.toaster.showToast('Oops!', err.error.message, 'negative');
+      }
+    })
+    
+  }
+
   cancelOrderConfirm(params: {id: string, reason: string}){
+    console.log('cancel req')
     let formData: any = new FormData();
     formData.append('order_id', params.id);
     formData.append('reason', params.reason);
@@ -82,7 +107,7 @@ export class OrderDetailsComponent {
     this.orderService.postCancelOrder(formData).subscribe({
       next: (response: any) => {
         this.toaster.showToast('Success!', 'Your order has been cancelled.', 'default');
-        this.isCancelRequest = true;
+        this.orderStatusMode = 'cancel';
         this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
       },
       error: (err: any) => {
@@ -107,7 +132,7 @@ export class OrderDetailsComponent {
         this.orderSubtotal += this.Number(item.sub_price)
       })
       if(orders[0].status == 15 || orders[0].status == 10 || orders[0].status == 51){
-        this.isCancelRequest = true;
+        this.orderStatusMode = 'cancel'
       }
     }) 
   }

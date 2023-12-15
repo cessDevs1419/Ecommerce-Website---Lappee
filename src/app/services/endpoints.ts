@@ -173,3 +173,7 @@ export const GETShippingFee: string = api + "api/client/orders/shipping-fee"
 export const GETCartItems: string = api + "api/client/cart";
 export const POSTCartItems: string = api + "api/client/cart/store";
 export const DELETECartItems: string = api + "api/client/cart/delete";
+
+// Returns
+export const PATCHReqReturn: string = api + "api/client/orders/returns/initiate";
+export const POSTConfirmTransit: string = api + "api/client/returns/confirm-transit"

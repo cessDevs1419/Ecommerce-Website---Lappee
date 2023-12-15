@@ -1,5 +1,5 @@
 <div class="container-md mt-5">
-    <app-modal-client [mode]="this.mode" (cancelOrderOutput)="cancelOrderConfirm($event)" (emitActivateToast)="toast($event)" (reviewSuccess)="refreshReviews()"></app-modal-client>
+    <app-modal-client [mode]="this.mode" (cancelOrderOutput)="cancelOrderConfirm($event)" (emitActivateToast)="toast($event)" (reviewSuccess)="refreshReviews()" (returnOrderOutput)="returnOrderInitiate($event)"></app-modal-client>
     <app-toaster [positionClasses]="'top-0 start-50 translate-middle-x position-fixed'" [limitWidth]="false" [maxToastsShown]="1" #toaster></app-toaster>
     <div *ngIf="orderDetails | async as order">
         <div class="bg-light-gray p-3 d-flex justify-content-between align-items-center">
@@ -11,7 +11,7 @@
             <div class="d-flex">
                 <button class="button-secondary-outline rounded-0 me-2" (click)="chat(order[0].conversation_id)">Chat Admin</button>
                 <button class="button-primary rounded-0" (click)="cancelOrder(order[0].order_id)" [disabled]="order[0].status == 15" [hidden]="order[0].status == 10 || !order[0].cancellable ">Cancel Order</button>
-                <button class="button-primary rounded-0" (click)="returnOrder(order[0].order_id)" [hidden]="!order[0].delivered_date">Return Order</button>
+                <button class="button-primary rounded-0" (click)="returnOrder(order[0].order_id)" [hidden]="!order[0].delivered_date || order[0].cancellable">Return Order</button>
             </div>
         </div>
 
@@ -28,12 +28,12 @@
             <div class="w-100 border-bottom my-2"></div>
 
             <div class="mt-3 px-3">
-                <div class="d-flex justify-content-center mb-1 cancel-status" *ngIf="this.isCancelRequest">
+                <div class="d-flex justify-content-center mb-1 cancel-status" *ngIf="orderStatusMode == 'cancel'">
                     <p class="" *ngIf="order[0].status == 15"><i class="bi bi-exclamation-triangle-fill me-3"></i>Your cancellation request is awaiting approval.</p>
                     <p class="" *ngIf="order[0].status == 10" ><i class="bi bi-x-octagon-fill me-3"></i>This order has been canceled.</p>
                     <p class="" *ngIf="order[0].status == 51" ><i class="bi bi-hourglass-split me-3"></i>This order is on hold, please contact an admin.</p>
                 </div>
-                <div class="" *ngIf="!this.isCancelRequest" [hidden]='false'>
+                <div class="" *ngIf="orderStatusMode == 'default'" [hidden]='false'>
                     <ul class="progress-bar">
                         <li class="progress-steps active-step">
                             <div class="d-flex flex-column">
@@ -85,18 +85,30 @@
                     </ul>
                 </div>
 
-                <div class="" *ngIf="false">
+                <div class="" *ngIf="orderStatusMode == 'return'">
                     <ul class="progress-bar">
                         <li class="progress-steps active-step">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
                                     <i class="bi bi-person"></i>
                                 </div>
-                                <p class="steps-label m-0">Return Placed</p>
+                                <p class="steps-label m-0">Requested</p>
                                 <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
 
                             </div>
                         </li>
+
+                        <li class="progress-steps active-step">
+                            <div class="d-flex flex-column">
+                                <div class="steps-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <p class="steps-label m-0">Confirmed</p>
+                                <p class="steps-label m-0">{{order[0].ordered_on | date:'short'}}</p>
+
+                            </div>
+                        </li>
+
                         <li class="progress-steps" [ngClass]="order[0].confirmed_on ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">

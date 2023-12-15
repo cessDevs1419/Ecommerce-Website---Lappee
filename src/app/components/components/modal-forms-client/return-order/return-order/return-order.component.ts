@@ -27,9 +27,9 @@ export class ReturnOrderComponent {
   }
 
   emit(): void {
-    if(this.reasonForm.valid && this.reason?.value){
+    if(this.reasonForm.valid && this.reason!.value!.length > 9){
       console.log('emitting from delete case');
-      this.emitReturn.emit({id: this.order, reason: this.reason.value});
+      this.emitReturn.emit({id: this.order, reason: this.reason!.value!});
       this.handleDismiss();
     }
     else {

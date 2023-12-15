@@ -24,6 +24,7 @@ export class ModalClientComponent {
   @Output() emitActivateToast = new EventEmitter<string[]>();
   @Output() emitEditCart = new EventEmitter<{newCartItem: CartItem, cartIndex: number}>
   @Output() reviewSuccess = new EventEmitter();
+  @Output() returnOrderOutput = new EventEmitter<{id: string, reason: string}>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -57,10 +58,16 @@ export class ModalClientComponent {
   // Return Order
 
   returnOrder(order_id: string): void {
+    console.log('return-order, modal')
     this.mode = 'return-order';
     this.modalTitle = 'Return Order';
     this.order = order_id;
     this.show();
+  }
+
+  emitReturnOrder($event: { id: string; reason: string; }) {
+    console.log('return-order emit, modal')
+    this.returnOrderOutput.emit({id: $event.id, reason: $event.reason})
   }
 
   // Upload Shipping Proof
