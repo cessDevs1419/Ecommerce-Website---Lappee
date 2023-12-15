@@ -1,0 +1,16 @@
+input[type="radio"]:checked ~ .reason-input {
+    display: block;
+}
+
+input[type="radio"]:checked ~ .reason-input-help {
+    display: block;
+}
+
+.reason-input {
+    display: none;
+}
+
+.reason-input-help {
+    display: none;
+}
+

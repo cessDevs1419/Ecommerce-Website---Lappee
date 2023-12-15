@@ -69,6 +69,11 @@ export class OrderDetailsComponent {
     this.modal.cancelOrder(order_id);
   }
 
+  returnOrder(order_id: string) {
+    this.mode = 'return-order';
+    this.modal.returnOrder(order_id);
+  }
+
   cancelOrderConfirm(params: {id: string, reason: string}){
     let formData: any = new FormData();
     formData.append('order_id', params.id);

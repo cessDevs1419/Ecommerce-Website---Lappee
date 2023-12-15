@@ -54,6 +54,15 @@ export class ModalClientComponent {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement, {backdrop: 'static', keyboard: false});
   }
 
+  // Return Order
+
+  returnOrder(order_id: string): void {
+    this.mode = 'return-order';
+    this.modalTitle = 'Return Order';
+    this.order = order_id;
+    this.show();
+  }
+
   // Upload Shipping Proof
 
   uploadShippingProof(): void {

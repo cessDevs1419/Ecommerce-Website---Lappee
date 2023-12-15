@@ -1,0 +1,40 @@
+<div class="d-flex flex-column justify-content-center align-items-start px-3">
+    <p class="m-0 fs-4">Select reason for cancellation:</p>
+
+    <div *ngIf="reason?.invalid && (reason?.dirty || reason?.touched)"> 
+        <div *ngIf="reason?.errors?.['required']">
+            <span class="text-danger">The reason for cancellation is required.</span>
+        </div>
+    </div>
+        
+    <form [formGroup]="reasonForm" class="mt-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Wrong product delivered" id="reasonOptionsWrongProduct" name="reason" formControlName="reason">
+            <label class="form-check-label" for="reasonOptionsWrongProduct">
+                Incorrect product received.
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value="Wrong variant delivered" id="reasonOptionsWrongVar" name="reason" formControlName="reason">
+            <label class="form-check-label" for="reasonOptionsWrongVar">
+                Incorrect item delivered. (Wrong size, color, etc.)
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value={{reason?.value}} id="reasonOptionsOther" name="reason">
+            <label class="form-check-label" for="reasonOptionsOther">
+                Other (please specify):
+            </label>
+            <input type="text" class="form-control reason-input" id="reasonOptionsFreeform" formControlName="reason">
+            <p class="form-text reason-input-help">Minimum of 10 characters.</p>
+        </div>
+    </form>
+
+    <hr class="w-100">
+
+    <div class="d-flex flex-row justify-content-end w-100">
+        <button class="button-secondary-outline me-3" (click)="handleDismiss()">Cancel</button>
+        <button class="button-primary" (click)="emit()">Confirm</button>
+    </div>
+</div>
