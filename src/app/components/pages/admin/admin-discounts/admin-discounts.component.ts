@@ -6,8 +6,10 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
-import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
+import { DiscountsService } from 'src/app/services/discounts/discounts.service';
+import { formatAdminCategories, formatAttributes, formatDiscounts } from 'src/app/utilities/response-utils';
 import { AdminCategory } from 'src/assets/models/categories';
+import { Discount } from 'src/assets/models/products';
 
 @Component({
   selector: 'app-admin-discounts',
@@ -24,6 +26,8 @@ export class AdminDiscountsComponent {
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
+  discounts!: Observable<Discount[]>;
+
 
   backdrop: string = 'true';
 	toastContent: string = "";
@@ -40,6 +44,7 @@ export class AdminDiscountsComponent {
   
   constructor(
 		  private attribute_service: AttributesService,
+      private discount: DiscountsService
 	) {
     
 	}
@@ -54,6 +59,15 @@ export class AdminDiscountsComponent {
           this.table.loaded()
         })
     );
+
+    this.discounts = this.refreshData$.pipe(
+      startWith(undefined), 
+      switchMap(() => this.discount.getDiscountList()),
+      map((Response: any) => formatDiscounts(Response)),
+      tap(() => {
+        this.table.loaded()
+      })
+  );
 
 
 

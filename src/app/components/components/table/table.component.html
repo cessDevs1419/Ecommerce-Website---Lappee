@@ -341,7 +341,7 @@
                                             <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
                                             <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                             <ng-template #notPrice>
-                                                <ng-container *ngIf="row === 'created_at' || row === 'updated_at' || row === 'date'; else notDate">{{ item[row] | date}}</ng-container>
+                                                <ng-container *ngIf="row === 'created_at' || row === 'updated_at' || row === 'date' || row === 'from' || row === 'to'; else notDate">{{ item[row] | date}}</ng-container>
                                                 <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                                 <ng-template #notDate>
                                                     {{ item[row]}}
@@ -558,7 +558,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#review"
                                                 [title]="'Review Order Return'"
                                             >
-                                                <i class="bi bi-truck fs-4 {{textcolor}}"></i>
+                                                <i class="bi bi-check2-square fs-4 {{textcolor}}"></i>
                                             </button>
                                             
                                             <button
@@ -567,9 +567,9 @@
                                                 type="button"
                                                 class="{{btnborders}} order-btn btn-primary border-primary text-center px-2 py-3 mx-2 border-1 bg-none w-100 mt-0 rounded-3 d-flex align-items-center justify-content-center"
                                                 data-bs-toggle="modal" data-bs-target="#recieved"
-                                                [title]="'Received'"
+                                                [title]="'Upload Receipt'"
                                             >
-                                                <i class="bi bi-check2-square fs-4 {{textcolor}}"></i>
+                                                <i class="bi bi-upload fs-4 {{textcolor}}"></i>
                                             </button>
                                             <button
                                                 (click)="showPage(item)"

@@ -101,8 +101,11 @@ export const POSTOrder: string = api + "api/client/orders/store";
 export const POSTCancelOrder: string = api + "api/client/orders/cancel"
 
 //Order Return
-export const PATCHReturnConfirm: string = api + "api/client/orders/return/confirm"
-export const PATCHReturnViewed: string = api + "api/client/orders/return/viewed"
+export const GETReturnIndex: string = api + "api/admin/orders/list/return"
+
+
+export const PATCHReturnConfirm: string = api + "api/admin/orders/mark/confirm-return"
+export const POSTCompleteReturn: string = api + "api/admin/orders/mark/complete-return"
 export const POSTImgReturn: string = api + "api/client/orders/return"
 
 //Notifications 
@@ -119,6 +122,7 @@ export const POSTInquiry: string = api + "api/client/inquiry/store";
 //Discounts Endpoint
 export const GETDiscountProducList: string = api + "api/admin/products/discounts/product-list";
 export const POSTDiscount: string = api + "api/admin/products/discounts/store";
+export const GETDiscountList: string = api + "api/admin/products/discounts";
 
 //Dashboard Endpoint
 export const GETDashboard: string = api + "api/admin/dashboard";

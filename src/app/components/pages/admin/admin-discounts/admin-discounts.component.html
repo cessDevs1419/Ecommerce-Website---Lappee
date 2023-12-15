@@ -21,9 +21,9 @@
         [deliverStatus]="deliverStatus"
         [packStatus]="packStatus"
         [setFirstUpper]="true"
-        [tableHeader]="['Start Date','End Date', 'Discount', 'Type']"
-        [tableRows]="['created_at', 'end_at', 'discount', 'type']"
-        [tableData]="attributes"
+        [tableHeader]="['ID','Type', 'From', 'To', 'Value']"
+        [tableRows]="['id', 'type', 'from', 'to' , 'value']"
+        [tableData]="discounts"
 
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>

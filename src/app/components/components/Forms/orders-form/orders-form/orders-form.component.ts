@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, throwError } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
 import { formatAdminOrderDetail } from 'src/app/utilities/response-utils';
@@ -43,6 +43,10 @@ export class OrdersFormComponent {
     @Input() formMultipleShipOrders!: boolean;
     @Input() formMultipleShippingOrders!: boolean;
     @Input() formMultipleDeliveredOrders!: boolean;
+    @Input() formConfirmReturn!: boolean;
+    @Input() formTransit!: boolean;
+    @Input() formCompleteReturn!: boolean;
+    @Input() orderData: Observable<any>;
     @Input() selectedRowDataForDelete: any[] = [];
     
     showAmount: boolean = false;
@@ -58,11 +62,22 @@ export class OrdersFormComponent {
 	ordersDetails!: Observable<AdminOrderDetail>;
     fetchedData: AdminOrderDetail | undefined;
     
+    imageMessage: string
+    mystyleImagesMap: Map<File, string> = new Map();
+    imageMessageMap: { [fileName: string]: string } = {};
+    imageResolutionStates: { [fileName: string]: boolean } = {};
+    imageResolutionStatesTooltip: { [fileName: string]: boolean } = {};
+    addVariantForm: FormGroup;
+
     constructor(
         private orderService: OrderService,
+        private formBuilder: FormBuilder,
 
     ){
-        
+        this.addVariantForm = this.formBuilder.group({
+            mystyle: this.formBuilder.array([]),
+        });
+
         this.tobePack = new FormGroup({
             tobepack: new FormControl(100)
         });
@@ -571,6 +586,259 @@ export class OrdersFormComponent {
             }
             
         });
+    }
+
+    onConfirmSubmit(){
+
+        let formData: any = new FormData();
+        formData.append('order_id',  this.selectedRowData.id);
+        formData.append('tracking_no',  310);
+  
+        formData.forEach((value: any, key: any) => {
+          console.log(`${key}: ${value}`);
+        });
+  
+        this.orderService.patchOrderReturnConfirm(formData).subscribe({
+          next: async(response: any) => { 
+              const successMessage = {
+                  head: 'Return Order',
+                  sub: response?.message
+              };
+              
+              this.CloseModal.emit()
+              this.RefreshTable.emit()
+              this.OrderSuccess.emit(successMessage);
+  
+  
+          },
+          error: (error: HttpErrorResponse) => {
+              if (error.error?.data?.error) {
+                  const fieldErrors = error.error.data.error;
+                  const errorsArray = [];
+              
+                  for (const field in fieldErrors) {
+                      if (fieldErrors.hasOwnProperty(field)) {
+                          const messages = fieldErrors[field];
+                          let errorMessage = messages;
+                          if (Array.isArray(messages)) {
+                              errorMessage = messages.join(' '); 
+                          }
+                          errorsArray.push(errorMessage);
+                      }
+                  }
+              
+                  const errorDataforProduct = {
+                      errorMessage: 'Error Invalid Inputs',
+                      suberrorMessage: errorsArray,
+                  };
+              
+                  this.OrderError.emit(errorDataforProduct);
+              } else {
+              
+                  const errorDataforProduct = {
+                      errorMessage: 'Error Invalid Inputs',
+                      suberrorMessage: 'Please Try Another One',
+                  };
+                  this.OrderError.emit(errorDataforProduct);
+              }
+              return throwError(() => error);
+          }
+          
+        });
+      }
+
+      
+    showToolTip(file: File, index: number){
+        this.checkImageResolution(file, (width, height, fileName) => {
+            if (width < 720 || height < 1080) {
+                this.imageResolutionStatesTooltip[fileName] = true;
+                this.imageMessage = "The image must be at least 720px x 1080p."
+            } else if(width > 2560 || height > 1440){
+                this.imageResolutionStatesTooltip[fileName] = true;
+                this.imageMessage = "Images up to 1440px x 2560px only."
+            } else {
+                this.imageResolutionStatesTooltip[fileName] = false;
+            }
+        });
+    }
+
+    checkImageResolution(file: File, callback: (width: number, height: number, fileName: string) => void) {
+        const img = new Image();
+    
+        img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+            
+            callback(width, height, file.name);
+        };
+    
+        img.src = URL.createObjectURL(file);
+    }
+
+    selectFileForAddingMyStyleImg() {
+
+        const imageArray = this.getFileKeysMyStyles().length
+        if(imageArray >= 1){
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 3',
+            };
+        
+            this.OrderWarn.emit(errorDataforProduct);
+        }else{
+
+            const addInput = document.getElementById('addimagesmystyles');
+            addInput?.click();
+        }
+
+    }
+    removeImageMystyleimages(index: number) {
+      const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
+      const files = this.getFileKeysMyStyles();
+      if (index >= 0 && index < files.length) {
+          const fileToRemove = files[index];
+          this.mystyleImagesMap.delete(fileToRemove);
+          imagesArray.removeAt(index);
+      }
+    }
+    convertFileToUrlMyStyles(file: File) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+          this.mystyleImagesMap.set(file, event.target?.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    handleFileInputMyStyles(event: any) {
+        const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
+        const files = event.target.files;
+
+        if (files.length + imagesArray.length > 1) {
+        
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Image must be no more than 1',
+            };
+        
+            this.OrderWarn.emit(errorDataforProduct);
+
+            for (let i = 0; i < Math.min(files.length, 1); i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+                imagesArray.push(this.formBuilder.control(file));
+                this.convertFileToUrlMyStyles(file);
+
+            }
+
+        }else{
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                this.checkImageResolution(file, (width, height, fileName) => {
+                    if (width < 720 || height < 1080) {
+                        this.imageResolutionStates[fileName] = true;
+                    } else if(width > 2560 || height > 1440){
+                        this.imageResolutionStates[fileName] = true;
+                    } else {
+                        this.imageResolutionStates[fileName] = false;
+                    }
+                });
+
+                imagesArray.push(this.formBuilder.control(file));
+                this.convertFileToUrlMyStyles(file);
+            }
+
+        }
+
+    }
+    unshowToolTip(file: File){
+        this.checkImageResolution(file, (width, height, fileName) => {
+            if (width < 720 || height < 1080) {
+                this.imageResolutionStatesTooltip[fileName] =  false;
+            } else if(width > 2560 || height > 1440){
+                this.imageResolutionStatesTooltip[fileName] = false;
+            } else {
+                this.imageResolutionStatesTooltip[fileName] = false;
+            }
+        });
+    }
+
+    getFileKeysMyStyles(): File[] {
+      return Array.from(this.mystyleImagesMap.keys());
+    }
+
+    onImgSubmit(){
+      const img = this.addVariantForm.get('mystyle')?.value
+      let formData: any = new FormData();
+
+      formData.append('order_id',  this.selectedRowData.id);
+      for (let image of img) {
+        formData.append(`proofs[]`, image);
+      }
+
+      formData.forEach((value: any, key: any) => {
+        console.log(`${key}: ${value}`);
+      });
+
+      this.orderService.patchOrderReturnViewed(formData).subscribe({
+        next: async(response: any) => { 
+            const successMessage = {
+                head: 'Return Order',
+                sub: response?.message
+            };
+            
+            this.CloseModal.emit()
+            this.RefreshTable.emit()
+            this.OrderSuccess.emit(successMessage);
+
+
+        },
+        error: (error: HttpErrorResponse) => {
+            if (error.error?.data?.error) {
+                const fieldErrors = error.error.data.error;
+                const errorsArray = [];
+            
+                for (const field in fieldErrors) {
+                    if (fieldErrors.hasOwnProperty(field)) {
+                        const messages = fieldErrors[field];
+                        let errorMessage = messages;
+                        if (Array.isArray(messages)) {
+                            errorMessage = messages.join(' '); 
+                        }
+                        errorsArray.push(errorMessage);
+                    }
+                }
+            
+                const errorDataforProduct = {
+                    errorMessage: 'Error Invalid Inputs',
+                    suberrorMessage: errorsArray,
+                };
+            
+                this.OrderWarn.emit(errorDataforProduct);
+            } else {
+            
+                const errorDataforProduct = {
+                    errorMessage: 'Error Invalid Inputs',
+                    suberrorMessage: 'Please Try Another One',
+                };
+                this.OrderWarn.emit(errorDataforProduct);
+            }
+            return throwError(() => error);
+        }
+        
+      });
     }
 
     onOrderShipUpdate(){

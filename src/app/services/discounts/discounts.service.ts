@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GETDiscountProducList, POSTDiscount} from '../endpoints';
+import { GETDiscountList, GETDiscountProducList, POSTDiscount} from '../endpoints';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DiscountProductList } from 'src/assets/models/discounts';
+import { DiscountList, DiscountProductList } from 'src/assets/models/discounts';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,9 @@ export class DiscountsService {
 
   getProductDiscountList(): Observable<any>{
     return this.http.get<DiscountProductList>(GETDiscountProducList);
+  }
+
+  getDiscountList(): Observable<any>{
+    return this.http.get<DiscountList>(GETDiscountList);
   }
 }

@@ -95,12 +95,16 @@ export class ModalComponent {
     @Input() modalShippingFeeModeAdd!: boolean;
     @Input() modalShippingFeeModeView!: boolean;
     @Input() modalShippingFeeModeDelete!: boolean;
+    @Input() modalConfirmReturn!: boolean;
+    @Input() modalCompleteReturn!: boolean;
+    @Input() modalTransit!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
     @Input() modalViewOrder!: boolean;
+
 	selectedAttributeData: any;
 	//modal theme
 	modalTheme: string = 'table-bg-dark';
@@ -182,6 +186,19 @@ export class ModalComponent {
             this.modalTitle = 'Confirm Payment'
         }
     }
+
+    setReturnname(isHold: boolean){
+        if(isHold){
+            this.modalTitle = 'Proof Of Refund'
+            this.modalSubTitle = ''
+            this.modalClass = 'modal-md '
+        }else{
+            this.modalTitle = 'Proof of Return'
+            this.modalSubTitle = 'Status Update - In Transit'
+            this.modalClass = 'modal-lg '
+        }
+    }
+    
     setmodalname(isHold: boolean){
         if(isHold){
             this.modalTitle = 'Select Products'
@@ -191,7 +208,7 @@ export class ModalComponent {
         }else{
             this.modalTitle = 'Add Discount'
             this.modalSubTitle = ''
-            this.modalClass = 'modal-mg'
+            this.modalClass = 'modal-md'
             this.modalIcon = 'add'
         }
     }

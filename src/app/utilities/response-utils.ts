@@ -1,12 +1,12 @@
 import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
 import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
-import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest, AdminCancelledOrderList, AdminCancelledOrder } from "src/assets/models/order-details";
+import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest, AdminCancelledOrderList, AdminCancelledOrder, OrderReturnList, OrderReturn } from "src/assets/models/order-details";
 import { Inquiry, InquiryContent, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
@@ -14,7 +14,7 @@ import { AttributeList, Attributes } from "src/assets/models/attributes";
 import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
 import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
-import { DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
+import { DiscountList, DiscountProductList, DiscountProducts } from "src/assets/models/discounts";
 import { ProductStatistics, ProductStatisticsList, SalesReport, SalesReportList, SalesStatistics, SalesStatisticsList } from "src/assets/models/sales";
 import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/models/shipping";
 import { Dashboard, DashboardList } from "src/assets/models/dashboard";
@@ -331,6 +331,45 @@ export function formatRestockProductView(response: RestockViewList): RestockView
   }
 }
 
+
+export function formatReturnOrder(response: OrderReturnList): OrderReturn[] {
+  return response.data.map((data: OrderReturn) => ({
+      id: data.id,
+      user_id: data.user_id,
+      status: data.status,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+      paid: data.paid,
+      tracking_no: data.tracking_no,
+      packed_date: data.packed_date,
+      shipped_date:data.shipped_date,
+      delivered_date: data.delivered_date,
+      total_price: data.total_price,
+      address_line_1: data.address_line_1,
+      address_line_2: data.address_line_2,
+      city: data.city,
+      province: data.province,
+      zip_code: data.zip_code,
+      confirmed_on: data.confirmed_on,
+      cancellable: data.cancellable,
+      cancellation_reason:  data.cancellation_reason,
+      cancelled_on: data.cancellation_reason,
+      contact_number: data.contact_number,
+      hold_reason: data.hold_reason,
+      hold_date: data.hold_date,
+      balance: data.balance,
+      conversation_id: data.conversation_id,
+      return_reason: data.return_reason,
+      shipping_fee: data.shipping_fee,
+      to_return_date: data.to_return_date,
+      returning_process_date: data.returning_process_date,
+      return_transit_date: data.return_transit_date,
+      return_completed_completed: data.return_completed_completed,
+      return_transit_proof: data.return_transit_proof,
+      status_name: data.status_name,
+    }));
+}
+
 export function formatRestockList(response: RestockList): Restock[] {
   return response.data.map((data: Restock) => ({
       restock_id: data.restock_id,
@@ -579,6 +618,18 @@ export function formatProductsAndAttributes(response: ProductList): Product[] {
     variants: data.variants,
     category: data.category,
     discount: data.discount
+  }))
+}
+
+export function formatDiscounts(response: DiscountList): Discount[] {
+  return response.data.map((data: Discount) => ({
+    id: data.id,
+    type: data.type,
+    from: data.from,
+    to: data.to,
+    value: data.value,
+    created_at: data.created_at,
+    updated_at: data.updated_at
   }))
 }
 

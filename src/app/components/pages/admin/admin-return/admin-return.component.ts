@@ -10,8 +10,8 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatAdminOrder, formatAdminOrderDetail } from 'src/app/utilities/response-utils';
-import { AdminOrder, AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
+import { formatAdminOrder, formatAdminOrderDetail, formatReturnOrder } from 'src/app/utilities/response-utils';
+import { AdminOrder, AdminOrderContent, AdminOrderDetail, AdminOrderDetailList, OrderReturn } from 'src/assets/models/order-details';
 import { Order } from 'src/assets/models/products';
 
 @Component({
@@ -40,7 +40,7 @@ export class AdminReturnComponent {
 	itemColor: string = 'text-white-50';
     size: string = 'w-100';
 
-    orders!: Observable<AdminOrder[]>;
+    orders!: Observable<OrderReturn[]>;
 	ordersDetails$!: Observable<any>;
     ordersContents$: Observable<AdminOrderContent[]>;
   returnConfirmData!: any;
@@ -48,14 +48,9 @@ export class AdminReturnComponent {
   returnData!: any;
     
     returnStatus: number = 300;
-    transitStatus: number = 310; 
-	  receivedStatus: number = 320;
-    imageMessage: string
-    mystyleImagesMap: Map<File, string> = new Map();
-    imageMessageMap: { [fileName: string]: string } = {};
-    imageResolutionStates: { [fileName: string]: boolean } = {};
-    imageResolutionStatesTooltip: { [fileName: string]: boolean } = {};
-    addVariantForm: FormGroup;
+    transitStatus: number = 320; 
+	receivedStatus: number = 0;
+
 	private refreshData$ = new Subject<void>();
     selectedRowData!: any;
     
@@ -68,16 +63,14 @@ export class AdminReturnComponent {
     private orderService: OrderService,
 	) {
 
-    this.addVariantForm = this.formBuilder.group({
-      mystyle: this.formBuilder.array([]),
-    });
+
   }
 	
 	ngOnInit(): void{
 		this.orders = this.refreshData$.pipe(
             startWith(undefined), 
-            switchMap(() => this.service.getAdminOrdersPending()),
-            map((Response: any) => formatAdminOrder(Response))            ,
+            switchMap(() => this.service.getReturnList()),
+            map((Response: any) => formatReturnOrder(Response))            ,
             tap(() => {
                 this.table.loaded()
             })
@@ -110,6 +103,7 @@ export class AdminReturnComponent {
                 const data = formatAdminOrderDetail(response);
                 this.ordersContents$ = of(data.order_contents); 
                 this.ordersDetails$ = of(data); 
+                console.log(data)
             },
             error: (error: HttpErrorResponse) => {
                 console.log(error);
@@ -118,136 +112,7 @@ export class AdminReturnComponent {
         
     }
 
-    showToolTip(file: File, index: number){
-        this.checkImageResolution(file, (width, height, fileName) => {
-            if (width < 720 || height < 1080) {
-                this.imageResolutionStatesTooltip[fileName] = true;
-                this.imageMessage = "The image must be at least 720px x 1080p."
-            } else if(width > 2560 || height > 1440){
-                this.imageResolutionStatesTooltip[fileName] = true;
-                this.imageMessage = "Images up to 1440px x 2560px only."
-            } else {
-                this.imageResolutionStatesTooltip[fileName] = false;
-            }
-        });
-    }
-
-    checkImageResolution(file: File, callback: (width: number, height: number, fileName: string) => void) {
-        const img = new Image();
-    
-        img.onload = () => {
-            const width = img.width;
-            const height = img.height;
-            
-            callback(width, height, file.name);
-        };
-    
-        img.src = URL.createObjectURL(file);
-    }
-
-    selectFileForAddingMyStyleImg() {
-
-        const imageArray = this.getFileKeysMyStyles().length
-        if(imageArray >= 1){
-            const errorDataforProduct = {
-                head: 'Add Image',
-                sub: 'Image must be no more than 3',
-            };
-        
-            this.WarningToast(errorDataforProduct);
-        }else{
-
-            const addInput = document.getElementById('addimagesmystyles');
-            addInput?.click();
-        }
-
-    }
-    removeImageMystyleimages(index: number) {
-      const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
-      const files = this.getFileKeysMyStyles();
-      if (index >= 0 && index < files.length) {
-          const fileToRemove = files[index];
-          this.mystyleImagesMap.delete(fileToRemove);
-          imagesArray.removeAt(index);
-      }
-    }
-    convertFileToUrlMyStyles(file: File) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-          this.mystyleImagesMap.set(file, event.target?.result as string);
-      };
-
-      reader.readAsDataURL(file);
-    }
-
-    handleFileInputMyStyles(event: any) {
-        const imagesArray = this.addVariantForm.get('mystyle') as FormArray;
-        const files = event.target.files;
-
-        if (files.length + imagesArray.length > 1) {
-        
-            const errorDataforProduct = {
-                head: 'Add Image',
-                sub: 'Image must be no more than 1',
-            };
-        
-            this.WarningToast(errorDataforProduct);
-
-            for (let i = 0; i < Math.min(files.length, 1); i++) {
-                const file = files[i];
-
-                this.checkImageResolution(file, (width, height, fileName) => {
-                    if (width < 720 || height < 1080) {
-                        this.imageResolutionStates[fileName] = true;
-                    } else if(width > 2560 || height > 1440){
-                        this.imageResolutionStates[fileName] = true;
-                    } else {
-                        this.imageResolutionStates[fileName] = false;
-                    }
-                });
-                imagesArray.push(this.formBuilder.control(file));
-                this.convertFileToUrlMyStyles(file);
-
-            }
-
-        }else{
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-
-                this.checkImageResolution(file, (width, height, fileName) => {
-                    if (width < 720 || height < 1080) {
-                        this.imageResolutionStates[fileName] = true;
-                    } else if(width > 2560 || height > 1440){
-                        this.imageResolutionStates[fileName] = true;
-                    } else {
-                        this.imageResolutionStates[fileName] = false;
-                    }
-                });
-
-                imagesArray.push(this.formBuilder.control(file));
-                this.convertFileToUrlMyStyles(file);
-            }
-
-        }
-
-    }
-    unshowToolTip(file: File){
-        this.checkImageResolution(file, (width, height, fileName) => {
-            if (width < 720 || height < 1080) {
-                this.imageResolutionStatesTooltip[fileName] =  false;
-            } else if(width > 2560 || height > 1440){
-                this.imageResolutionStatesTooltip[fileName] = false;
-            } else {
-                this.imageResolutionStatesTooltip[fileName] = false;
-            }
-        });
-    }
-
-    getFileKeysMyStyles(): File[] {
-      return Array.from(this.mystyleImagesMap.keys());
-    }
+   
 
     getDate(event: any){
         console.log(event)
@@ -267,51 +132,51 @@ export class AdminReturnComponent {
         console.log(`${key}: ${value}`);
       });
 
-      // this.orderService.patchOrderReturnConfirm(formData).subscribe({
-      //   next: async(response: any) => { 
-      //       const successMessage = {
-      //           head: 'Return Order',
-      //           sub: response?.message
-      //       };
+      this.orderService.patchOrderReturnConfirm(formData).subscribe({
+        next: async(response: any) => { 
+            const successMessage = {
+                head: 'Return Order',
+                sub: response?.message
+            };
             
-      //       this.SuccessToast(successMessage);
+            this.SuccessToast(successMessage);
 
 
-      //   },
-      //   error: (error: HttpErrorResponse) => {
-      //       if (error.error?.data?.error) {
-      //           const fieldErrors = error.error.data.error;
-      //           const errorsArray = [];
+        },
+        error: (error: HttpErrorResponse) => {
+            if (error.error?.data?.error) {
+                const fieldErrors = error.error.data.error;
+                const errorsArray = [];
             
-      //           for (const field in fieldErrors) {
-      //               if (fieldErrors.hasOwnProperty(field)) {
-      //                   const messages = fieldErrors[field];
-      //                   let errorMessage = messages;
-      //                   if (Array.isArray(messages)) {
-      //                       errorMessage = messages.join(' '); 
-      //                   }
-      //                   errorsArray.push(errorMessage);
-      //               }
-      //           }
+                for (const field in fieldErrors) {
+                    if (fieldErrors.hasOwnProperty(field)) {
+                        const messages = fieldErrors[field];
+                        let errorMessage = messages;
+                        if (Array.isArray(messages)) {
+                            errorMessage = messages.join(' '); 
+                        }
+                        errorsArray.push(errorMessage);
+                    }
+                }
             
-      //           const errorDataforProduct = {
-      //               errorMessage: 'Error Invalid Inputs',
-      //               suberrorMessage: errorsArray,
-      //           };
+                const errorDataforProduct = {
+                    errorMessage: 'Error Invalid Inputs',
+                    suberrorMessage: errorsArray,
+                };
             
-      //           this.WarningToast(errorDataforProduct);
-      //       } else {
+                this.WarningToast(errorDataforProduct);
+            } else {
             
-      //           const errorDataforProduct = {
-      //               errorMessage: 'Error Invalid Inputs',
-      //               suberrorMessage: 'Please Try Another One',
-      //           };
-      //           this.WarningToast(errorDataforProduct);
-      //       }
-      //       return throwError(() => error);
-      //   }
+                const errorDataforProduct = {
+                    errorMessage: 'Error Invalid Inputs',
+                    suberrorMessage: 'Please Try Another One',
+                };
+                this.WarningToast(errorDataforProduct);
+            }
+            return throwError(() => error);
+        }
         
-      // });
+      });
     }
 
     onViewedSubmit(){
@@ -324,66 +189,6 @@ export class AdminReturnComponent {
       });
 
       // this.orderService.patchOrderReturnViewed(formData).subscribe({
-      //   next: async(response: any) => { 
-      //       const successMessage = {
-      //           head: 'Return Order',
-      //           sub: response?.message
-      //       };
-            
-      //       this.SuccessToast(successMessage);
-
-
-      //   },
-      //   error: (error: HttpErrorResponse) => {
-      //       if (error.error?.data?.error) {
-      //           const fieldErrors = error.error.data.error;
-      //           const errorsArray = [];
-            
-      //           for (const field in fieldErrors) {
-      //               if (fieldErrors.hasOwnProperty(field)) {
-      //                   const messages = fieldErrors[field];
-      //                   let errorMessage = messages;
-      //                   if (Array.isArray(messages)) {
-      //                       errorMessage = messages.join(' '); 
-      //                   }
-      //                   errorsArray.push(errorMessage);
-      //               }
-      //           }
-            
-      //           const errorDataforProduct = {
-      //               errorMessage: 'Error Invalid Inputs',
-      //               suberrorMessage: errorsArray,
-      //           };
-            
-      //           this.WarningToast(errorDataforProduct);
-      //       } else {
-            
-      //           const errorDataforProduct = {
-      //               errorMessage: 'Error Invalid Inputs',
-      //               suberrorMessage: 'Please Try Another One',
-      //           };
-      //           this.WarningToast(errorDataforProduct);
-      //       }
-      //       return throwError(() => error);
-      //   }
-        
-      // });
-    }
-
-
-    onImgSubmit(){
-      const img = this.addVariantForm.get('mystyle')?.value
-      let formData: any = new FormData();
-
-      for (let image of img) {
-        formData.append(`upload`, image);
-      }
-
-      // formData.forEach((value: any, key: any) => {
-      //   console.log(`${key}: ${value}`);
-      // });
-
-      // this.orderService.postImgForReturn(formData).subscribe({
       //   next: async(response: any) => { 
       //       const successMessage = {
       //           head: 'Return Order',

@@ -231,7 +231,6 @@
 </div>
 
 
-
 <div class="container m-auto p-2 overflow-y-auto" *ngIf="formPacked">
     <form  (ngSubmit)="packed()" >
         <div class="modal-body text-center pt-0 pb-0">
@@ -363,7 +362,7 @@
     </div>
 </form>
 
-<form *ngIf="formMultipleDeliveredOrders" (ngSubmit)="onOrderDeliveredUpdate()">
+<!-- <form *ngIf="formCompleteReturn" (ngSubmit)="onOrderDeliveredUpdate()">
     <div  class="modal-body text-center pt-0 pb-0">
         <p class="fs-5 fw-bold mb-1 {{textcolor}}">Are you sure to mark this all to as delivered?</p>
         <h1 class="text-primary fs-4 fw-bolder text-truncate">{{ selectedRowDataForDelete ? (selectedRowDataForDelete.length === 1 ? selectedRowDataForDelete[0] : selectedRowDataForDelete.length + ' items') : 'N/A' }}</h1>
@@ -372,4 +371,202 @@
         <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary bg-light-primary text-white glow-primary">Confirm</button>
     </div>
+</form> -->
+
+<form *ngIf="formConfirmReturn" (ngSubmit)="onConfirmSubmit()">
+    <div class="modal-body p-4">
+        <p class="fs-5 fw-bold mb-1 {{titleColor}} text-center">Are you sure to confirm this return?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate text-center">{{selectedRowData?.id}}</h1>
+        <hr class="divider border w-100 my-2">
+        <h1 class="fs-5 fw-bold  mb-1 {{titleColor}}">Reason:</h1>
+        <p class="fs-4  fw-bolder text-truncate {{titleColor}} text-center">{{selectedRowData?.return_reason}}</p>
+    </div>
+    <div class="modal-end w-100 border-0 p-4">
+        <div class="modal-footer border-0 p-0">
+            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+            <button 
+              type="submit" 
+              class="btn btn-primary px-3 bg-light-primary rounded-3 glow-primary" 
+            >
+                Confirm
+            </button>
+          </div>
+    </div>
 </form>
+
+<!-- <form *ngIf="formTransit" >
+    <div class="container position-relative m-auto p-2 h-auto overflow-hidden d-flex flex-row" >
+        <div class="w-100 transition" >
+            <div class="container px-1">
+                <div class="row p-0">
+                    <ng-container *ngIf="(modalDataImg | async) as modalDetails" >
+                        <div class="col-lg-6 " >
+                            <img [src]="selectedRowData?.return_transit_proof" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" >
+                        </div>
+
+                        <div [ngClass]="modalDetails.payment_proofs.length === 0 ? 'w-100':''" class="col-lg-6 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
+                            <div class="w-100 m-auto p-0  " *ngIf="modalData; let items" >
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
+                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
+                                <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                                </div>
+                                <hr class="divider border {{bordercolor}}">
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Order Summarry</h1>
+                                <ul class="list-unstyled w-100" >
+                                    <li class="text-decoration-none row mb-2" *ngFor="let item of modalConfirmData | async">
+                                        <div class="col-sm-8 text-start">
+                                            <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
+                                        </div>
+                                        <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
+                                            <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr class="divider mb-4 border {{bordercolor}}">
+                                <div class="row w-100 px-0 m-0">
+                                    <div class="col-sm-6 px-0">
+                                        <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
+                                    </div>
+                                    <div class="col-sm-6 px-0 d-flex justify-content-end align-content-center">
+                                        <h1 class="form-title fs-2 fw-bolder mb-4 {{titleColor}}" >₱{{selectedRowData?.total_price}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</form> -->
+
+<div class="container position-relative m-auto p-2 h-auto overflow-hidden d-flex flex-row"  *ngIf="formTransit">
+    <div class="w-100 transition" [ngClass]="formHold ? 'active-hold transition':''"  >
+        <form >
+            <div class="container px-1">
+                <div class="d-flex flex-lg-nowrap flex-wrap w-100 m-auto p-0">
+                    <ng-container *ngIf="(modalDataImg | async) as modalDetails" >
+                        <div class=" mb-lg-0 mb-2" >
+                            <img [src]="selectedRowData?.return_transit_proof" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" >
+                        </div>
+
+                        <div [ngClass]="modalDetails.payment_proofs.length === 0 ? 'w-100':''" class=" p-4 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
+                            <div class="w-100 m-auto p-0  " *ngIf="modalData; let items" >
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
+                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
+                                <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                                </div>
+                                <hr class="divider border {{bordercolor}}">
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Order Summarry</h1>
+                                <ul class="list-unstyled w-100" >
+                                    <li class="text-decoration-none row mb-2" *ngFor="let item of modalConfirmData | async">
+                                        <div class="col-sm-8 text-start">
+                                            <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
+                                        </div>
+                                        <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
+                                            <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr class="divider mb-4 border {{bordercolor}}">
+                                <div class="row w-100 px-0 m-0">
+                                    <div class="col-sm-6 px-0">
+                                        <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
+                                    </div>
+                                    <div class="col-sm-6 px-0 d-flex justify-content-end align-content-center">
+                                        <h1 class="form-title fs-2 fw-bolder mb-4 {{titleColor}}" >₱{{selectedRowData?.total_price}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="modal-footer border-0 px-0 mt-4">
+                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                <button 
+                    type="button" 
+                    class="btn btn-primary bg-light-primary glow-primary"
+                    (click)="hold()"
+                    >
+                    Confirm
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="w-100 hold transition position-absolute start-0 h-auto" [ngClass]="formHold ? 'toleft transition':''">
+       <div class="container overflow-y-auto position-relative d-flex align-items-center h-100">
+            <div class="container">
+                <div class="modal-body p-4">
+                    <div class="images-container p-0 w-100 position relative mb-4" >
+                                                            
+                        <div *ngFor="let file of getFileKeysMyStyles(); let ind = index">
+                            <!-- Tooltip container for a specific item -->
+                            <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
+                                <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                    <p class="tooltiptext lh-lg {{titleColor}}">{{imageMessage}}</p>
+                                </div>
+                                <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                            </div>
+                            <div
+                                (mouseenter)="showToolTip(file, ind)"
+                                (mouseleave)="unshowToolTip(file)"
+                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                                class="img-container p-0 image-container bg-dark-grey btn w-100 d-flex justify-content-end align-items-start rounded-0"
+                            >
+                                <button type="button" class="z-2 img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageMystyleimages(ind)">
+                                    <i class="bi bi-x text-white"></i>
+                                </button>
+                                <img [src]="mystyleImagesMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                            </div>
+                        </div>
+                        
+    
+                    </div>
+                    <button type="button" (click)="selectFileForAddingMyStyleImg()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                        <input class="d-none" type="file" id="addimagesmystyles" (change)="handleFileInputMyStyles($event)" multiple>
+                        <div class="container p-3">
+                            <ng-container *ngIf="getFileKeysMyStyles().length === 0">
+                                <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
+                            </ng-container>
+                            <ng-container *ngIf="getFileKeysMyStyles().length >= 1 ">
+                                <h4 class="fw-bolder text-white lh-sm mb-0">1 / 1</h4>
+                                <p class="fs-5 lh-sm mb-0 {{titleColor}}">MAX</p>
+                            </ng-container>                                                            
+                        </div>
+                    </button>
+                </div>
+                <div class="modal-end w-100 border-0 p-4">
+                    <div class="modal-footer border-0 p-0 ">
+                        <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  (click)="backtoconfirm()">Cancel</button>
+                        <button 
+                        type="submit" 
+                        class="btn btn-primary px-3 bg-light-primary rounded-3 glow-primary" 
+                        (click)="onImgSubmit()"
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</div>
+

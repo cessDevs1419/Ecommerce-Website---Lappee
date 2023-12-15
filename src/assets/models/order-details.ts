@@ -163,3 +163,45 @@ export interface AdminOrderContent {
     quantity: number,
     sub_price: string
 }
+
+export interface OrderReturnList {
+    success: string,
+    message: string,
+    data: OrderReturn[]
+}
+
+export interface OrderReturn {
+    id: string,
+    user_id: string,
+    status:number,
+    created_at: string,
+    updated_at: string,
+    paid:number,
+    tracking_no: number,
+    packed_date: string,
+    shipped_date: string,
+    delivered_date: string,
+    total_price: string,
+    address_line_1: string,
+    address_line_2: string,
+    city: string,
+    province: string,
+    zip_code:number,
+    confirmed_on: string,
+    cancellable:number,
+    cancellation_reason: string,
+    cancelled_on: string,
+    contact_number: string,
+    hold_reason: string,
+    hold_date: string,
+    balance: string,
+    conversation_id: string,
+    return_reason: string,
+    shipping_fee: string,
+    to_return_date: string,
+    returning_process_date: string,
+    return_transit_date: string,
+    return_completed_completed: [],
+    return_transit_proof: [],
+    status_name: string
+}

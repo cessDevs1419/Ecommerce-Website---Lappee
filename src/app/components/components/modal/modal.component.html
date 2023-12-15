@@ -439,6 +439,54 @@
                 
                 </app-orders-form>
 
+                <app-orders-form
+                    *ngIf="modalConfirmReturn"
+                    [formConfirmReturn]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (RefreshTable)="refreshTableData()"
+                >
+                
+                </app-orders-form>
+
+                <app-orders-form
+                    *ngIf="modalTransit"
+                    (Hold)="setReturnname($event)"
+                    [formTransit]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                    [modalConfirmData]="modalSubData"
+                    [modalDataImg]="modalDataImg"
+                    [modalData]="orderData"
+                >
+
+                </app-orders-form>
+
+
+                
+                <app-orders-form
+                    *ngIf="modalCompleteReturn"
+                    [formCompleteReturn]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (RefreshTable)="refreshTableData()"
+                >
+                
+                </app-orders-form>
+                
+
                 <app-reason-form
                     *ngIf="modalAddReason"
                     [formAddReason]="true"
