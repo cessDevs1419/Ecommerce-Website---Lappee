@@ -175,6 +175,61 @@
     </div>
 </div>
 
+<div class="container position-relative m-auto p-2 h-auto overflow-hidden d-flex flex-row"  *ngIf="formViewOrder">
+    <div class="w-100 transition" [ngClass]="formHold ? 'active-hold transition':''"  >
+        <form (ngSubmit)="confirmPayment()">
+        
+            <div class="container px-1">
+                <div class="row p-0">
+                    <ng-container *ngIf="(modalDataImg | async) as modalDetails" >
+                        <div class="col-lg-6 " *ngFor="let image of modalDetails.payment_proofs">
+                            <img [src]="image" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" >
+                        </div>
+
+                        <div [ngClass]="modalDetails.payment_proofs.length === 0 ? 'w-100':''" class="col-lg-6 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
+                            <div class="w-100 m-auto p-0  " *ngIf="modalData; let items" >
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
+                                <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
+                                <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
+                                <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                                    <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                                </div>
+                                <hr class="divider border {{bordercolor}}">
+                                <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Order Summarry</h1>
+                                <ul class="list-unstyled w-100" >
+                                    <li class="text-decoration-none row mb-2" *ngFor="let item of modalConfirmData | async">
+                                        <div class="col-sm-8 text-start">
+                                            <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
+                                            <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
+                                        </div>
+                                        <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
+                                            <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr class="divider mb-4 border {{bordercolor}}">
+                                <div class="row w-100 px-0 m-0">
+                                    <div class="col-sm-6 px-0">
+                                        <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
+                                    </div>
+                                    <div class="col-sm-6 px-0 d-flex justify-content-end align-content-center">
+                                        <h1 class="form-title fs-2 fw-bolder mb-4 {{titleColor}}" >₱{{selectedRowData?.total_price}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 
 <div class="container m-auto p-2 overflow-y-auto" *ngIf="formPacked">

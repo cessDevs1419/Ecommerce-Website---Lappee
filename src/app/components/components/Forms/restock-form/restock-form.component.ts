@@ -25,7 +25,8 @@ export class RestockFormComponent {
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
 	@Output() ProductWarning: EventEmitter<any> = new EventEmitter();
   @Output() Select: EventEmitter<any> = new EventEmitter();
-
+  @Output() refreshData: EventEmitter<any> = new EventEmitter();
+  @Output() CloseModal: EventEmitter<any> = new EventEmitter();
   selectedAttributeForm: FormGroup;
   addRestocksForm: FormGroup
 
@@ -244,7 +245,10 @@ export class RestockFormComponent {
       
           this.ProductSuccess.emit(productSuccess);
           this.variantsLists.splice(0)
- 
+          this.refreshData.emit()
+          this.CloseModal.emit()
+          this.variantForms.splice(0)
+          
       },
       error: (error: HttpErrorResponse) => {
           if (error.error?.data?.error) {

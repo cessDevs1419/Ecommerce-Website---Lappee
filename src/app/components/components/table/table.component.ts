@@ -118,6 +118,9 @@ export class TableComponent {
 	@Input() packStatus!: number;
 	@Input() shipStatus!: number;
 	@Input() deliverStatus!: number;
+	@Input() returnStatus!: number;
+	@Input() transitStatus!: number;
+	@Input() recievedStatus!: number;
 	@Input() orderBtn!: boolean;
 	@Input() orderBtnSet!: boolean;
 	@Input() bannedBtn: boolean;

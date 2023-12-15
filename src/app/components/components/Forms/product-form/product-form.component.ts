@@ -863,6 +863,7 @@ export class ProductFormComponent implements AfterViewInit {
             imagesArray.removeAt(index);
         }
     }
+    
 
     removeImageFromEditFormMystyleimages(imageIndex: number, variantIndex: number) {
         const variantFormGroup = this.variantsLists.at(variantIndex) as FormGroup;

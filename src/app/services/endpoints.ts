@@ -100,6 +100,11 @@ export const POSTOrder: string = api + "api/client/orders/store";
 //Order Cancellations
 export const POSTCancelOrder: string = api + "api/client/orders/cancel"
 
+//Order Return
+export const PATCHReturnConfirm: string = api + "api/client/orders/return/confirm"
+export const PATCHReturnViewed: string = api + "api/client/orders/return/viewed"
+export const POSTImgReturn: string = api + "api/client/orders/return"
+
 //Notifications 
 export const GETNotifications: string = api + "api/admin/notif";
 export const PATCHNotifications: string = api + "api/admin/notif/mark";

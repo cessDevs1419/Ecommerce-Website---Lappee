@@ -315,6 +315,23 @@
                 </app-orders-form>
 
                 <app-orders-form
+                    *ngIf="modalViewOrder"
+                    (Hold)="setname($event)"
+                    [formViewOrder]="true"
+                    (CloseModal)="closeModal()"
+                    (OrderSuccess)="deleteSuccessToast($event)"
+                    (OrderError)="ErrorToast($event)"
+                    (OrderWarning)="WarningToast($event)"
+                    [selectedRowData]="selectedRowData"
+                    (RefreshTable)="refreshTableData()"
+                    [modalConfirmData]="modalSubData"
+                    [modalDataImg]="modalDataImg"
+                    [modalData]="orderData"
+                >
+
+                </app-orders-form>
+
+                <app-orders-form
                     *ngIf="modalConfirmHold"
                     (Hold)="setname($event)"
                     [formConfirmHold]="true"
@@ -469,6 +486,8 @@
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (ProductError)="ErrorToast($event)"
+                    (refreshData)="refreshTableData()"
+                    (CloseModal)="closeModal()"
                 >
 
                 </app-restock-form>

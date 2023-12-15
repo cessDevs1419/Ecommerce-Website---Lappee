@@ -241,6 +241,7 @@ export class ChatsComponent {
         console.log(response)
         this.refreshTableData()
         this.refreshData.emit()
+        
       },
       error: (error: HttpErrorResponse) => {
           // if (error.error?.data?.error) {

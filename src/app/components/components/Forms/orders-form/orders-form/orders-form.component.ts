@@ -36,6 +36,7 @@ export class OrdersFormComponent {
     @Input() formShip!: boolean;
     @Input() formDelivered!: boolean;
     @Input() formCancel!: boolean;
+    @Input() formViewOrder!: boolean;
     @Input() modalConfirmData!: any;
     @Input() modalDataImg!: Observable<any>;
     @Input() modalData!: any;

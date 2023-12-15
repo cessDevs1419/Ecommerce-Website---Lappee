@@ -1,0 +1,315 @@
+<div class="container-fluid position-relative m-auto h-auto px-0 px-sm-3" >
+
+    <app-table
+        tableTitle="Return Orders"
+        subTitle="Status & Track Order List"
+        [tableHead]="true"
+        tableContainerClass="p-4 table-container"
+        tableChildContainer="table-child-container"
+        searchBarclass="me-0"
+        [paginate]="false"
+        (DateValue)="getDate($event)"
+        (FilterValue)="getStatus($event)"
+
+        [tableAction]="true"
+        [orderBtn]="true"
+        [viewBtn]="true"
+        [chatBtn]="true"
+        [tableHeaderActions]="true"
+        [returnStatus]="returnStatus"
+        [transitStatus]="transitStatus"
+        [recievedStatus]="receivedStatus"
+        [setFirstUpper]="true"
+        [tableHeader]="['Order ID', 'Placed On', 'Order Status']"
+        [tableRows]="['id', 'created_at', 'status_name' ]"
+        [tableData]="orders"
+
+        (showEvent)="showPage($event)"
+        (rowDataSelected)="onRowDataSelected($event)"
+    ></app-table>
+
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+</div>
+
+
+
+
+
+
+<!-- <app-modal
+    modalId="confirm"
+    modalTitle="Confirm Order"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="confirm"
+    [modalHideCloseBtn]="true"
+    [modalConfirm]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+    [modalDataImg]="ordersDetails$"
+></app-modal>
+
+<app-modal
+    modalId="review"
+    modalTitle="Confirm Packed"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass="modal-lg"
+    [modalHideIcon]="true"
+    modalIcon="packed"
+    [modalHideCloseBtn]="true"
+    [modalPacked]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+></app-modal>
+
+<app-modal
+    modalId="received"
+    modalTitle="Confirm Shipping"
+    modalTitleClass="mb-0"
+    modalSubTitleClass="mt-0 fw-bold"
+    modalClass=" modal-md "
+    [modalHideIcon]="true"
+    modalIcon="ship"
+    [modalHideCloseBtn]="true"
+
+    [modalShip]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+
+></app-modal>
+
+
+<app-modal
+    modalId="view"
+    modalTitle="Customer Information"
+    modalTitleClass="mb-3"
+    modalSubTitle="{{selectedRowData?.user_id}}"
+    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalClass="modal-md "
+    [modalHideIcon]="true"
+    modalIcon="view"
+    [allowAnotherSub]="true"
+    [modalViewOrders]="true"
+    (RefreshTable)="refreshTableData()"
+    [selectedRowData]="selectedRowData"
+    [modalData]="orders"
+    [modalSubData]="ordersContents$"
+
+></app-modal> -->
+
+
+<div class="modal fade" id="confirm"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-md" >
+        <div class="modal-content content-form rounded-4">
+            <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title text-start">
+                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Order Return</h1>
+                </div>
+                <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="fs-5 fw-bold mb-1 {{titleColor}} text-center">Are you sure to confirm this return?</p>
+                <h1 class="text-primary fs-4 fw-bolder text-truncate text-center">Ordeer Here</h1>
+                <hr class="divider border w-100 my-2">
+                <h1 class="fs-5 fw-bold  mb-1 {{titleColor}}">Reason:</h1>
+                <p class="fs-4  fw-bolder text-truncate {{titleColor}} text-center">kwan e</p>
+            </div>
+            <div class="modal-end w-100 border-0 p-4">
+                <div class="modal-footer border-0 p-0">
+                    <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary px-3 bg-light-primary rounded-3 glow-primary" 
+                      (click)="onConfirmSubmit()"
+                    >
+                        Confirm
+                    </button>
+                  </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+<div class="modal fade" id="review"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-lg" >
+        <div class="modal-content content-form rounded-4">
+            <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title text-start">
+                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Order Return</h1>
+                </div>
+                <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="container position-relative m-auto p-2 h-auto overflow-hidden d-flex flex-row">
+                    <div class="w-100 transition" >
+                        <div class="container px-1">
+                            <div class="row p-0">
+                                <ng-container *ngIf="(returnDataImg | async) as modalDetails" >
+                                    <div class="col-lg-6 " *ngFor="let image of modalDetails.payment_proofs">
+                                        <img [src]="image" class="img-container h-100 w-100 mt-2 mb-2 border m-auto" >
+                                    </div>
+            
+                                    <div [ngClass]="modalDetails.payment_proofs.length === 0 ? 'w-100':''" class="col-lg-6 mt-lg-0 mt-4 scrollable-height  overflow-x-hidden overflow-y-auto">
+                                        <div class="w-100 m-auto p-0  " *ngIf="returnData; let items" >
+                                            <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Customer Information</h1>
+                                            <h1 *ngIf="modalDetails.payment_proofs.length > 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >PAID BY GCASH</h1>
+                                            <h1 *ngIf="modalDetails.payment_proofs.length === 0" class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >COD</h1>
+                                            <div class="modal-sub-title fs-6 fw-bold {{titleColor}}">{{selectedRowData?.user_id}}</div>
+                                            <div class="modal-info-title text-dark-emphasis fs-6 pt-1 " >
+                                                <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_1">{{selectedRowData?.address_line_1}}</p>
+                                                <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.address_line_2">{{selectedRowData?.address_line_2}}</p>
+                                                <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.city">city of {{selectedRowData?.city}},</p>
+                                                <p class="user-info m-0 p-o lh-1 text-wrap {{itemColor}}" *ngIf="selectedRowData?.province">{{selectedRowData?.province}}</p>
+                                            </div>
+                                            <hr class="divider border {{bordercolor}}">
+                                            <h1 class="form-title fs-4 fw-bolder mb-4 {{titleColor}}" >Order Summarry</h1>
+                                            <ul class="list-unstyled w-100" >
+                                                <li class="text-decoration-none row mb-2" *ngFor="let item of returnConfirmData | async">
+                                                    <div class="col-sm-8 text-start">
+                                                        <p class="product-name m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">{{item.product_id}}</p>
+                                                        <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">variant</p>
+                                                        <p class="product-quantity m-0 p-o lh-sm text-nowrap text-truncate {{itemColor}}">x{{item.quantity}}</p>
+                                                    </div>
+                                                    <div class="col-sm-4 text-end d-flex align-items-center justify-content-end">
+                                                        <h1 class="product_price fs-4 fw-bolder {{titleColor}}" >₱{{item.sub_price}}</h1>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <hr class="divider mb-4 border {{bordercolor}}">
+                                            <div class="row w-100 px-0 m-0">
+                                                <div class="col-sm-6 px-0">
+                                                    <h3 class="fs-5 fw-bold {{titleColor}}">Subtotal</h3>
+                                                </div>
+                                                <div class="col-sm-6 px-0 d-flex justify-content-end align-content-center">
+                                                    <h1 class="form-title fs-2 fw-bolder mb-4 {{titleColor}}" >₱{{selectedRowData?.total_price}}</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-end w-100 border-0 p-4">
+                <div class="modal-footer border-0 p-0 mt-3">
+                    <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary px-3 bg-light-primary rounded-3 glow-primary" 
+                      (click)="onViewedSubmit()"
+                    >
+                        Confirm
+                    </button>
+                  </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+<div class="modal fade" id="recieved"  tabindex="-1">
+    <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-md" >
+        <div class="modal-content content-form rounded-4">
+            <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                <div class="modal-title text-start">
+                    <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" >Order Return</h1>
+                </div>
+                <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="images-container p-0 w-100 position relative mb-4" >
+                                                        
+                    <div *ngFor="let file of getFileKeysMyStyles(); let ind = index">
+                        <!-- Tooltip container for a specific item -->
+                        <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
+                            <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                <p class="tooltiptext lh-lg {{titleColor}}">{{imageMessage}}</p>
+                            </div>
+                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                        </div>
+                        <div
+                            (mouseenter)="showToolTip(file, ind)"
+                            (mouseleave)="unshowToolTip(file)"
+                            [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[file.name] }"
+                            class="img-container p-0 image-container bg-dark-grey btn w-100 d-flex justify-content-end align-items-start rounded-0"
+                        >
+                            <button type="button" class="z-2 img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageMystyleimages(ind)">
+                                <i class="bi bi-x text-white"></i>
+                            </button>
+                            <img [src]="mystyleImagesMap.get(file)" alt="Lappee" class="w-100 h-100 border">
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <button type="button" (click)="selectFileForAddingMyStyleImg()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
+                    <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                    <input class="d-none" type="file" id="addimagesmystyles" (change)="handleFileInputMyStyles($event)" multiple>
+                    <div class="container p-3">
+                        <ng-container *ngIf="getFileKeysMyStyles().length === 0">
+                            <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
+                        </ng-container>
+                        <ng-container *ngIf="getFileKeysMyStyles().length >= 1 ">
+                            <h4 class="fw-bolder text-white lh-sm mb-0">1 / 1</h4>
+                            <p class="fs-5 lh-sm mb-0 {{titleColor}}">MAX</p>
+                        </ng-container>                                                            
+                    </div>
+                </button>
+            </div>
+            <div class="modal-end w-100 border-0 p-4">
+                <div class="modal-footer border-0 p-0 ">
+                    <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary px-3 bg-light-primary rounded-3 glow-primary" 
+                      (click)="onImgSubmit()"
+                    >
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+
+<app-modal
+    modalId="view"
+    modalTitle="Customer Information"
+    modalTitleClass="mb-3"
+    modalSubTitle="{{selectedRowData?.user_id}}"
+    modalSubTitleClass="mt-3 fs-5 fw-bold"
+    modalClass="modal-lg "
+    [modalHideCloseBtn]="false"
+    [modalViewOrder]="true"
+    (RefreshTable)="refreshTableData()"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
+    [selectedRowData]="selectedRowData"
+    [orderData]="orders"
+    [modalSubData]="ordersContents$"
+    [modalDataImg]="ordersDetails$"
+
+></app-modal>
+
+
+

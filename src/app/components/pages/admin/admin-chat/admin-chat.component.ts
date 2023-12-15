@@ -45,23 +45,20 @@ export class AdminChatComponent {
       switchMap(() => this.service.getAdminOrdersHold()),
       map((Response: any) => formatAdminOrder(Response))
     );
+    this.chatList = this.refreshData$.pipe(
+      startWith(undefined),
+      switchMap(() => this.chatsService.getAllChats()),
+      map((response: any) => formatChatsList(response)),
+      tap(() => {
+          this.chats.loaded()
+      })
+  );
 
     this.echo.listen('admin.conversations', 'NewConversation', (data: any) => {
         this.refreshTableData()
+        console.log(data)
     })
 
-    this.chatList = this.refreshData$.pipe(
-        startWith(undefined),
-        switchMap(() => this.chatsService.getAllChats()),
-        map((response: any) => formatChatsList(response)),
-        tap(() => {
-            this.chats.loaded()
-        })
-    );
-    
-    this.chatList.subscribe(data => {
-      console.log(data)
-    })
     this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
       this.order_id = id !== null ? id : ''; 

@@ -223,7 +223,8 @@ export class SidebarComponent {
       this.router.url === '/admin/order-delivered'||
       this.router.url === '/admin/order-cancel'||
       this.router.url === '/admin/order-cancelled'||
-      this.router.url === '/admin/order-on-hold'
+      this.router.url === '/admin/order-on-hold'||
+      this.router.url === '/admin/order-return'
     );
   }
   

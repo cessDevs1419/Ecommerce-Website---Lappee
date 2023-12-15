@@ -100,7 +100,7 @@ export class ModalComponent {
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
-
+    @Input() modalViewOrder!: boolean;
 	selectedAttributeData: any;
 	//modal theme
 	modalTheme: string = 'table-bg-dark';

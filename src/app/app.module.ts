@@ -132,6 +132,7 @@ import { RestockFormComponent } from './components/components/Forms/restock-form
 import { AdminShippingFeeComponent } from './components/pages/admin/admin-shipping-fee/admin-shipping-fee.component';
 import { ShippingFeeFormComponent } from './components/components/Forms/shipping-fee-form/shipping-fee-form.component';
 import { UploadShippingProofComponent } from './components/components/modal-forms-client/upload-shipping-proof/upload-shipping-proof/upload-shipping-proof.component';
+import { AdminReturnComponent } from './components/pages/admin/admin-return/admin-return.component';
 
 @NgModule({
   declarations: [
@@ -249,6 +250,7 @@ import { UploadShippingProofComponent } from './components/components/modal-form
     AdminShippingFeeComponent,
     ShippingFeeFormComponent,
     UploadShippingProofComponent,
+    AdminReturnComponent,
   ],
   imports: [
     BrowserModule,
@@ -306,6 +308,7 @@ import { UploadShippingProofComponent } from './components/components/modal-form
           {path: 'chats', component: AdminChatComponent, title: 'Chats'},
           {path: 'chats/:id', component: AdminChatComponent, title: 'Chats'},
           //{path: 'order-cancel', component: AdminOrderCancelComponent},
+          {path: 'order-return', component: AdminReturnComponent, title: 'Order Management'},
           {path: 'order-cancelled', component: AdminOrderCancelledComponent, title: 'Order Management'},
           {path: 'order-on-hold', component: AdminOrderHoldComponent, title: 'Order Management'},
           {path: 'courier-management', component: AdminCourierManagementComponent},
