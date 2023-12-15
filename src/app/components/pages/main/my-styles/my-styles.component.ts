@@ -270,6 +270,7 @@ export class MyStylesComponent {
     this.checkoutVariant2 = variant;
     this.modelCV2 = variant;
     console.log(this.selectedVariant1);
+    this.loadSuggestionsVar2(variant.variant_id);
   }
 
   modelCV1Change(event: Variant) {
