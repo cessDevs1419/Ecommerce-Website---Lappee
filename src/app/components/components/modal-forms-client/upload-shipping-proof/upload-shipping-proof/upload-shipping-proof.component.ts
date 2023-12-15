@@ -40,7 +40,7 @@ export class UploadShippingProofComponent {
     reader.readAsDataURL(img);
   }
 
-  clearImg(event: any): void {
+  clearImg(): void {
     this.imginput.nativeElement.value = null;
     this.imginput.nativeElement.files = null;
     this.imgpath = '';
@@ -55,9 +55,11 @@ export class UploadShippingProofComponent {
 
   validateUpload(): void {
     if(this.shippingProofForm.valid){
+      console.log("shipping proof form", this.order)
       this.emitShippingProof.emit({id: this.order, file: this.imgfile});
       console.log(this.imgfile);
-      // send form data
+      this.clearImg();
+      this.dismiss.emit();
     }
     else {
       this.shippingProofForm.markAllAsTouched();

@@ -11,7 +11,7 @@
             <div class="d-flex">
                 <button class="button-secondary-outline rounded-0 me-2" (click)="chat(order[0].conversation_id)">Chat Admin</button>
                 <button class="button-primary rounded-0" (click)="cancelOrder(order[0].order_id)" [disabled]="order[0].status == 15" [hidden]="order[0].status == 10 || !order[0].cancellable ">Cancel Order</button>
-                <button class="button-primary rounded-0" (click)="returnOrder(order[0].order_id)" [hidden]="!order[0].delivered_date || order[0].cancellable">Return Order</button>
+                <button class="button-primary rounded-0" (click)="returnOrder(order[0].order_id)" [hidden]="orderStatusMode == 'return'">Return Order</button>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
                     <p class="m-0 fw-bold fs-4" [hidden]="true">Return Status</p>
                 </div>
                 <div>
-                    <button class="button-primary rounded-0" (click)="triggerUploadShipping()" *ngIf="order[0].status == 310"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
+                    <button class="button-primary rounded-0" (click)="triggerUploadShipping(order[0].order_id)" *ngIf="order[0].status == 310"><i class="bi bi-plus-lg me-1"></i> Upload Shipping Receipt</button>
                 </div>
             </div>
             <div class="w-100 border-bottom my-2"></div>
@@ -98,34 +98,34 @@
                             </div>
                         </li>
 
-                        <li class="progress-steps" [ngClass]="order[0].status == 310 ? 'active-step' : ''">
+                        <li class="progress-steps" [ngClass]="order[0].returning_process_date ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
                                     <i class="bi bi-person"></i>
                                 </div>
                                 <p class="steps-label m-0">Confirmed</p>
-                                <p class="steps-label m-0">*ngIf="order[0].returning_process_date">{{order[0].confirmed_on | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].returning_process_date">{{order[0].returning_process_date | date:'short'}}</p>
 
                             </div>
                         </li>
 
-                        <li class="progress-steps" [ngClass]="order[0].status == 320 ? 'active-step' : ''">
+                        <li class="progress-steps" [ngClass]="order[0].return_transit_date ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
-                                    <i class="bi bi-person"></i>
+                                    <i class="bi bi-truck"></i>
                                 </div>
                                 <p class="steps-label m-0">In Transit</p>
-                                <p class="steps-label m-0" *ngIf="order[0].return_transit_date">{{order[0].confirmed_on | date:'short'}}</p> 
+                                <p class="steps-label m-0" *ngIf="order[0].return_transit_date">{{order[0].return_transit_date | date:'short'}}</p> 
 
                             </div>
                         </li>
-                        <li class="progress-steps" [ngClass]="order[0].status == 330 ? 'active-step' : ''">
+                        <li class="progress-steps" [ngClass]="order[0].return_completed_completed ? 'active-step' : ''">
                             <div class="d-flex flex-column">
                                 <div class="steps-icon">
-                                    <i class="bi bi-box-seam"></i>
+                                    <i class="bi bi-box-arrow-in-left"></i>
                                 </div>
                                 <p class="steps-label m-0">Item Returned</p>
-                                <p class="steps-label m-0" *ngIf="order[0].return_completed_completed">{{order[0].packed_date | date:'short'}}</p>
+                                <p class="steps-label m-0" *ngIf="order[0].return_completed_completed">{{order[0].return_completed_completed | date:'short'}}</p>
                             </div>
                         </li>
                     </ul>

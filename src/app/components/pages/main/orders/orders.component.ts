@@ -152,6 +152,9 @@ export class OrdersComponent {
       case 200:
         return 'bi-check'
         break;
+      case 330:
+        return "bi-box-arrow-in-left"
+        break;
       default:
         return '';
     }
@@ -166,6 +169,7 @@ export class OrdersComponent {
         return 'color-danger-dark';
         break;
       case 200:
+      case 330:
         return 'color-success-dark';
         break;
       default: 

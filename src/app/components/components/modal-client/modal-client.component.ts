@@ -73,9 +73,12 @@ export class ModalClientComponent {
 
   // Upload Shipping Proof
 
-  uploadShippingProof(): void {
+  uploadShippingProof(order_id: string): void {
     this.mode = 'upload-shipping-proof';
     this.modalTitle = 'Upload Proof of Shipping';
+    this.order = order_id;
+    console.log("modal client", order_id)
+    console.log("modal client variable", this.order)
     this.show();
   }
 

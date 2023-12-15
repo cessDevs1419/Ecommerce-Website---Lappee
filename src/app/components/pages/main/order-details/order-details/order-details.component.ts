@@ -12,6 +12,7 @@ import { POSTCancelOrder } from 'src/app/services/endpoints';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
 import { User } from 'src/assets/models/user';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-order-details',
@@ -22,7 +23,7 @@ export class OrderDetailsComponent {
 
 
   Number = Number;
-  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService, private router: Router) {
+  constructor (private http: HttpClient, private route: ActivatedRoute, private orderService: OrderService, private accountService: AccountsService, private router: Router, private eh: ErrorHandlerService) {
     this.orderId = String(this.route.snapshot.paramMap.get('orderId'))
   }
 
@@ -147,13 +148,13 @@ export class OrderDetailsComponent {
     }) 
   }
 
-  triggerUploadShipping(): void {
-    this.mode = 'upload-shipping-proof'
-    this.modal.uploadShippingProof();
+  triggerUploadShipping(order_id: string): void {
+    this.mode = 'upload-shipping-proof';
+    this.modal.uploadShippingProof(order_id);
   }
 
   shippingProofUpload(params: {id: string, file: File}) {
-    console.log('cancel req')
+    console.log('order id', params.id)
     let formData: any = new FormData();
     formData.append('order_id', params.id);
     formData.append('proofs[]', params.file);
@@ -165,7 +166,7 @@ export class OrderDetailsComponent {
         this.orderDetails = this.orderService.getOrderDetail(this.orderId).pipe(map((response: any) => formatOrderDetails(response)));
       },
       error: (err: any) => {
-        this.toaster.showToast('Oops!', err.error.message, 'negative');
+        this.toaster.showToast('Oops!', this.eh.handle(err), 'negative');
       }
     })
   }

@@ -176,4 +176,4 @@ export const DELETECartItems: string = api + "api/client/cart/delete";
 
 // Returns
 export const PATCHReqReturn: string = api + "api/client/orders/returns/initiate";
-export const POSTConfirmTransit: string = api + "api/client/returns/confirm-transit"
+export const POSTConfirmTransit: string = api + "api/client/orders/returns/confirm-transit"
