@@ -36,3 +36,8 @@ input[type="radio"] {
   input[type="radio"]:checked {
     background-color: #2196F3; /* Optional: Change the background color when the radio button is checked */
   }
+
+.refund-container {
+    max-height: 40rem;
+    width: 100%;
+}
