@@ -63,8 +63,6 @@ input::placeholder {
 
   }
 
-@media screen and (max-height: 900px) {
-  .modal-footer{
-    position: relative !important;
-  }
+.table-container{
+  max-height: 39rem;
 }

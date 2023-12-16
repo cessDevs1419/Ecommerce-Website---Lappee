@@ -36,3 +36,7 @@ input[type="radio"] {
   input[type="radio"]:checked {
     background-color: #2196F3; /* Optional: Change the background color when the radio button is checked */
   }
+
+  .images-container{
+    max-height: 37rem;
+  }

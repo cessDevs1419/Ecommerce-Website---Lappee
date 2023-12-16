@@ -71,7 +71,7 @@
         </div>      
         <div class="w-100  h-100 hold transition position-absolute start-0 top-0" [ngClass]="formProductSelect ? 'toleft transition':''">
             <div class="container overflow-y-auto position-relative m-auto px-4 h-100"  >
-                <div  class="modal-body p-0 mb-3">
+                <div class="table-container h-auto modal-body p-0 mb-3">
                     <app-table
             
                         [showMultipleSelection]="true"
@@ -84,7 +84,7 @@
                     ></app-table>
                     
                 </div>
-                <div class="modal-footer px-4 w-100 start-0 position-absolute bottom-0 border-0 justify-content-end mb-0">
+                <div class="modal-footer position-fixed w-100 bottom-0 px-4 w-100 start-0 border-0 justify-content-end mb-0">
                     <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3" (click)="backtoconfirm()" >Back</button>
                     <button type="button" class="btn btn-primary bg-light-primary text-white glow-primary" (click)="addDiscountSubmit()">Confirm</button>
                 </div>

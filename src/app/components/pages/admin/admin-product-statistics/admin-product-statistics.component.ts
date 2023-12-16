@@ -10,7 +10,7 @@ import { TableComponent } from 'src/app/components/components/table/table.compon
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { SalesStatisticsService } from 'src/app/services/sales-overview/sales-statistics.service';
-import { formatProductStatistics } from 'src/app/utilities/response-utils';
+import { formatProductStatistics, formatSalesReport } from 'src/app/utilities/response-utils';
 import { DateRange, LineGraph, List, ProductStatistics, ProductStatisticsDetails, ProductStatisticsOrders, ProductStatisticsRating, ProductStatisticsSolds, ProductStatisticsVariants, Sales } from 'src/assets/models/sales';
 
 export class ProductStatisticsVariant {
@@ -353,7 +353,7 @@ export class AdminProductStatisticsComponent {
     this.sales.getDatedProductStatistics(this.product_id, from, to).subscribe({
       next: (response: any) => {
         const formattedData = formatProductStatistics(response);
-    
+        const data = formatSalesReport(response);
         this.date_range = formattedData.date_range;
         this.product_detail = { ...formattedData.product_details };
         this.product_sold = { ...formattedData.product_sold };
@@ -364,7 +364,6 @@ export class AdminProductStatisticsComponent {
         this.orders.current_month = '0'
         this.variants$ = formattedData.orders.variants;
       
-        console.log(formattedData)
        
         this.donut.loadData(this.variants$);
       
@@ -378,6 +377,8 @@ export class AdminProductStatisticsComponent {
         this.showSuccess = false
         this.showGraphSelection = false
         this.sales.triggerFunction(sales);
+
+        this.sales.triggerLink(data.report)
         this.line.runChart(this.salesCount.line_graph_data);
       },
       error: (error: HttpErrorResponse) => {
@@ -389,6 +390,8 @@ export class AdminProductStatisticsComponent {
         this.ErrorToast(errorHandle)
       }
     });
+
+    
     
   }
 
