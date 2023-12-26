@@ -52,6 +52,7 @@
                     *ngIf="modalEditAttribute"
                     [formEditAttribute]="true"
                     [selectedRowData]="selectedRowData"
+                    [attributeDetails]="modalAttributeData"
                     (ProductSuccess)="deleteSuccessToast($event)"
                     (ProductWarning)="WarningToast($event)"
                     (ProductError)="ErrorToast($event)"

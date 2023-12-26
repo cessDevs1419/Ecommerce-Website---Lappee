@@ -61,7 +61,7 @@
         (SuccessToast)="SuccessToast($event)"
         (WarningToasts)="WarningToast($event)"
         (ErrorToasts)="ErrorToast($event)"
-
+        [modalAttributeData]="attributesDetails"
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"

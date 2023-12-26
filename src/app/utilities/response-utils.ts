@@ -10,7 +10,7 @@ import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderCon
 import { Inquiry, InquiryContent, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
 import { AboutUsTosList, AboutUsTosSection, Banner, BannersList, SiteDetails, SiteDetailsList, SiteLogo, SiteLogoList } from "src/assets/models/sitedetails";
-import { AttributeList, Attributes } from "src/assets/models/attributes";
+import { AttributeDetailList, AttributeList, Attributes, AttributesDetails } from "src/assets/models/attributes";
 import { AdminNotificationList, AdminNotification } from "src/assets/models/admin-notifications";
 import { parse } from 'date-fns';
 import { Chats, ChatsChannel, ChatsChannelList, ChatsList } from "src/assets/models/chats";
@@ -181,6 +181,16 @@ export function formatAttributes(response: AttributeList): Attributes[] {
     name: data.name,
   }));
 }
+
+export function formatAttributesDetails(response: AttributeDetailList): AttributesDetails {
+  let data: AttributesDetails = {
+    attribute_id: response.data.attribute_id,
+    value: response.data.value
+  }
+  return data
+}
+
+
 
 // returns a Notifications Object
 

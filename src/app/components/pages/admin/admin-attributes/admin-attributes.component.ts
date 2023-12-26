@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Output, ViewChild } from '@angular/core';
-import { Observable, Subject, map, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, catchError, map, startWith, switchMap, tap } from 'rxjs';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
-import { formatAdminCategories, formatAttributes } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAttributes, formatAttributesDetails } from 'src/app/utilities/response-utils';
+import { AttributesDetails } from 'src/assets/models/attributes';
 import { AdminCategory } from 'src/assets/models/categories';
 
 @Component({
@@ -25,6 +26,7 @@ export class AdminAttributesComponent {
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
+  attributesDetails!: Observable<AttributesDetails>;
 
   backdrop: string = 'true';
 	toastContent: string = "";
@@ -62,6 +64,16 @@ onRowDataForDelete(rowData: any){
 }
 onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
+  this.attributesDetails = this.attribute_service.getAttributeDetails(rowData.id)
+  .pipe(
+    map((response: any) => response.data),
+    catchError((error: HttpErrorResponse) => {
+      console.log(error);
+      // Handle the error if needed
+      return [];
+    })
+  );
+
 }
 
 showMinusFunction(){

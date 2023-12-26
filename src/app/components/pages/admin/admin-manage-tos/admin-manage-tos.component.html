@@ -21,14 +21,14 @@
           [Btntools]="true"
           [tableTools]="true"
           [tableData]="aboutUsSections"
-          dropdowdnClass="dropdown-menu-sm"
+          
           (rowDataSelected)="getSelectedSection($event)"
           [actionBtn]="true"
           
           [addProdBtn]="true"
           addbtnName="Add Section"
           (ShowAddForm)="toggleAddSectionForm()"
-          
+          [editSubBtn]="true"
           [deleteBtn]="true">
         </app-table>
       </div>

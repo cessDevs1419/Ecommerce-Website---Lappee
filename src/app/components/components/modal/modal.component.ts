@@ -10,6 +10,7 @@ import { Product } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { OrdersFormComponent } from '../Forms/orders-form/orders-form/orders-form.component';
 import { ShippingFee } from 'src/assets/models/shipping';
+import { AttributeFormComponent } from '../Forms/attribute-form/attribute-form.component';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ModalComponent {
 	//Delete Item
 	
 	@ViewChild(ToastComponent) toast: ToastComponent;
+    @ViewChild(AttributeFormComponent) attributes: AttributeFormComponent;
 	@ViewChild(OrdersFormComponent) orders: OrdersFormComponent;
 	@ViewChild('modalRef') modalRef!: ElementRef;
     @ViewChild('dismiss') dismiss: ElementRef;
@@ -100,6 +102,7 @@ export class ModalComponent {
     @Input() modalTransit!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
+    @Input() modalAttributeData!: Observable<any>;
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
@@ -225,6 +228,9 @@ export class ModalComponent {
 		this.RefreshTable.emit();
 	}
 
+    viewDetails(id: string){
+        // this.attributes.getAttributeDetails(id)
+    }
     
 	deleteSuccessToast(value: any): void {
         this.SuccessToast.emit(value)

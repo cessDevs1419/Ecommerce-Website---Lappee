@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, throwError } from 'rxjs';
+import { Observable, Subject, catchError, map, throwError } from 'rxjs';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
+import { AttributesDetails } from 'src/assets/models/attributes';
 
 @Component({
     selector: 'app-attribute-form',
@@ -24,13 +25,15 @@ export class AttributeFormComponent {
     @Input() formEditAttribute!: boolean;
     @Input() formDeleteAttribute!: boolean;
     @Input() formMultipleDeleteAttribute!: boolean;
+    @Input() attributeDetails: Observable<any>
     
     textcolor: string = 'text-light-subtle'
     bordercolor: string = 'dark-subtle-borders'
     addAttributeForm: FormGroup;
     editAttributeForm: FormGroup;
     deleteAttributeForm: FormGroup;
-    
+  
+    attributesValues: string[] = [];
     newSelectedRowDataForDelete: any
     private refreshData$ = new Subject<void>();
     
@@ -38,7 +41,8 @@ export class AttributeFormComponent {
         private attribute_service: AttributesService,
         private formBuilder: FormBuilder,
         private errorService: ErrorHandlerService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private ngZone: NgZone
     ){
         this.addAttributeForm = new FormGroup({
             name: new FormControl('', Validators.required),
@@ -56,13 +60,16 @@ export class AttributeFormComponent {
     }
     
     ngOnInit() {
-        // Access the length of selectedRowDataForDelete
+
+
     }
     
+
     refreshTableData(): void {
         this.refreshData$.next();
     }
     
+
     get attributeValueControls() {
         return (this.addAttributeForm.get('attribute_value') as FormArray).controls;
     }
@@ -172,82 +179,77 @@ export class AttributeFormComponent {
     }
     
     onAttributeEditSubmit(): void {
-        if(this.editAttributeForm.valid){
 
-            let formData: any = new FormData();
-            formData.append('id', this.selectedRowData.id);
-            formData.append('name', this.editAttributeForm.get('name')?.value);
-            
-            for (const value of formData.entries()) {
-                console.log(`${value[0]}, ${value[1]}`);
-            }
-            // this.attribute_service.patchAttribute(formData).subscribe({
-            //     next: (response: any) => { 
-            //         const successMessage = {
-            //             head: 'Category ' + this.editAttributeForm.get('name')?.value,
-            //             sub: response?.message
-            //         };
-                    
-            //         this.RefreshTable.emit();
-            //         this.refreshTableData();
-            //         this.ProductSuccess.emit(successMessage);
+        const nameValue = this.addAttributeForm.get('name')?.value; 
+        const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1);
+       
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
 
-            //     },
-            //     error: (error: HttpErrorResponse) => {
-            //         if (error.error?.data?.error) {
-            //             const fieldErrors = error.error.data.error;
-            //             const errorsArray = [];
-                    
-            //             for (const field in fieldErrors) {
-            //                 if (fieldErrors.hasOwnProperty(field)) {
-            //                     const messages = fieldErrors[field];
-            //                     let errorMessage = messages;
-            //                     if (Array.isArray(messages)) {
-            //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
-            //                     }
-            //                     errorsArray.push(errorMessage);
-            //                 }
-            //             }
-                    
-            //             const errorDataforProduct = {
-            //                 head: 'Error Invalid Inputs',
-            //                 sub: errorsArray,
-            //             };
-                    
-            //             this.ProductWarning.emit(errorDataforProduct);
-            //         } else {
-                    
-            //             const errorDataforProduct = {
-            //                 head: 'Error Invalid Inputs',
-            //                 sub: 'Please Try Another One',
-            //             };
-            //             this.ProductError.emit(errorDataforProduct);
-            //         }
-            //         return throwError(() => error);
-                
-            
-            //     }
-            // });
+        let formData: FormData = new FormData(); 
+        formData.append('id', this.selectedRowData.id);
+        formData.append('name', capitalizedName);
         
-            
-        }else{
-            this.editAttributeForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.editAttributeForm.controls) {
-                if (this.editAttributeForm.controls.hasOwnProperty(controlName) && this.editAttributeForm.controls[controlName].errors?.['required']) {
-                    const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                    emptyFields.push(label);
-                }
-            }
-
-            const errorData = {
-                head: `Please fill in the following required fields: `,
-                sub: emptyFields.join(', ')
-            };
-            this.ProductWarning.emit(errorData);
-            
+        for (let val of attributeArray.value) {
+            let index = 0;
+            const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
+            formData.append('values[]', capitalizedAttributeValue);
+            index++;
         }
 
+        formData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
+        
+        // this.attribute_service.postAttribute(formData).subscribe({
+        //     next: (response: any) => { 
+        //         const successMessage = {
+        //             head: 'Attribute ' + this.addAttributeForm.get('name')?.value,
+        //             sub: response?.message
+        //         };
+                
+        //         this.RefreshTable.emit();
+        //         this.refreshTableData();
+        //         this.ProductSuccess.emit(successMessage);
+        //         this.addAttributeForm.reset();
+        //         attributeArray.clear();
+        //         this.CloseModal.emit();
+        //     },
+        //     error: (error: HttpErrorResponse) => {
+        //         if (error.error?.data?.error) {
+        //             const fieldErrors = error.error.data.error;
+        //             const errorsArray = [];
+                
+        //             for (const field in fieldErrors) {
+        //                 if (fieldErrors.hasOwnProperty(field)) {
+        //                     const messages = fieldErrors[field];
+        //                     let errorMessage = messages;
+        //                     if (Array.isArray(messages)) {
+        //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                     }
+        //                     errorsArray.push(errorMessage);
+        //                 }
+        //             }
+                
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: errorsArray,
+        //             };
+                
+        //             this.ProductWarning.emit(errorDataforProduct);
+        //         } else {
+                
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: 'Please Try Another One',
+        //             };
+        //             this.ProductError.emit(errorDataforProduct);
+        //         }
+                
+        //         return throwError(() => error);
+                
+        //     }
+        // });
+    
 
     }
     

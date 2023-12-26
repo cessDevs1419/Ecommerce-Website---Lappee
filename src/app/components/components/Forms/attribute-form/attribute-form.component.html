@@ -41,7 +41,7 @@
     </div> 
 </form>
 
-<form *ngIf="formEditAttribute" [formGroup]="editAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
+<form *ngIf="formEditAttribute" [formGroup]="addAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
     <div class="container">
         <div class=" w-100 px-1">
             <input [value]="selectedRowData?.name" formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3 {{bordercolor}}" placeholder="Enter Attribute Name">
@@ -50,6 +50,19 @@
         <div class="title-container mb-2 d-flex align-items-center">
             <h3 class=" fs-5 position-relative mt-1 {{textcolor}}">Attribute Values</h3>
         </div>
+        <div class="attribute-values w-100 mb-3">
+            <div>
+                <div *ngFor="let value of (attributeDetails | async)?.values; let i = index">
+                    <div class="input-group mb-3">
+                        <input [value]="value" type="text" class="form-control form-control-lg text-white bg-transparent border rounded-3 border-end-0 rounded-end-0 {{bordercolor}}" placeholder="Enter Attribute Value">
+                        <button type="button" class="input-group-text bg-none border border-dark-subtle border-start-0 {{bordercolor}}" (click)="removeAttributeValue(i)">
+                            <i class="bi-x fs-4 {{textcolor}}"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="attribute-values w-100">
             <div formArrayName="attribute_value" *ngIf="addAttributeForm.get('attribute_value')">
                 <div *ngFor="let control of attributeValueControls; let i = index">
@@ -62,7 +75,7 @@
                 </div>
                 <button 
                     type="button"
-                    class="w-100 p-1 border-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+                    class="w-100 p-1 py-2 border-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
                     (click)="addAttributeValue()"
                 >
                     <h1 class="text-dark-subtle-grey fs-4 lh-1 fw-bolder">+</h1>

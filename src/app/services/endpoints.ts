@@ -38,6 +38,7 @@ export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Attributes Admin Endpoints
 export const GETAttributesAdmin: string = api + "api/admin/attributes";
+export const GETAttributesDetailsAdmin: string = api + "api/admin/attributes/details/";
 export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
 export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
 export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/delete";
