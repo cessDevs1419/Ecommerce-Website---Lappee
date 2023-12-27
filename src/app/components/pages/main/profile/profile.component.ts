@@ -22,8 +22,16 @@ import { User } from 'src/assets/models/user';
 })
 export class ProfileComponent {
   isEditMode: boolean = false;
+
   isSubmitEdit: boolean = false; 
   isNameEditable: boolean = true;
+
+  addAddress: boolean = false;
+  editAddress: boolean = false;
+  addName: boolean = false;
+
+  targetAddress: Address;
+
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
   userAddresses: Address[];
@@ -31,27 +39,32 @@ export class ProfileComponent {
   filteredInfo!: Observable<DeliveryInfo[]>
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
   
-  editProfileForm = new FormGroup({
-    editFirstName: new FormControl('', Validators.required),
-    editMiddleName: new FormControl(''),
-    editLastName: new FormControl('', Validators.required),
-    editSuffix: new FormControl(''),
+  editAddressForm = new FormGroup({
     editProvince: new FormControl('', Validators.required),
     editCity: new FormControl('', Validators.required),
     editAddressLine: new FormControl('', Validators.required),
     editZipCode: new FormControl('', Validators.required),
-    editPhoneNumber: new FormControl('', Validators.required)
+    editPhoneNumber: new FormControl('', Validators.required),
+    editLabel: new FormControl('', Validators.required)
   });
+  
+  editNameForm = new FormGroup({
+    editFirstName: new FormControl('', Validators.required),
+    editMiddleName: new FormControl(''),
+    editLastName: new FormControl('', Validators.required),
+    editSuffix: new FormControl(''),
+  })
 
-  get editProvince() { return this.editProfileForm.get('editProvince')}
-  get editCity() { return this.editProfileForm.get('editCity')}
-  get editAddressLine() { return this.editProfileForm.get('editAddressLine')}
-  get editZipCode() { return this.editProfileForm.get('editZipCode')}
-  get editPhoneNumber() { return this.editProfileForm.get('editPhoneNumber')}
-  get editFirstName() { return this.editProfileForm.get('editFirstName') }
-  get editMiddleName() { return this.editProfileForm.get('editMiddleName') }
-  get editLastName() { return this.editProfileForm.get('editLastName') }
-  get editSuffix() { return this.editProfileForm.get('editSuffix') }
+  get editProvince() { return this.editAddressForm.get('editProvince')}
+  get editCity() { return this.editAddressForm.get('editCity')}
+  get editAddressLine() { return this.editAddressForm.get('editAddressLine')}
+  get editZipCode() { return this.editAddressForm.get('editZipCode')}
+  get editPhoneNumber() { return this.editAddressForm.get('editPhoneNumber')}
+  get editLabel() { return this.editAddressForm.get('editLabel')}
+  get editFirstName() { return this.editNameForm.get('editFirstName') }
+  get editMiddleName() { return this.editNameForm.get('editMiddleName') }
+  get editLastName() { return this.editNameForm.get('editLastName') }
+  get editSuffix() { return this.editNameForm.get('editSuffix') }
 
   toastTheme!: string;
   toastHeader!: string;
@@ -122,7 +135,7 @@ export class ProfileComponent {
       })
 
       if(response.fname && response.lname) {
-        this.editProfileForm.patchValue({
+        this.editNameForm.patchValue({
           editFirstName: response.fname,
           editLastName: response.lname,
           editMiddleName: response.mname,
@@ -135,52 +148,52 @@ export class ProfileComponent {
       }
        // this.userAddresses = this.deliveryinfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)));
 
-        findDeliveryInfo(response.user_id, this.infos).subscribe({
-          next: (match: boolean) => {
-            if(match) {
-              console.log('has matching address')
-              this.isInfoRegistered = true;
-              this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
-              this.filteredInfo.subscribe({
-                next: (info: DeliveryInfo[]) => {
-                  if(info){
-                    this.isSubmitEdit = true;
-                    this.editProfileForm.patchValue({
-                      editProvince: info[0].city,
-                      editCity: info[0].province,
-                      editAddressLine: info[0].address,
-                      editZipCode: info[0].zip_code.toString(),
-                      editPhoneNumber: info[0].number
-                    })
-                    if(response.fname && response.lname) {
-                      this.editProfileForm.patchValue({
-                        editFirstName: response.fname,
-                        editLastName: response.lname,
-                        editMiddleName: response.mname,
-                        editSuffix: response.suffix
-                      })
-                      this.editFirstName?.disable();
-                      this.editLastName?.disable();
-                      this.editMiddleName?.disable();
-                      this.editSuffix?.disable();
-                    }
-                  }
-                  else {
-                    this.isSubmitEdit = false;
-                  }
-                }
-              });
-            }
-            else {
-              this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
-              console.log('no matching address')
-              this.isInfoRegistered = false;
-            }
-          },
-          error: (err: HttpErrorResponse) => {
-            console.log(err)
-          }
-        })
+        // findDeliveryInfo(response.user_id, this.infos).subscribe({
+        //   next: (match: boolean) => {
+        //     if(match) {
+        //       console.log('has matching address')
+        //       this.isInfoRegistered = true;
+        //       this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
+        //       this.filteredInfo.subscribe({
+        //         next: (info: DeliveryInfo[]) => {
+        //           if(info){
+        //             this.isSubmitEdit = true;
+        //             this.editProfileForm.patchValue({
+        //               editProvince: info[0].city,
+        //               editCity: info[0].province,
+        //               editAddressLine: info[0].address,
+        //               editZipCode: info[0].zip_code.toString(),
+        //               editPhoneNumber: info[0].number
+        //             })
+        //             if(response.fname && response.lname) {
+        //               this.editProfileForm.patchValue({
+        //                 editFirstName: response.fname,
+        //                 editLastName: response.lname,
+        //                 editMiddleName: response.mname,
+        //                 editSuffix: response.suffix
+        //               })
+        //               this.editFirstName?.disable();
+        //               this.editLastName?.disable();
+        //               this.editMiddleName?.disable();
+        //               this.editSuffix?.disable();
+        //             }
+        //           }
+        //           else {
+        //             this.isSubmitEdit = false;
+        //           }
+        //         }
+        //       });
+        //     }
+        //     else {
+        //       this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
+        //       console.log('no matching address')
+        //       this.isInfoRegistered = false;
+        //     }
+        //   },
+        //   error: (err: HttpErrorResponse) => {
+        //     console.log(err)
+        //   }
+        // })
       },
       error: (err: HttpErrorResponse) => {
         console.log(err)
@@ -188,25 +201,55 @@ export class ProfileComponent {
     });
   }
 
-  submitAddress(): void {
-    if(this.editProfileForm.valid){
+  submitName(): void {
+    if(this.editNameForm.valid){
+      let formData: any = new FormData();
+      formData.append('first_name', this.editFirstName?.value);
+      formData.append('middle_name', this.editMiddleName?.value);
+      formData.append('last_name', this.editLastName?.value);
+      formData.append('suffix', this.editSuffix?.value);
+  
+      this.deliveryinfoService.postAddName(formData).subscribe({
+        next: (response: any) => {
+          this.toaster.showToast("Successfully added!", "Your name has been updated.")
+          this.checkAddress();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.eh.handle(err)
+        },
+        complete: () => {
+          this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+            if(status){
+              this.user = this.accountService.getLoggedUser();
+              this.checkAddress();
+            }
+            
+            this.isEditMode = false;
+            this.addName = false;
+          })
+        }
+      })
+    }
+    else {
+      this.editNameForm.markAllAsTouched();
+    }
+  }
 
+  submitAddress(): void {
+    if(this.editAddressForm.valid){
       let formData: any = new FormData();
       formData.append('address', this.editAddressLine?.value);
       formData.append('city', this.editCity?.value);
       formData.append('province', this.editProvince?.value);
       formData.append('zip_code', this.editZipCode?.value);
       formData.append('number', this.editPhoneNumber?.value);
+      formData.append('label', this.editLabel?.value);
 
       console.log(formData);
 
-      if(!this.isSubmitEdit) {
-        formData.append('first_name', this.editFirstName?.value);
-        formData.append('middle_name', this.editMiddleName?.value ? this.editMiddleName?.value : '');
-        formData.append('last_name', this.editLastName?.value);
-        formData.append('suffix', this.editSuffix?.value ? this.editSuffix?.value : '');
+      if(this.addAddress) {
 
-        this.deliveryinfoService.postDeliveryInfo(formData).subscribe({
+        this.deliveryinfoService.postAddAddress(formData).subscribe({
           next: (response: any) => {
 
             this.toaster.showToast("Successfully added!", "Your delivery information has been updated.")
@@ -224,12 +267,15 @@ export class ProfileComponent {
               }
               
               this.isEditMode = false;
+              this.addAddress = false;
             })
           }
         })
       }
       else {
-        this.deliveryinfoService.patchDeliveryInfo(formData).subscribe({
+        formData.append("id", this.targetAddress.id);
+
+        this.deliveryinfoService.patchEditAddress(formData).subscribe({
           next: (response: any) => {
 
             this.toaster.showToast("Successfully edited!", "Your delivery information has been updated.")
@@ -249,16 +295,35 @@ export class ProfileComponent {
               }
 
               this.isEditMode = false;
+              this.editAddress = false;
             })
-            
           }
         })
       }
 
     }
     else {
-      this.editProfileForm.markAllAsTouched();
+      this.editAddressForm.markAllAsTouched();
     }
+  }
+
+  editAddressFormValues(address: Address): void {
+    this.editAddressForm.patchValue({
+      editAddressLine: address.address,
+      editCity: address.city,
+      editPhoneNumber: address.number,
+      editProvince: address.province,
+      editZipCode: String(address.zip_code),
+      editLabel: address.label
+    })
+
+    this.editAddress = true;
+    this.isEditMode = true;
+    this.targetAddress = address;
+  }
+
+  activeNumber(): string {
+    return this.userAddresses.find((address: Address) => address.in_use == 1)?.number!
   }
 
   logout(): void {

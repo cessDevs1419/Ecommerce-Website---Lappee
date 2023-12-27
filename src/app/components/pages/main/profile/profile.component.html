@@ -16,54 +16,55 @@
                 <p ><i class="bi bi-emoji-frown-fill fs-1"></i></p>
                 <p class="fw-bold fs-5 m-0">Looks like some of your details are missing.</p>
                 <p class="">Complete your account details through the Edit Profile button.</p>
-                <button class="button-primary" (click)="this.isEditMode = true">Edit Profile</button>
+                <button class="button-primary" (click)="this.isEditMode = true; addName = true;">Edit Profile</button>
             </div>
-            <div class="col-md fs-4" *ngIf="this.user.fname && this.user.lname">
+            <div class="col-md fs-4 pe-3" *ngIf="this.user.fname && this.user.lname">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <p class="fw-bold fs-4 m-0">Contact</p>
-                    <button class="button-primary fs-6"><i class="bi bi-pencil-fill me-3"></i>Edit Info</button>
+                    <button class="button-primary fs-6" (click)="isEditMode = true; addName = true"><i class="bi bi-pencil-fill me-3"></i>Edit Info</button>
                 </div>
-                <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
-                <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
-                <div *ngIf="!(this.filteredInfo | async)">
-                    <span class="text-muted pe-3">Phone Number:</span>Loading...
+                <p class="fs-5"><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
+                <p class="fs-5"><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
+                <!-- <div class="fs-5" *ngIf="!userAddresses">
+                    <span class="text-muted pe-3 fs-5">Phone Number:</span>Loading...
                 </div>
-                <div *ngIf="this.filteredInfo | async as info">
-                    <p *ngIf="info.length === 0">
+                <div *ngIf="userAddresses as info">
+                    <p class="fs-5" *ngIf="info.length === 0">
                         <span class="text-muted pe-3">Phone Number:</span>Not Set
                     </p>
-                    <p *ngIf="info.length > 0">
-                        <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
+                    <p class="fs-5" *ngIf="info.length > 0">
+                        <span class="text-muted pe-3">Phone Number:</span>{{ activeNumber() }}
                     </p>
-                </div>
+                </div> -->
             </div>
-            <div class="col-md fs-4 ps-4 pe-0" *ngIf="this.user.fname && this.user.lname">
+            <div class="col-md fs-4 ps-3 pe-0 border-start" *ngIf="this.user.fname && this.user.lname">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <p class="fw-bold fs-4 m-0">Addresses</p>
-                    <button class="button-primary fs-6"><i class="bi bi-plus-circle-fill me-3"></i>Add Address</button>
+                    <button class="button-primary fs-6" (click)="isEditMode = true; addAddress = true"><i class="bi bi-plus-circle-fill me-3"></i>Add Address</button>
                 </div>
                 <div class="" *ngIf="!this.userAddresses">
                     <p class="text-muted">Loading...</p>
                 </div>
                 <div class="" *ngIf="(this.userAddresses) as info">
-                    <div *ngIf="info.length === 0">
-                        Setup your address through the edit profile form.
+                    <div *ngIf="info.length === 0" class="d-flex flex-column align-items-center">
+                        <p><i class="bi bi-emoji-frown-fill fs-1"></i></p>
+                        <p class="fs-5">You don't have saved addresses.</p>
                     </div>
                     <div *ngIf="info.length > 0">
                         <div *ngFor="let address of userAddresses" class="d-flex flex-column justify-content-between bg-dark-lite p-3 mb-3" [ngClass]="address.in_use == 0 ? 'bg-dark-lite' : 'bgcolor-primary color-white'">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center fs-5">
                                 <div>
-                                    <p class="fw-bold m-0">{{address.label}}</p>
+                                    <p class="fw-bold m-0">{{address.label}} <span *ngIf="address.in_use == 1">(Selected)</span></p>
                                 </div>
                                 <div>
-                                    <button class="button-plain me-3"><i class="bi bi-pencil" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
-                                    <button class="button-plain"><i class="bi bi-trash-fill" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
+                                    <button class="button-plain fs-5 me-3" (click)="editAddressFormValues(address)"><i class="bi bi-pencil" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
+                                    <button class="button-plain fs-5"><i class="bi bi-trash-fill" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
                                 </div>
                             </div>
                             <div>
-                                <p class="m-0">{{address.address}}</p>
-                                <p class="m-0">{{address.city}}, {{address.province}}, {{address.zip_code}}</p>
-                                <p class="m-0">{{address.number}}</p>
+                                <p class="m-0 fs-5">{{address.address}}</p>
+                                <p class="m-0 fs-5">{{address.city}}, {{address.province}}, {{address.zip_code}}</p>
+                                <p class="m-0 fs-5">{{address.number}}</p>
                             </div>
                         </div>
                         <!-- <p><span class="text-muted pe-3">Address Line:</span>{{ info[0].address }}</p>
@@ -77,13 +78,147 @@
         </div>
     </div>
 
-    <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="!this.isEditMode">
+    <!-- ADD / EDIT NAME  -->
+    <!-- <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="!this.isEditMode">
         <div class="pb-2 border-bottom">
             <p class="fs-2 fw-bold">Edit Profile</p>
         </div>
         <div class="mt-3">
-            <form [formGroup]="editProfileForm">
+            <form [formGroup]="editNameForm">
                 <p class="fw-bold fs-4">Personal Information</p>
+                
+                <div class="row mb-4">
+                    <div class="col-md">
+                        <label for="editFirstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editFirstName" formControlName="editFirstName" />
+                        <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
+                            <div *ngIf="editFirstName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="editMiddleName" class="form-label">Middle Name (Optional)</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editMiddleName" formControlName="editMiddleName" />
+                        <div *ngIf="editMiddleName?.invalid && (editMiddleName?.dirty || editMiddleName?.touched)"> 
+                            <div *ngIf="editMiddleName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="editLastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editLastName" formControlName="editLastName" />
+                        <div *ngIf="editLastName?.invalid && (editLastName?.dirty || editLastName?.touched)"> 
+                            <div *ngIf="editLastName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="editSuffix" class="form-label">Suffix (Optional)</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="editSuffix" formControlName="editSuffix" />
+                        <div *ngIf="editFirstName?.invalid && (editFirstName?.dirty || editFirstName?.touched)"> 
+                            <div *ngIf="editFirstName?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="fw-bold fs-4">Contact Information</p>
+                <div class="row mb-3">
+                    <label for="edit-phonenumber" class="form-label">Phone Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text rounded-0">PH (+63)</span>
+                        <input type="number" pattern="[0-9]*" class="form-control form-control-lg rounded-0" id="edit-phonenumber" formControlName="editPhoneNumber"/>
+                    </div>
+                    <div *ngIf="editPhoneNumber?.invalid && (editPhoneNumber?.dirty || editPhoneNumber?.touched)"> 
+                        <div *ngIf="editPhoneNumber?.errors?.['required']">
+                            <span class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="edit-email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text rounded-0 bg-gradient-primary"><i class="bi bi-envelope-fill color-white"></i></span>
+                        <input type="email" class="form-control form-control-lg rounded-0" id="edit-email" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="edit-stateprovince" class="form-label">State / Province</label>
+                        <select class="form-select form-select-lg rounded-0" id="edit-stateprovince" formControlName="editProvince">
+                            <option selected value="">Select Province</option>
+                            <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+                        </select>
+                        <div *ngIf="editProvince?.invalid && (editProvince?.dirty || editProvince?.touched)"> 
+                            <div *ngIf="editProvince?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="edit-city" class="form-label">City / Municipality</label>
+                        <select class="form-select form-select-lg rounded-0" id="edit-city" formControlName="editCity">
+                            <option selected value="">Select City</option>
+                            <option *ngFor="let city of filterCity()" [value]="city.name">{{city.name}}</option>
+                        </select>
+                        <div *ngIf="editCity?.invalid && (editCity?.dirty || editCity?.touched)"> 
+                            <div *ngIf="editCity?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md mt-3 mt-md-0">
+                        <label for="edit-zipcode" class="form-label">ZIP / Postal Code</label>
+                        <input type="number" class="form-control form-control-lg rounded-0" id="edit-zipcode" formControlName="editZipCode" />
+                        <div *ngIf="editZipCode?.invalid && (editZipCode?.dirty || editZipCode?.touched)"> 
+                            <div *ngIf="editZipCode?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <label for="edit-addressline" class="form-label">Address Line</label>
+                    
+                    <div class="input-group">
+                        <span class="input-group-text rounded-0"><i class="bi bi-house-fill"></i></span>
+                        <textarea type="text" class="form-control form-control-lg rounded-0" id="edit-addressline" formControlName="editAddressLine"></textarea>
+                    </div>
+                    <div *ngIf="editProvince?.invalid && (editProvince?.dirty || editProvince?.touched)"> 
+                        <div *ngIf="editProvince?.errors?.['required']">
+                            <span class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="text-muted mt-2 mb-4">
+
+                <div class="d-flex justify-content-end">
+                    <button (click)="this.isEditMode = !this.isEditMode" class="button-secondary-outline rounded-0 mb-3">Cancel</button>
+                    <button type="submit" (click)="submitAddress()" class="ms-3 button-primary rounded-0 mb-3">Save Changes</button> 
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+    <!-- ADD / EDIT NAME  -->
+    <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="!isEditMode || !addName">
+        <div class="pb-2 border-bottom">
+            <p class="fs-2 fw-bold">Edit Name</p>
+        </div>
+        <div class="mt-3">
+            <form [formGroup]="editNameForm">
+                <!-- <p class="fw-bold fs-4">Personal Information</p> -->
                 
                 <div class="row mb-4">
                     <div class="col-md">
@@ -126,17 +261,44 @@
                         </div> -->
                     </div>
                 </div>
-                
-                <p class="fw-bold fs-4">Contact Information</p>
+
+                <hr class="text-muted mt-2 mb-4">
+
+                <div class="d-flex justify-content-end">
+                    <button (click)="this.isEditMode = !this.isEditMode; addName = false" class="button-secondary-outline rounded-0 mb-3">Cancel</button>
+                    <button type="submit" (click)="submitName()" class="ms-3 button-primary rounded-0 mb-3">Save Changes</button> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+     <!-- ADD / EDIT ADDRESS  -->
+    <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="!isEditMode || (!addAddress && !editAddress)">
+        <div class="pb-2 border-bottom">
+            <p class="fs-2 fw-bold"> {{ addAddress ? 'Add' : 'Edit'}} Address</p>
+        </div>
+        <div class="mt-3">
+            <form [formGroup]="editAddressForm">
                 <div class="row mb-3">
-                    <label for="edit-phonenumber" class="form-label">Phone Number</label>
-                    <div class="input-group">
-                        <span class="input-group-text rounded-0">PH (+63)</span>
-                        <input type="number" pattern="[0-9]*" class="form-control form-control-lg rounded-0" id="edit-phonenumber" formControlName="editPhoneNumber"/>
+                    <div class="col-md">
+                        <label for="edit-label" class="form-label">Address Label</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" id="edit-label" formControlName="editLabel"/>
+                        <div *ngIf="editLabel?.invalid && (editLabel?.dirty || editLabel?.touched)"> 
+                            <div *ngIf="editLabel?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngIf="editPhoneNumber?.invalid && (editPhoneNumber?.dirty || editPhoneNumber?.touched)"> 
-                        <div *ngIf="editPhoneNumber?.errors?.['required']">
-                            <span class="text-danger">This field is required.</span>
+                    <div class="col-md">
+                        <label for="edit-phonenumber" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text rounded-0">PH (+63)</span>
+                            <input type="number" pattern="[0-9]*" class="form-control form-control-lg rounded-0" id="edit-phonenumber" formControlName="editPhoneNumber"/>
+                        </div>
+                        <div *ngIf="editPhoneNumber?.invalid && (editPhoneNumber?.dirty || editPhoneNumber?.touched)"> 
+                            <div *ngIf="editPhoneNumber?.errors?.['required']">
+                                <span class="text-danger">This field is required.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -204,7 +366,7 @@
                 <hr class="text-muted mt-2 mb-4">
 
                 <div class="d-flex justify-content-end">
-                    <button (click)="this.isEditMode = !this.isEditMode" class="button-secondary-outline rounded-0 mb-3">Cancel</button>
+                    <button (click)="this.isEditMode = !this.isEditMode; addAddress = false; editAddress = false" class="button-secondary-outline rounded-0 mb-3">Cancel</button>
                     <button type="submit" (click)="submitAddress()" class="ms-3 button-primary rounded-0 mb-3">Save Changes</button> 
                 </div>
             </form>
