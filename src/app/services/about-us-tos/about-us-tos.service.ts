@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DELETEAboutUs, DELETEToS, GETAboutUs, GETTos, POSTAddABoutUs, POSTAddToS } from '../endpoints';
+import { DELETEAboutUs, DELETEToS, GETAboutUs, GETTos, PATCHEditABoutUs, PATCHEditToS, POSTAddABoutUs, POSTAddToS } from '../endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +22,20 @@ export class AboutUsTosService {
   {
     return this.http.post<any>(POSTAddABoutUs, data);
   }
+
+  patchEditAboutUs(data: FormData): Observable<any>
+  {
+    return this.http.patch<any>(PATCHEditABoutUs, data);
+  }
   
   postAddToS(data: FormData): Observable<any>
   {
     return this.http.post<any>(POSTAddToS, data);
+  }
+
+  patchEditToS(data: FormData): Observable<any>
+  {
+    return this.http.patch<any>(PATCHEditToS, data);
   }
 
   deleteAboutUsSection(data: FormData): Observable<any>

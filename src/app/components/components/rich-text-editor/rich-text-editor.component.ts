@@ -29,9 +29,9 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.editor = new Editor();
-
   }
 
+  
   // make sure to destory the editor
   ngOnDestroy(): void {
     this.editor.destroy();

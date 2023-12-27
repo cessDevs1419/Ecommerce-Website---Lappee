@@ -25,7 +25,7 @@ export class AttributeFormComponent {
     @Input() formEditAttribute!: boolean;
     @Input() formDeleteAttribute!: boolean;
     @Input() formMultipleDeleteAttribute!: boolean;
-    @Input() attributeDetails: Observable<any>
+    @Input() attributeDetails: any[] = []
     
     textcolor: string = 'text-light-subtle'
     bordercolor: string = 'dark-subtle-borders'
@@ -60,10 +60,11 @@ export class AttributeFormComponent {
     }
     
     ngOnInit() {
-
-
+        this.addAttributeForm = new FormGroup({
+            name: new FormControl('', Validators.required),
+            attribute_value: this.formBuilder.array([])
+        });
     }
-    
 
     refreshTableData(): void {
         this.refreshData$.next();
@@ -79,9 +80,24 @@ export class AttributeFormComponent {
         attributeArray.push(new FormControl(''));
     }   
 
+    addExistingAttributeValue(value: string) {
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        attributeArray.push(this.formBuilder.control(value));
+
+    }
+
+    reset(){
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        attributeArray.clear()
+    }
     removeAttributeValue(index: number) {
         const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
         attributeArray.removeAt(index);
+    }
+
+    removeExistingAttributeValue(index: number) {
+        const attributeArray = this.attributeDetails;
+        attributeArray.splice(index, 1)
     }
 
     onAttributeAddSubmit(): void {
@@ -184,12 +200,20 @@ export class AttributeFormComponent {
         const capitalizedName = nameValue.charAt(0).toUpperCase() + nameValue.slice(1);
        
         const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        const attributeExisting = this.attributeDetails;
 
         let formData: FormData = new FormData(); 
         formData.append('id', this.selectedRowData.id);
         formData.append('name', capitalizedName);
         
         for (let val of attributeArray.value) {
+            let index = 0;
+            const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
+            formData.append('values[]', capitalizedAttributeValue);
+            index++;
+        }
+
+        for (let val of attributeExisting) {
             let index = 0;
             const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
             formData.append('values[]', capitalizedAttributeValue);

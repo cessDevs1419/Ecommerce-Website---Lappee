@@ -4,7 +4,7 @@
 
 <div class="component-container overflow-y-auto">
   <div class="position-relative">
-    <div *ngIf="!showAddSectionForm">
+    <div *ngIf="!showAddSectionForm && !showEditSectionForm">
       <div class="container-fluid m-auto h-auto pb-4 px-0 px-sm-3">
         <app-table
           tableTitle="Manage Terms of Service"
@@ -28,6 +28,7 @@
           [addProdBtn]="true"
           addbtnName="Add Section"
           (ShowAddForm)="toggleAddSectionForm()"
+          (ShowEditForm)="getSelectedSection($event)"
           [editSubBtn]="true"
           [deleteBtn]="true">
         </app-table>
@@ -87,6 +88,42 @@
                     </div>
                     <div class="col d-flex justify-content-end">
                       <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-3" (click)="toggleAddSectionForm()">Cancel</button>
+                      <button type="submit" class="btn-save bg-theme-blue btn px-4 {{btncolor}} text-light ">Save</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showEditSectionForm">
+      <div class="container-fluid m-auto h-auto pb-4 px-0 px-sm-3">
+        <div class="row">
+          <div class="col-xxl-6 px-3">
+            <div class="card-container linear-gradient-border mx-2">
+              <div class="content-form p-4 rounded-4 mx-3 mx-lg-0">
+                <h1 class="fw-bold fs-4 mb-0">Edit Section</h1>
+                <h3 class="fw-bold fs-6 mt-0 sub-title">Manage Contents</h3>
+      
+                <form [formGroup]="tosAddSectionForm" (ngSubmit)="submitEditSectionForm()">
+                  <div class="row row-cols-1 gy-3">
+                    <div class="col">
+                      <label for="sectionHeader" class="form-label mb-1 {{textColor}}">Section Header*</label>
+                      <input type="text" class="form-control bg-transparent border-1 text-white" id="sectionHeader" formControlName="sectionHeader" placeholder="Section Title">
+                    </div>
+                    <div class="col">
+                      <label for="sectionContent" class="form-label mb-1 {{textColor}}">Section Content*</label>
+                      <app-rich-text-editor 
+                        (value)="getRTFValue($event)"
+                        #rte
+                      >
+                      </app-rich-text-editor>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                      <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-3" (click)="toggleEditSectionForm()">Cancel</button>
                       <button type="submit" class="btn-save bg-theme-blue btn px-4 {{btncolor}} text-light ">Save</button>
                     </div>
                   </div>

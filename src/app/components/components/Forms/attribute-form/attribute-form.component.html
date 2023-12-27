@@ -50,18 +50,18 @@
         <div class="title-container mb-2 d-flex align-items-center">
             <h3 class=" fs-5 position-relative mt-1 {{textcolor}}">Attribute Values</h3>
         </div>
-        <div class="attribute-values w-100 mb-3">
+        <!-- <div class="attribute-values w-100 mb-3">
             <div>
-                <div *ngFor="let value of (attributeDetails | async)?.values; let i = index">
+                <div *ngFor="let value of attributeDetails; let i = index">
                     <div class="input-group mb-3">
                         <input [value]="value" type="text" class="form-control form-control-lg text-white bg-transparent border rounded-3 border-end-0 rounded-end-0 {{bordercolor}}" placeholder="Enter Attribute Value">
-                        <button type="button" class="input-group-text bg-none border border-dark-subtle border-start-0 {{bordercolor}}" (click)="removeAttributeValue(i)">
+                        <button type="button" class="input-group-text bg-none border border-dark-subtle border-start-0 {{bordercolor}}" (click)="removeExistingAttributeValue(i)">
                             <i class="bi-x fs-4 {{textcolor}}"></i>
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="attribute-values w-100">
             <div formArrayName="attribute_value" *ngIf="addAttributeForm.get('attribute_value')">

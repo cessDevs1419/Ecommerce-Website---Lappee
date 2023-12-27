@@ -27,6 +27,7 @@ export class AdminManageTosComponent {
   aboutUsSections: Observable<AboutUsTosSection[]>;
 
   showAddSectionForm: boolean = false;
+  showEditSectionForm: boolean = false;
   rtfValue: string;
   toastContent: string = "";
   toastHeader: string = "";
@@ -36,7 +37,7 @@ export class AdminManageTosComponent {
   @ViewChild('rte') childComponent: RichTextEditorComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
   @ViewChild(TableComponent) table: TableComponent;
-  
+  @ViewChild(RichTextEditorComponent) editor: RichTextEditorComponent;
   modal: bootstrap.Modal;
 
   selectedSection: AboutUsTosSection = {
@@ -86,9 +87,19 @@ export class AdminManageTosComponent {
     this.showAddSectionForm = !this.showAddSectionForm;
   }
 
+  toggleEditSectionForm(): void
+  {
+    this.showEditSectionForm = !this.showEditSectionForm;
+  }
+
   getSelectedSection(section: any)
   {
+    this.toggleEditSectionForm()
     this.selectedSection = section;
+    this.tosAddSectionForm.get('sectionHeader')?.setValue(section.title)
+    setTimeout(() => {
+      this.editor.editorSetValue(this.selectedSection.content);
+    }, 1000);
   }
 
   submitAddSectionForm()
@@ -103,7 +114,7 @@ export class AdminManageTosComponent {
 
       this.aboutUsToSService.postAddToS(formData).subscribe({
         next: (response: any) => {
-          this.showSuccessToast('Successfully added section', 'Added a section to about us.');
+          this.showSuccessToast('Manage Contents', response.message);
 
           this.tosAddSectionForm.reset();
 
@@ -122,6 +133,40 @@ export class AdminManageTosComponent {
       this.showWarnToast('Missing required fields.', 'Please fill up the form completely.');
     }
   }
+
+  submitEditSectionForm()
+  {
+    if(this.tosAddSectionForm.valid) {
+
+      let formData: any = new FormData();
+      formData.append('id', this.selectedSection.id);
+      formData.append('title', this.tosAddSectionForm.get('sectionHeader')?.value);
+      formData.append('content', this.rtfValue);
+
+      console.log(formData);
+
+      this.aboutUsToSService.patchEditToS(formData).subscribe({
+        next: (response: any) => {
+          this.showSuccessToast('Manage Contents', response.message);
+
+          this.tosAddSectionForm.reset();
+
+          this.refreshTableData();
+
+          this.toggleEditSectionForm();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showFailedToast('Failed to add section', 'Something wen\'t wrong when adding section.');
+
+          console.log(error);
+        }
+      });
+
+    } else {
+      this.showWarnToast('Missing required fields.', 'Please fill up the form completely.');
+    }
+  }
+
   private showSuccessToast(header: string, content: string)
   {
     this.toaster.showToast(header, content, 'default', '', )

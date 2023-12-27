@@ -29,6 +29,7 @@ export class ModalComponent {
 	@ViewChild(OrdersFormComponent) orders: OrdersFormComponent;
 	@ViewChild('modalRef') modalRef!: ElementRef;
     @ViewChild('dismiss') dismiss: ElementRef;
+    @ViewChild(AttributeFormComponent) loadData: AttributeFormComponent;
 
     
 	@Output() success: EventEmitter<any> = new EventEmitter();
@@ -102,7 +103,7 @@ export class ModalComponent {
     @Input() modalTransit!: boolean;
 	@Input() modalData!: Observable<any>;
     @Input() modalCancelledData!: Observable<any>;
-    @Input() modalAttributeData!: Observable<any>;
+    @Input() modalAttributeData: any[] = [];
 	@Input() orderData!: Observable<any>;
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
@@ -142,8 +143,14 @@ export class ModalComponent {
 
     ngOnChanges(): void {}
 
+    loadAttributeData(items: string){
+        this.loadData.addExistingAttributeValue(items)
 
-
+    }
+    
+    reset(){
+        this.loadData.reset()
+    }
     refreshTableData(): void {
         this.RefreshTable.emit();
     }

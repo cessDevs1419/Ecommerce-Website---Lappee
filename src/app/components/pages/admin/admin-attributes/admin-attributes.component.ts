@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Output, ViewChild } from '@angular/core';
+import { Component, NgZone, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, catchError, map, startWith, switchMap, tap } from 'rxjs';
+import { ModalComponent } from 'src/app/components/components/modal/modal.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -22,11 +23,12 @@ export class AdminAttributesComponent {
   @ViewChild(TableComponent) table: TableComponent;
 	@ViewChild('triggerFunction') childComponent: TableComponent;
   showMinus: boolean = false
-
+  @ViewChild(ModalComponent) modal: ModalComponent;
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
-  attributesDetails!: Observable<AttributesDetails>;
+  attributesDetail!: Observable<AttributesDetails>;
+  attributesDetails: any[] = [];
 
   backdrop: string = 'true';
 	toastContent: string = "";
@@ -36,6 +38,7 @@ export class AdminAttributesComponent {
   private refreshData$ = new Subject<void>();
   
   constructor(
+      private zone: NgZone,
 		  private attribute_service: AttributesService,
 	) {
     
@@ -64,7 +67,7 @@ onRowDataForDelete(rowData: any){
 }
 onRowDataSelected(rowData: any) {
   this.selectedRowData = rowData;
-  this.attributesDetails = this.attribute_service.getAttributeDetails(rowData.id)
+  this.attributesDetail = this.attribute_service.getAttributeDetails(rowData.id)
   .pipe(
     map((response: any) => response.data),
     catchError((error: HttpErrorResponse) => {
@@ -74,6 +77,16 @@ onRowDataSelected(rowData: any) {
     })
   );
 
+
+  this.attribute_service.getAttributeDetails(rowData.id).subscribe(data => {
+    this.zone.run(() => {
+      this.modal.reset()
+      for(const items of data.data.values){
+        this.modal.loadAttributeData(items)
+      }
+
+    });
+  });
 }
 
 showMinusFunction(){

@@ -28,7 +28,7 @@ import { RichTextEditorComponent } from '../../rich-text-editor/rich-text-editor
     templateUrl: './product-form.component.html',
     styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements AfterViewInit {
+export class ProductFormComponent {
     
     //theme
     formColor: string = "dark-form-bg"
@@ -233,6 +233,9 @@ export class ProductFormComponent implements AfterViewInit {
                 this.addProductForm.get('category')?.setValue(formattedProduct.category);
                 this.addProductForm.get('category')?.disable()
 
+                setTimeout(() => {
+                    this.editor.editorSetValue(formattedProduct.description);
+                  }, 1000);
                 
                 for (const variant of variants) {
                     const newVariantGroup = this.formBuilder.group({
@@ -290,15 +293,7 @@ export class ProductFormComponent implements AfterViewInit {
 
     }
 
-    ngAfterViewInit(): void {
-        if (this.selectedRowData) {
-            this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
-              const formattedProduct = formatProductObj(response);
-              this.editor.editorSetValue(formattedProduct.description);
-            });
-          }
 
-    }
 
     ngOnDestroy(): void {
         // Clean up the object URLs to avoid memory leaks
