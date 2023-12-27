@@ -184,3 +184,11 @@ export const DELETECartItems: string = api + "api/client/cart/delete";
 // Returns
 export const PATCHReqReturn: string = api + "api/client/orders/returns/initiate";
 export const POSTConfirmTransit: string = api + "api/client/orders/returns/confirm-transit"
+
+// Address Book + Name
+export const POSTAddName: string = api + "api/client/user-info/delivery-info/add-name/"
+export const GETAddressList: string = api + "api/client/user-info/delivery-info/address-book/"
+export const POSTAddAddress: string = api + "api/client/user-info/delivery-info/address-book/store/"
+export const PATCHEditAddress: string = api + "api/client/user-info/delivery-info/address-book/edit/"
+export const PATCHUseAddress: string = api + "api/client/user-info/delivery-info/address-book/use/"
+export const DELETEAddress: string = api + "api/client/user-info/delivery-info/address-book/delete"
