@@ -10,8 +10,8 @@ import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.serv
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { ProvinceCityService } from 'src/app/services/province-city/province-city.service';
-import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo } from 'src/app/utilities/response-utils';
-import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatAddressList } from 'src/app/utilities/response-utils';
+import { Address, DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { City, Province } from 'src/assets/models/province-city';
 import { User } from 'src/assets/models/user';
 
@@ -26,6 +26,7 @@ export class ProfileComponent {
   isNameEditable: boolean = true;
   user: Observable<User> = this.accountService.getLoggedUser();
   infos!: Observable<DeliveryInfo[]>;
+  userAddresses: Address[];
   isInfoRegistered!: boolean
   filteredInfo!: Observable<DeliveryInfo[]>
   //fullName: string = this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "");
@@ -103,6 +104,37 @@ export class ProfileComponent {
     this.user = this.accountService.getLoggedUser();
     this.user.subscribe({
       next: (response: any) => {
+
+        let addresses = this.deliveryinfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)));
+        addresses.subscribe({
+          next: (addresses: Address[]) => {
+            if(addresses) {
+              this.isInfoRegistered = true;
+              this.userAddresses = addresses;
+            }
+            else {
+              this.isInfoRegistered = false;
+            }
+          },
+          error: (err: HttpErrorResponse) => {
+            this.eh.handle(err)
+          }
+      })
+
+      if(response.fname && response.lname) {
+        this.editProfileForm.patchValue({
+          editFirstName: response.fname,
+          editLastName: response.lname,
+          editMiddleName: response.mname,
+          editSuffix: response.suffix
+        })
+        this.editFirstName?.disable();
+        this.editLastName?.disable();
+        this.editMiddleName?.disable();
+        this.editSuffix?.disable();
+      }
+       // this.userAddresses = this.deliveryinfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)));
+
         findDeliveryInfo(response.user_id, this.infos).subscribe({
           next: (match: boolean) => {
             if(match) {

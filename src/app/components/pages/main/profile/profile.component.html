@@ -9,45 +9,67 @@
     <div class="mt-3 row p-4 bg-light-gray animated-transition" [hidden]="this.isEditMode" *ngIf="this.user | async; let user">
         <div class="pb-2 border-bottom d-flex justify-content-between align-items-center">
             <p class="fs-2 fw-bold m-0">My Profile</p>
-            <button *ngIf="this.user.fname && this.user.lname" (click)="this.isEditMode = !this.isEditMode" class="button-primary rounded-0">Edit Profile <i class="bi bi-pencil-fill ms-3"></i></button>
+            <!-- <button *ngIf="this.user.fname && this.user.lname" (click)="this.isEditMode = !this.isEditMode" class="button-primary rounded-0">Edit Profile <i class="bi bi-pencil-fill ms-3"></i></button> -->
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3 pe-0">
             <div *ngIf="!this.user.fname || !this.user.lname" class="d-flex flex-column align-items-center text-center">
                 <p ><i class="bi bi-emoji-frown-fill fs-1"></i></p>
                 <p class="fw-bold fs-5 m-0">Looks like some of your details are missing.</p>
                 <p class="">Complete your account details through the Edit Profile button.</p>
                 <button class="button-primary" (click)="this.isEditMode = true">Edit Profile</button>
             </div>
-            <div class="row mt-3" *ngIf="this.user.fname && this.user.lname">
-                <div class="col-md fs-4">
-                    <p class="fw-bold fs-4">Contact Information</p>
-                    <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
-                    <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
-                    <div *ngIf="!(this.filteredInfo | async)">
-                        <span class="text-muted pe-3">Phone Number:</span>Loading...
-                    </div>
-                    <div *ngIf="this.filteredInfo | async as info">
-                        <p *ngIf="info.length === 0">
-                            <span class="text-muted pe-3">Phone Number:</span>Not Set
-                        </p>
-                        <p *ngIf="info.length > 0">
-                            <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
-                        </p>
-                    </div>
+            <div class="col-md fs-4" *ngIf="this.user.fname && this.user.lname">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="fw-bold fs-4 m-0">Contact</p>
+                    <button class="button-primary fs-6"><i class="bi bi-pencil-fill me-3"></i>Edit Info</button>
                 </div>
-                <div class="col-md fs-4 ps-4" *ngIf="!(this.filteredInfo | async)">
+                <p><span class="text-muted pe-3">Name:</span>{{ this.user.fname + " " + (this.user.mname ? this.user.mname : "") + " " + this.user.lname + " " + (this.user.suffix ? this.user.suffix : "") }}</p>
+                <p><span class="text-muted pe-3">Email:</span>{{ this.user.email }}</p>
+                <div *ngIf="!(this.filteredInfo | async)">
+                    <span class="text-muted pe-3">Phone Number:</span>Loading...
+                </div>
+                <div *ngIf="this.filteredInfo | async as info">
+                    <p *ngIf="info.length === 0">
+                        <span class="text-muted pe-3">Phone Number:</span>Not Set
+                    </p>
+                    <p *ngIf="info.length > 0">
+                        <span class="text-muted pe-3">Phone Number:</span>{{info[0].number}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md fs-4 ps-4 pe-0" *ngIf="this.user.fname && this.user.lname">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="fw-bold fs-4 m-0">Addresses</p>
+                    <button class="button-primary fs-6"><i class="bi bi-plus-circle-fill me-3"></i>Add Address</button>
+                </div>
+                <div class="" *ngIf="!this.userAddresses">
                     <p class="text-muted">Loading...</p>
                 </div>
-                <div class="col-md fs-4 ps-md-4" *ngIf="(this.filteredInfo | async) as info">
-                    <p class="fw-bold fs-4">Address</p>
+                <div class="" *ngIf="(this.userAddresses) as info">
                     <div *ngIf="info.length === 0">
                         Setup your address through the edit profile form.
                     </div>
                     <div *ngIf="info.length > 0">
-                        <p><span class="text-muted pe-3">Address Line:</span>{{ info[0].address }}</p>
+                        <div *ngFor="let address of userAddresses" class="d-flex flex-column justify-content-between bg-dark-lite p-3 mb-3" [ngClass]="address.in_use == 0 ? 'bg-dark-lite' : 'bgcolor-primary color-white'">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="fw-bold m-0">{{address.label}}</p>
+                                </div>
+                                <div>
+                                    <button class="button-plain me-3"><i class="bi bi-pencil" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
+                                    <button class="button-plain"><i class="bi bi-trash-fill" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="m-0">{{address.address}}</p>
+                                <p class="m-0">{{address.city}}, {{address.province}}, {{address.zip_code}}</p>
+                                <p class="m-0">{{address.number}}</p>
+                            </div>
+                        </div>
+                        <!-- <p><span class="text-muted pe-3">Address Line:</span>{{ info[0].address }}</p>
                         <p><span class="text-muted pe-3">City:</span>{{ info[0].city }}</p>
                         <p><span class="text-muted pe-3">Province:</span>{{ info[0].province }}</p>
-                        <p><span class="text-muted pe-3">Zip:</span>{{ info[0].zip_code }}</p>
+                        <p><span class="text-muted pe-3">Zip:</span>{{ info[0].zip_code }}</p> -->
                         <!-- <p class="m-0">{{info[0].address}}, {{info[0].city}}, {{info[0].province}} {{info[0].zip_code}}</p> -->
                     </div>
                 </div>
