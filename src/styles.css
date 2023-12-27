@@ -364,6 +364,23 @@
     color: #FFFFFF;
 }
 
+.button-plain {
+    padding: .5rem;
+    border-radius: 0;
+    border: hidden;
+    background-color: transparent;
+    color: var(--body-text);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}
+
+.button-plain:hover {
+    color: var(--primary);
+    background-color: var(--body-text);
+}
+
 
 .dropdown {
     position: static;

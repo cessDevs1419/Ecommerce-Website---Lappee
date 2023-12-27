@@ -13,3 +13,21 @@ export interface DeliveryInfo {
     id: number,
     number: string
 }
+
+export interface AddressList {
+    success: string,
+    message: string,
+    data: Address[]
+}
+
+export interface Address {
+    id: string,
+    user_id: string,
+    address: string,
+    city: string,
+    province: string,
+    zip_code: number,
+    number: string,
+    label: string,
+    in_use: number
+}

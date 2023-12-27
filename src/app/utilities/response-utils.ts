@@ -5,7 +5,7 @@ import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
 import { BannedUser, User } from "src/assets/models/user";
 import { SubcategoryList, AdminSubcategory } from "src/assets/models/subcategories";
-import { DeliveryInfoList, DeliveryInfo } from "src/assets/models/deliveryinfo";
+import { DeliveryInfoList, DeliveryInfo, Address } from "src/assets/models/deliveryinfo";
 import { OrderDetail, OrderList, AdminOrder, AdminOrderDetailList, AdminOrderContent, AdminOrderDetail, AdminOrderList, AdminOrderCancelRequest, AdminOrderListCancelRequest, AdminCancelledOrderList, AdminCancelledOrder, OrderReturnList, OrderReturn } from "src/assets/models/order-details";
 import { Inquiry, InquiryContent, InquiryContentList, InquiryList } from "src/assets/models/inquiry";
 import { formatDate } from "@angular/common";
@@ -172,6 +172,20 @@ export function formatMyStyles(response: any): MyStyleProduct {
   }
 
   return data;
+}
+
+export function formatAddressList(response: any): Address[] {
+  return response.data.map((data: Address) => ({
+    id: data.id,
+    user_id: data.user_id,
+    address: data.address,
+    city: data.city,
+    province: data.province,
+    zip_code: data.zip_code,
+    number: data.number,
+    label: data.label,
+    in_use: data.in_use
+  }))
 }
 
 // returns Attributes array from a ProductList
