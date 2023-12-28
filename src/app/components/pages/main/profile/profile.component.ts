@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
+import { ModalClientComponent } from 'src/app/components/components/modal-client/modal-client.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
@@ -21,6 +22,13 @@ import { User } from 'src/assets/models/user';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
+
+  // modal variables
+  mode: string = "";
+  modalSize: string = '';
+  deleteTargetId: string = '';
+  @ViewChild(ModalClientComponent) modal: ModalClientComponent;
+
   isEditMode: boolean = false;
 
   isSubmitEdit: boolean = false; 
@@ -201,6 +209,15 @@ export class ProfileComponent {
     });
   }
 
+
+  cancelSubmitAddress(): void {
+    this.isEditMode = false;
+    this.addAddress = false;
+    this.editAddress = false;
+
+    this.editAddressForm.reset();
+  }
+
   submitName(): void {
     if(this.editNameForm.valid){
       let formData: any = new FormData();
@@ -338,6 +355,41 @@ export class ProfileComponent {
         console.log(err);
       }
     });
+  }
+
+  deleteModal(id: string): void {
+    this.modal.confirmRemoveAddress(id);
+    this.deleteTargetId = id;
+  }
+
+  deleteAddress(confirm: boolean): void {
+    if(confirm){
+      let formData = new FormData();
+      formData.append('id', this.deleteTargetId);
+  
+      this.deliveryinfoService.deleteAddress(formData).subscribe({
+        next: (response: any) => {
+  
+          this.toaster.showToast("Successfully deleted!", "Your address has been deleted.")
+  
+          this.user = this.accountService.getLoggedUser();
+        },
+        error: (err: HttpErrorResponse) => {
+  
+          this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
+        },
+        complete: () => {
+          
+          this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+            if(status){
+              this.user = this.accountService.getLoggedUser();
+              this.checkAddress();
+            }
+          })
+          this.deleteTargetId = '';
+        }
+      })
+    }
   }
 
 }

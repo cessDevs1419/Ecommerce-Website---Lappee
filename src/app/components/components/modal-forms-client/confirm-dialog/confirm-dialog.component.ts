@@ -11,6 +11,7 @@ export class ConfirmDialogComponent {
   @Input() product!: any;
   @Input() operation: string;
   @Input() context: string = "";
+  @Input() type: string = 'item';
   @Output() activateToast = new EventEmitter<string[]>();
   @Output() dismiss = new EventEmitter();
   @Output() emitDeleteTrue = new EventEmitter<{status: boolean, item: any}>();
@@ -40,7 +41,7 @@ export class ConfirmDialogComponent {
   }
 
   contentBuilder(): void {
-    this.contentString = "Are you sure you want to " + this.operation_output + (this.context ? " this item from the " + this.context + "?" : "this item?")
+    this.contentString = "Are you sure you want to " + this.operation_output + (this.context ? ` this ${this.type} from the ` + this.context + "?" : ` this ${this.type}?`)
   }
 
   emit(): void {

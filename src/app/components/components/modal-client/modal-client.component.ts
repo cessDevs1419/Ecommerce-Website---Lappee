@@ -19,6 +19,7 @@ export class ModalClientComponent {
   @Input() context: string = "";
   @Input() operation: string = "";
   @Input() modalSize: string = "modal-lg"
+  @Input() type: string = 'item';
   @Output() confirmDialogOutput = new EventEmitter<boolean>();
   @Output() cancelOrderOutput = new EventEmitter<{id: string, reason: string}>();
   @Output() emitActivateToast = new EventEmitter<string[]>();
@@ -142,6 +143,14 @@ export class ModalClientComponent {
     this.context = "cart";
     this.product = item;
     this.show()
+  }
+
+  confirmRemoveAddress(item: string){
+    this.mode = 'confirm-dialog'
+    this.modalTitle = "Confirm"
+    this.operation = "delete"
+    this.type = 'address'
+    this.show();
   }
 
   passConfirmDialogOutput(params: any): void {
