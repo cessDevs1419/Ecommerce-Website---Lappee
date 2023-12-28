@@ -7,9 +7,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Carousel } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
-import { DeliveryInfo } from 'src/assets/models/deliveryinfo';
+import { Address, DeliveryInfo } from 'src/assets/models/deliveryinfo';
 import { Observable, map } from 'rxjs';
-import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProducts, formatShippingFeeFlatten } from 'src/app/utilities/response-utils';
+import { filterDeliveryInfo, formatDeliveryInfo, findDeliveryInfo, formatProducts, formatShippingFeeFlatten, formatAddressList } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from 'src/app/services/order/order.service';
 import { ProductsService } from 'src/app/services/products/products.service';
@@ -39,6 +39,7 @@ export class CartComponent {
   @ViewChildren('itemCheckbox') itemChkBoxes: QueryList<any>;
   @ViewChild(ToasterComponent) toaster: ToasterComponent;
 
+  userAddresses: Address[] = [];
 
   isPage1Validated: boolean;
   isItemSelected: boolean = true;
@@ -129,6 +130,21 @@ export class CartComponent {
         if(response) {
           this.accountService.getLoggedUser().subscribe({
             next: (response: any) => {
+              let addresses = this.deliveryInfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)));
+              addresses.subscribe({
+                next: (addresses: Address[]) => {
+                  if(addresses) {
+                    this.isInfoRegistered = true;
+                    this.userAddresses = addresses;
+                  }
+                  else {
+                    this.isInfoRegistered = false;
+                  }
+                },
+                error: (err: HttpErrorResponse) => {
+                  this.eh.handle(err)
+                }
+            })
               findDeliveryInfo(response.user_id, this.infos).subscribe({
                 next: (match: boolean) => {
                   if(match) {
@@ -171,6 +187,10 @@ export class CartComponent {
         }
       }
     });
+  }
+
+  findAddress(): Address {
+    return this.userAddresses.find((address: Address) => address.in_use == 1)!
   }
 
   setupReminderModal(): void {
