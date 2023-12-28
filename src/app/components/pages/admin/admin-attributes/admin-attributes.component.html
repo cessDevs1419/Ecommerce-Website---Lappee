@@ -51,7 +51,7 @@
         (RefreshTable)="refreshTableData()"
     ></app-modal> 
     
-    <app-modal
+    <!-- <app-modal
         modalId="edit"
         modalTitle="Edit Attributes"
         modalClass="modal-md"
@@ -65,8 +65,67 @@
         [selectedRowData]="selectedRowData"
         [selectedRowDataForDelete]="selectedRowDataForDelete"
         (RefreshTable)="refreshTableData()"
-    ></app-modal>
+    ></app-modal> -->
     
+    <div class="modal fade" id="edit"  tabindex="-1">
+        <div class="modal-dialog  modal-dialog-centered  modal-dialog-scrollable modal-md" >
+            <div class="modal-content content-form rounded-4">
+                <div class="modal-header p-4 mb-0 d-flex justify-content-between align-items-start border-0">
+                    <div class="modal-title text-start">
+                        <h1 class="modal-title fs-4 fw-bolder {{titleColor}}" ><i class="bi bi-pencil-square fw-bolder fs-5 me-2"></i>Edit Attribute</h1>
+                    </div>
+                    <button #closeBtn type="button" class="btn-close btn-close-white visually-hidden" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <form [formGroup]="addAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
+                        <div class="container">
+                            <div class=" w-100 px-1">
+                                <input formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3 {{bordercolor}}" placeholder="Enter Attribute Name">
+                                <hr class="divider border mt-4 mb-4">
+                            </div> 
+                            <div class="title-container mb-2 d-flex align-items-center">
+                                <h3 class=" fs-5 position-relative mt-1 {{textcolor}}">Attribute Values</h3>
+                            </div>
+
+                    
+                            <div class="attribute-values w-100">
+                                <div formArrayName="attribute_value" *ngIf="addAttributeForm.get('attribute_value')">
+                                    <div *ngFor="let control of attributeValueControls; let i = index">
+                                        <div class="input-group mb-3">
+                                            <input [formControlName]="i" type="text" class="form-control form-control-lg text-white bg-transparent border rounded-3 border-end-0 rounded-end-0 {{bordercolor}}" placeholder="Enter Attribute Value">
+                                            <button type="button" class="input-group-text bg-none border border-dark-subtle border-start-0 {{bordercolor}}" (click)="removeAttributeValue(i)">
+                                                <i class="bi-x fs-4 {{textcolor}}"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        type="button"
+                                        class="w-100 p-1 py-2 border-3 border-dark-subtle border-dashed d-flex align-items-center justify-content-center text-white bg-none rounded-0 fw-bold " 
+                                        (click)="addAttributeValue()"
+                                    >
+                                        <h1 class="text-dark-subtle-grey fs-4 lh-1 fw-bolder">+</h1>
+                                        <h5 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Values</h5>
+                                    </button>
+                                </div>
+                            </div>
+                    
+                    
+                            <div class="modal-footer mt-3 mb-2 p-0 border-0" >
+                                <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3"  data-bs-dismiss="modal">Cancel</button>
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary bg-light-primary rounded-3 glow-primary" 
+                                >
+                                    Confirm
+                                </button>
+                            </div> 
+                        </div> 
+                    </form>
+                </div>
+            </div> 
+        </div>
+      </div>
+
     <app-modal
         modalId="delete"
         modalTitle="Delete Attributes"

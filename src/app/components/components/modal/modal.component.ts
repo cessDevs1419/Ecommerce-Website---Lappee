@@ -143,11 +143,12 @@ export class ModalComponent {
 
     ngOnChanges(): void {}
 
-    loadAttributeData(items: string){
+    loadAttributeData(items: any){
         this.loadData.addExistingAttributeValue(items)
-
     }
-    
+    addExistingAttributeName(name: string){
+        this.loadData.addExistingAttributeName(name)
+    }   
     reset(){
         this.loadData.reset()
     }

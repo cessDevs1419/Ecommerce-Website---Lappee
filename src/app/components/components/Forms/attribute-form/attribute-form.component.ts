@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject, catchError, map, throwError } from 'rxjs';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
@@ -9,7 +9,8 @@ import { AttributesDetails } from 'src/assets/models/attributes';
 @Component({
     selector: 'app-attribute-form',
     templateUrl: './attribute-form.component.html',
-    styleUrls: ['./attribute-form.component.css']
+    styleUrls: ['./attribute-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AttributeFormComponent {
 	@Output() ProductSuccess: EventEmitter<any> = new EventEmitter();
@@ -64,6 +65,7 @@ export class AttributeFormComponent {
             name: new FormControl('', Validators.required),
             attribute_value: this.formBuilder.array([])
         });
+
     }
 
     refreshTableData(): void {
@@ -71,33 +73,51 @@ export class AttributeFormComponent {
     }
     
 
-    get attributeValueControls() {
-        return (this.addAttributeForm.get('attribute_value') as FormArray).controls;
-    }
+
 
     addAttributeValue(){
         const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray
         attributeArray.push(new FormControl(''));
     }   
 
-    addExistingAttributeValue(value: string) {
-        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
-        attributeArray.push(this.formBuilder.control(value));
+    addExistingAttributeName(name: string){
+        this.addAttributeForm.get('name')?.setValue(name)
+        console.log(name)
+    }   
 
+    addExistingAttributeValue(value: any[]) {
+        
+        this.ngZone.run(() => {
+            const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+            attributeArray.clear();
+            
+            
+            for (const item of value) {
+              attributeArray.push(this.formBuilder.control(item));
+            }
+        
+            console.log(attributeArray.value);
+            this.cdr.detectChanges();
+        });
+    }
+
+    get attributeValueControls() {
+        return (this.addAttributeForm.get('attribute_value') as FormArray).controls;
     }
 
     reset(){
         const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
         attributeArray.clear()
     }
+
     removeAttributeValue(index: number) {
         const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
         attributeArray.removeAt(index);
     }
 
     removeExistingAttributeValue(index: number) {
-        const attributeArray = this.attributeDetails;
-        attributeArray.splice(index, 1)
+        const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
+        attributeArray.removeAt(index)
     }
 
     onAttributeAddSubmit(): void {
@@ -134,8 +154,10 @@ export class AttributeFormComponent {
                     this.refreshTableData();
                     this.ProductSuccess.emit(successMessage);
                     this.addAttributeForm.reset();
+                    attributeArray.reset();
                     attributeArray.clear();
                     this.CloseModal.emit();
+
                 },
                 error: (error: HttpErrorResponse) => {
                     if (error.error?.data?.error) {

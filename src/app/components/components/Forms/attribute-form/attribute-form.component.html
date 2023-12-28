@@ -44,7 +44,7 @@
 <form *ngIf="formEditAttribute" [formGroup]="addAttributeForm" (ngSubmit)="onAttributeEditSubmit()" >
     <div class="container">
         <div class=" w-100 px-1">
-            <input [value]="selectedRowData?.name" formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3 {{bordercolor}}" placeholder="Enter Attribute Name">
+            <input formControlName="name" type="text" class="form-control form-control-lg text-white bg-transparent tex border rounded-3 {{bordercolor}}" placeholder="Enter Attribute Name">
             <hr class="divider border mt-4 mb-4">
         </div> 
         <div class="title-container mb-2 d-flex align-items-center">
