@@ -130,9 +130,9 @@ export class NavbarComponent {
         if(response) {
           this.accountService.getLoggedUser().subscribe({
             next: (response: any) => {
-              findDeliveryInfo(response.user_id, this.infos).subscribe({
-                next: (match: boolean) => {
-                  if(match) {
+              this.deliveryInfoService.getAddressList().subscribe({
+                next: (address: any) => {
+                  if(address) {
                     console.log('has matching address')
                     this.isInfoRegistered = true;
                     this.setupDetailsResolved = true;
@@ -146,6 +146,22 @@ export class NavbarComponent {
                   console.log(err)
                 }
               })
+              // findDeliveryInfo(response.user_id, this.infos).subscribe({
+              //   next: (match: boolean) => {
+              //     if(match) {
+              //       console.log('has matching address')
+              //       this.isInfoRegistered = true;
+              //       this.setupDetailsResolved = true;
+              //     }
+              //     else {
+              //       console.log('no matching address')
+              //       this.isInfoRegistered = false;
+              //     }
+              //   },
+              //   error: (err: HttpErrorResponse) => {
+              //     console.log(err)
+              //   }
+              // })
             },
             error: (err: HttpErrorResponse) => {
               console.log(err)
