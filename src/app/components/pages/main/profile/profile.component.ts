@@ -392,4 +392,30 @@ export class ProfileComponent {
     }
   }
 
+  useAddress(id: string): void {
+    let formData = new FormData();
+    formData.append('id', id);
+    this.deliveryinfoService.patchUseAddress(formData).subscribe({
+      next: (response: any) => {
+
+        this.toaster.showToast("Success!", "Your active address has been updated.")
+
+        this.user = this.accountService.getLoggedUser();
+      },
+      error: (err: HttpErrorResponse) => {
+
+        this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
+      },
+      complete: () => {
+        
+        this.accountService.checkLoggedIn().subscribe((status: boolean) => {
+          if(status){
+            this.user = this.accountService.getLoggedUser();
+            this.checkAddress();
+          }
+        })
+      }
+    })
+  }
+
 }

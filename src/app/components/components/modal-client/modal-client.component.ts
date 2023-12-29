@@ -4,6 +4,7 @@ import { OrderContent } from 'src/assets/models/order-details';
 import { ToastComponent } from '../toast/toast.component';
 import { CartItem } from 'src/assets/models/products';
 import { ToasterComponent } from '../toaster/toaster/toaster.component';
+import { Address } from 'src/assets/models/deliveryinfo';
 
 @Component({
   selector: 'app-modal-client',
@@ -27,6 +28,7 @@ export class ModalClientComponent {
   @Output() reviewSuccess = new EventEmitter();
   @Output() returnOrderOutput = new EventEmitter<{id: string, reason: string}>();
   @Output() emitShippingProof = new EventEmitter<{id: string, file: File}>();
+  @Output() emitSelectedAddress = new EventEmitter<string>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -40,6 +42,10 @@ export class ModalClientComponent {
   product!: any;
 
   order: string;
+
+  // addresses
+
+  userAddresses: Address[];
 
   ngOnInit(): void {
     
@@ -55,6 +61,19 @@ export class ModalClientComponent {
 
   ngAfterViewInit(): void {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement, {backdrop: 'static', keyboard: false});
+  }
+
+  // Select Address
+
+  selectAddress(address: Address[]): void {
+    this.mode = 'select-address'
+    this.modalTitle = 'Select Address'
+    this.userAddresses = address;
+    this.show();
+  }
+
+  emitAddressSelect(id: string): void {
+    this.emitSelectedAddress.emit(id);
   }
 
   // Return Order

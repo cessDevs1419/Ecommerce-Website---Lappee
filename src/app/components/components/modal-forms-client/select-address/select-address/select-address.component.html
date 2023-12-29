@@ -1,0 +1,18 @@
+<form [formGroup]="selectedAddressForm" class="d-flex flex-row address-container">
+    <div *ngFor="let address of this.addresses" class="address-tile">
+        <label for={{address.id}} class="p-3 border" [ngClass]="{'active-address text-white': activeAddressId == address.id}">
+            <input type="radio" class="" value={{address.id}} id={{address.id}} formControlName="address"  (change)="changeActive(address.id)"/>
+            <div class="d-flex flex-column rounded-0 p-3 variant-box">
+                <div><span class='fw-bold'>{{address.label}}</span></div>
+                <div>{{address.number}}</div>
+                <div>{{address.address}}</div>
+                <div>{{address.city}}, {{address.province}} {{address.zip_code}}</div>
+            </div>
+        </label>
+    </div>
+</form>
+<hr class="text-muted">
+<div class="d-flex flex-row justify-content-end">
+    <button class="button-secondary-outline rounded-0 me-3 px-3" (click)="dismissModal()">Cancel</button>
+    <button class="button-primary rounded-0 px-3" (click)="changeActiveAddress()">Submit</button>
+</div>

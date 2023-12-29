@@ -1,0 +1,11 @@
+.active-address {
+    background-color: var(--primary);
+}
+
+.address-container {
+    gap: 1rem;
+}
+
+.address-tile {
+    max-width: 15rem;
+}

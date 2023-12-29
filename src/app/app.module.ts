@@ -134,6 +134,7 @@ import { ShippingFeeFormComponent } from './components/components/Forms/shipping
 import { UploadShippingProofComponent } from './components/components/modal-forms-client/upload-shipping-proof/upload-shipping-proof/upload-shipping-proof.component';
 import { AdminReturnComponent } from './components/pages/admin/admin-return/admin-return.component';
 import { ReturnOrderComponent } from './components/components/modal-forms-client/return-order/return-order/return-order.component';
+import { SelectAddressComponent } from './components/components/modal-forms-client/select-address/select-address/select-address.component';
 
 @NgModule({
   declarations: [
@@ -253,6 +254,7 @@ import { ReturnOrderComponent } from './components/components/modal-forms-client
     UploadShippingProofComponent,
     AdminReturnComponent,
     ReturnOrderComponent,
+    SelectAddressComponent,
   ],
   imports: [
     BrowserModule,

@@ -136,6 +136,7 @@ export class CartComponent {
                   if(addresses) {
                     this.isInfoRegistered = true;
                     this.userAddresses = addresses;
+                    this.shippingFee = Number(this.shipping.checkProvinceFee(this.findAddress().province, this.shippingFeeList))
                   }
                   else {
                     this.isInfoRegistered = false;
@@ -145,40 +146,40 @@ export class CartComponent {
                   this.eh.handle(err)
                 }
             })
-              findDeliveryInfo(response.user_id, this.infos).subscribe({
-                next: (match: boolean) => {
-                  if(match) {
-                    console.log('has matching address')
-                    this.isInfoRegistered = true;
-                    this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
-                    this.filteredInfo.subscribe({
-                      next: (info: DeliveryInfo[]) => {
-                        if(info){
-                          this.isInfoSelected = true;
-                          this.shippingFee = Number(this.shipping.checkProvinceFee(info[0].province, this.shippingFeeList))
-                        }
-                        else {
-                          this.isInfoSelected = false;
-                        }
-                      }
-                    });
-                  }
-                  else {
-                    console.log('no matching address');
-                    this.isInfoRegistered = false;
-                    console.log("Reminder: " + sessionStorage.getItem('reminderShown'))
-                    if(sessionStorage.getItem('reminderShown') !== 'true'){
-                      setTimeout(() => {
-                        this.setupReminderModal();
-                      }, 3000);
-                      sessionStorage.setItem('reminderShown', 'true');
-                    }
-                  }
-                },
-                error: (err: HttpErrorResponse) => {
-                  console.log(err)
-                }
-              })
+              // findDeliveryInfo(response.user_id, this.infos).subscribe({
+              //   next: (match: boolean) => {
+              //     if(match) {
+              //       console.log('has matching address')
+              //       this.isInfoRegistered = true;
+              //       this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
+              //       this.filteredInfo.subscribe({
+              //         next: (info: DeliveryInfo[]) => {
+              //           if(info){
+              //             this.isInfoSelected = true;
+              //             this.shippingFee = Number(this.shipping.checkProvinceFee(info[0].province, this.shippingFeeList))
+              //           }
+              //           else {
+              //             this.isInfoSelected = false;
+              //           }
+              //         }
+              //       });
+              //     }
+              //     else {
+              //       console.log('no matching address');
+              //       this.isInfoRegistered = false;
+              //       console.log("Reminder: " + sessionStorage.getItem('reminderShown'))
+              //       if(sessionStorage.getItem('reminderShown') !== 'true'){
+              //         setTimeout(() => {
+              //           this.setupReminderModal();
+              //         }, 3000);
+              //         sessionStorage.setItem('reminderShown', 'true');
+              //       }
+              //     }
+              //   },
+              //   error: (err: HttpErrorResponse) => {
+              //     console.log(err)
+              //   }
+              // })
             },
             error: (err: HttpErrorResponse) => {
               console.log(err)
@@ -197,6 +198,24 @@ export class CartComponent {
     this.mode = 'setup-reminder';
     this.modalSize = 'modal-md';
     this.modal.setupReminder();
+  }
+
+  selectAddress(): void {
+    this.modal.selectAddress(this.userAddresses);
+  }
+
+  changeActiveAddress(id: string): void {
+    let formData = new FormData();
+    formData.append('id', id)
+    this.deliveryInfoService.patchUseAddress(formData).subscribe({
+      next: (response: any) => {
+        this.toaster.showToast('Success!', 'Your active address has been updated.');
+        this.checkAddress();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toaster.showToast('Oops!', this.eh.handle(err), 'negative')
+      }
+    })
   }
 
   selectAll() {
