@@ -200,7 +200,21 @@ export class CartComponent {
   }
 
   selectAddress(): void {
-    this.modal.selectAddress();
+    this.modal.selectAddress(this.userAddresses);
+  }
+
+  changeActiveAddress(id: string): void {
+    let formData = new FormData();
+    formData.append('id', id)
+    this.deliveryInfoService.patchUseAddress(formData).subscribe({
+      next: (response: any) => {
+        this.toaster.showToast('Success!', 'Your active address has been updated.');
+        this.checkAddress();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toaster.showToast('Oops!', this.eh.handle(err), 'negative')
+      }
+    })
   }
 
   selectAll() {

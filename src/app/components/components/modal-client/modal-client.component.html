@@ -19,7 +19,7 @@
                 <app-my-styles-primer *ngSwitchCase="'my-styles-primer'" (dismiss)="dismissMyStyles($event)"></app-my-styles-primer>
                 <app-upload-shipping-proof *ngSwitchCase="'upload-shipping-proof'" [order]="order" (dismiss)="dismiss()" (emitShippingProof)="shippingProofEmit($event)"></app-upload-shipping-proof>
                 <app-return-order *ngSwitchCase="'return-order'" [order]="order" (emitReturn)="emitReturnOrder($event)" (dismiss)="dismiss()"></app-return-order>
-                <app-select-address *ngSwitchCase="'select-address'" (emitAddressSelect)="emitAddressSelect($event)" (dismiss)="dismiss()"></app-select-address>
+                <app-select-address *ngSwitchCase="'select-address'" [addresses]="userAddresses" (emitAddressSelect)="emitAddressSelect($event)" (dismiss)="dismiss()"></app-select-address>
             </div>
         </div>
     </div>

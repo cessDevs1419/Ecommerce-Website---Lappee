@@ -37,7 +37,6 @@
             </div>
         </div>
         <div *ngFor="let variant of this.selectedSizeVariants" class="select-container">
-            
             <label for={{variant.variant_id}} class="w-100 variant-label">
                 <input type="radio" class="variant-select" value={{variant.variant_id}} id={{variant.variant_id}} (change)="changeVariant(variant)" formControlName="variantSelect" />
                 <div class="d-flex flex-row rounded-0 p-3 variant-box" *ngIf="loadVariantAttributes(variant) as attr">

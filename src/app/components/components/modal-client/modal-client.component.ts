@@ -4,6 +4,7 @@ import { OrderContent } from 'src/assets/models/order-details';
 import { ToastComponent } from '../toast/toast.component';
 import { CartItem } from 'src/assets/models/products';
 import { ToasterComponent } from '../toaster/toaster/toaster.component';
+import { Address } from 'src/assets/models/deliveryinfo';
 
 @Component({
   selector: 'app-modal-client',
@@ -42,6 +43,10 @@ export class ModalClientComponent {
 
   order: string;
 
+  // addresses
+
+  userAddresses: Address[];
+
   ngOnInit(): void {
     
    /*  switch (this.mode) {
@@ -60,9 +65,10 @@ export class ModalClientComponent {
 
   // Select Address
 
-  selectAddress(): void {
+  selectAddress(address: Address[]): void {
     this.mode = 'select-address'
     this.modalTitle = 'Select Address'
+    this.userAddresses = address;
     this.show();
   }
 
