@@ -58,6 +58,7 @@
                                     <p class="fw-bold m-0">{{address.label}} <span *ngIf="address.in_use == 1">(Selected)</span></p>
                                 </div>
                                 <div>
+                                    <button class="button-plain fs-5 me-3" (click)="useAddress(address.id)" *ngIf="address.in_use == 0"><i class="bi bi-check2" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
                                     <button class="button-plain fs-5 me-3" (click)="editAddressFormValues(address)"><i class="bi bi-pencil" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
                                     <button class="button-plain fs-5" (click)="deleteModal(address.id)"><i class="bi bi-trash-fill" [ngClass]="address.in_use == 0 ? ' ' : 'color-white'"></i></button>
                                 </div>
