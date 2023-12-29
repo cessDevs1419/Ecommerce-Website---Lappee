@@ -27,6 +27,7 @@ export class ModalClientComponent {
   @Output() reviewSuccess = new EventEmitter();
   @Output() returnOrderOutput = new EventEmitter<{id: string, reason: string}>();
   @Output() emitShippingProof = new EventEmitter<{id: string, file: File}>();
+  @Output() emitSelectedAddress = new EventEmitter<string>();
   modalTitle!: string;
 
   toastTheme!: string;
@@ -55,6 +56,18 @@ export class ModalClientComponent {
 
   ngAfterViewInit(): void {
     this.modalEl = new bootstrap.Modal(this.modal.nativeElement, {backdrop: 'static', keyboard: false});
+  }
+
+  // Select Address
+
+  selectAddress(): void {
+    this.mode = 'select-address'
+    this.modalTitle = 'Select Address'
+    this.show();
+  }
+
+  emitAddressSelect(id: string): void {
+    this.emitSelectedAddress.emit(id);
   }
 
   // Return Order

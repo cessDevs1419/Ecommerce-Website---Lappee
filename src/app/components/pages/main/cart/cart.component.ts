@@ -199,6 +199,10 @@ export class CartComponent {
     this.modal.setupReminder();
   }
 
+  selectAddress(): void {
+    this.modal.selectAddress();
+  }
+
   selectAll() {
     this.selectAllFlag = !this.selectAllFlag;
     console.log(this.selectAllFlag);
