@@ -10,6 +10,7 @@ import { formatAboutUsTos } from 'src/app/utilities/response-utils';
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-admin-manage-about-us',
@@ -60,7 +61,7 @@ export class AdminManageAboutUsComponent {
 
   private refreshData$ = new Subject<void>();
 
-  constructor(private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder) {}
+  constructor(private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder, private error: ErrorHandlerService) {}
 
   ngOnInit(): void
   {
@@ -168,9 +169,8 @@ export class AdminManageAboutUsComponent {
           this.toggleEditSectionForm();
         },
         error: (error: HttpErrorResponse) => {
-          this.showFailedToast('Failed to add section', 'Something wen\'t wrong when adding section.');
+          this.showFailedToast('Manage Contents', this.error.handle(error));
 
-          console.log(error);
         }
       });
 

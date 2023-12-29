@@ -7,6 +7,7 @@ import { TableComponent } from 'src/app/components/components/table/table.compon
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AboutUsTosService } from 'src/app/services/about-us-tos/about-us-tos.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import { formatAboutUsTos } from 'src/app/utilities/response-utils';
 import { AboutUsTosSection } from 'src/assets/models/sitedetails';
 
@@ -55,7 +56,7 @@ export class AdminManageTosComponent {
 
   private refreshData$ = new Subject<void>();
 
-  constructor(private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder) {}
+  constructor(private error: ErrorHandlerService, private aboutUsToSService: AboutUsTosService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void
   {
@@ -156,9 +157,8 @@ export class AdminManageTosComponent {
           this.toggleEditSectionForm();
         },
         error: (error: HttpErrorResponse) => {
-          this.showFailedToast('Failed to add section', 'Something wen\'t wrong when adding section.');
+          this.showFailedToast('Manage Contents', this.error.handle(error));
 
-          console.log(error);
         }
       });
 
