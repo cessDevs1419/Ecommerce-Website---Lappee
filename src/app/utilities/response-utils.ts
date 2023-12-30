@@ -20,6 +20,7 @@ import { ShippingFee, ShippingFeeCategory, ShippingFeeList } from "src/assets/mo
 import { Dashboard, DashboardList } from "src/assets/models/dashboard";
 import { NewProductGroup, NewProductGroupList, ProductGroup, ProductGroupList } from "src/assets/models/product-groups";
 import { Restock, RestockList, RestockProducts, RestockProductsList, RestockView, RestockViewList } from "src/assets/models/restock";
+import { Size, SizeChartList } from "src/assets/models/size-chart";
 
 // Formatting
 
@@ -187,6 +188,18 @@ export function formatAddressList(response: any): Address[] {
     in_use: data.in_use
   }))
 }
+
+export function formatSizeChart(response: SizeChartList): Size[] {
+  return response.data.map((data: Size) => ({
+    id: data.id,
+    label: data.label,
+    chest: data.chest,
+    waist: data.waist,
+    hip: data.hip,
+    created_at: data.created_at,
+    updated_at: data.updated_at
+  }))
+} 
 
 // returns Attributes array from a ProductList
 export function formatAttributes(response: AttributeList): Attributes[] {

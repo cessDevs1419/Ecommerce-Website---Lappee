@@ -194,3 +194,6 @@ export const POSTAddAddress: string = api + "api/client/user-info/delivery-info/
 export const PATCHEditAddress: string = api + "api/client/user-info/delivery-info/address-book/edit/"
 export const PATCHUseAddress: string = api + "api/client/user-info/delivery-info/address-book/use/"
 export const DELETEAddress: string = api + "api/client/user-info/delivery-info/address-book/delete"
+
+// Size Chart
+export const GETSizeChart: string = api + "api/client/sizes"
