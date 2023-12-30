@@ -172,7 +172,13 @@ export class SidebarComponent {
     this.overviewClass = true
   }
   
-  
+  showAccounts(){
+    this.ContentMenu = true
+    this.toggleContent = true
+    this.router.navigate(['/admin/accounts-management-admins']);
+    this.closeFile()
+  }
+
   showContent(){
     this.ContentMenu = true
     this.toggleContent = true
@@ -253,7 +259,11 @@ export class SidebarComponent {
   }
   
   isManageAccountsActive(): boolean {
-    return this.router.url === '/admin/accounts-management'
+    return (
+      this.router.url === '/admin/accounts-management-admins' ||
+      this.router.url === '/admin/accounts-management-users' ||
+      this.router.url === '/admin/accounts-management-customers'
+    )
   }
   isChatsActive(): boolean {
     return this.router.url === '/admin/chats' ||
@@ -273,12 +283,23 @@ export class SidebarComponent {
   isReasonSiteActive(): boolean {
     return this.router.url === '/admin/manage-hold-deny-reasons';
   }
+
   isGroupSiteActive(): boolean {
     return this.router.url === '/admin/manage-product-group';
   }
 
   isShippingSiteActive(): boolean {
     return this.router.url === '/admin/shipping-fee';
+  }
+
+  isAdminAccountsActive(): boolean {
+    return this.router.url === '/admin/accounts-management-admins';
+  }
+  isUsersAccountsActive(): boolean {
+    return this.router.url === '/admin/accounts-management-users';
+  }
+  isCustomersAccountsActive(): boolean {
+    return this.router.url === '/admin/accounts-management-customers';
   }
 
   refreshTableData(): void {

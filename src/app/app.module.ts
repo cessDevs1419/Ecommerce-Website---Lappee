@@ -135,6 +135,8 @@ import { UploadShippingProofComponent } from './components/components/modal-form
 import { AdminReturnComponent } from './components/pages/admin/admin-return/admin-return.component';
 import { ReturnOrderComponent } from './components/components/modal-forms-client/return-order/return-order/return-order.component';
 import { SelectAddressComponent } from './components/components/modal-forms-client/select-address/select-address/select-address.component';
+import { AdminAccountsUsersComponent } from './components/pages/admin/admin-accounts-users/admin-accounts-users.component';
+import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-accounts-customers/admin-accounts-customers.component';
 
 @NgModule({
   declarations: [
@@ -255,6 +257,8 @@ import { SelectAddressComponent } from './components/components/modal-forms-clie
     AdminReturnComponent,
     ReturnOrderComponent,
     SelectAddressComponent,
+    AdminAccountsUsersComponent,
+    AdminAccountsCustomersComponent,
   ],
   imports: [
     BrowserModule,
@@ -302,7 +306,9 @@ import { SelectAddressComponent } from './components/components/modal-forms-clie
           {path: 'product-management', component: AdminProductsComponent, title: 'Product Management'},
           {path: 'sales-management', component: AdminSalesComponent, title: 'Sales Management'},
           {path: 'discounts-management', component: AdminDiscountsComponent, title: 'Discounts Management'},
-          {path: 'accounts-management', component: AdminAccountsComponent, title: 'Accounts Management'},
+          {path: 'accounts-management-admins', component: AdminAccountsComponent, title: 'Accounts Management'},
+          {path: 'accounts-management-users', component: AdminAccountsUsersComponent, title: 'Accounts Management'},
+          {path: 'accounts-management-customers', component: AdminAccountsCustomersComponent, title: 'Accounts Management'},
           {path: 'parcel-management', component: AdminParcelManagementComponent},
           {path: 'order-management', component: AdminOrderManagementComponent, title: 'Order Management'},
           {path: 'order-packed', component: AdminOrderPackComponent, title: 'Order Management'},

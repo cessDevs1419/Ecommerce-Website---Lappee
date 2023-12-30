@@ -334,21 +334,54 @@
                     </li>
                 </div>
             </div>
+
             <!-- Manage Accounts -->
             <div [ngClass]="isManageInquiriesActive() ? admin_bg : isChatsActive() ? admin_bg :'' ">
                 <div [class]="isManageInquiriesActive() ? 'active-rounded-top item-container ' + sidebar_bg : isChatsActive() ? 'active-rounded-bottom ' + sidebar_bg :''  " routerLinkActive="{{active_link}}">
-                    <li [routerLink]="'/admin/accounts-management'" (click)="closeAllMenu()" routerLinkActive="text-dark-subtle-grey" class="d-flex align-items-center nav-item p-2 ps-2 mx-0">
 
-                        <div routerLinkActive="{{active_link_icon}}" class="icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1" >
-                            <i routerLinkActive=" text-white" class="bi bi-people text-dark-subtle-grey"></i>
+                    <li  (click)="showAccounts()" [ngClass]="isManageAccountsActive() ? 'd-flex align-items-center nav-item p-2 ps-2 mx-0':'d-flex align-items-center nav-item p-2 ps-2 mx-0'"  >
+                        <div [class]="isManageAccountsActive() ?  active_link_icon + ' icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1':'icon-container icon-container rounded-3 d-flex justify-content-center align-item-center pt-1' " >
+                            <i [class]="isManageAccountsActive() ? 'bi bi-people-fill text-white':'bi bi-sliders text-dark-subtle-grey' "></i>
                         </div>
-                        
-                        <a class="nav-link text-dark-subtle-grey text-decoration-none" aria-current="page">
+                    
+                        <a [class]="isManageAccountsActive() ? 'nav-link text-decoration-none nav-link text-dark-subtle-grey':'nav-link text-dark-subtle-grey text-decoration-none'" >
                             Manage Accounts
                         </a>
                     </li>
+                    
+                    <div *ngIf="isManageAccountsActive() " class=" p-0 m-0 ps-2 pb-3">
+                    
+                        <li [routerLink]="'/admin/accounts-management-admins'" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isAdminAccountsActive()" class="ms-4 text-white nav-link text-decoration-none">
+                                Admin Accounts
+                            </a>
+                            <a *ngIf="!isAdminAccountsActive()" class="ms-4 text-dark-subtle-noactive nav-link text-decoration-none">
+                                Admin Accounts
+                            </a>
+                        </li>
+                        <li [routerLink]="'/admin/accounts-management-users'" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isUsersAccountsActive()" class="ms-4 text-white nav-link text-decoration-none">
+                                Users Accounts
+                            </a>
+                            <a *ngIf="!isUsersAccountsActive()" class="ms-4 text-dark-subtle-noactive nav-link text-decoration-none">
+                                Users Accounts
+                            </a>
+                        </li>
+                        <li [routerLink]="'/admin/accounts-management-customers'" class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isCustomersAccountsActive()" class="ms-4 text-white nav-link text-decoration-none">
+                                Customers Settings
+                            </a>
+                            <a *ngIf="!isCustomersAccountsActive()" class="ms-4 text-dark-subtle-noactive nav-link text-decoration-none">
+                                Customers Settings
+                            </a>
+                        </li>
+
+            
+                    </div>
                 </div>
             </div>
+            
+
 
 
 
