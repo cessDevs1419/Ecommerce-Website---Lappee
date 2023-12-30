@@ -5,7 +5,7 @@ import { Product, ColorVariant, Variant, CategoryProduct } from 'src/assets/mode
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj, formatProductSuggestion } from 'src/app/utilities/response-utils';
+import { formatProducts, filterProductsById, formatReviews, formatReviewsDetails, formatProductObj, formatProductSuggestion, formatSizeChart } from 'src/app/utilities/response-utils';
 import { Gallery, GalleryItem, GalleryRef, ImageItem, ThumbnailsPosition } from 'ng-gallery';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -19,6 +19,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 import * as bootstrap from 'bootstrap';
+import { SizeChartService } from 'src/app/services/size-chart/size-chart.service';
+import { Size } from 'src/assets/models/size-chart';
 
 @Component({
   selector: 'app-products',
@@ -40,6 +42,8 @@ export class ProductsComponent {
   selectedVariantId: string;
   isVariantSelected: boolean = false;
   isTouched: boolean = false;
+
+  sizes: Size[];
   
   toastContent: string = "";
   toastHeader: string = "";
@@ -79,7 +83,8 @@ export class ProductsComponent {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               public domSanitizer: DomSanitizer,
-              private eh: ErrorHandlerService) {}
+              private eh: ErrorHandlerService,
+              private sizeService: SizeChartService) {}
 
   colorCurrent = {
     name: '',
@@ -127,6 +132,18 @@ export class ProductsComponent {
         this.position = ThumbnailsPosition.Bottom;
       }
     });
+
+    // sizes
+
+    let sizeData = this.sizeService.getSizeCharts().pipe(map((response: any) => formatSizeChart(response)));
+    sizeData.subscribe({
+      next: (sizes: Size[]) => {
+        this.sizes = sizes;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
+      }
+    })
     
   }
 

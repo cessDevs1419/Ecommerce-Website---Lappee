@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, ViewChild, Output } from '@
 import { CartItem, Product, Variant } from 'src/assets/models/products';
 import * as bootstrap from 'bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Size } from 'src/assets/models/size-chart';
 
 @Component({
   selector: 'app-variant-attributes',
@@ -13,7 +14,9 @@ export class VariantAttributesComponent {
   @Input() mode: string = 'CartItem';
   @Input() cartItem!: CartItem;
   @Input() product!: Product;
+  @Input() size: Size[];
   @ViewChild('variantAccordion') variantAccordion: ElementRef;
+  @ViewChild('sizeAccordion') sizeAccordion: ElementRef;
 
   @Output() addToCart: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
   @Output() orderNow: EventEmitter<{variant: Variant, variant_attributes: Map<string, string>}> = new EventEmitter();
@@ -127,6 +130,11 @@ export class VariantAttributesComponent {
   toggleAccordion(): void {
     let accordion = new bootstrap.Collapse(this.variantAccordion.nativeElement);
     console.log(accordion);
+    accordion.toggle();
+  }
+
+  toggleSizeAccordion(): void {
+    let accordion = new bootstrap.Collapse(this.sizeAccordion.nativeElement);
     accordion.toggle();
   }
 

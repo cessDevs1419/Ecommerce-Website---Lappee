@@ -64,7 +64,7 @@
                     <div *ngIf="!isVariantSelected && isTouched" class="bg-danger-subtle text-danger p-3 my-2">
                         <p class="m-0">You need to select one or more items from your cart.</p>
                     </div>
-                    <app-variant-attributes mode="Product" [product]="match" (addToCart)="addToCartAttr($event)" (orderNow)="orderNowAttr($event)"></app-variant-attributes>
+                    <app-variant-attributes mode="Product" [product]="match" [size]="sizes" (addToCart)="addToCartAttr($event)" (orderNow)="orderNowAttr($event)"></app-variant-attributes>
                     
                     <!--
                     <form [formGroup]="productToCart">

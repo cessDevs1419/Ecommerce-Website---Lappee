@@ -27,6 +27,7 @@
                 <label class="size-select-box justify-content-center align-items-center" for={{size.key}}>{{size.key}}</label>
             </div>  
         </div>
+        
     </div>
     
     <div *ngIf="this.selectedSizeVariants.length > 0" class="mt-3">
@@ -55,6 +56,47 @@
         </div>
     </div>
 </form>
+<div class="accordion accordion-flush mt-3" id="accordionSizeChart" *ngIf="size">
+    <div class="accordion-item">
+        <h3 class="accordion-header fw-bold">
+            <button class="accordion-button fw-bold" (click)="toggleSizeAccordion()" type="button">
+                Sizing Chart
+            </button>
+        </h3>
+        <div class="accordion-collapse collapse bg-light-gray" id="variantDescription" #sizeAccordion>
+            <div class="accordion-body white-space-pre">
+                <div class="row pb-3 border-bottom text-center fw-bold">
+                    <div class="col-3">
+
+                    </div>    
+                    <div class="col-3">
+                        Chest
+                    </div>    
+                    <div class="col-3">
+                        Waist
+                    </div>    
+                    <div class="col-3">
+                        Hip
+                    </div>    
+                </div>
+                <div class="row py-3 border-bottom text-center" *ngFor="let data of size">
+                    <div class="col-3">
+                        {{data.label}}
+                    </div>    
+                    <div class="col-3">
+                        {{data.chest}}
+                    </div>    
+                    <div class="col-3">
+                        {{data.waist}}
+                    </div>    
+                    <div class="col-3">
+                        {{data.hip}}
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="mt-3 pt-3 row border-top" *ngIf="mode == 'Product'">
     <div class="col">
