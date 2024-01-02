@@ -25,7 +25,8 @@ export class AdminAccountsComponent implements OnInit {
     toastContent: string = "";
     toastHeader: string = "";
     toastTheme: string = "default";  
-    
+
+
     users!: Observable<User[]>;
     banned_users!: Observable<BannedUser[]>;
     bannedStatus: { [userId: string]: boolean } = {}; 
@@ -71,14 +72,38 @@ export class AdminAccountsComponent implements OnInit {
     
         this.users = this.refreshData$.pipe(
             startWith(undefined),
-            switchMap(() => this.user_service.getUsers()),
+            switchMap(() => this.user_service.getActiveAdmin()),
             map((response: any) => formatUser(response)),
             tap(() => {
                 this.table.loaded()
             })
         );
 	}
-	
+    selectOption(selectedOption: string){
+        
+        switch(selectedOption){
+          case 'Inactive':
+            this.users = this.refreshData$.pipe(
+                startWith(undefined),
+                switchMap(() => this.user_service.getInactiveAdmin()),
+                map((response: any) => formatUser(response)),
+                tap(() => {
+                    this.table.loaded()
+                })
+            );
+          break;
+          default:
+            this.users = this.refreshData$.pipe(
+                startWith(undefined),
+                switchMap(() => this.user_service.getActiveAdmin()),
+                map((response: any) => formatUser(response)),
+                tap(() => {
+                    this.table.loaded()
+                })
+            );
+          break;
+        }
+    }
     refreshTableData(): void {
         this.refreshData$.next();
     }

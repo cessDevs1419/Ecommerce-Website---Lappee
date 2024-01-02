@@ -31,6 +31,7 @@ export class TableComponent {
 	@Output() DateValue: EventEmitter<any> = new EventEmitter<any>();
 	@Output() showEvent: EventEmitter<any> = new EventEmitter<any>();
 	@Output() getSelectedGroup: EventEmitter<any> = new EventEmitter<any>();
+	@Output() getSelectedActive: EventEmitter<any> = new EventEmitter<any>();
 	
 	//table theme
 	table_container_bg: string = 'table-bg-dark'
@@ -129,6 +130,8 @@ export class TableComponent {
 	@Input() checkBtn!: boolean;
 	@Input() chatBtn!: boolean;
 	@Input() chatModal!: boolean;
+	@Input() SelectOrderDate!: boolean;
+	@Input() SelectActive!: boolean;
 
 	@Input() OverlayIcon!: string;
 	@Input() OverlayBtnText!:  string;
@@ -154,7 +157,8 @@ export class TableComponent {
 	isLoading: boolean = true;
 	selectedItems: string[] = [];
 	selectedItemsPerGroup: { id: any; value: string }[] = [];
-
+    selectedOption: string = 'Active';
+	
 	constructor(private cdr: ChangeDetectorRef) {} 
 	
 	ngAfterViewInit() {
@@ -162,6 +166,10 @@ export class TableComponent {
 		// const selectAllCheckbox = this.checkboxInput.nativeElement as HTMLInputElement;
 		// Now you can use selectAllCheckbox as needed
 	}
+    selectOption(option: string) {
+		this.selectedOption = option
+		this.getSelectedActive.emit(option)
+    }
 
 	logSelection(item: any, selectedValue: string) {
 		const selectedItem = { id: item.id, value: selectedValue };

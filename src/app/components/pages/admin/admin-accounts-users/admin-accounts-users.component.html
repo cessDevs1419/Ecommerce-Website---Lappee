@@ -9,18 +9,20 @@
         [paginate]="false"
         
         [tableTools]="true"
-        [searchBar]="true"
+
         [tableAction]="true"
         [Btntools]="true"
 
         [addBtnclass]="'w-100'"
         [banBtn]="true"
-        
+        [tableHeaderActions]="true"
+        [SelectActive]="true"
         [tableHeader]="['User Id','Email', 'Date Created', 'Last Login']"
         [tableRows]="['user_id', 'email','created_at', 'last_login']"
         [tableData]="users"
         [bannedStatus]="bannedStatus"
         [bannedBtn]="true"
+        (getSelectedActive)="selectOption($event)"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
     

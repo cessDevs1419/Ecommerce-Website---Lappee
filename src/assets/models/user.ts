@@ -26,6 +26,11 @@ export interface BannedUserList {
 
 export interface BannedUser {
     id: string,
+    reason: string,
+    effective_on: string,
     user_id: string,
-    reason: string
+    fname: string,
+    lname: string,
+    suffix: string,
+    email: string,
 }

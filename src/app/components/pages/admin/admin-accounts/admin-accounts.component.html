@@ -9,10 +9,10 @@
         [paginate]="false"
         
         [tableTools]="true"
-        [searchBar]="true"
         [tableAction]="true"
         [Btntools]="true"
-
+        [tableHeaderActions]="true"
+        [SelectActive]="true"
         [addBtnclass]="'w-100'"
         [banBtn]="true"
         
@@ -21,6 +21,7 @@
         [tableData]="users"
         [bannedStatus]="bannedStatus"
         [bannedBtn]="true"
+        (getSelectedActive)="selectOption($event)"
         (rowDataSelected)="onRowDataSelected($event)"
     ></app-table>
     

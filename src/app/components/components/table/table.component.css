@@ -221,7 +221,11 @@ td{
     height: 4.2rem;
     padding: 0;
   }
-
+  .select-dropdown{
+    width: 100%;
+    min-width: 5rem;
+    height: 5.5rem;
+  }
   .dropdown-menu-lg{
     height: 6.2rem;
   }  

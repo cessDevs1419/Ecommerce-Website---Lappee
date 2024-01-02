@@ -61,6 +61,15 @@ export const GETBanUsers: string = api + "api/admin/account/bans";
 export const POSTBanUsers: string = api + "api/admin/account/bans/ban";
 export const DELETEBanUsers: string = api + "api/admin/account/bans/unban";
 
+
+export const GETActiveAdmin: string = api + "api/admin/account/admin/active";
+export const GETInactiveAdmin: string = api + "api/admin/account/admin/inactive";
+export const GETActiveUsers: string = api + "api/admin/account/user/active";
+export const GETInactiveUsers: string = api + "api/admin/account/user/inactive";
+export const GETActiveCustomers: string = api + "api/admin/account/customer/active";
+export const GETInactiveCustomers: string = api + "api/admin/account/customer/inactive";
+
+
 //Reviews Endpoints
 export const GETReviews: string = api + "api/client/products/reviews/";
 export const POSTReviews: string = api + "api/client/products/reviews/store";

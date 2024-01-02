@@ -71,7 +71,7 @@ ngOnInit(): void{
   
       this.users = this.refreshData$.pipe(
           startWith(undefined),
-          switchMap(() => this.user_service.getUsers()),
+          switchMap(() => this.user_service.getActiveCustomer()),
           map((response: any) => formatUser(response)),
           tap(() => {
               this.table.loaded()
@@ -84,7 +84,31 @@ ngOnInit(): void{
   }
   
   selectedRowData: any;
-  
+  selectOption(selectedOption: string){
+        
+    switch(selectedOption){
+      case 'Inactive':
+        this.users = this.refreshData$.pipe(
+            startWith(undefined),
+            switchMap(() => this.user_service.getInactiveCustomer()),
+            map((response: any) => formatUser(response)),
+            tap(() => {
+                this.table.loaded()
+            })
+        );
+      break;
+      default:
+        this.users = this.refreshData$.pipe(
+            startWith(undefined),
+            switchMap(() => this.user_service.getActiveCustomer()),
+            map((response: any) => formatUser(response)),
+            tap(() => {
+                this.table.loaded()
+            })
+        );
+      break;
+    }
+}
   onRowDataSelected(rowData: any) {
       this.selectedRowData = rowData;
 

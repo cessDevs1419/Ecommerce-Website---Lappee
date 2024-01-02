@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angul
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, catchError, map, of, pipe, throwError } from 'rxjs';
 import { Register, Login } from 'src/assets/models/account';
-import { POSTRegister, POSTLogin, GETUser, POSTLogout } from '../endpoints';
+import { POSTRegister, POSTLogin, GETUser, POSTLogout, GETActiveAdmin, GETInactiveAdmin, GETActiveUsers, GETInactiveUsers, GETActiveCustomers, GETInactiveCustomers } from '../endpoints';
 import { CookieService } from 'ngx-cookie-service';
 import { User, UserList } from 'src/assets/models/user';
 import { formatUser } from 'src/app/utilities/response-utils';
@@ -148,6 +148,7 @@ export class AccountsService {
   getUser(): Observable<any> {
     return this.http.get<UserList>(GETUser, this.httpOptions);
   }
+
 
   postRegisterUser(data: FormData): Observable<any> {
     return this.http.post<Register>(POSTRegister, data, this.httpOptions);

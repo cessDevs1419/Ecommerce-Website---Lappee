@@ -71,12 +71,37 @@ ngOnInit(): void{
   
       this.users = this.refreshData$.pipe(
           startWith(undefined),
-          switchMap(() => this.user_service.getUsers()),
+          switchMap(() => this.user_service.getActiveUser()),
           map((response: any) => formatUser(response)),
           tap(() => {
               this.table.loaded()
           })
       );
+}
+selectOption(selectedOption: string){
+        
+    switch(selectedOption){
+      case 'Inactive':
+        this.users = this.refreshData$.pipe(
+            startWith(undefined),
+            switchMap(() => this.user_service.getInactiveUser()),
+            map((response: any) => formatUser(response)),
+            tap(() => {
+                this.table.loaded()
+            })
+        );
+      break;
+      default:
+        this.users = this.refreshData$.pipe(
+            startWith(undefined),
+            switchMap(() => this.user_service.getActiveUser()),
+            map((response: any) => formatUser(response)),
+            tap(() => {
+                this.table.loaded()
+            })
+        );
+      break;
+    }
 }
 
   refreshTableData(): void {
