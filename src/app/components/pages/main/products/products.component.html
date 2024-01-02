@@ -3,7 +3,19 @@
     <app-toast [toastTheme]="this.toastTheme" [toastTitle]="this.toastHeader" [toastContent]="this.toastContent"></app-toast>
 </div> -->
 <div class="container-md overflow-x-visible">
-    <div class="row">
+    <div class="d-flex justify-content-center mt-5" *ngIf="isLoading">
+        <app-outline-circle-spinner [isBlue]="true"></app-outline-circle-spinner>
+    </div>
+
+    <div *ngIf="!isLoading && !currentProduct" class="mt-5">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <p class="fs-1"><i class="bi bi-patch-question-fill"></i></p>
+            <p class="fs-5 fw-bold mb-0">We can't find the product you requested.</p>
+            <p>Maybe you followed the wrong link, or the item is not available right now.</p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="!isLoading && currentProduct">
         <div class="sticky-column col-lg-6 pt-5 overflow-hidden">
             <gallery gallerize *ngIf="this.product| async" id="product-images"  [itemTemplate]="itemTemplate" [thumbPosition]="position" imageSize="contain" [thumbWidth]="60" [thumbHeight]="75" class="me-0 mb-3 me-lg-3 mb-lg-0 product-gallery product-gallery-desktop z-0"></gallery>
     
@@ -15,34 +27,39 @@
             </ng-template>
         </div>
 
-        <div *ngIf="product | async as match"  class="col-lg-6 content-column mt-5">
-            <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
-                <div>
-                    <h3>{{match.name}}</h3>
-                    <p>ID: {{match.id}}</p>
-                    <div class="d-flex flex-row justify-content-start rating-yellow"  *ngIf="this.reviews | async as review">
-                        <app-star-ratings [rating]="review.rating"></app-star-ratings>
-                        <p class="ms-1">{{review.count.total}} total {{review.count.total == 1 ? 'review' : 'reviews'}}</p>
-                    </div>
-                    <div class="d-flex flex-row" *ngIf="!match.discount.value">
-                        <p class="h2 m-0">{{this.selectedPrice | currency}}</p>
-                    </div>
-                    <div *ngIf="match.discount">
-                        <div class="d-flex flex-row" *ngIf="match.discount.type == 301">
-                            <p class="h2 m-0">{{this.selectedPrice - Number(match.discount.value) | currency}}</p>
-                            <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
-                            <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value | currency: 'PHP': 'symbol' : '1.0-0'}}</div>
+        <div *ngIf="currentProduct as match"  class="col-lg-6 content-column mt-5">
+            <ng-container *ngIf="match.id.length > 0">
+                <div class="d-flex flex-row justify-content-between product-border-bottom pb-3">
+                    <div>
+                        <h3>{{match.name}}</h3>
+                        <p>ID: {{match.id}}</p>
+                        <div class="d-flex flex-row justify-content-start rating-yellow"  *ngIf="this.reviews | async as review">
+                            <app-star-ratings [rating]="review.rating"></app-star-ratings>
+                            <p class="ms-1">{{review.count.total}} total {{review.count.total == 1 ? 'review' : 'reviews'}}</p>
                         </div>
-
-                        <div class="d-flex flex-row" *ngIf="match.discount.type == 302">
-                            <p class="h2 m-0">{{ this.selectedPrice - (this.selectedPrice * ((Number(match.discount.value)/100))) | currency}}</p>
-                            <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
-                            <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value}}%</div>
+                        <div class="d-flex flex-row" *ngIf="!match.discount.value">
+                            <p class="h2 m-0">{{this.selectedPrice | currency}}</p>
+                        </div>
+                        <div *ngIf="match.discount">
+                            <div class="d-flex flex-row" *ngIf="match.discount.type == 301">
+                                <p class="h2 m-0">{{this.selectedPrice - Number(match.discount.value) | currency}}</p>
+                                <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
+                                <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value | currency: 'PHP': 'symbol' : '1.0-0'}}</div>
+                            </div>
+    
+                            <div class="d-flex flex-row" *ngIf="match.discount.type == 302">
+                                <p class="h2 m-0">{{ this.selectedPrice - (this.selectedPrice * ((Number(match.discount.value)/100))) | currency}}</p>
+                                <p class="muted-text text-decoration-line-through align-self-start">{{this.selectedPrice | currency}}</p>
+                                <div class="px-3 ms-1 discount d-flex align-items-center">-{{match.discount.value}}%</div>
+                            </div>
                         </div>
                     </div>
+                   <!--  <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button> -->
                 </div>
-               <!--  <button class="fave-button" [ngClass]="isFaved ? 'faved' : 'fave-button'" (click)="this.hasVariant = !this.hasVariant" ><i class="bi bi-heart"></i></button> -->
-            </div>
+            </ng-container>
+            <ng-container *ngIf="match.id.length == 0">
+                no item lol
+            </ng-container>
 
             <!-- <div id="spacer" style="height: 1000px;"></div> -->
             <div class="mt-3" id="productDescOptions">
@@ -130,106 +147,112 @@
         </div>
     </div>
     
-    <div class="row reviews-overview mt-5 py-3 px-5" *ngIf="this.reviews | async as review">
-        
-        <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
-            <div class="fs-1 fw-bold">{{ review.rating ? review.rating : 0}}<span class="muted-text fs-2">/5.0</span></div>
-            <app-star-ratings [rating]="review.rating" class="fs-3 rating-yellow"></app-star-ratings>
-            <div class="fs-6">{{ review.count.total }} ratings</div>
-        </div>
-        <div class="col-lg d-flex flex-column align-items-center justify-content-center rating-details">
-            <div class="d-flex flex-row align-items-center">
-                <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="review.count['by-rating']['5.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{review.count['by-rating']['5.00']}}</div>
+    <div *ngIf="!isLoading && currentProduct">
+        <div class="row reviews-overview mt-5 py-3 px-5" *ngIf="this.reviews | async as review" >
+            
+            <div class="col-lg-2 d-flex flex-column align-items-center align-items-lg-start">
+                <div class="fs-1 fw-bold">{{ review.rating ? review.rating : 0}}<span class="muted-text fs-2">/5.0</span></div>
+                <app-star-ratings [rating]="review.rating" class="fs-3 rating-yellow"></app-star-ratings>
+                <div class="fs-6">{{ review.count.total }} ratings</div>
             </div>
-            <div class="d-flex flex-row align-items-center">
-                <app-star-ratings [rating]="4" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="review.count['by-rating']['4.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{review.count['by-rating']['4.00']}}</div>
+            <div class="col-lg d-flex flex-column align-items-center justify-content-center rating-details">
+                <div class="d-flex flex-row align-items-center">
+                    <app-star-ratings [rating]="5" class="rating-yellow"></app-star-ratings>
+                    <app-progress-bar [amount]="review.count['by-rating']['5.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                    <div class="w-25 w-lg-100">{{review.count['by-rating']['5.00']}}</div>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                    <app-star-ratings [rating]="4" class="rating-yellow"></app-star-ratings>
+                    <app-progress-bar [amount]="review.count['by-rating']['4.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                    <div class="w-25 w-lg-100">{{review.count['by-rating']['4.00']}}</div>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                    <app-star-ratings [rating]="3" class="rating-yellow"></app-star-ratings>
+                    <app-progress-bar [amount]="review.count['by-rating']['3.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                    <div class="w-25 w-lg-100">{{review.count['by-rating']['3.00']}}</div>
+                </div>
             </div>
-            <div class="d-flex flex-row align-items-center">
-                <app-star-ratings [rating]="3" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="review.count['by-rating']['3.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{review.count['by-rating']['3.00']}}</div>
-            </div>
-        </div>
-        <div class="col-lg d-flex flex-column align-items-start justify-content-center rating-details">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-                <app-star-ratings [rating]="2" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="review.count['by-rating']['2.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{review.count['by-rating']['2.00']}}</div>
-            </div>
-            <div class="d-flex flex-row align-items-center">
-                <app-star-ratings [rating]="1" class="rating-yellow"></app-star-ratings>
-                <app-progress-bar [amount]="review.count['by-rating']['1.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
-                <div class="w-25 w-lg-100">{{review.count['by-rating']['1.00']}}</div>
+            <div class="col-lg d-flex flex-column align-items-start justify-content-center rating-details">
+                <div class="d-flex flex-row align-items-center justify-content-between">
+                    <app-star-ratings [rating]="2" class="rating-yellow"></app-star-ratings>
+                    <app-progress-bar [amount]="review.count['by-rating']['2.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                    <div class="w-25 w-lg-100">{{review.count['by-rating']['2.00']}}</div>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                    <app-star-ratings [rating]="1" class="rating-yellow"></app-star-ratings>
+                    <app-progress-bar [amount]="review.count['by-rating']['1.00']" [total]="review.count.total" [colorhex]="'#FFC107'" class="w-100"></app-progress-bar>
+                    <div class="w-25 w-lg-100">{{review.count['by-rating']['1.00']}}</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row mt-5" >
-        <p class="fs-2 p-0 ps-3">Product Reviews</p>
-        <p *ngIf="!(this.reviewsList | async)">
-            Loading...
-        </p>
-        <div *ngIf="(this.reviewsList | async) as reviews">
-            <div *ngIf="reviews.length >= 1">
-                <div class="review-comment p-3 border-top" *ngFor="let review of paginateReview()">
-                    <div class="row d-flex flex-row space-between">
-                        <div class="col d-flex flex-column">
-                            <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow fs-4"></app-star-ratings>
-                            <div class="text-muted">by {{review.email}}</div>
-                        </div>
-                        <div class="col text-end">
-                            <p class="m-0 mb-1">{{review.reviewed_on}}</p>
-                            <div *ngIf="(this.accountService.getLoggedUser() | async) as user">
-                                <p class="m-0 fs-6 trash-icon" *ngIf="user.user_id == review.user_id" data-bs-toggle="tooltip" data-bs-title="Delete Review" (click)="deleteReview(review.review_id)"><i class="bi bi-trash me-2"></i>Delete Review</p>
+
+    <div *ngIf="!isLoading && currentProduct">
+        <div class="row mt-5">
+            <p class="fs-2 p-0 ps-3">Product Reviews</p>
+            <p *ngIf="!(this.reviewsList | async)">
+                Loading...
+            </p>
+            <div *ngIf="(this.reviewsList | async) as reviews">
+                <div *ngIf="reviews.length >= 1">
+                    <div class="review-comment p-3 border-top" *ngFor="let review of paginateReview()">
+                        <div class="row d-flex flex-row space-between">
+                            <div class="col d-flex flex-column">
+                                <app-star-ratings [rating]="Number(review.rating)" class="rating-yellow fs-4"></app-star-ratings>
+                                <div class="text-muted">by {{review.email}}</div>
+                            </div>
+                            <div class="col text-end">
+                                <p class="m-0 mb-1">{{review.reviewed_on}}</p>
+                                <div *ngIf="(this.accountService.getLoggedUser() | async) as user">
+                                    <p class="m-0 fs-6 trash-icon" *ngIf="user.user_id == review.user_id" data-bs-toggle="tooltip" data-bs-title="Delete Review" (click)="deleteReview(review.review_id)"><i class="bi bi-trash me-2"></i>Delete Review</p>
+                                </div>
                             </div>
                         </div>
+                        <div class="mt-3">{{review.content}}</div>
+                        <div class="mt-3 attachment-gallery d-flex flex-wrap" gallerize="{{review.review_id}}">
+                            <img *ngFor="let image of review.images" class="review-image" [src]="image" [attr.imageSrc]="image">
+                        </div>
                     </div>
-                    <div class="mt-3">{{review.content}}</div>
-                    <div class="mt-3 attachment-gallery d-flex flex-wrap" gallerize="{{review.review_id}}">
-                        <img *ngFor="let image of review.images" class="review-image" [src]="image" [attr.imageSrc]="image">
+                    <div class="d-flex justify-content-end">
+                        <app-pagination [itemsPerPage]="itemsPerPage" [totalItems]="reviewListArray.length" (pageChange)="onPageChange($event)"></app-pagination>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <app-pagination [itemsPerPage]="itemsPerPage" [totalItems]="reviewListArray.length" (pageChange)="onPageChange($event)"></app-pagination>
+                <div *ngIf="reviews.length === 0">
+                    <p>
+                        There are currently no reviews for this item.
+                    </p>
                 </div>
+            </div> 
+            
+    
+           <!--  <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
+                <form [formGroup]="postComment">
+                    <textarea type="text" class="w-100 form-control" rows="4" formControlName="message" placeholder="Leave a feedback and review."></textarea>
+                    <div *ngIf="commentMessage?.invalid && (commentMessage?.dirty || commentMessage?.touched)">
+                        <div *ngIf="commentMessage?.errors?.['required']">
+                            <span class="text-danger">This field is required.</span>
+                        </div>
+                    </div>
+    
+                    <div class="d-flex flex-row justify-content-between mt-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="true" id="checkboxShowUser"/>
+                            <label for="checkboxShowUser" class="form-check-label">Show your username on review</label> 
+                        </div>
+    
+                        <div>
+                            <button type="submit" class="button-primary" (click)="submitComment()">Submit</button>
+                        </div>
+                    </div>
+                </form>   
             </div>
-            <div *ngIf="reviews.length === 0">
-                <p>
-                    There are currently no reviews for this item.
-                </p>
-            </div>
-        </div> 
-        
-
-       <!--  <div class="p-3 border-top" *ngIf="this.accountService.getIsLoggedIn()">
-            <form [formGroup]="postComment">
-                <textarea type="text" class="w-100 form-control" rows="4" formControlName="message" placeholder="Leave a feedback and review."></textarea>
-                <div *ngIf="commentMessage?.invalid && (commentMessage?.dirty || commentMessage?.touched)">
-                    <div *ngIf="commentMessage?.errors?.['required']">
-                        <span class="text-danger">This field is required.</span>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-row justify-content-between mt-3">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" value="true" id="checkboxShowUser"/>
-                        <label for="checkboxShowUser" class="form-check-label">Show your username on review</label> 
-                    </div>
-
-                    <div>
-                        <button type="submit" class="button-primary" (click)="submitComment()">Submit</button>
-                    </div>
-                </div>
-            </form>   
+        </div> -->
         </div>
-    </div> -->
-    <div class="row mt-3">
-       <div class="fs-2 p-3">You May Also Like</div>
-       <div class="px-3">
-        <app-product-grid [products]="this.suggestProduct" [selfReload]="true" class="row"></app-product-grid>
-       </div>
+        <div class="row mt-3">
+           <div class="fs-2 p-3">You May Also Like</div>
+           <div class="px-3">
+            <app-product-grid [products]="this.suggestProduct" [selfReload]="true" class="row"></app-product-grid>
+           </div>
+        </div>
     </div>
 </div>

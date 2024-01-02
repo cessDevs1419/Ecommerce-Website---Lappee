@@ -44,6 +44,8 @@ export class ProductsComponent {
   isTouched: boolean = false;
 
   sizes: Size[];
+
+  isLoading: boolean = true;
   
   toastContent: string = "";
   toastHeader: string = "";
@@ -170,12 +172,12 @@ export class ProductsComponent {
     this.suggestProduct = this.productsService.getProductsSuggestion(this.productId).pipe(map((response:any) => formatProductSuggestion(response)));
 
     // get local array copy of product observable
-    this.product.subscribe((product: Product) => {
-      if(product){
+    this.product.subscribe({
+      next: (product: Product) => {
         this.currentProduct = product;
+        this.isLoading = false;
         this.selectedPrice = Number(this.currentProduct.variants[0].price);
-        
-        // initialize gallerize
+
         this.galleryRef.reset();
         product.variants.forEach((variant: Variant) => {
           variant.images.forEach((img: string) => {
@@ -184,9 +186,6 @@ export class ProductsComponent {
           });
         });
 
-      //  console.log(this.imgArray);
-
-        // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
         reviewData.subscribe((response: any) => this.reviews = formatReviews(response));
 
@@ -208,30 +207,89 @@ export class ProductsComponent {
             else {
               this.reviewListMatched = this.reviewListArray;
             }
+
+            if(this.currentProduct.variants.length > 0){
+              this.hasVariant = false
+            }
+            else {
+              this.hasVariant = true;
+            }
+      
+            this.cdr.detectChanges();
             //console.log(matchIndex);
             //console.log(this.reviewListArray);
             //console.log(this.reviewListMatched);
-
           }
         });
-
-       // console.log('item found');
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isLoading = false;
+      }
+    })
+    // this.product.subscribe((product: Product) => {
+    //   if(product){
+    //     this.currentProduct = product;
+    //     this.isLoading = false;
+    //     this.selectedPrice = Number(this.currentProduct.variants[0].price);
         
-        //this.initVariants();
-      }
-      else {
-        //console.log('no items found');
-      }
+    //     this.galleryRef.reset();
+    //     product.variants.forEach((variant: Variant) => {
+    //       variant.images.forEach((img: string) => {
+    //         let url = img;
+    //         this.galleryRef.addImage({src: url, thumb: url});
+    //       });
+    //     });
 
-      if(this.currentProduct.variants.length > 0){
-        this.hasVariant = false
-      }
-      else {
-        this.hasVariant = true;
-      }
 
-      this.cdr.detectChanges();
-    });
+    //     // get reviews
+    //     let reviewData = this.reviewService.getReviews(this.currentProduct.id);
+    //     reviewData.subscribe((response: any) => this.reviews = formatReviews(response));
+
+    //     this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)))
+    //     this.reviewsList.subscribe({
+    //       next: (reviews: Review[]) => {
+    //         this.reviewListArray = reviews;
+    //         let matchIndex = -1;
+    //         if(this.userId){
+    //           //console.log("user id found")
+    //           matchIndex = this.matchReviewFromUser(this.reviewListArray);
+    //         }
+    //         if(matchIndex > -1) {
+    //           this.reviewMatch = this.reviewListArray[matchIndex];
+    //           this.reviewListArray.splice(matchIndex, 1);
+    //           this.reviewListArray.unshift(this.reviewMatch);
+    //           this.reviewListMatched = this.reviewListArray;
+    //         }
+    //         else {
+    //           this.reviewListMatched = this.reviewListArray;
+    //         }
+    //         //console.log(matchIndex);
+    //         //console.log(this.reviewListArray);
+    //         //console.log(this.reviewListMatched);
+
+    //       }
+    //     });
+
+    //    // console.log('item found');
+        
+    //     //this.initVariants();
+    //   }
+
+    //   else {
+    //     //console.log('no items found');
+    //     console.log(false)
+    //     this.isLoading = false;
+    //   }
+
+    //   if(this.currentProduct.variants.length > 0){
+    //     this.hasVariant = false
+    //   }
+    //   else {
+    //     this.hasVariant = true;
+    //   }
+
+    //   this.cdr.detectChanges();
+    // });
   }
   
 /*
