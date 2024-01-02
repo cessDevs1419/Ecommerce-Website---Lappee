@@ -48,6 +48,6 @@ export class AccountComponent {
     this.toastContent = "Your credentials may be incorrect.";
     this.toast.switchTheme('negative');
     this.toast.show();
-    console.log(this.toastTheme);
+    //console.log(this.toastTheme);
   }
 }

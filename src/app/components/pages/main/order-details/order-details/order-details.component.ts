@@ -102,7 +102,7 @@ export class OrderDetailsComponent {
   }
 
   returnOrderInitiate(params: {id: string, reason: string}){
-    console.log('return req')
+    //console.log('return req')
     let formData: any = new FormData();
     formData.append('order_id', params.id);
     formData.append('reason', params.reason);
@@ -121,7 +121,7 @@ export class OrderDetailsComponent {
   }
 
   cancelOrderConfirm(params: {id: string, reason: string}){
-    console.log('cancel req')
+    //console.log('cancel req')
     let formData: any = new FormData();
     formData.append('order_id', params.id);
     formData.append('reason', params.reason);
@@ -143,7 +143,7 @@ export class OrderDetailsComponent {
   }
 
   chat(id: string){
-    console.log(id)
+    //console.log(id)
     this.router.navigate(['/profile/orders/details/chats', id]);
   }
 
@@ -171,7 +171,7 @@ export class OrderDetailsComponent {
   }
 
   shippingProofUpload(params: {id: string, file: File}) {
-    console.log('order id', params.id)
+    //console.log('order id', params.id)
     let formData: any = new FormData();
     formData.append('order_id', params.id);
     formData.append('proofs[]', params.file);

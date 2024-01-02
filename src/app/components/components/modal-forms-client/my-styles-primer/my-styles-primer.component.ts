@@ -18,11 +18,11 @@ export class MyStylesPrimerComponent {
 
   dismissModal(): void {
     if(this.dontShow?.value) {
-      console.log(true)
+     // console.log(true)
       this.dismiss.emit(true)
     }
     else {
-      console.log(false)
+      //console.log(false)
       this.dismiss.emit(false)
     }
   }

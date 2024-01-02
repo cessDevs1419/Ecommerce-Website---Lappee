@@ -13,7 +13,7 @@ export class ProvinceCityService {
 
     province.subscribe((response: any) => {
       this.provinces = response;
-      console.log(response);
+    //  console.log(response);
     });
 
     cities.subscribe((response: any) => {

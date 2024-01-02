@@ -40,11 +40,11 @@ export class SiteDetailsService {
 
   getTitle(): Observable<string> {
     if(this.siteTitle){
-      console.log(this.siteTitle);
+      //console.log(this.siteTitle);
       return this.siteTitle
     }
     else {
-      console.log('no name yet')
+     // console.log('no name yet')
       this.resolveTitle();
       return this.siteTitle
     }

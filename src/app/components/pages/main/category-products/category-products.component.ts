@@ -63,6 +63,6 @@ export class CategoryProductsComponent {
       }
     }
 
-    console.log(option);
+   // console.log(option);
   }
 }

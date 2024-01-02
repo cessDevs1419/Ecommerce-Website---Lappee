@@ -107,7 +107,7 @@ export class NavbarComponent {
     this.subcategories = categoryList.pipe(map((response: any) => formatSubcategories(response)));
     this.cartContents = this.cart.getItems(); 
     this.accountService.checkLoggedIn().subscribe((status: boolean) => {
-      console.log("Logged In: " + status)
+     // console.log("Logged In: " + status)
       if(status){
         this.checkUserInfo()
       }
@@ -120,7 +120,7 @@ export class NavbarComponent {
         this.checkUserInfo();
       }
     });
-    console.log('ngOnchanges');
+    //console.log('ngOnchanges');
   }
 
   checkUserInfo(): void {
@@ -133,17 +133,17 @@ export class NavbarComponent {
               this.deliveryInfoService.getAddressList().subscribe({
                 next: (address: any) => {
                   if(address) {
-                    console.log('has matching address')
+                    //console.log('has matching address')
                     this.isInfoRegistered = true;
                     this.setupDetailsResolved = true;
                   }
                   else {
-                    console.log('no matching address')
+                    //console.log('no matching address')
                     this.isInfoRegistered = false;
                   }
                 },
                 error: (err: HttpErrorResponse) => {
-                  console.log(err)
+                  //console.log(err)
                 }
               })
               // findDeliveryInfo(response.user_id, this.infos).subscribe({
@@ -164,7 +164,7 @@ export class NavbarComponent {
               // })
             },
             error: (err: HttpErrorResponse) => {
-              console.log(err)
+              //console.log(err)
             }
           });
         }
@@ -175,7 +175,7 @@ export class NavbarComponent {
   updateAdminDashboardFlag(): void {
     const currentUrl = this.url.path();
     this.isAdminDashboard = currentUrl.includes('/admin');
-    console.log("Is admin dashboard: " + this.isAdminDashboard + " | " + currentUrl);
+    //console.log("Is admin dashboard: " + this.isAdminDashboard + " | " + currentUrl);
   }
 
   // color toggling for nav links and modal background
@@ -216,8 +216,8 @@ export class NavbarComponent {
   }
 
   dismissOffcanvas(): void {
-    console.log('offcanvas dismiss');
-    console.log(this.offcanvas);
+    //console.log('offcanvas dismiss');
+    //console.log(this.offcanvas);
     let bsOffcavnas = bootstrap.Offcanvas.getInstance(this.offcanvas.nativeElement);
     bsOffcavnas?.toggle();
   }

@@ -79,7 +79,7 @@ export class ModalClientComponent {
   // Return Order
 
   returnOrder(order_id: string): void {
-    console.log('return-order, modal')
+   // console.log('return-order, modal')
     this.mode = 'return-order';
     this.modalTitle = 'Return Order';
     this.order = order_id;
@@ -87,7 +87,7 @@ export class ModalClientComponent {
   }
 
   emitReturnOrder($event: { id: string; reason: string; }) {
-    console.log('return-order emit, modal')
+    //('return-order emit, modal')
     this.returnOrderOutput.emit({id: $event.id, reason: $event.reason})
   }
 
@@ -97,8 +97,8 @@ export class ModalClientComponent {
     this.mode = 'upload-shipping-proof';
     this.modalTitle = 'Upload Proof of Shipping';
     this.order = order_id;
-    console.log("modal client", order_id)
-    console.log("modal client variable", this.order)
+    //console.log("modal client", order_id)
+    //console.log("modal client variable", this.order)
     this.show();
   }
 
@@ -111,8 +111,8 @@ export class ModalClientComponent {
   myStylesPrimer() {
     this.mode = 'my-styles-primer';
     this.modalTitle = "My Styles";
-    console.log("Local Storage (Don't Show): " + (localStorage.getItem('myStylesDontShow') == 'true'));
-    console.log("Session Storage (Shown): " + (sessionStorage.getItem('myStylesShown') == 'true'))
+    //console.log("Local Storage (Don't Show): " + (localStorage.getItem('myStylesDontShow') == 'true'));
+    //console.log("Session Storage (Shown): " + (sessionStorage.getItem('myStylesShown') == 'true'))
     
     if(!(localStorage.getItem('myStylesDontShow') == 'true') && !(sessionStorage.getItem('myStylesShown') == 'true')){
       this.show();
@@ -143,8 +143,8 @@ export class ModalClientComponent {
   // Review Methods
 
   addReview(item: OrderContent): void {
-    console.log(this.mode);
-    console.log(this.modalTitle)
+    //console.log(this.mode);
+    //console.log(this.modalTitle)
     this.modalTitle = "Add Review";
     this.product = item;
     this.show();
@@ -194,7 +194,7 @@ export class ModalClientComponent {
   }
 
   dismiss(): void {
-    console.log('dismiss from modal');
+    //console.log('dismiss from modal');
     this.modalEl.hide();
   }
 

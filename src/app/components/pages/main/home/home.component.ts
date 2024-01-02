@@ -59,10 +59,10 @@ export class HomeComponent {
       next: (products: CategoryProduct[]) => {
         this.products = products;
         this.isLoading = false;
-        console.log(this.products);
+       // console.log(this.products);
       },
       error: (error: HttpErrorResponse) => {
-        console.log(error)
+       // console.log(error)
       }
     })
     this.banners = this.bannersService.getBanners().pipe(map((response: any) => formatBanners(response)));
@@ -95,7 +95,7 @@ export class HomeComponent {
               findDeliveryInfo(response.user_id, this.infos).subscribe({
                 next: (match: boolean) => {
                   if(match) {
-                    console.log('has matching address')
+                   // console.log('has matching address')
                     this.isInfoRegistered = true;
                     this.filteredInfo = filterDeliveryInfo(response.user_id, this.infos);
                     this.filteredInfo.subscribe({
@@ -110,9 +110,9 @@ export class HomeComponent {
                     });
                   }
                   else {
-                    console.log('no matching address');
+                   // console.log('no matching address');
                     this.isInfoRegistered = false;
-                    console.log("Reminder: " + sessionStorage.getItem('reminderShown'))
+                   // console.log("Reminder: " + sessionStorage.getItem('reminderShown'))
                     if(sessionStorage.getItem('reminderShown') !== 'true'){
                       setTimeout(() => {
                         this.setupReminderModal();
@@ -123,12 +123,12 @@ export class HomeComponent {
                   }
                 },
                 error: (err: HttpErrorResponse) => {
-                  console.log(err)
+                  //console.log(err)
                 }
               })
             },
             error: (err: HttpErrorResponse) => {
-              console.log(err)
+              //console.log(err)
             }
           });
         }

@@ -31,7 +31,7 @@ export class ShippingService {
   }
 
   postShippingFee(data: FormData): Observable<any> {
-    console.log(data)
+   // console.log(data)
     return this.http.post(POSTAdminShippingFee, data, this.httpOptions);
   }
 

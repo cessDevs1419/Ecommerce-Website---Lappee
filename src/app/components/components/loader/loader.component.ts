@@ -16,7 +16,7 @@ export class LoaderComponent {
   
   ngOnInit(): void {  
     this.component = this.vcr.createComponent(this.componentName);
-    console.log(this.flag);
+    //console.log(this.flag);
   }
 
   ngOnChanges(): void {

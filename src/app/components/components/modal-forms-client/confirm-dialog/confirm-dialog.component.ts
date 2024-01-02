@@ -45,10 +45,10 @@ export class ConfirmDialogComponent {
   }
 
   emit(): void {
-    console.log(this.operation);
+    //console.log(this.operation);
     switch(this.operation){
       case 'delete':
-        console.log('emitting from delete case');
+        //console.log('emitting from delete case');
         this.emitDeleteTrue.emit({status: true, item: this.product});
         this.handleDismiss();
         break;

@@ -20,11 +20,11 @@ export class EditCartItemComponent {
 
   ngOnInit(): void {
     this.product.image_url.forEach((url: string) => {
-      console.log(url);
+      //console.log(url);
       this.galleryRef.addImage({src: url, thumb: url});
     });
 
-    console.log(this.product.variant_details)
+    //console.log(this.product.variant_details)
   }
 
   emitDismiss(): void {

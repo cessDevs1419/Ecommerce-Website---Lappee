@@ -18,7 +18,7 @@ export class ToastsService {
     toast.instance.toastContent = message;
     toast.instance.toastClass = title;
     toast.instance.limitWidth = limitWidth;
-    console.log('limit width ' + limitWidth)
+   // console.log('limit width ' + limitWidth)
 
     if(theme){
       toast.instance.switchTheme(theme)

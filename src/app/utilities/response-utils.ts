@@ -135,7 +135,7 @@ export function formatProductObj(response: any): Product {
 }
 
 export function formatProductAll(response: any): Product[] {
-  console.log(response);
+  //console.log(response);
   return response.data.map((data: Product) => ({
     id: data.id,
     name: data.name,
@@ -146,7 +146,7 @@ export function formatProductAll(response: any): Product[] {
 }
 
 export function formatProductSuggestion(response: any): CategoryProduct[] {
-    console.log(response);
+    //console.log(response);
     return response.data.map((data: CategoryProduct) => ({
         product_id: data.product_id,
         name: data.name,
@@ -559,7 +559,7 @@ export function formatAdminOrderDetail(data: AdminOrderDetailList): AdminOrderDe
 }
 
 export function formatOrderDetails(response: OrderList): OrderDetail[] {
-  console.log(response);
+  //console.log(response);
   return response.data.details.map((data: OrderDetail) => ({
     order_id: data.order_id,
     ordered_on: data.ordered_on,

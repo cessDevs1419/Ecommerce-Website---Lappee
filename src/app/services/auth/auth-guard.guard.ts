@@ -22,13 +22,13 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
 
     return loginState$.pipe(
       switchMap((loginState: any) => {
-        console.log(route.url);
+       // console.log(route.url);
         // (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin' || route.url[0].toString() === 'verify-email'))
         // (!loginState && (route.url.toString() === 'profile' || route.url.toString() === 'admin'))
         if (!loginState && blockedRoutes.includes(route.url.toString())) {
           // redirect users not logged in
-          console.log("Please log-in.");
-          console.log("/login" + createParam('context', 'unauthorized'));
+        //  console.log("Please log-in.");
+         // console.log("/login" + createParam('context', 'unauthorized'));
           return of(router.parseUrl('/login' + createParam('context', 'unauthorized')));
         }
 
@@ -45,7 +45,7 @@ export function authGuard(route: RouterStateSnapshot): Observable<boolean | UrlT
 
             if(user.user_type === 100 && route.url.toString() === 'admin'){
               // redirect normal users from accessing admin
-              console.log('You lack privileges to access this page.');
+            //  console.log('You lack privileges to access this page.');
               return router.parseUrl('/home');
             }
             else if(user.user_type === 200 && route.url.toString() === 'admin'){

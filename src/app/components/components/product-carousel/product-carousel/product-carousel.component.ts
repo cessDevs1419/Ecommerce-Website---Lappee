@@ -52,7 +52,7 @@ export class ProductCarouselComponent {
   sliceArray(): void {
     let currentIndex = 0;
     this.totalItems = this.products.length;
-    console.log(this.totalItems);
+    //console.log(this.totalItems);
 
     while (currentIndex < this.products.length) {
       let slice = this.products.slice(currentIndex, currentIndex + this.itemsPerPage);
@@ -65,7 +65,7 @@ export class ProductCarouselComponent {
       currentIndex += this.itemsPerPage;
     }
 
-    console.log(this.itemGroups);
+    //console.log(this.itemGroups);
   }
 
   prev(): void {

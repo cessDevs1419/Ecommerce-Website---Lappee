@@ -34,6 +34,6 @@ export class FooterComponent {
   updateAdminDashboardFlag(): void {
     const currentUrl = this.url.path();
     this.isAdminDashboard = currentUrl.includes('/admin');
-    console.log("Is admin dashboard: " + this.isAdminDashboard + " | " + currentUrl);
+    //console.log("Is admin dashboard: " + this.isAdminDashboard + " | " + currentUrl);
   }
 }

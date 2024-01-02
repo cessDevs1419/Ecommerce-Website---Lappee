@@ -51,11 +51,11 @@ export class SigninformComponent {
       formData.append('password', this.signInForm.get('signInPassword')?.value);
       formData.append('rememberMe', this.signInForm.get('signInRememberMe')?.value ? 1 : 0);
 
-      console.log(formData);
+     // console.log(formData);
 
       this.accountService.postLoginUser(formData).subscribe({
         next: (response: any) => {
-          console.log(response);
+          //console.log(response);
           this.isLoading = false;
           this.signInForm.reset();
           this.loginSuccess.emit();
@@ -86,7 +86,7 @@ export class SigninformComponent {
     }
     else if(this.signInForm.invalid){
       this.signInForm.markAllAsTouched();
-      console.log("invalid");
+     // console.log("invalid");
     }
   }
 }

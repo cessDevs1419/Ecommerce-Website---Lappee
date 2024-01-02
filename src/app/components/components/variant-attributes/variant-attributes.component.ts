@@ -87,7 +87,7 @@ export class VariantAttributesComponent {
       this.selectedSizeVariants = this.sizes.get(itemSize)!;
     }
 
-    console.log(this.sizes);
+    //console.log(this.sizes);
   }
 
   changeSize(size: string){
@@ -98,23 +98,23 @@ export class VariantAttributesComponent {
       this.variantSelect?.setValue(this.selectedSizeVariants[0].variant_id);
       this.selectedVariant = this.selectedSizeVariants[0];
     }
-    console.log(this.selectedSizeVariants);
-    console.log(this.sizes.get(size));
+   // console.log(this.selectedSizeVariants);
+    //console.log(this.sizes.get(size));
 
-    console.log(this.cartItem.variant_details.get('Size'));
+   // console.log(this.cartItem.variant_details.get('Size'));
   }
 
   changeVariant(variant: Variant){
-    console.log(variant);
+    //console.log(variant);
     this.selectedVariantAttributes = "";
     this.selectVariantAttrMap.clear();
 
     variant.attributes.forEach(attr => {
-      console.log(attr.attribute_name + ": " + attr.value)
+     // console.log(attr.attribute_name + ": " + attr.value)
       this.selectedVariantAttributes += attr.attribute_name + ": " + attr.value + "\n";
       this.selectVariantAttrMap.set(attr.attribute_name, attr.value);
-      console.log(this.selectVariantAttrMap);
-      console.log(this.selectedVariantAttributes);
+      //console.log(this.selectVariantAttrMap);
+      //console.log(this.selectedVariantAttributes);
     })
     this.selectedVariant = variant;
   }
@@ -129,7 +129,7 @@ export class VariantAttributesComponent {
 
   toggleAccordion(): void {
     let accordion = new bootstrap.Collapse(this.variantAccordion.nativeElement);
-    console.log(accordion);
+    //console.log(accordion);
     accordion.toggle();
   }
 
@@ -143,7 +143,7 @@ export class VariantAttributesComponent {
       return true;
     }
     else {
-      console.log("invalid");
+      //console.log("invalid");
       this.variantForm.markAllAsTouched();
       return false;
     }
@@ -172,11 +172,11 @@ export class VariantAttributesComponent {
   }
 
   compare(one: string, two: string){
-    console.log()
+    //console.log()
   }
 
   emitDismiss(): void {
-    console.log("emitDismiss");
+    //console.log("emitDismiss");
     this.dismiss.emit();
   }
 }

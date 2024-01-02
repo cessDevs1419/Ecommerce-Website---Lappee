@@ -62,13 +62,13 @@ export class ColorService {
     let greens = c2[1] - c1[1]
     let blues = c2[2] - c1[2]
 
-    console.log("reds: " + c2[0] + " - " + c1[0] + " = " + reds)
-    console.log("greens: " + c2[1] + " - " + c1[1] + " = " + greens)
-    console.log("blues: " + c2[2] + " - " + c1[2] + " = " + blues)
+    // console.log("reds: " + c2[0] + " - " + c1[0] + " = " + reds)
+    // console.log("greens: " + c2[1] + " - " + c1[1] + " = " + greens)
+    // console.log("blues: " + c2[2] + " - " + c1[2] + " = " + blues)
 
-    console.log("red^2: " + Math.pow(reds, 2))
-    console.log("green^2: " + Math.pow(greens, 2))
-    console.log("blue^2: " + Math.pow(blues, 2))
+    // console.log("red^2: " + Math.pow(reds, 2))
+    // console.log("green^2: " + Math.pow(greens, 2))
+    // console.log("blue^2: " + Math.pow(blues, 2))
 
     let distance = Math.sqrt(Math.pow(reds, 2) + Math.pow(greens, 2) + Math.pow(blues, 2))
     return distance

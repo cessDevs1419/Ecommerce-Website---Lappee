@@ -32,7 +32,7 @@ export class ToastComponent {
   isVisible: boolean = true;
 
   ngOnInit(): void {
-    console.log(this.limitWidth)
+   // console.log(this.limitWidth)
   }
 
   switchTheme(input: string): void {
@@ -79,9 +79,9 @@ export class ToastComponent {
     }
   }
   show(): void {
-    console.log("Before switch: " + this.theme);
+    //console.log("Before switch: " + this.theme);
     //this.switchTheme();
-    console.log("After switch: " + this.theme);
+    //console.log("After switch: " + this.theme);
     this.opacity = 100;
   }
 
@@ -90,7 +90,7 @@ export class ToastComponent {
   }
 
   navigate(): void {
-    console.log(this.routerLink);
+    //console.log(this.routerLink);
     if(this.routerLink){
       this.router.navigateByUrl(this.routerLink);
     }

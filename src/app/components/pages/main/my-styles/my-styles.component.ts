@@ -115,12 +115,12 @@ export class MyStylesComponent {
 
     // MyStylesProduct Model
     this.products = this.productsService.getMyStyles().pipe(map((response: any) => {
-     console.log(response);
+    // console.log(response);
       return formatMyStyles(response);
     }));
     this.products.subscribe( (response: MyStyleProduct) => {
         this.productsCache = response;
-        console.log(response)
+       // console.log(response)
         this.setupVariants();
       }
     )
@@ -134,18 +134,18 @@ export class MyStylesComponent {
 
   ngAfterViewInit(): void {
     this.tooltips.changes.subscribe(() => {
-      console.log("changed tooltips");
+      //console.log("changed tooltips");
       this.activateTooltip();
     })
   }
 
   activateTooltip(): void {
     this.tooltips.forEach((el: ElementRef) => {
-      console.log("tooltip", el.nativeElement)
+     // console.log("tooltip", el.nativeElement)
       let tooltip = new bootstrap.Tooltip(el.nativeElement)
       this.tooltipArr.push(tooltip)
     });
-    console.log(this.tooltipArr);
+   // console.log(this.tooltipArr);
   }
 
   // Old setupVariants
@@ -261,7 +261,7 @@ export class MyStylesComponent {
     this.selectedVariant1 = variant;
     this.checkoutVariant1 = variant;
     this.modelCV1 = variant;
-    console.log(this.selectedVariant1);
+    //console.log(this.selectedVariant1);
     this.loadSuggestionsVar1(variant.variant_id);
   }
 
@@ -269,22 +269,22 @@ export class MyStylesComponent {
     this.selectedVariant2 = variant;
     this.checkoutVariant2 = variant;
     this.modelCV2 = variant;
-    console.log(this.selectedVariant1);
+    //console.log(this.selectedVariant1);
     this.loadSuggestionsVar2(variant.variant_id);
   }
 
   modelCV1Change(event: Variant) {
     this.modelCV1 = event;
     this.checkoutVariant1 = event;
-    console.log(event);
-    console.log(this.modelCV1)
+   // console.log(event);
+   // console.log(this.modelCV1)
   }
 
   modelCV2Change(event: Variant) {
     this.modelCV2 = event;
     this.checkoutVariant2 = event;
-    console.log(event);
-    console.log(this.modelCV2)
+   // console.log(event);
+   // console.log(this.modelCV2)
   }
 
   checkoutVariant2Change(variant: Event){
@@ -377,7 +377,7 @@ export class MyStylesComponent {
     this.productsService.getMyStylesSuggestions(id).subscribe({
       next: (response: any) => {
         this.Var1Suggestion = formatProducts(response);
-        console.log(response);
+        //console.log(response);
         // end loader
       }
     })
@@ -389,7 +389,7 @@ export class MyStylesComponent {
     this.productsService.getMyStylesSuggestions(id).subscribe({
       next: (response: any) => {
         this.Var2Suggestion = formatProducts(response);
-        console.log(response);
+        //console.log(response);
         // end loader
       }
     })
@@ -407,7 +407,7 @@ export class MyStylesComponent {
       formData.append('product_variants[]', id)
     })
 
-    console.log(formData);
+    //console.log(formData);
     
     this.isAddToCartLoading = true;
     this.productsService.postMyStylesRecord(formData).subscribe({
@@ -429,7 +429,7 @@ export class MyStylesComponent {
         this.router.navigate(['/cart']);
       },
       error: (err: HttpErrorResponse) => {
-        console.log(this.eh.handle(err))
+        //console.log(this.eh.handle(err))
         this.isAddToCartLoading = false;
       }
     })

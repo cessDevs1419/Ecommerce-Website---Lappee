@@ -48,13 +48,13 @@ export class ProductsService {
   }
   
   getProducts(): Observable<any>{
-    console.log(this.http.get<ProductList>(GETProducts))
+   // console.log(this.http.get<ProductList>(GETProducts))
     return this.http.get<ProductList>(GETProducts);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
 
   getProductsAll(): Observable<any>{
-    console.log(this.http.get<ProductList>(GETProducts))
+   // console.log(this.http.get<ProductList>(GETProducts))
     return this.http.get<ProductList>(GETProductsAll);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
@@ -86,7 +86,7 @@ export class ProductsService {
   }
 
   public getProductByCategory(id: string): Observable<any> {
-    console.log(this.http.get(GETProductsByCategory + id))
+   // console.log(this.http.get(GETProductsByCategory + id))
     return this.http.get(GETProductsByCategory + id, this.httpOptions)
   }
   

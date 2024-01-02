@@ -37,16 +37,16 @@ export class ContactusComponent {
       formData.append('email', this.contactusEmail?.value);
       formData.append('message', this.contactusMsg?.value);
 
-      console.log(formData);
+      //console.log(formData);
 
       this.inquiryService.postInquiry(formData).subscribe({
         next: (response: any) => {
-          console.log(response);
+          //console.log(response);
           this.toaster.showToast("Successfully added!", "Your inquiry has been sent.");
           this.contactusForm.reset();
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+         // console.log(err);
           this.toaster.showToast("Oops!", this.eh.handle(err), 'negative');
         }
       })

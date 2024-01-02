@@ -49,13 +49,13 @@ export class QuantityInputComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    console.log(isDisabled);
+   // console.log(isDisabled);
   }
 
   change(amount: number): void {
     if(this.quantity + amount < 1 || this.quantity + amount > this.max){
-      console.log("below 0: " + (this.quantity + amount < 1));
-      console.log("above max: " + (this.quantity + amount > this.max));
+     // console.log("below 0: " + (this.quantity + amount < 1));
+      //console.log("above max: " + (this.quantity + amount > this.max));
       // if amount will not go below 1 or above max value
       return;
     } 

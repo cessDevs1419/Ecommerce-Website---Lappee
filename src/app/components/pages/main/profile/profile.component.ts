@@ -86,14 +86,14 @@ export class ProfileComponent {
   
 
   ngOnInit(): void {
-    console.log(this.provinceCity.cities);
+   // console.log(this.provinceCity.cities);
     this.initProvinceCity();
     this.checkAddress();
   }
 
   ngOnChanges(): void {
     this.initProvinceCity()
-    console.log(this.provinces)
+    //console.log(this.provinces)
   }
 
   initProvinceCity(): void {
@@ -204,7 +204,7 @@ export class ProfileComponent {
         // })
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err)
+       // console.log(err)
       }
     });
   }
@@ -262,7 +262,7 @@ export class ProfileComponent {
       formData.append('number', this.editPhoneNumber?.value);
       formData.append('label', this.editLabel?.value);
 
-      console.log(formData);
+      //console.log(formData);
 
       if(this.addAddress) {
 
@@ -273,7 +273,7 @@ export class ProfileComponent {
             this.checkAddress();
           },
           error: (err: HttpErrorResponse) => {
-            console.log(err)
+           // console.log(err)
             this.toaster.showToast("Oops!", this.eh.handle(err), 'negative')
           },
           complete: () => {
@@ -346,13 +346,13 @@ export class ProfileComponent {
   logout(): void {
     this.accountService.logoutUser().subscribe({
       next: (response: any) => {
-        console.log(response);
+       // console.log(response);
         this.echo.disconnect();
         this.accountService.checkLoggedIn().subscribe();
         this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+       // console.log(err);
       }
     });
   }

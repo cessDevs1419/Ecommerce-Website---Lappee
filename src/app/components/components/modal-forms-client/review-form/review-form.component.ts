@@ -39,7 +39,7 @@ export class ReviewFormComponent {
   ratingChange(rating: number){
     this.rating = rating;
     this.reviewRating?.setValue(rating);
-    console.log(rating + " stars");
+    //console.log(rating + " stars");
   }
 
   imgUpload(event: any): void{
@@ -59,12 +59,12 @@ export class ReviewFormComponent {
     this.imgInput.nativeElement.value = "";
     this.rating = 0;
 
-    console.log('dismiss from form');
+   // console.log('dismiss from form');
     this.dismiss.emit();
   }
 
   submitReview(): void {
-    console.log(this.reviewForm.valid);
+    //console.log(this.reviewForm.valid);
     if(this.reviewForm.valid){
       let formData: any = new FormData();
       formData.append('product_id', this.product.product_id);
@@ -75,16 +75,16 @@ export class ReviewFormComponent {
       if(this.files){
         this.files.forEach((file, index) => {
           formData.append('images[]', file);
-          console.log(file);
+          //console.log(file);
         });
       }
 
 
-      console.log(formData);
+     // console.log(formData);
 
       this.reviewsService.postReview(formData).subscribe({
         next: (response: any) => {
-          console.log('success');
+         // console.log('success');
           this.activateToast.emit(['Successfully added!', 'Your review has been added.', 'default']);
           this.reviewForm.reset();
           setTimeout(() => {
@@ -93,7 +93,7 @@ export class ReviewFormComponent {
           }, 500)
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+         // console.log(err);
           this.activateToast.emit(['Oops!', this.eh.handle(err), 'negative']);
         }});
       }

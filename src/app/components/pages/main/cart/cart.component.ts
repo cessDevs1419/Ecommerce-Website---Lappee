@@ -103,10 +103,10 @@ export class CartComponent {
     products.subscribe({
       next: (response: any) => {
         this.products = response;
-        console.log("Cart Fetch: ", this.products);
+       // console.log("Cart Fetch: ", this.products);
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err)
+        //console.log(err)
       }
     })
     this.shipping.getClientShippingFeeList().pipe(map((response: any) => formatShippingFeeFlatten(response))).subscribe({
@@ -120,7 +120,7 @@ export class CartComponent {
   }
 
   ngAfterViewInit() {
-    console.log(this.carousel);
+    //console.log(this.carousel);
   }
 
   checkAddress() {
@@ -182,7 +182,7 @@ export class CartComponent {
               // })
             },
             error: (err: HttpErrorResponse) => {
-              console.log(err)
+              //console.log(err)
             }
           });
         }
@@ -220,7 +220,7 @@ export class CartComponent {
 
   selectAll() {
     this.selectAllFlag = !this.selectAllFlag;
-    console.log(this.selectAllFlag);
+    //console.log(this.selectAllFlag);
   }
 
   calculateDiscount(cartIndex: number, variantIndex: number): number {
@@ -298,14 +298,14 @@ export class CartComponent {
     this.cartContents.forEach((item: CartItem, index: number) => {
       //find same product id
       if(orderlistitem === item.product.id){
-        console.log("Found match: " + orderlistitem + " | " + item.product.id);
+        //console.log("Found match: " + orderlistitem + " | " + item.product.id);
         let cartItemIndex = index;
 
         item.product.variants.forEach((variant: Variant, index: number) => {
           if(orderlistvariant === variant.variant_id){
-            console.log("Found matching variant: " + orderlistvariant + " | " + variant.variant_id);
+           // console.log("Found matching variant: " + orderlistvariant + " | " + variant.variant_id);
             matchindex = cartItemIndex;
-            console.log("Cart index is [" + matchindex +"]")
+           // console.log("Cart index is [" + matchindex +"]")
             return;
           }
         })
@@ -344,7 +344,7 @@ export class CartComponent {
     if(this.cartContents[index].variant){
       let variantIndex = this.matchIndexAndVariant(index);
       // this.subtotal += Number(this.cartContents[index].product.variants[variantIndex].price) * this.cartContents[index].quantity;
-      console.log(this.calculateDiscount(index, variantIndex))
+     // console.log(this.calculateDiscount(index, variantIndex))
       this.subtotal += this.calculateDiscount(index, variantIndex) * this.cartContents[index].quantity;
     }
     /* else {
@@ -359,13 +359,13 @@ export class CartComponent {
   }
 
   confirmRemoveCartItem(params: any) {
-    console.log(params, "params");
+    //console.log(params, "params");
     if(params.status){
       let variantIndex = this.matchCartItemAndVariant(params.item);
       let index = this.cart.getItems().findIndex((item: CartItem) => item.variant == params.item.variant );
-      console.log(params.item);
-      console.log(this.cart.getItems());
-      console.log(index, "confirmRemove");
+      //console.log(params.item);
+      //console.log(this.cart.getItems());
+     // console.log(index, "confirmRemove");
 
 
 
@@ -404,7 +404,7 @@ export class CartComponent {
         this.removeFromOrder(this.cart.items[event.cartIndex]);
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        //console.log(err);
       }
     });
   }
@@ -416,12 +416,12 @@ export class CartComponent {
       let orderIdVariant = this.orderList[i].product.id + this.orderList[i].variant;
       let cartIdVariant = sender.product.id + sender.variant;
 
-      console.log('Currently matching: ' + orderIdVariant + " | " + cartIdVariant);
+      //console.log('Currently matching: ' + orderIdVariant + " | " + cartIdVariant);
 
       if(orderIdVariant == cartIdVariant){
         matchIndex = i;
         this.subtotal -= this.calculateDiscountOrderList(i, variantIndex) * this.orderList[i].quantity;
-        console.log('Match found at index ' + i);
+        //console.log('Match found at index ' + i);
       }
     }
     // match found
@@ -434,7 +434,7 @@ export class CartComponent {
       }
     }
     else {
-      console.log('no matches')
+      //console.log('no matches')
     }
     if(this.orderList.length == 0){
       this.isItemSelected = false;
@@ -442,7 +442,7 @@ export class CartComponent {
   }
 
   changeQuantity(params: string[]): void {
-    console.log("change quantity cart page");
+    //console.log("change quantity cart page");
     let variantIndex = this.matchIndexAndVariant(Number(params[0]));
     this.cartContents[Number(params[0])].quantity = Number(params[1]);
     let updatedSubtotal: number = 0;
@@ -472,7 +472,7 @@ export class CartComponent {
     this.imgpath = '';
     this.imgname = ''; 
     this.orderPaymentProof?.setValue(null);
-    console.log("Img Proof: " + this.orderPaymentProof?.valid);
+   // console.log("Img Proof: " + this.orderPaymentProof?.valid);
   }
 
   prevPage(): void {
@@ -491,7 +491,7 @@ export class CartComponent {
   }
 
   validatePage1(): void {
-    console.log(this.orderPaymentMethod?.value);
+    //console.log(this.orderPaymentMethod?.value);
     if(this.orderPaymentMethod?.valid && this.orderList.length > 0 && this.accountService.getIsLoggedIn() && this.isInfoRegistered){
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
       this.isItemSelected = true;
@@ -504,8 +504,8 @@ export class CartComponent {
       }
     }
     else {
-      console.log('Payment: ' + this.orderPaymentMethod?.valid);
-      console.log('Items: ' + this.isItemSelected);
+      //console.log('Payment: ' + this.orderPaymentMethod?.valid);
+      //console.log('Items: ' + this.isItemSelected);
       this.orderPaymentMethod?.markAsTouched();
       //this.orderAddress?.markAsTouched();
 
@@ -521,7 +521,7 @@ export class CartComponent {
 
   validatePage2(): void {
     if(this.orderPaymentProof?.value){
-      console.log(this.orderPaymentProof.value);
+      //console.log(this.orderPaymentProof.value);
       const instance = new bootstrap.Carousel(this.carousel.nativeElement);
       instance.next();
     }
@@ -533,7 +533,7 @@ export class CartComponent {
 
   order(): void {
     //final checks
-    console.log("trigger order");
+   // console.log("trigger order");
 
     if(this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected){
 
@@ -555,11 +555,11 @@ export class CartComponent {
 
       formData.append('shipping_fee', String(this.shippingFee))
 
-      console.log(formData);
+      //console.log(formData);
 
       this.orderService.postOrder(formData).subscribe({
         next: (response: any) => {
-          console.log(response.data.order_id);
+          //console.log(response.data.order_id);
           this.orderId = response.data.order_id;
           const instance = new bootstrap.Carousel(this.carousel.nativeElement);
           instance.next();
@@ -593,10 +593,10 @@ export class CartComponent {
 
     }
     else {
-      console.log("Order Form Valid: " + this.orderForm?.valid);
-      console.log("Order List: " + this.orderList.length);
-      console.log("Address Selected: " + this.isInfoSelected);
-      console.log("Total check: " + (this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected))
+      //console.log("Order Form Valid: " + this.orderForm?.valid);
+      //console.log("Order List: " + this.orderList.length);
+      //console.log("Address Selected: " + this.isInfoSelected);
+      //console.log("Total check: " + (this.orderForm?.valid && this.orderList.length > 0 && this.isInfoSelected))
 
     }
   }

@@ -32,12 +32,12 @@ export class SelectAddressComponent {
       let data = this.deliveryInfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)))
       data.subscribe({
         next: (addresses: Address[]) => {
-          console.log(addresses)
+         // console.log(addresses)
           this.addresses = addresses;
           this.setupAddress();
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err)
+         // console.log(err)
         }
       })
     }

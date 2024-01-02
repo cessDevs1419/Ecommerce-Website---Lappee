@@ -46,7 +46,7 @@ export class UploadShippingProofComponent {
     this.imgpath = '';
     this.imgname = ''; 
     this.shippingProof?.setValue(null);
-    console.log("Img Proof: " + this.shippingProof?.valid);
+   // console.log("Img Proof: " + this.shippingProof?.valid);
   }
 
   dismissModal(): void {
@@ -55,9 +55,9 @@ export class UploadShippingProofComponent {
 
   validateUpload(): void {
     if(this.shippingProofForm.valid){
-      console.log("shipping proof form", this.order)
+     // console.log("shipping proof form", this.order)
       this.emitShippingProof.emit({id: this.order, file: this.imgfile});
-      console.log(this.imgfile);
+     // console.log(this.imgfile);
       this.clearImg();
       this.dismiss.emit();
     }

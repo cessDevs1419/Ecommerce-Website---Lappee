@@ -141,7 +141,7 @@ export class ProductsComponent {
         this.sizes = sizes;
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        //console.log(err);
       }
     })
     
@@ -184,7 +184,7 @@ export class ProductsComponent {
           });
         });
 
-        console.log(this.imgArray);
+      //  console.log(this.imgArray);
 
         // get reviews
         let reviewData = this.reviewService.getReviews(this.currentProduct.id);
@@ -196,7 +196,7 @@ export class ProductsComponent {
             this.reviewListArray = reviews;
             let matchIndex = -1;
             if(this.userId){
-              console.log("user id found")
+              //console.log("user id found")
               matchIndex = this.matchReviewFromUser(this.reviewListArray);
             }
             if(matchIndex > -1) {
@@ -208,19 +208,19 @@ export class ProductsComponent {
             else {
               this.reviewListMatched = this.reviewListArray;
             }
-            console.log(matchIndex);
-            console.log(this.reviewListArray);
-            console.log(this.reviewListMatched);
+            //console.log(matchIndex);
+            //console.log(this.reviewListArray);
+            //console.log(this.reviewListMatched);
 
           }
         });
 
-        console.log('item found');
+       // console.log('item found');
         
         //this.initVariants();
       }
       else {
-        console.log('no items found');
+        //console.log('no items found');
       }
 
       if(this.currentProduct.variants.length > 0){
@@ -282,7 +282,7 @@ export class ProductsComponent {
     this.selectedColorSizes = [];
     let selectedIndex = this.colorVariants.findIndex((cv) => cv.name == this.colorCurrent.name);
     this.selectedColorSizes = this.colorVariants[selectedIndex].sizes;
-    console.log(this.productColor?.value);
+    //console.log(this.productColor?.value);
   }
 
   /*
@@ -301,7 +301,7 @@ export class ProductsComponent {
   addToCartAttr(params: {variant: Variant, variant_attributes: Map<string, string>}): boolean {
 
     if(this.accountService.getIsLoggedIn()){
-      console.log('trigger')
+      //console.log('trigger')
       if(!params.variant) {
         // console.log('no variant selected')
         this.isVariantSelected = false;
@@ -440,7 +440,7 @@ export class ProductsComponent {
 
 
     if(this.postComment.valid){
-      console.log(this.postComment.value);
+      //console.log(this.postComment.value);
       this.reviewService.postReview(formData).subscribe({
         next: (response: any) => {
 
@@ -451,7 +451,7 @@ export class ProductsComponent {
           this.reviewsList = this.reviewService.getReviews(this.currentProduct.id).pipe(map((response: any) => formatReviewsDetails(response)));
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+          //console.log(err);
         }
       })
       console.warn('comment submitted');
@@ -463,12 +463,12 @@ export class ProductsComponent {
   }
 
   deleteReview(id: string){
-    console.log(id);
+    //console.log(id);
     let formData = new FormData;
     formData.append('product_id', this.currentProduct.id);
     formData.append('review_id', id)
 
-    console.log(formData);
+   // console.log(formData);
 
     this.reviewService.deleteReview(formData).subscribe({
       next: (response: any) => {

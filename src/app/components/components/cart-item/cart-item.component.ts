@@ -75,8 +75,8 @@ export class CartItemComponent {
       this.selectAll = false;
     }
     this.isIncluded = !this.isIncluded;
-    console.log("isIncluded: " + this.isIncluded);
-    console.log("selectAll: " + this.selectAll);
+    //console.log("isIncluded: " + this.isIncluded);
+    //console.log("selectAll: " + this.selectAll);
     if(this.isIncluded){
       this.addOrderList.emit(this.index);
     }

@@ -60,12 +60,12 @@ export class SignupformComponent {
       formData.append('password_confirmation', this.signUpForm.get('signUpConfirmPassword')?.value);
 
       for(const value of formData.entries()){
-        console.log(`${value[0]}, ${value[1]}`);
+       // console.log(`${value[0]}, ${value[1]}`);
       }
       
     this.accountsService.postRegisterUser(formData).subscribe({
         next: (response: any) => { 
-          console.log(response);
+         // console.log(response);
           this.registerSuccess.emit(this.signUpEmail?.value!);
           this.isLoading = false;
           this.signUpForm.reset();

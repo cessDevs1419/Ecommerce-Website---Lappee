@@ -68,10 +68,10 @@ export class CartService {
     
     // convert to proper cartitem
 
-    console.log(' init cart ')
+   // console.log(' init cart ')
     
     data.subscribe((data: CartItemList) => {
-      console.log(data)
+     // console.log(data)
       data.items.forEach((item: CartItemAPI) => {
         let product = item.product;
         let variantCopy = item.selected_variant;
@@ -118,15 +118,15 @@ export class CartService {
     if(this.items.length != 0){
 
       this.items.forEach( (item: CartItem, index: number) => {
-        console.log("Checking: " + cartItem.product.name + " " + cartItem.variant + " | " + item.product.name + " " + item.variant);
+       // console.log("Checking: " + cartItem.product.name + " " + cartItem.variant + " | " + item.product.name + " " + item.variant);
 
         if((item.product.name === cartItem.product.name) && (item.variant === cartItem.variant)){
-          console.log(" true, duplicate")
+       //   console.log(" true, duplicate")
           duplicate = index;
         }
 
         else {
-          console.log('false, no duplicates')
+        //  console.log('false, no duplicates')
         }
       })
     }
@@ -147,19 +147,19 @@ export class CartService {
 
     this.postStoreCart(formdata).subscribe({
       next: (response: any) => {
-        console.log('added');
+       // console.log('added');
         //this.initializeCart();
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err)
+       // console.log(err)
       }
     })
 
-    console.log(this.getItems);
+   // console.log(this.getItems);
   }
 
   removeItem(index: number){
-    console.log(index)
+   // console.log(index)
     let product_id = this.items[index].product.id;
     let variant_id = this.items[index].variant
 
@@ -176,10 +176,10 @@ export class CartService {
             else {
               this.items = [];
             }
-            console.log(this.items)
+           // console.log(this.items)
       },
       error: (err: HttpErrorResponse) => {
-        console.log("tulog na")
+      //  console.log("")
       }
     })
 

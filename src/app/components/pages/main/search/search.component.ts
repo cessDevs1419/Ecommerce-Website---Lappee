@@ -28,7 +28,7 @@ export class SearchComponent {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => this.term = params['searchTerm']);
-    console.log(this.term);
+   // console.log(this.term);
     this.initResults();
   }
 

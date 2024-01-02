@@ -28,7 +28,7 @@ export class StarRatingsInputComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    console.log(isDisabled);
+    //console.log(isDisabled);
   }
   @Output() ratingChanged = new EventEmitter<number>();
 

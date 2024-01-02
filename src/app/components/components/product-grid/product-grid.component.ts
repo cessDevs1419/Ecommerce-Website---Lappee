@@ -24,14 +24,14 @@ export class ProductGridComponent {
     this.products.subscribe({
       next: (response: CategoryProduct[]) => {
         this.productsArr = response;
-        response.forEach((item) => console.log(item))
+       // response.forEach((item) => console.log(item))
       }
     })
 
   }
 
   navigateRoute(url: string): void {
-    console.log(url)
+   // console.log(url)
     if(this.selfReload){
       this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate([url]);
@@ -43,7 +43,7 @@ export class ProductGridComponent {
   }
 
   test(product: CategoryProduct): boolean {
-    console.log(product.name ,product.discount);
+  //  console.log(product.name ,product.discount);
     return product.discount ? true : false;
   }
 }

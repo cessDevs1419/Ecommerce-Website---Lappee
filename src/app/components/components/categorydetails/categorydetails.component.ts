@@ -27,7 +27,7 @@ export class CategorydetailsComponent {
   ngOnInit(): void {
     this.subcategory.pipe(map((subs: Subcategory[]) => {
       subs.forEach((subcat: Subcategory) => {
-        console.log(subcat.id, " | ", subcat.main_category_id, " | ", subcat.name);
+        //console.log(subcat.id, " | ", subcat.main_category_id, " | ", subcat.name);
       })
     }));
 
@@ -38,7 +38,7 @@ export class CategorydetailsComponent {
     })); */
 
     if(!this.filteredSubcategories){
-      console.log(this.category.name + this.filteredSubcategories);
+      //console.log(this.category.name + this.filteredSubcategories);
     }
   }
 
