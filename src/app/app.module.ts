@@ -137,6 +137,7 @@ import { ReturnOrderComponent } from './components/components/modal-forms-client
 import { SelectAddressComponent } from './components/components/modal-forms-client/select-address/select-address/select-address.component';
 import { AdminAccountsUsersComponent } from './components/pages/admin/admin-accounts-users/admin-accounts-users.component';
 import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-accounts-customers/admin-accounts-customers.component';
+import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-size/admin-manage-size.component';
 
 @NgModule({
   declarations: [
@@ -259,6 +260,7 @@ import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-
     SelectAddressComponent,
     AdminAccountsUsersComponent,
     AdminAccountsCustomersComponent,
+    AdminManageSizeComponent,
   ],
   imports: [
     BrowserModule,
@@ -334,9 +336,10 @@ import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-
           {path: 'site-settings/:action', component: AdminSiteSettingsComponent, title: 'Content Management'},
           {path: 'manage-about-us', component: AdminManageAboutUsComponent, title: 'Content Management'},
           {path: 'manage-tos', component: AdminManageTosComponent, title: 'Content Management'},
+          {path: 'manage-size-charts', component: AdminManageSizeComponent, title: 'Content Management'},
           {path: 'manage-hold-deny-reasons', component: AdminHoldDenyReasonsComponent, title: 'Content Management'},
           {path: 'manage-product-group', component: AdminProductGroupComponent, title: 'Content Management'},
-          {path: 'shipping-fee', component: AdminShippingFeeComponent, title: 'Shipping Fee'},
+          {path: 'manage-shipping-fee', component: AdminShippingFeeComponent, title: 'Shipping Fee'},
         ],
         canActivate: [authGuard],
         canActivateChild: [authGuard]

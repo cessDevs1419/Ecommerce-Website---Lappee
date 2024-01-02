@@ -288,7 +288,7 @@
                             </a>
                         </li>
 
-                        <li [routerLink]="'/admin/shipping-fee'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                        <li [routerLink]="'/admin/manage-shipping-fee'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
                             <a *ngIf="isShippingSiteActive()" class="ms-4 nav-link text-white text-decoration-none">
                                 Shipping Fee
                             </a>
@@ -297,6 +297,14 @@
                             </a>
                         </li>
 
+                        <li [routerLink]="'/admin/manage-size-charts'"  class="d-flex align-items-center nav-item p-1 ps-4 mx-0">
+                            <a *ngIf="isSizeCharts()" class="ms-4 nav-link text-white text-decoration-none">
+                                Size Charts
+                            </a>
+                            <a *ngIf="!isSizeCharts()" class="ms-4 nav-link text-dark-subtle-noactive text-decoration-none">
+                                Size Charts
+                            </a>
+                        </li>
             
                     </div>
                     

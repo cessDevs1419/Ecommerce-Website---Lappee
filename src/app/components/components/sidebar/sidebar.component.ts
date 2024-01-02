@@ -242,7 +242,8 @@ export class SidebarComponent {
       this.router.url === '/admin/site-settings/add'||
       this.router.url === '/admin/manage-hold-deny-reasons'||
       this.router.url === '/admin/manage-product-group' ||
-      this.router.url === '/admin/shipping-fee'
+      this.router.url === '/admin/manage-shipping-fee'||
+      this.router.url === '/admin/manage-size-charts'
     );
   }
   
@@ -289,9 +290,12 @@ export class SidebarComponent {
   }
 
   isShippingSiteActive(): boolean {
-    return this.router.url === '/admin/shipping-fee';
+    return this.router.url === '/admin/manage-shipping-fee';
   }
 
+  isSizeCharts(): boolean {
+    return this.router.url === '/admin/manage-size-charts';
+  }
   isAdminAccountsActive(): boolean {
     return this.router.url === '/admin/accounts-management-admins';
   }
