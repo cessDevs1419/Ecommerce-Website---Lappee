@@ -1,3 +1,5 @@
+import { Size } from "./size-chart"
+
 export interface ProductList {
     success: string,
     message: string,
@@ -11,6 +13,7 @@ export interface Product {
     category: string,
     discount: Discount,
     variants: Variant[],
+    size_chart: Size[]
 }
 
 export interface AdminProductList {

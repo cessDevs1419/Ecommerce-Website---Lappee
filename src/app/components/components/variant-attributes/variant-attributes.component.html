@@ -56,7 +56,7 @@
         </div>
     </div>
 </form>
-<div class="accordion accordion-flush mt-3" id="accordionSizeChart" *ngIf="size">
+<div class="accordion accordion-flush mt-3" id="accordionSizeChart" *ngIf="size && item.size_chart.length > 0">
     <div class="accordion-item">
         <h3 class="accordion-header fw-bold">
             <button class="accordion-button fw-bold" (click)="toggleSizeAccordion()" type="button">
