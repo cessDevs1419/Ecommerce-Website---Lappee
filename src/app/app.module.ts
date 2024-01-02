@@ -138,6 +138,7 @@ import { SelectAddressComponent } from './components/components/modal-forms-clie
 import { AdminAccountsUsersComponent } from './components/pages/admin/admin-accounts-users/admin-accounts-users.component';
 import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-accounts-customers/admin-accounts-customers.component';
 import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-size/admin-manage-size.component';
+import { NotFoundComponent } from './components/pages/main/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -261,6 +262,7 @@ import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-
     AdminAccountsUsersComponent,
     AdminAccountsCustomersComponent,
     AdminManageSizeComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -276,6 +278,7 @@ import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-
     RouterModule.forRoot([
       
       //client
+      
       { path: 'home', component: HomeComponent, title: 'Home' },
       // { path: 'maintenance', component: MaintenanceModeComponent, title: 'Maintenance'},
       // {path: 'account', component: AccountComponent, canActivate: [authGuard], title: 'Account'},
@@ -295,6 +298,7 @@ import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-
       {path: 'tos', component: TosComponent, title: 'Terms of Service'},
       {path: 'verify-email/:id/:token', component: VerifyEmailComponent, canActivate: [authGuard], title: 'Email Verification'},
       {path: 'my-styles', component: MyStylesComponent, title: 'My Styles'},
+      
 
       //admin
       {
@@ -350,7 +354,8 @@ import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-
       // {path: 'pending-management', component: CourierPendingsComponent, outlet: 'courier'},
       // {path: 'delivery-management', component: CourierDeliveredComponent, outlet: 'courier'},
 
-      {path: '', redirectTo: 'home', pathMatch:'full'}
+      {path: '', redirectTo: 'home', pathMatch:'full'},
+      {path: '**', component: NotFoundComponent, title: 'Not Found'},
     ]),
     
     FormsModule,
