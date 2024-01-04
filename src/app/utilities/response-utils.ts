@@ -631,6 +631,7 @@ export function formatAboutUsTos(response: AboutUsTosList): AboutUsTosSection[] 
   }))
 }
 
+
 export function formatBanners(response: BannersList): Banner[] {
   return response.data.map((data: Banner) => ({
     id: data.id,

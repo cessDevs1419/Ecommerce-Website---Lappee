@@ -2,10 +2,56 @@
 
 
 
-<div class="component-container overflow-y-auto">
-    <div class="position-relative h-100">
+<!-- <div class="component-container overflow-y-auto">
+    <div class="position-relative h-100 px-4">
 
-      
+      <div class=" px-1 pb-4 w-100 h-100">
+        <div class="chat-body-xl  box-shadow linear-gradient-border">
+            <div class="px-4 pb-4 table-bg-dark rounded-4 h-100 overflow-hidden">
+              <div class="header justify-content-between align-items-center pb-2 pt-2 mb-3" >
+                <div class="row w-100 mx-0  mt-4">
+                    <div class="col-lg-5 px-0 ">
+                        <div class="table-title text-start ">
+                            <h1 class="header-title fw-bold fs-4 {{tabletitlecolor}}">Size Charts</h1>
+                            <h3 class="header-sub-title fw-bold fs-6 mt-0 {{tablesubtitlecolor}}">Manage Product Size</h3>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="size-container  h-100 w-100">
+                <ul class="list-unstyled">
+                  <li class="text-decoration-none mb-3 w-100">
+                    <div class="title-container my-4 d-flex align-items-center">
+                      <div class="d-flex flex-row p-0">
+                          <div class="blue-accent me-2"></div>
+                          <p class="dark-theme-text-color fw-bold fs-5 m-0">Chest Size</p>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-between border w-100">
+                      
+                    </div>
+                  </li>
+                  <li class="text-decoration-none mb-3 w-100">
+                    <div class="title-container my-4 d-flex align-items-center">
+                      <div class="d-flex flex-row p-0">
+                          <div class="blue-accent me-2"></div>
+                          <p class="dark-theme-text-color fw-bold fs-5 m-0">Waist Size</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="text-decoration-none mb-3 w-100">
+                    <div class="title-container my-4 d-flex align-items-center">
+                      <div class="d-flex flex-row p-0">
+                          <div class="blue-accent me-2"></div>
+                          <p class="dark-theme-text-color fw-bold fs-5 m-0">Hip Size</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+    </div>
 
       
 
@@ -13,5 +59,45 @@
       <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
         
     </div>  
+</div> -->
+
+<div class="component-container overflow-y-auto">
+  <div class="container-fluid m-auto h-auto px-0 px-sm-3" >
+
+    <app-table
+          tableTitle="Manage Sizes"
+          subTitle="Content Management"
+          
+          [tableHead]="true"
+          tableContainerClass="p-4 table-container"
+          tableChildContainer="table-child-container"
+          [paginate]="false"
+    
+          [tableHeader]="['Size','Chest', 'Waist', 'Hip']"
+          [tableRows]="['label', 'chest','waist', 'hip']"
+          [tableData]="size"
+
+          [tableAction]="true"
+          [Btntools]="true"
+          [tableTools]="true"
+
+          
+          [tableAction]="true"
+          dropdowdnClass="dropdown-menu-sm"
+          [deleteBtn]="true"
+          [actionBtn]="true"
+          
+          (rowDataSelected)="onRowDataSelected($event)"
+    
+          [addProdBtn]="true"
+          addbtnName="Add Section"
+          >
+        </app-table>
+    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+    
+    
+  
+  </div>  
 </div>
+
   

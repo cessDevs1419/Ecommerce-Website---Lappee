@@ -1,34 +1,37 @@
-<div class="container-fluid m-auto h-auto px-0 px-sm-3" >
 
-    <app-table
-        tableTitle="Registered Admins"
-        subTitle="Valued Customers"
-        [tableHead]="true"
-        tableContainerClass="p-4 table-container"
-        tableChildContainer="table-child-container"
-        [paginate]="false"
-        
-        [tableTools]="true"
-        [tableAction]="true"
-        [Btntools]="true"
-        [tableHeaderActions]="true"
-        [SelectActive]="true"
-        [addBtnclass]="'w-100'"
-        [banBtn]="true"
-        
-        [tableHeader]="['User Id','Email', 'Date Created', 'Last Login']"
-        [tableRows]="['user_id', 'email','created_at', 'last_login']"
-        [tableData]="users"
-        [bannedStatus]="bannedStatus"
-        [bannedBtn]="true"
-        (getSelectedActive)="selectOption($event)"
-        (rowDataSelected)="onRowDataSelected($event)"
-    ></app-table>
-    
-    <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
-    
-    
+<div class="component-container overflow-y-auto">
+    <div class="container-fluid m-auto h-auto px-0 px-sm-3" >
 
+        <app-table
+            tableTitle="Registered Admins"
+            subTitle="Valued Customers"
+            [tableHead]="true"
+            tableContainerClass="p-4 table-container"
+            tableChildContainer="table-child-container"
+            [paginate]="false"
+            
+            [tableTools]="true"
+            [tableAction]="true"
+            [Btntools]="true"
+            [tableHeaderActions]="true"
+            [SelectActive]="true"
+            [addBtnclass]="'w-100'"
+            [banBtn]="true"
+            
+            [tableHeader]="['User Id','Email', 'Date Created', 'Last Login']"
+            [tableRows]="['user_id', 'email','created_at', 'last_login']"
+            [tableData]="users"
+            [bannedStatus]="bannedStatus"
+            [bannedBtn]="true"
+            (getSelectedActive)="selectOption($event)"
+            (rowDataSelected)="onRowDataSelected($event)"
+        ></app-table>
+        
+        <app-toaster #toaster [positionClasses]="'bottom-0 end-0 me-3 mb-2'"></app-toaster>
+        
+        
+    
+    </div>
 </div>
 
     <app-modal
