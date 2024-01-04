@@ -93,14 +93,18 @@ export class AdminManageTosComponent {
     this.showEditSectionForm = !this.showEditSectionForm;
   }
 
-  getSelectedSection(section: any)
-  {
+  getEditSection(section: any): void {
     this.toggleEditSectionForm()
     this.selectedSection = section;
     this.tosAddSectionForm.get('sectionHeader')?.setValue(section.title)
     setTimeout(() => {
       this.editor.editorSetValue(this.selectedSection.content);
     }, 1000);
+  }
+
+  getSelectedSection(section: any)
+  {
+    this.selectedSection = section;
   }
 
   submitAddSectionForm()

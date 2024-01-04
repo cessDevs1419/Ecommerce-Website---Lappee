@@ -28,9 +28,11 @@
           [addProdBtn]="true"
           addbtnName="Add Section"
           (ShowAddForm)="toggleAddSectionForm()"
-          (ShowEditForm)="getSelectedSection($event)"
+          (ShowEditForm)="getEditSection($event)"
           [editSubBtn]="true"
-          [deleteBtn]="true">
+          [deleteBtn]="true"
+          
+          >
         </app-table>
       </div>
     </div>

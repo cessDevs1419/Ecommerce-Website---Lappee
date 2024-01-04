@@ -101,16 +101,18 @@ export class AdminManageAboutUsComponent {
 
 
   getSelectedSection(section: any) {
+    this.selectedSection = section;
+  }
+
+  getEditSection(section: any): void {
     this.toggleEditSectionForm();
     this.selectedSection = section;
     this.aboutUsAddSectionForm.get('sectionHeader')?.setValue(section.title);
-  
-    
+
     setTimeout(() => {
       this.editor.editorSetValue(this.selectedSection.content);
     }, 1000);
   }
-
   submitAddSectionForm()
   {
     if(this.aboutUsAddSectionForm.valid) {

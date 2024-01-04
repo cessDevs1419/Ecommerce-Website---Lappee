@@ -30,6 +30,12 @@ export class AdminManageSizeComponent {
   toastHeader: string = "";
   toastTheme: string = "default";  
   
+  titleColor: string = 'text-white';
+  textColor: string = 'text-secondary';
+  borderColor: string = '';
+  backGround: string = '';
+  btncolor: string = 'btn-primary glow-primary'
+  
   size!: Observable<Size[]>;
   banned_users!: Observable<BannedUser[]>;
   bannedStatus: { [userId: string]: boolean } = {}; 
@@ -80,5 +86,13 @@ ngOnInit(): void{
   
   ErrorToast(value: any): void {
       this.toaster.showToast(value.head, value.sub, 'negative', '', )
+  }
+
+  addSize(){
+
+  }
+
+  deleteSize(){
+
   }
 }
