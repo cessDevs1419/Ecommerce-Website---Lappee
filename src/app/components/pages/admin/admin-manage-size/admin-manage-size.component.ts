@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap, throwError } from 'rxjs';
 import { ChatsComponent } from 'src/app/components/components/chats/chats.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
@@ -27,12 +28,16 @@ export class AdminManageSizeComponent {
   @ViewChild(TableComponent) table: TableComponent;
   @ViewChild(ChatsComponent) chats: ChatsComponent;
   @ViewChild("confirmDeleteModal") confirmDeleteModal: ElementRef;
+  @ViewChild("confirmAddModal") confirmAddModal: ElementRef;
 
   backdrop: string = 'true';
   toastContent: string = "";
   toastHeader: string = "";
   toastTheme: string = "default";  
-  
+  formTextColor: string = "dark-theme-text-color"
+  formInputColor: string = "text-white"
+  formBorderColor: string = "border-grey"
+  bordercolor: string = 'dark-subtle-borders'
   titleColor: string = 'text-white';
   textColor: string = 'text-secondary';
   borderColor: string = '';
@@ -51,11 +56,19 @@ export class AdminManageSizeComponent {
   modalTitle: string;
   modalBanAccounts: boolean;
   modalUnBanAccounts: boolean;
+
+  addSizeChart: FormGroup
+
 constructor(
   private sizeChartService: SizeChartService,
   private error: ErrorHandlerService
 ) {
-  
+  this.addSizeChart = new FormGroup({
+    name: new FormControl('', Validators.required),
+    chest: new FormControl('', Validators.required),
+    waist: new FormControl('', Validators.required),
+    hip: new FormControl('', Validators.required),
+});
 }
 
 ngOnInit(): void{
@@ -98,10 +111,36 @@ ngOnInit(): void{
   closeModal()
   {
     this.confirmDeleteModal.nativeElement.click();
+    this.confirmAddModal.nativeElement.click();
   }
 
   addSize(){
 
+    if(this.addSizeChart.valid){
+      let formData: FormData = new FormData(); 
+      formData.append('label', this.addSizeChart.get('name')?.value);
+      formData.append('chest', this.addSizeChart.get('chest')?.value);
+      formData.append('waist', this.addSizeChart.get('waist')?.value);
+      formData.append('hip', this.addSizeChart.get('hip')?.value);
+  
+      // formData.forEach((value, key) => {
+      //     console.log(`${key}: ${value}`);
+      // });
+      
+      this.sizeChartService.postAdminSizeCharts(formData).subscribe({
+          next: (response: any) => { 
+            this.closeModal();
+            this.showSuccessToast('Manage Contents', response.message);
+            this.refreshTableData();
+  
+          },
+          error: (error: HttpErrorResponse) => {
+            this.showFailedToast('Manage Contents', this.error.handle(error));
+          }
+      });
+    }else{
+      this.showFailedToast('Manage Contents', 'Some Fields are not valid');
+    }
   }
 
   deleteSize(){
