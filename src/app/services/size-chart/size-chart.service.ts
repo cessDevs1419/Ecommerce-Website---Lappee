@@ -31,17 +31,17 @@ export class SizeChartService {
     return this.http.post(POSTAdminSizeChart, data, this.httpOptions);
   }
 
-  deleteAdminSizeCharts(size: any): Observable<any> {
-    return this.http.delete(DELETEAdminSizeChart, {
+  deleteAdminSizeCharts(size: FormData): Observable<any>
+  {
+    return this.http.delete<any>(DELETEAdminSizeChart, {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': 'true'
       }),
       responseType: 'json',
-      body: {
-        size: size 
-      }
-    })
+      body: size
+    });
+  
   }
 }

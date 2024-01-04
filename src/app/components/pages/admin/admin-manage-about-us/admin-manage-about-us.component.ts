@@ -136,9 +136,8 @@ export class AdminManageAboutUsComponent {
           this.toggleAddSectionForm();
         },
         error: (error: HttpErrorResponse) => {
-          this.showFailedToast('Failed to add section', 'Something wen\'t wrong when adding section.');
+          this.showFailedToast('Manage Contents', this.error.handle(error));
 
-          console.log(error);
         }
       });
 
@@ -204,8 +203,8 @@ export class AdminManageAboutUsComponent {
 
       this.aboutUsToSService.deleteAboutUsSection(formData).subscribe({
         next: (response: any) => {
-          this.showSuccessToast('Successfully deleted section', 'Removed a section to about us.');
-
+          this.showSuccessToast('Manage Contents', response.message);
+          
           this.closeModal();
 
           this.refreshTableData();
@@ -222,9 +221,7 @@ export class AdminManageAboutUsComponent {
 
         },
         error: (error: HttpErrorResponse) => {
-          this.showFailedToast('Failed to remove section', 'Something wen\'t wrong when removing section.');
-
-          console.log(error);
+          this.showFailedToast('Manage Contents', this.error.handle(error));
         }
       });
     } else {
