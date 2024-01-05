@@ -132,7 +132,7 @@ ngOnInit(): void{
             this.closeModal();
             this.showSuccessToast('Manage Contents', response.message);
             this.refreshTableData();
-  
+            this.addSizeChart.reset()
           },
           error: (error: HttpErrorResponse) => {
             this.showFailedToast('Manage Contents', this.error.handle(error));
