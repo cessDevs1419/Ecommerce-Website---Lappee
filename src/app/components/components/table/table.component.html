@@ -350,7 +350,7 @@
                                         <img [src]="item[row]" alt="Product Image" class="img-thumbnail" />
                                     </ng-container>
                                     <ng-template #notImage>
-                                        <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="max-wd-label text-center mt-1 overflow-x-auto {{textcolor}} ">
+                                        <label [ngClass]="{'text-uppercase': row === 'id' || row === 'product_id'}" class="max-wd-label text-center mt-1 overflow-x-auto {{textcolor}} text-truncate">
                                             <ng-container *ngIf="row === 'price'; else notPrice">{{ 'Php ' + (item[row] | number: '1.2-2') }}</ng-container>
                                             <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                             <ng-template #notPrice>
