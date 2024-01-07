@@ -15,6 +15,7 @@ import { SiteDetails } from 'src/assets/models/sitedetails';
 export class FooterComponent {
   siteTitle: Observable<SiteDetails>;
   isAdminDashboard: boolean = false;
+  currentYear: string;
   
    constructor(private url: LocationStrategy,
                 private router: Router,
@@ -29,6 +30,8 @@ export class FooterComponent {
 
       }
     });
+
+    this.currentYear = new Date().getUTCFullYear().toString()
   }
 
   updateAdminDashboardFlag(): void {
