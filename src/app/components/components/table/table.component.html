@@ -417,6 +417,17 @@
                                                             > 
                                                             Delete
                                                         </button>
+                                                        <div *ngIf="hideBtn" class="action-border"></div>
+                                                    </li>
+                                                    <li *ngIf="hideBtn" class="action-item text-decoration-none ">
+                                                        <button 
+                                                            type="button"
+                                                            data-bs-toggle="modal" data-bs-target="#hide"
+                                                            class="delete-btn px-2 py-1 border-0 bg-none text-white actn-btn w-100 rounded-3 rounded-top-0 "
+                                                            (click)="sendRowData(item)"
+                                                            > 
+                                                            Hide
+                                                        </button>
                                                     </li>
                                                     
                                                 </ul>
@@ -783,7 +794,19 @@
                     </div>
                 </div>
                 <div class="col-sm-6 d-flex justify-content-end">
+                    
                     <button  
+                        *ngIf="hideBtn === true"
+                        type="button"
+                        data-bs-toggle="modal" data-bs-target="#openOverlay"
+                        [title]="'Hide'"
+                        class="btn rounded-5 {{tabletitlecolor}} {{actionbarbtnbg}}"
+                    >
+                        <i class="bi {{OverlayIcon}}"></i>
+                        {{OverlayBtnText}}
+                    </button>
+                    <button  
+                        *ngIf="hideBtn === false"
                         type="button"
                         data-bs-toggle="modal" data-bs-target="#openOverlay"
                         [title]="'Delete'"

@@ -89,6 +89,7 @@ export class TableComponent {
 	@Input() deleteBtn!: boolean;
 	@Input() deleteSubBtn!: boolean;
 	@Input() viewBtn!: boolean;
+	@Input() hideBtn!: boolean
 	@Input() viewBtn2!: boolean;
 	@Input() banBtn!: boolean;
 	@Input() cancelOrder!: boolean;
