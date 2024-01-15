@@ -41,6 +41,8 @@ export const GETAttributesAdmin: string = api + "api/admin/attributes";
 export const GETAttributesDetailsAdmin: string = api + "api/admin/attributes/details/";
 export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
 export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
+export const PostAttributeValueAdmin: string = api + "api/admin/attributes/add-value";
+export const PatchAttributeAdmin: string = api + "api/admin/attributes/rename";
 export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/delete";
 export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/";
 

@@ -208,6 +208,7 @@ export function formatAttributes(response: AttributeList): Attributes[] {
   return response.data.map((data: Attributes) => ({
     id: data.id,
     name: data.name,
+    count: data.count
   }));
 }
 

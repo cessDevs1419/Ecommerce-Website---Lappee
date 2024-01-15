@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, NgZone, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, Output, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject, catchError, map, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, catchError, map, startWith, switchMap, tap, throwError } from 'rxjs';
 import { ModalComponent } from 'src/app/components/components/modal/modal.component';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
@@ -25,11 +25,13 @@ export class AdminAttributesComponent {
 	@ViewChild('triggerFunction') childComponent: TableComponent;
   showMinus: boolean = false
   @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild('closeBtn') modalClose: ElementRef
   selectedRowData: any;
   selectedRowDataForDelete: any;
   attributes!: Observable<AdminCategory[]>;
   attributesDetail!: Observable<AttributesDetails>;
   attributesDetails: any[] = [];
+  newattributes: any[] = [];
   addAttributeForm: FormGroup;
   
   bordercolor: string = 'dark-subtle-borders'
@@ -101,6 +103,7 @@ showMinusFunction(){
 addAttributeValue(){
   const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray
   attributeArray.push(new FormControl(''));
+  this.newattributes.push(new FormControl(''))
 }   
 
 addExistingAttributeName(name: string){
@@ -110,10 +113,13 @@ addExistingAttributeName(name: string){
 addExistingAttributeValue(value: any[]) {
   const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
   attributeArray.clear();
-  
+  this.attributesDetails.splice(0)
+
   for (const item of value) {
     attributeArray.push(this.formBuilder.control(item));
+    this.attributesDetails.push(item)
   }
+
 }
 
 get attributeValueControls() {
@@ -122,7 +128,21 @@ get attributeValueControls() {
 
 removeAttributeValue(index: number) {
   const attributeArray = this.addAttributeForm.get('attribute_value') as FormArray;
-  attributeArray.removeAt(index);
+  const existing = this.attributesDetails.find(item => item === attributeArray.value[index]);
+
+  if(existing){
+    const errorDataforProduct = {
+        head: 'Product Management',
+        sub: 'Cannot delete existing value.',
+    };
+    
+    this.WarningToast(errorDataforProduct);
+    
+  }else{
+    attributeArray.removeAt(index);
+  }
+  
+  
 }
 
 onAttributeEditSubmit(): void {
@@ -136,75 +156,120 @@ onAttributeEditSubmit(): void {
   let formData: FormData = new FormData(); 
   formData.append('id', this.selectedRowData.id);
   formData.append('name', capitalizedName);
-  
-  for (let val of attributeArray.value) {
-      let index = 0;
-      const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
-      formData.append('values[]', capitalizedAttributeValue);
-      index++;
-  }
-
-  // for (let val of attributeExisting) {
-  //     let index = 0;
-  //     const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
-  //     formData.append('values[]', capitalizedAttributeValue);
-  //     index++;
-  // }
 
   formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
+    console.log(`${key}: ${value}`);
+  });
+
+  this.attribute_service.patchAttribute(formData).subscribe({
+      next: (response: any) => { 
+          const successMessage = {
+              head: 'Attribute ' + this.addAttributeForm.get('name')?.value,
+              sub: response?.message
+          };
+          
+          this.refreshTableData();
+          this.SuccessToast(successMessage);
+          this.addAttributeForm.reset();
+          attributeArray.clear();
+          this.modalClose.nativeElement.click()
+      },
+      error: (error: HttpErrorResponse) => {
+          if (error.error?.data?.error) {
+              const fieldErrors = error.error.data.error;
+              const errorsArray = [];
+          
+              for (const field in fieldErrors) {
+                  if (fieldErrors.hasOwnProperty(field)) {
+                      const messages = fieldErrors[field];
+                      let errorMessage = messages;
+                      if (Array.isArray(messages)) {
+                          errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                      }
+                      errorsArray.push(errorMessage);
+                  }
+              }
+          
+              const errorDataforProduct = {
+                  head: 'Error Invalid Inputs',
+                  sub: errorsArray,
+              };
+          
+              this.WarningToast(errorDataforProduct);
+          } else {
+          
+              const errorDataforProduct = {
+                  head: 'Error Invalid Inputs',
+                  sub: 'Please Try Another One',
+              };
+              this.ErrorToast(errorDataforProduct);
+          }
+          
+          return throwError(() => error);
+          
+      }
   });
   
-  // this.attribute_service.postAttribute(formData).subscribe({
-  //     next: (response: any) => { 
-  //         const successMessage = {
-  //             head: 'Attribute ' + this.addAttributeForm.get('name')?.value,
-  //             sub: response?.message
-  //         };
-          
-  //         this.RefreshTable.emit();
-  //         this.refreshTableData();
-  //         this.ProductSuccess.emit(successMessage);
-  //         this.addAttributeForm.reset();
-  //         attributeArray.clear();
-  //         this.CloseModal.emit();
-  //     },
-  //     error: (error: HttpErrorResponse) => {
-  //         if (error.error?.data?.error) {
-  //             const fieldErrors = error.error.data.error;
-  //             const errorsArray = [];
-          
-  //             for (const field in fieldErrors) {
-  //                 if (fieldErrors.hasOwnProperty(field)) {
-  //                     const messages = fieldErrors[field];
-  //                     let errorMessage = messages;
-  //                     if (Array.isArray(messages)) {
-  //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
-  //                     }
-  //                     errorsArray.push(errorMessage);
-  //                 }
-  //             }
-          
-  //             const errorDataforProduct = {
-  //                 head: 'Error Invalid Inputs',
-  //                 sub: errorsArray,
-  //             };
-          
-  //             this.ProductWarning.emit(errorDataforProduct);
-  //         } else {
-          
-  //             const errorDataforProduct = {
-  //                 head: 'Error Invalid Inputs',
-  //                 sub: 'Please Try Another One',
-  //             };
-  //             this.ProductError.emit(errorDataforProduct);
-  //         }
-          
-  //         return throwError(() => error);
-          
-  //     }
-  // });
+  if(this.newattributes.length > 0){
+      let formData: FormData = new FormData(); 
+        formData.append('attribute_id', this.selectedRowData.id);
+        
+        for (let val of attributeArray.value) {
+            let index = 0;
+            const capitalizedAttributeValue = val.charAt(0).toUpperCase() + val.slice(1);
+            formData.append('values[]', capitalizedAttributeValue);
+            index++;
+        }
 
+      this.attribute_service.postValue(formData).subscribe({
+          next: (response: any) => { 
+              const successMessage = {
+                  head: 'Attribute ' + this.addAttributeForm.get('name')?.value,
+                  sub: response?.message
+              };
+              
+              this.refreshTableData();
+              this.SuccessToast(successMessage);
+              this.addAttributeForm.reset();
+              attributeArray.clear();
+              this.modalClose.nativeElement.click()
+          },
+          error: (error: HttpErrorResponse) => {
+              if (error.error?.data?.error) {
+                  const fieldErrors = error.error.data.error;
+                  const errorsArray = [];
+              
+                  for (const field in fieldErrors) {
+                      if (fieldErrors.hasOwnProperty(field)) {
+                          const messages = fieldErrors[field];
+                          let errorMessage = messages;
+                          if (Array.isArray(messages)) {
+                              errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                          }
+                          errorsArray.push(errorMessage);
+                      }
+                  }
+              
+                  const errorDataforProduct = {
+                      head: 'Error Invalid Inputs',
+                      sub: errorsArray,
+                  };
+              
+                  this.WarningToast(errorDataforProduct);
+              } else {
+              
+                  const errorDataforProduct = {
+                      head: 'Error Invalid Inputs',
+                      sub: 'Please Try Another One',
+                  };
+                  this.ErrorToast(errorDataforProduct);
+              }
+              
+              return throwError(() => error);
+              
+          }
+      }); 
+  }
 
 }
 
