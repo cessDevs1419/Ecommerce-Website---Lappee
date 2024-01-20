@@ -17,6 +17,7 @@ export const GETAdminCategoriesAttribute: string = api + "api/admin/category/att
 export const POSTCategories: string = api + "api/admin/category/store";
 export const PATCHCategories: string = api + "api/admin/category/edit";
 export const DELETECategories: string = api + "api/admin/category/delete";
+export const PATCHVisibilityCategories: string = api + "api/admin/category/visibility";
 
 // Product Client Endpoints
 export const GETProducts: string = api + "api/client/products";

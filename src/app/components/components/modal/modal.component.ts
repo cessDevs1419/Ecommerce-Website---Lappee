@@ -73,6 +73,7 @@ export class ModalComponent {
 	@Input() modalDeleteProduct!: boolean; 
 	@Input() modalMultipleDeleteProduct!: boolean; 
 	@Input() modalDeleteVariant!: boolean;
+    @Input() modalHideCategory!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;

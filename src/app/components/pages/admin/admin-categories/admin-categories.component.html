@@ -82,6 +82,21 @@
         (hideMinus)="showMinusFunction()"
     ></app-modal> 
 
+    <app-modal
+        modalId="hide"
+        modalTitle="Hide Category"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="view"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [modalHideCategory]="true"
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
+    ></app-modal> 
 
     <app-modal
         modalId="openOverlay"

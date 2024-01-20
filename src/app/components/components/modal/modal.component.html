@@ -11,7 +11,7 @@
                                 <i *ngIf="modalIcon === 'add'" class="bi bi-plus-lg fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'edit'" class="bi bi-pencil-square fw-bolder fs-5 me-2 {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'delete'"  class="bi bi-trash fs-5 me-2 {{modalTitleColor}}"></i>
-                                <i *ngIf="modalIcon === 'view'"  class="bi bi-eye fs-5 me-2 mb-3 {{modalTitleColor}}"></i>
+                                <i *ngIf="modalIcon === 'view'"  class="bi bi-eye fs-5 me-2  {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'confirm'"  class="bi bi-check fs-5 me-2 {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'packed'"  class="bi bi-box2 fs-5 me-2 {{modalTitleColor}}"></i>
                                 <i *ngIf="modalIcon === 'ship'"  class="bi bi-box2-fill fs-5 me-2 {{modalTitleColor}}"></i>
@@ -133,8 +133,19 @@
                     (RefreshTable)="triggerRefreshTable()"
                     (CloseModal)="closeModal()"
                 ></app-category-form>
-
-
+                
+                <app-category-form 
+                    *ngIf="modalHideCategory"
+                    [formHideCategroy]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (CategorySuccess)="deleteSuccessToast($event)"
+                    (CategoryWarn)="WarningToast($event)"
+                    (CategoryError)="ErrorToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-category-form>
+                
                 
                 <app-product-form
                     *ngIf="modalSelectAttribute"
