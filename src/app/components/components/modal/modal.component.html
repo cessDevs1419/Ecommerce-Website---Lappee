@@ -526,6 +526,7 @@
 
                 <app-discount-form
                     *ngIf="modalAddDiscounts"
+                    (closemodal)="closeModal()"
                     [formAddDiscount]="true"
                     (Select)="setmodalname($event)"
                     (ProductSuccess)="deleteSuccessToast($event)"

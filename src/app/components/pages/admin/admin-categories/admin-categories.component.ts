@@ -4,9 +4,9 @@ import { ToastComponent } from 'src/app/components/components/toast/toast.compon
 
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { AdminCategory } from 'src/assets/models/categories';
+import { AdminCategory, AdminNewCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
-import { formatAdminCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminNewCategories, formatAdminSubcategories } from 'src/app/utilities/response-utils';
 import { Router } from '@angular/router';
 import { TableComponent } from 'src/app/components/components/table/table.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
@@ -32,7 +32,7 @@ export class AdminCategoriesComponent {
     size = "w-100 me-2"
     selectedRowData: any;
     selectedRowDataForDelete: any;
-    categories!: Observable<AdminCategory[]>;
+    categories!: Observable<AdminNewCategory[]>;
     sub_categories!: Observable<AdminSubcategory[]>;
     private refreshData$ = new Subject<void>();
     
@@ -48,18 +48,13 @@ export class AdminCategoriesComponent {
     
         this.categories = this.refreshData$.pipe(
             startWith(undefined), 
-            switchMap(() => this.category_service.getAdminCategories()),
-            map((Response: any) => formatAdminCategories(Response))  ,
+            switchMap(() => this.category_service.getNewAdminCategories()),
+            map((Response: any) => formatAdminNewCategories(Response))  ,
             tap(() => {
                 this.table.loaded()
             })
         );
         
-        this.sub_categories = this.refreshData$.pipe(
-            startWith(undefined), 
-            switchMap(() => this.subcategory_service.getAdminSubcategories()),
-            map((Response: any) => formatAdminSubcategories(Response))
-        );
 	}
 	
     refreshTableData(): void {

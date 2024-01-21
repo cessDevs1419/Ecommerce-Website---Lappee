@@ -1,4 +1,4 @@
-import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
+import { AdminCategory, AdminCategoryList, AdminNewCategory, AdminNewCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
 import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
@@ -52,6 +52,13 @@ export function formatAdminCategories(response: AdminCategoryList): AdminCategor
   }))
 }
 
+export function formatAdminNewCategories(response: AdminNewCategoryList): AdminNewCategory[] {
+  return response.data.map((data: AdminNewCategory) => ({
+    id: data.id,
+    name: data.name,
+    is_hidden: data.is_hidden
+  }))
+}
 // returns an AdminCategory Attribute array from an Admin-side Subcategory List
 export function formatAdminCategoriesAttribute(response: NewAdminCategoryList): NewAdminCategory {
   return {
