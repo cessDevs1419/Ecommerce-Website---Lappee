@@ -11,7 +11,7 @@
 
         addbtnName="Add New"
         [addBtn]="true"
-        [tableAction]="true"
+
         [SelectOrderDate]="true"
         [viewBtn]="true"
         [actionForOrderBtn]="true"
@@ -35,20 +35,6 @@
      
 </div>
 
-<app-modal
-    modalId="view"
-    modalTitle="Customer Information"
-    modalTitleClass="mb-3"
-    modalSubTitle="{{selectedRowData?.user_id}}"
-    modalSubTitleClass="mt-3 fs-5 fw-bold"
-    modalClass="modal-md "
-    [modalHideIcon]="true"
-    modalIcon="view"
-    [allowAnotherSub]="true"
-    [modalViewOrders]="true"
-    (RefreshTable)="refreshTableData()"
-    [selectedRowData]="selectedRowData"
-></app-modal>
 
 <app-modal
     modalId="add"
