@@ -439,7 +439,7 @@
                                                             Hide
                                                         </button>
                                                     </li>
-                                                    <li *ngIf="item['is_hidden'] === 1 item['is_archived'] === 1" class="action-item text-decoration-none ">
+                                                    <li *ngIf="item['is_hidden'] === 1 || item['is_archived'] === 1" class="action-item text-decoration-none ">
                                                         <button 
                                                             type="button"
                                                             data-bs-toggle="modal" data-bs-target="#hide"
