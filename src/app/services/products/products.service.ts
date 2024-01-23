@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Product, ProductList, Variant } from 'src/assets/models/products';
+import { AdminProductList, Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest } from '../endpoints';
+import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest, GETProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -99,8 +99,8 @@ export class ProductsService {
     this.productsSubject.next(this.newData);
   }
 
-  public getAdminProducts(): Observable<ProductList> {
-    return this.http.get<ProductList>(GETProducts);
+  public getAdminProducts(): Observable<AdminProductList> {
+    return this.http.get<AdminProductList>(GETProductsAdmin);
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
   
@@ -113,7 +113,10 @@ export class ProductsService {
     return this.http.patch<Product>(PATCHProductsAdmin, data, this.httpOptions);
   } 
   
-
+  patchVisibilityProduct(data: FormData): Observable<any> {
+    return this.http.patch<Product>(PATCHProductsAdmin, data, this.httpOptions);
+  } 
+  
   // deleteProduct(prodId: number): Observable<any> {
   //   return this.http.delete(DELETEProductsAdmin, {
   //     headers: new HttpHeaders({

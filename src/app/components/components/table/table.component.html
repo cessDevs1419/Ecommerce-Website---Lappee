@@ -357,7 +357,16 @@
                                                 <ng-container *ngIf="row === 'created_at' || row === 'updated_at' || row === 'date' || row === 'from' || row === 'to'; else notDate">{{ item[row] | date}}</ng-container>
                                                 <!-- <ng-container *ngIf="row === 'status'; else notPrice">{{ item[row]  }}</ng-container> -->
                                                 <ng-template #notDate>
-                                                    {{ item[row]}}
+                                                    <ng-container *ngIf="row === 'is_hidden' || row === 'is_archived' ; else notHidden">
+                                                        <label *ngIf="item[row] === 0; else hidden" >Shown</label>
+                                                        <ng-template #hidden>
+                                                            Hidden
+                                                        </ng-template>
+                                                    </ng-container>
+
+                                                    <ng-template #notHidden>
+                                                            {{ item[row]}}
+                                                    </ng-template>
                                                 </ng-template>
                                             </ng-template>
                                         </label>
@@ -420,7 +429,7 @@
                                                         </button>
                                                         <!-- <div *ngIf="hideBtn" class="action-border"></div> -->
                                                     </li>
-                                                    <li *ngIf="item['is_hidden'] === 0" class="action-item text-decoration-none ">
+                                                    <li *ngIf="item['is_hidden'] === 0 || item['is_archived'] === 0" class="action-item text-decoration-none ">
                                                         <button 
                                                             type="button"
                                                             data-bs-toggle="modal" data-bs-target="#hide"
@@ -430,7 +439,7 @@
                                                             Hide
                                                         </button>
                                                     </li>
-                                                    <li *ngIf="item['is_hidden'] === 1" class="action-item text-decoration-none ">
+                                                    <li *ngIf="item['is_hidden'] === 1 item['is_archived'] === 1" class="action-item text-decoration-none ">
                                                         <button 
                                                             type="button"
                                                             data-bs-toggle="modal" data-bs-target="#hide"
@@ -439,8 +448,20 @@
                                                             > 
                                                             Show
                                                         </button>
+                                                        
                                                     </li>
-                                                    
+                                                    <li class="action-item text-decoration-none ">
+                                                        <div *ngIf="variantFormBtn" class="action-border"></div>
+                                                        <button 
+                                                            *ngIf="variantFormBtn"
+                                                            type="button"
+                                                            class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                            (click)="showVariantForm(item)"
+                                                            > 
+                                                            Variants
+                                                        </button>
+                                                        
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>

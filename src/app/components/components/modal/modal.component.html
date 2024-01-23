@@ -146,6 +146,18 @@
                     (CloseModal)="closeModal()"
                 ></app-category-form>
                 
+                <app-product-form 
+                    *ngIf="modalHideProduct"
+                    [formHideProduct]="true"
+                    [selectedRowData]="selectedRowData"
+                    [selectedRowDataForDelete]="selectedRowDataForDelete"
+                    (ProductSuccess)="deleteSuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                    (CloseModal)="closeModal()"
+                ></app-product-form>
+
                 
                 <app-product-form
                     *ngIf="modalSelectAttribute"

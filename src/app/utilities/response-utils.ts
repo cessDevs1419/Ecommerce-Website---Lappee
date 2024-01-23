@@ -96,12 +96,16 @@ export function formatProducts(response: ProductList): Product[] {
 
 export function formatAdminProducts(response: AdminProductList): AdminProduct[] {
   return response.data.map((data: AdminProduct) => ({
-    product_id: data.product_id,
+    id: data.id,
     name: data.name,
-    price: data.price,
-    preview_image: data.preview_image
+    price: data.price,  
+    category_id: data.category_id,
+    show_my_style: data.show_my_style,
+    is_archived: data.is_archived
   }));
 }
+
+
 
 export function formatChats(response: ChatsList): Chats[] {
   return response.data.messages.map((data: Chats) => ({

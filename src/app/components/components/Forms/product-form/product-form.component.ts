@@ -22,6 +22,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { Attributes } from 'src/assets/models/attributes';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RichTextEditorComponent } from '../../rich-text-editor/rich-text-editor.component';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
     selector: 'app-product-form',
@@ -69,6 +70,7 @@ export class ProductFormComponent {
     @Input() formDeleteVariant!: boolean;
     @Input() formDeleteProduct!: boolean;
     @Input() formMultipleDeleteProduct!: boolean;
+    @Input() formHideProduct!: boolean;
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
@@ -157,7 +159,8 @@ export class ProductFormComponent {
 	    private location: Location,
 	    private route: ActivatedRoute,
         private cd: ChangeDetectorRef,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private errorMessages: ErrorHandlerService
     ) 
     {
         
@@ -222,7 +225,7 @@ export class ProductFormComponent {
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
         
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
-        
+
         if (this.selectedRowData) {
             this.productDetails = this.product_service.getProductDetails(this.selectedRowData).pipe(map((Response: any) => formatProductObj(Response)));
             this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
@@ -231,11 +234,13 @@ export class ProductFormComponent {
                 
                 this.addProductForm.get('name')?.setValue(formattedProduct.name);
                 this.addProductForm.get('category')?.setValue(formattedProduct.category);
-                this.addProductForm.get('category')?.disable()
-
+                
+                
                 setTimeout(() => {
+                    this.addProductForm.get('description')?.setValue(formattedProduct.description);
                     this.editor.editorSetValue(formattedProduct.description);
-                  }, 1000);
+                  }, 1500);
+
                 
                 for (const variant of variants) {
                     const newVariantGroup = this.formBuilder.group({
@@ -249,7 +254,7 @@ export class ProductFormComponent {
                         // mystyle: this.formBuilder.array(variant.mystyle)
                     });
                     this.variantsListsData.push(newVariantGroup);
-
+                    
                 }
                 
                 for (let i = 0; i < variants.length; i++) {
@@ -258,7 +263,9 @@ export class ProductFormComponent {
                         this.editvariantForms.push({ index: newIndex, isVisible: false }); 
                     }
                 }
-
+                if(this.variantsListsData.length > 0){
+                    this.addProductForm.get('category')?.disable()
+                }
                 this.editAttributes = false
                 this.addAttributeForm.reset()
                 this.attributeFormsArray.splice(0)
@@ -274,7 +281,8 @@ export class ProductFormComponent {
                         
                         for (const attribute of data.attributes) {
                             const addAttributeForm = {
-                                id: attribute.category_attribute_id,
+                                attribute_id: attribute.attribute_id,
+                                category_attribute_id: attribute.category_attribute_id,
                                 name: attribute.name,
                                 value: ''
                             }; 
@@ -285,8 +293,6 @@ export class ProductFormComponent {
                     }
                 });
 
-                console.log(this.attributeFormsArray)
-                console.log(this.variantsListsData)
             });
         }
 
@@ -337,6 +343,7 @@ export class ProductFormComponent {
             return false;
         }
     }
+
     getRTFValue(value: any){
         // console.log(value)
         this.rtfValue = value
@@ -346,8 +353,6 @@ export class ProductFormComponent {
         const objectURL = URL.createObjectURL(file);
         return this.sanitizer.bypassSecurityTrustUrl(objectURL);
     }
-
-    
 
     refreshTableData(): void {
         this.refreshData$.next();
@@ -1681,23 +1686,22 @@ export class ProductFormComponent {
 
     async onProductEditSubmit(): Promise<void> {
 
-        // // console.log(this.addProductForm)
 
-        // const productFormData: FormData = new FormData();
-        // let productName = this.addProductForm.get('name')?.value;
-        // const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1);
+        const productFormData: FormData = new FormData();
+        let productName = this.addProductForm.get('name')?.value;
+        const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1);
         
-        // // Add Product Fields
-        // productFormData.append('name', capitalizedName)
-        // productFormData.append('category', this.addProductForm.get('category')?.value);
-        // productFormData.append('description', this.rtfValue);
-        // // productFormData.append('includes', this.addProductForm.get('include')?.value);
+        productFormData.append('id', this.selectedRowData )
+        productFormData.append('name', capitalizedName)
+        productFormData.append('description', this.rtfValue);
+        
 
-        // // Get Variants
-        // const variantsList = this.variantsLists;
-
-        // for (let i = 0; i < variantsList.length; i++) {
-        //     const variantFormGroup = variantsList.at(i) as FormGroup;
+        // Get Variants        
+        // const newvariantsList = this.variantsLists;
+        // const variantsList = this.variantsListsData;
+        // const mergedList = newvariantsList.concat(variantsList);
+        // for (let i = 0; i < mergedList.length; i++) {
+        //     const variantFormGroup = mergedList.at(i) as FormGroup;
         //     const variant = variantFormGroup.value;
         
         //     productFormData.append(`variants[${i}][name]`, variant.name);
@@ -1712,24 +1716,24 @@ export class ProductFormComponent {
         //         imageIndex++;
         //     }
 
-        //     // for (let image of variant.mystyle) {
-        //     //     productFormData.append(`variants[${i}][mystyle_images][${imageIndex}]`, image);
-        //     //     imageIndex++;
-        //     // }
-
 
         //     for (let attribute of variant.attributes) {
         //         let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
-        //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
+        //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][attribute_id]`, attribute.attribute_id);
+        //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.category_attribute_id);
         //         productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
         //         attributeIndex++;
         //     }
         // }
 
-        // // Display the FormData entries
-        // productFormData.forEach((value, key) => {
-        //     console.log(`${key}: ${value}`);
-        // });
+
+
+
+
+        // Display the FormData entries
+        productFormData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
         
         // if(this.addProductForm.valid){
         
@@ -1883,95 +1887,55 @@ export class ProductFormComponent {
             }
         });
     }
+
+    onProductHideSubmit(){
+        let formData: any = new FormData();
+        const selectedCategory : any[] = []
+        selectedCategory.push(this.selectedRowData.id)
+        
+        for (let id of selectedCategory) {
+            let index = 0;
+            formData.append('id', id);
+            index++;
+        }
+
+        formData.forEach((value: any, key: number) => {
+            console.log(`${key}: ${value}`);
+        });
+
+        this.product_service.patchVisibilityProduct(formData).subscribe({
+            next: async(response: any) => { 
+            
+                const successMessage = {
+                    head: 'Hide Product',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                
+                this.refreshTableData();
+                this.ProductSuccess.emit(successMessage);
+
+            
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                const customErrorMessages = {
+                    head: 'Hide Product',
+                    sub: this.errorMessages.handle(error),
+                };
+                
+                const errorData = this.errorService.handleError(error, customErrorMessages);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.ProductError.emit(errorData);
+                } else {
+                    this.ProductWarning.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+    }
 }
 
 
 
-//Get and remove attributes
-    // isSelected(id: string): boolean {
-    
-    //     for (const control of this.attributesList.controls) {
-    //         if (control.value.id === id) {
-    //             return true; 
-    //         }
-    //     }
-    //     return false; 
-    // }
-    
-    // isAttributeSelected(attribute: Attributes): boolean {
-    //     return this.selectedAttribute.some(attr => attr.id === attribute.id);
-    // }
-    // isAttributeAdded(attribute: Attributes): boolean {
-    //     return this.addedAttributes.some((attr) => attr.id === attribute.id);
-    // }
-    
-    // getAttributeIdValue(): string {
-    //     return this.attributeIdInput.nativeElement.value;
-    // }
-    
-    // toggleAttribute(id: string, name: string) {
-    //     const selectedCheckboxesIdArray = this.selectedAttributeForm.get('selectedCheckboxesId') as FormArray;
-    //     const idIndex = selectedCheckboxesIdArray.value.indexOf(id);
-        
-    //     if (idIndex === -1) {
-    //         const attribute: Attributes = { id, name };
-    
-    //         if (!this.isAttributeSelected(attribute)) {
-    //             selectedCheckboxesIdArray.push(new FormControl(id));
-    //             this.selectedAttribute.push(attribute);
-
-    //         }
-    //     } else {
-    //         selectedCheckboxesIdArray.removeAt(idIndex);
-    //         this.selectedAttribute.splice(idIndex, 1);
-    //         this.selectedAttributeForm.reset()
-    //         this.addedAttributes.splice(idIndex, 1);
-
-    //     }
-        
-    //     if(this.isSelected(id)){
-    //         this.removeAttribute(id)
-    //         this.selectedAttribute.splice(idIndex, 1);
-    //         this.selectedAttributeForm.reset()
-
-    //     }
-    // }
-    
-    // onSave() {
-    //     const attributesToAdd = this.selectedAttribute.filter((attr) => !this.isAttributeAdded(attr));
-        
-    //     if (attributesToAdd.length > 0) {
-    //         this.attribute_service.postSelectedAttribute(attributesToAdd);
-
-    //         for (const attribute of attributesToAdd) {
-    //             const addAttributeForm = {
-    //                 id: attribute.id,
-    //                 name: attribute.name,
-    //                 value: '',
-    //             };
-                
-    //             this.attribute_service.postSelectedAttributeForm(addAttributeForm); 
-
-    //         }
-
-    //         this.addedAttributes.push(...attributesToAdd);
-    //         this.selectedAttribute.splice(0)
-    //         this.selectedAttributeForm.reset();
-    //         this.addedAttributes.splice(0);
-
-
-    //     }else{
-    //         console.log('no input', attributesToAdd, this.addedAttributes)
-    //     }   
-
-    // }
-    
-    // removeAttribute( id: string ) {
-    //     this.attribute_service.removeSelectedAttribute(id);
-    //     this.attribute_service.removeSelectedAttributeForm(id);
-    //     console.log(this.attributesList, this.addedAttributes)
-    // }
-
-    // cancelAttribute() {
-    //     // console.log(this.selectedAttribute);
-    // }

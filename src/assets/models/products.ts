@@ -23,10 +23,13 @@ export interface AdminProductList {
 }
 
 export interface AdminProduct {
-    product_id: string,
+    id: string,
     name: string,
     price: string,  
-    preview_image: string
+    category_id: string,
+    show_my_style: number,
+    is_archived: number
+    
 }
 
 export interface Variant {

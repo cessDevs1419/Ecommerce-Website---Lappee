@@ -54,27 +54,29 @@
         [addProdBtn]="true"
         addbtnName="Add New"
         [showMinus]="showMinus"
-        
+        dropdowdnClass="dropdown-menu-lg"
+
         [searchBarclass]="margin"
         [addBtnclass]="size"
         
         [restockBtn]="false"
         [tableAction]="true"
         [editSubBtn]="true"
-        [deleteBtn]="true"
         [actionBtn]="true"
         
-        [tableHeader]="['ID','Name','Price']"
-        [tableRows]="['product_id', 'name','price']"
-        OverlayBtnText="Delete"
-        OverlayIcon="bi-trash"
+        [tableHeader]="['ID','Name','Visibility']"
+        [tableRows]="['id', 'name','is_archived']"
+        OverlayBtnText="Hide"
+        OverlayIcon="bi-eye"
         [tableData]="products"
-
+        [hideBtn]="true"
+        [variantFormBtn]="true"
         [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
         (rowDataForDelete)="onRowDataForDelete($event)"
         (ShowAddForm)="showAddForm()"
         (ShowEditForm)="showEditForm($event)"
+        (ShowVariantForm)="showVariantForm($event)"
         #triggerFunction
     ></app-table>
 
@@ -124,7 +126,22 @@
 
 
 
+<app-modal
+    modalId="hide"
+    modalTitle="Hide Product"
+    modalClass="modal-md"
+    [modalHideIcon]="true"
+    modalIcon="view"
+    (SuccessToast)="SuccessToast($event)"
+    (WarningToasts)="WarningToast($event)"
+    (ErrorToasts)="ErrorToast($event)"
 
+    [modalHideProduct]="true"
+    [selectedRowData]="selectedRowData"
+    (RefreshTable)="refreshTableData()"
+    (hideMinus)="showMinusFunction()"
+
+></app-modal> 
 
 
     

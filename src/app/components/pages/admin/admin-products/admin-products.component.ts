@@ -86,6 +86,11 @@ export class AdminProductsComponent {
         this.router.navigate(['/admin/product-management','product','edit',row.product_id]);
         // this.showAddForms = false
 	}
+    
+    showVariantForm(row: any): void{
+        this.router.navigate(['/admin/product-management','variant','edit',row.product_id]);
+	}
+    
 	
     SuccessToast(value: any): void {
         this.toaster.showToast(value.head, value.sub, 'default', '', )

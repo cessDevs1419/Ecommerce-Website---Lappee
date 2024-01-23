@@ -109,6 +109,7 @@ export class ModalComponent {
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
     @Input() modalViewOrder!: boolean;
+    @Input() modalHideProduct!: boolean;
 
 	selectedAttributeData: any;
 	//modal theme
