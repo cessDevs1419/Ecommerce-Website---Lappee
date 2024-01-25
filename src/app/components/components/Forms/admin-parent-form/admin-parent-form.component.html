@@ -33,6 +33,16 @@
                 >
                 </app-product-form>
 
+                <app-product-form
+                    *ngIf="EditVariant"
+                    [formEditVariant]="true"
+                    [selectedRowData]="selectedRowData"
+                    (ProductSuccess)="SuccessToast($event)"
+                    (ProductError)="ErrorToast($event)"
+                    (ProductWarning)="WarningToast($event)"
+                    (RefreshTable)="triggerRefreshTable()"
+                >
+                </app-product-form>
             </div>
         </div>
 

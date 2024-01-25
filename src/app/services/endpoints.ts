@@ -35,6 +35,7 @@ export const GETMyStylesSuggest: string = api + "api/client/my-style/suggest/"
 export const GETProductsAdmin: string = api + "api/admin/products";
 export const POSTProductsAdmin: string = api + "api/admin/products/store";
 export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
+export const PATCHVisibilityProductsAdmin: string = api + "api/admin/products/visibility";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Attributes Admin Endpoints

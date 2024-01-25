@@ -71,6 +71,8 @@ export class ProductFormComponent {
     @Input() formDeleteProduct!: boolean;
     @Input() formMultipleDeleteProduct!: boolean;
     @Input() formHideProduct!: boolean;
+    @Input() formEditVariant!: boolean;
+    
 	productSuccessMessage = 'Product: ';
 	errorMessage = 'Please fill in all the required fields.';
 	
@@ -234,8 +236,7 @@ export class ProductFormComponent {
                 
                 this.addProductForm.get('name')?.setValue(formattedProduct.name);
                 this.addProductForm.get('category')?.setValue(formattedProduct.category);
-                
-                
+
                 setTimeout(() => {
                     this.addProductForm.get('description')?.setValue(formattedProduct.description);
                     this.editor.editorSetValue(formattedProduct.description);
@@ -263,9 +264,7 @@ export class ProductFormComponent {
                         this.editvariantForms.push({ index: newIndex, isVisible: false }); 
                     }
                 }
-                if(this.variantsListsData.length > 0){
-                    this.addProductForm.get('category')?.disable()
-                }
+                
                 this.editAttributes = false
                 this.addAttributeForm.reset()
                 this.attributeFormsArray.splice(0)
@@ -278,20 +277,20 @@ export class ProductFormComponent {
                 this.categoryAttributes = this.category_service.getCategoryAttribute(formattedProduct.category).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
                 this.categoryAttributes.subscribe((data: NewAdminCategory) => {
                     if (data && data.attributes) {
-                        
+
                         for (const attribute of data.attributes) {
                             const addAttributeForm = {
                                 attribute_id: attribute.attribute_id,
                                 category_attribute_id: attribute.category_attribute_id,
                                 name: attribute.name,
-                                value: ''
+                                value: attribute.values
                             }; 
                             this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
                             this.attributeFormsArray.push(addAttributeForm);
                             
                         }
                     }
-                });
+            });
 
             });
         }
@@ -1018,6 +1017,31 @@ export class ProductFormComponent {
         }
 
     }
+
+    showNewVariantForms(){
+        if (!this.isFormSave || this.variantForms.length < 1) {
+            const newIndex = this.variantForms.length; 
+            this.variantForms.push({ index: newIndex, isVisible: true }); 
+            
+            this.hideVariantValidationContainer = false
+            this.isFormSave = true;
+            this.addBtn = true;
+            this.editBtn = false;
+            this.editAttributes = true
+            this.editImages = true
+            this.addVariantForm.reset()
+
+            
+            
+        }else{
+            const productWarn = {
+                head: 'Add Variant',
+                sub: 'Save Before You Add Another One!'
+            };
+            this.ProductWarning.emit(productWarn)
+        }
+
+    }
     
 //Accordion
     toggleAccordion(index: number) {
@@ -1044,6 +1068,8 @@ export class ProductFormComponent {
         this.removeVariant(index)
     }
 
+
+
     selectVariantDataItem(id: string){
         this.removeEditVariant(id)
     }
@@ -1062,31 +1088,44 @@ export class ProductFormComponent {
         });
     }
 
-    editDataVariant(index: any, id: string){
-        this.toggleEditAccordion(index)
-        //     this.hideVariantValidationContainer = false
-        //     this.addBtn = false;
-        //     this.editBtn = true;
-        //     this.editAttributes = false
-        //     this.editImages = false
-        //     this.addVariantForm.patchValue({
-        //         name: this.variantsLists[index].value.name,
-        //         stock: this.variantsLists[index].value.stock,
-        //         price: this.variantsLists[index].value.price,
-        //     });
-        // 
-
-        const variant = this.variantsListsData[index];
-        console.log(variant.value.attributes)
-        this.attributeFormsArray
-
-        if (variant) {
-            this.addVariantForm.get('name')?.setValue(variant.value.name);
-            this.addVariantForm.get('stock')?.setValue(variant.value.stock);
-            this.addVariantForm.get('price')?.setValue(variant.value.price);
-        }
-
+    selectNewVariantItem( index: number){
+        this.removeVariant(index)
     }
+
+    editNewVariant(index: any){
+        this.toggleAccordion(index) 
+        this.hideVariantValidationContainer = false
+        this.addBtn = false;
+        this.editBtn = true;
+        this.editAttributes = false
+        this.editImages = false
+        this.addVariantForm.patchValue({
+            name: this.variantsLists[index].value.name,
+            stock: this.variantsLists[index].value.stock,
+            price: this.variantsLists[index].value.price,
+        });
+    }
+
+    // editDataVariant(index: any, id: string){
+    //     this.toggleEditAccordion(index)
+    //     this.hideVariantValidationContainer = false
+    //     this.addBtn = false;
+    //     this.editBtn = true;
+    //     this.editAttributes = false
+    //     this.editImages = false
+
+    //     const variant = this.variantsListsData[index];
+    //     console.log(variant.value.attributes)
+    //     this.attributeFormsArray
+
+
+    //     if (variant) {
+    //         this.addVariantForm.get('name')?.setValue(variant.value.name);
+    //         this.addVariantForm.get('stock')?.setValue(variant.value.stock);
+    //         this.addVariantForm.get('price')?.setValue(variant.value.price);
+    //     }
+
+    // }
 
 
     editProductVariant(index: any){
@@ -1285,7 +1324,7 @@ export class ProductFormComponent {
             if(this.variantsLists.length > 0){
                 this.addProductForm.get('category')?.disable()
             }
-            
+
         }else{
             addVariantForm.markAllAsTouched();
             this.addAttributeForm.markAllAsTouched();
@@ -1315,6 +1354,318 @@ export class ProductFormComponent {
     
     }
 
+    saveNewVariant(index: any){
+        const variantsArray = this.addProductForm.get('variants') as FormArray;
+        const addVariantForm = this.addVariantForm;
+        const addAttributeForm = this.addAttributeForm;
+        const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const imagesArrayValue = imagesArray.value
+
+        
+        if (this.isStockZeroOrNegative(addVariantForm) && this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Stocks and Price has invalid inputs'
+            };
+            this.stockBorder = true
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isStockZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Stocks has invalid inputs'
+            };
+            this.stockBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Price has invalid inputs'
+            };
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }else{
+            this.priceBorder = false
+        }
+        
+        if (imagesArray.value.length === 0) {
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Please Add Image'
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+
+        if (addVariantForm.valid) {
+
+            const formControls = this.addAttributeForm.controls;
+            const attributeFormsArray = this.attributeFormsArray;
+
+            this.attributeFormsArray.forEach((attributeForm) => {
+                const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
+      
+                if (existingIndex !== -1) {
+                    const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
+                    existingFormGroup.get('value')?.setValue(attributeForm.value);
+                } else {
+                    Object.keys(this.addAttributeForm.value).forEach((item: any) => {
+                        if(item === attributeForm.category_attribute_id){
+                            const newAttributeFormGroup = this.formBuilder.group({
+                                id: [attributeForm.category_attribute_id],
+                                name: [attributeForm.name],
+                                value: [this.addAttributeForm.get(`${item}`)?.value],
+                            });
+                            attributesArray.push(newAttributeFormGroup);
+                            
+                        }
+                    })
+                    
+                }
+            });
+
+            const newVariantGroup = this.formBuilder.group({
+                name: [addVariantForm.value.name],
+                price: [addVariantForm.value.price],
+                stock: [addVariantForm.value.stock],
+                attributes: [addVariantForm.value.attributes],
+                images: this.formBuilder.array(addVariantForm.value.images),
+                mystyle: this.formBuilder.array(addVariantForm.value.mystyle)
+            });
+            
+            const newVariantVisible = this.formBuilder.group({
+                ...addVariantForm.value,
+                isVisible: true, 
+            });
+            
+            this.hideVariantValidationContainer = true;
+            this.newvariantsArray.push(newVariantVisible);
+            variantsArray.push(newVariantGroup);
+            this.variantsLists.push(newVariantGroup);
+            this.toggleAccordion(index);
+        
+            const productSuccess = {
+                head: 'Add Variant',
+                sub: 'Successfully Add Variant'
+            };
+        
+            this.RefreshTable.emit();
+            this.ProductSuccess.emit(productSuccess);
+            for (let i = variantsArray.length - 1; i >= 0; i--) {
+                if (variantsArray.at(i).value === null) {
+                    variantsArray.removeAt(i);
+                }
+            }
+            this.addAttributeForm.reset();
+            this.fileUrlMap.clear();
+            this.mystyleImagesMap.clear();
+            while (attributesArray.length !== 0) {
+                attributesArray.removeAt(0);
+            }
+            while (imagesArray.length !== 0) {
+                imagesArray.removeAt(0);
+            }
+            this.product_service.removeAllImg();
+            this.isFormSave = false;
+            if(this.variantsLists.length > 0){
+                this.addProductForm.get('category')?.disable()
+            }
+
+        }else{
+            addVariantForm.markAllAsTouched();
+            this.addAttributeForm.markAllAsTouched();
+
+            const emptyFields = [];
+            for (const controlName in addVariantForm.controls) {
+                if ( addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const productcontrol = addVariantForm.controls[controlName];
+                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                        
+                    }
+                    
+                    
+                }
+            }
+
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+        }
+
+    
+    }
+
+    saveNewEditedVariant(index: any){
+        const variantsArray = this.addProductForm.get('variants') as FormArray;
+        const addVariantForm = this.addVariantForm;
+        const addAttributeForm = this.addAttributeForm;
+        const attributesArray = this.addVariantForm.get('attributes') as FormArray;
+        const imagesArray = this.addVariantForm.get('images') as FormArray;
+        const imagesArrayValue = imagesArray.value
+
+        
+        if (this.isStockZeroOrNegative(addVariantForm) && this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Stocks and Price has invalid inputs'
+            };
+            this.stockBorder = true
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isStockZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Stocks has invalid inputs'
+            };
+            this.stockBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+        if (this.isPriceZeroOrNegative(addVariantForm)) {
+            const errorDataforProduct = {
+                head: 'Invalid Input',
+                sub: 'Price has invalid inputs'
+            };
+            this.priceBorder = true
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }else{
+            this.priceBorder = false
+        }
+        
+        if (imagesArray.value.length === 0) {
+            const errorDataforProduct = {
+                head: 'Add Image',
+                sub: 'Please Add Image'
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+            return;
+        }
+        
+
+        if (addVariantForm.valid) {
+
+            const formControls = this.addAttributeForm.controls;
+            const attributeFormsArray = this.attributeFormsArray;
+
+            this.attributeFormsArray.forEach((attributeForm) => {
+                const existingIndex = attributesArray.controls.findIndex(existingFormGroup => existingFormGroup.get('id')?.value === attributeForm.id);
+      
+                if (existingIndex !== -1) {
+                    const existingFormGroup = attributesArray.at(existingIndex) as FormGroup;
+                    existingFormGroup.get('value')?.setValue(attributeForm.value);
+                } else {
+                    Object.keys(this.addAttributeForm.value).forEach((item: any) => {
+                        if(item === attributeForm.category_attribute_id){
+                            const newAttributeFormGroup = this.formBuilder.group({
+                                id: [attributeForm.category_attribute_id],
+                                name: [attributeForm.name],
+                                value: [this.addAttributeForm.get(`${item}`)?.value],
+                            });
+                            attributesArray.push(newAttributeFormGroup);
+                            
+                        }
+                    })
+                    
+                }
+            });
+
+            const newVariantGroup = this.formBuilder.group({
+                name: [addVariantForm.value.name],
+                price: [addVariantForm.value.price],
+                stock: [addVariantForm.value.stock],
+                attributes: [addVariantForm.value.attributes],
+                images: this.formBuilder.array(addVariantForm.value.images),
+                mystyle: this.formBuilder.array(addVariantForm.value.mystyle)
+            });
+            
+            const newVariantVisible = this.formBuilder.group({
+                ...addVariantForm.value,
+                isVisible: true, 
+            });
+            
+            this.hideVariantValidationContainer = true;
+            this.newvariantsArray.push(newVariantVisible);
+            variantsArray.push(newVariantGroup);
+            this.variantsLists.push(newVariantGroup);
+            this.toggleAccordion(index);
+        
+            const productSuccess = {
+                head: 'Add Variant',
+                sub: 'Successfully Add Variant'
+            };
+        
+            this.RefreshTable.emit();
+            this.ProductSuccess.emit(productSuccess);
+            for (let i = variantsArray.length - 1; i >= 0; i--) {
+                if (variantsArray.at(i).value === null) {
+                    variantsArray.removeAt(i);
+                }
+            }
+            this.addAttributeForm.reset();
+            this.fileUrlMap.clear();
+            this.mystyleImagesMap.clear();
+            while (attributesArray.length !== 0) {
+                attributesArray.removeAt(0);
+            }
+            while (imagesArray.length !== 0) {
+                imagesArray.removeAt(0);
+            }
+            this.product_service.removeAllImg();
+            this.isFormSave = false;
+            if(this.variantsLists.length > 0){
+                this.addProductForm.get('category')?.disable()
+            }
+
+        }else{
+            addVariantForm.markAllAsTouched();
+            this.addAttributeForm.markAllAsTouched();
+
+            const emptyFields = [];
+            for (const controlName in addVariantForm.controls) {
+                if ( addVariantForm.controls.hasOwnProperty(controlName)) {
+                    const productcontrol = addVariantForm.controls[controlName];
+                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
+                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
+                        emptyFields.push(label);
+                        
+                    }
+                    
+                    
+                }
+            }
+
+            const errorDataforProduct = {
+                errorMessage: this.errorMessage,
+                suberrorMessage: emptyFields.join(', ')
+            };
+
+            this.ProductError.emit(errorDataforProduct);
+        }
+
+    
+    }
+    
     saveEditedVariant(index: any){
         const variants = this.addVariantForm;
         const variantsArray = this.addProductForm.get('variants') as FormArray;
@@ -1934,6 +2285,10 @@ export class ProductFormComponent {
                 return throwError(() => error); 
             }
         });
+    }
+
+    onVariantEditSubmit(){
+        console.log(this.variantsLists)
     }
 }
 

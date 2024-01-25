@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdminProductList, Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest, GETProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest, GETProductsAdmin, PATCHVisibilityProductsAdmin } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -114,7 +114,7 @@ export class ProductsService {
   } 
   
   patchVisibilityProduct(data: FormData): Observable<any> {
-    return this.http.patch<Product>(PATCHProductsAdmin, data, this.httpOptions);
+    return this.http.patch<Product>(PATCHVisibilityProductsAdmin, data, this.httpOptions);
   } 
   
   // deleteProduct(prodId: number): Observable<any> {
