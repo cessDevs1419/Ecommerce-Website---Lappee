@@ -139,6 +139,7 @@ import { AdminAccountsUsersComponent } from './components/pages/admin/admin-acco
 import { AdminAccountsCustomersComponent } from './components/pages/admin/admin-accounts-customers/admin-accounts-customers.component';
 import { AdminManageSizeComponent } from './components/pages/admin/admin-manage-size/admin-manage-size.component';
 import { NotFoundComponent } from './components/pages/main/not-found/not-found.component';
+import { VariantsFormComponent } from './components/components/Forms/variants-form/variants-form.component';
 
 @NgModule({
   declarations: [
@@ -263,6 +264,7 @@ import { NotFoundComponent } from './components/pages/main/not-found/not-found.c
     AdminAccountsCustomersComponent,
     AdminManageSizeComponent,
     NotFoundComponent,
+    VariantsFormComponent,
   ],
   imports: [
     BrowserModule,

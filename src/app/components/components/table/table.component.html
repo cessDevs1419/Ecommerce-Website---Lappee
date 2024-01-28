@@ -405,7 +405,7 @@
                                                             > 
                                                             Edit
                                                         </button>
-                                                        <div *ngIf="editSubBtn || editBtn" class="action-border"></div>
+                                                        <div *ngIf="editButtonLine" class="action-border"></div>
                                                         <button 
                                                             *ngIf="viewBtn"
                                                             type="button"
@@ -456,6 +456,7 @@
                                                             *ngIf="variantFormBtn"
                                                             type="button"
                                                             class="edit-btn px-2 py-1 border-0 bg-none text-white actn-btn mt-0 w-100 rounded-3 rounded-bottom-0 "
+                                                            data-bs-toggle="modal" data-bs-target="#variants"
                                                             (click)="showVariantForm(item)"
                                                             > 
                                                             Variants
@@ -690,27 +691,7 @@
                                     </ng-container>
                                 </td>
 
-                                <!-- <div (mouseleave)="showAction(i)" *ngIf="rowActionVisibility[i]" class="z-3 bg-none rounded-3 position-absolute  p-0 end-0 me-1">
-                                    <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0 hover-div">
-                                        <button 
-                                            type="button"
-                                            data-bs-toggle="modal" data-bs-target="#edit"
-                                            class="edit-btn px-4 py-1 border-0 actn-btn w-100 mt-0 rounded-3 rounded-bottom-0 "
-                                            (click)="sendRowData(item)"
-                                            > 
-                                            Edit
-                                        </button>
-                                        <div class="action-border"></div>
-                                        <button 
-                                            type="button"
-                                            data-bs-toggle="modal" data-bs-target="#delete"
-                                            class="delete-btn px-4 py-1 border-0 actn-btn w-100 rounded-3 rounded-top-0 "
-                                            (click)="sendRowData(item)"
-                                            > 
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div> -->
+                                
                                 
                                 <div (mouseleave)="showOrderAction(i)" *ngIf="rowOrderActionVisibility[i]" class="z-3  bg-none rounded-3 position-absolute  p-0 end-0 me-3">
                                     <div class="action-container m-0 position-relative p-0 d-block bg-none rounded-3 mt-0  hover-div">

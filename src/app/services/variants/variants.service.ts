@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, of } from 'rxjs';
-import { Product, Variant } from 'src/assets/models/products';
-import { DELETEVariantsAdmin, PATCHVariantsAdmin, POSTVariantsAdmin } from '../endpoints';
+import { NewVariantList, Product, Variant } from 'src/assets/models/products';
+import { DELETEVariantsAdmin, GETProductsVariants, PATCHVariantsAdmin, POSTVariantsAdmin } from '../endpoints';
 import { ProductsService } from '../products/products.service';
 import { formatProducts } from 'src/app/utilities/response-utils';
 
@@ -53,6 +53,10 @@ export class VariantsService {
     getVariants(): FormArray {
         return this.variantsList;
     }
+
+	getProductVariants(id: string): Observable<any>{
+		return this.http.get<NewVariantList>(GETProductsVariants+id);
+	}
 
     addVariantToVariantsList(variantFormGroup: FormGroup): void {
        // console.log(variantFormGroup);

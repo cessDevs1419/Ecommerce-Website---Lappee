@@ -86,6 +86,7 @@ export class TableComponent {
 	@Input() elipsesActionBtn!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
+	@Input() editButtonLine!: boolean;
 	@Input() editSubBtn!: boolean;
 	@Input() deleteBtn!: boolean;
 	@Input() variantFormBtn!: boolean;

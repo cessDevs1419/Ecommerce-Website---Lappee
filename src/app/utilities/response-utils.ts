@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, AdminNewCategory, AdminNewCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, NewVariant, NewVariantList, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -283,6 +283,21 @@ export function formatProductVariants(response: ProductList): Variant[] {
   }));
 }
 
+
+export function formatNewProductVariant(response: NewVariantList): NewVariant[] {
+  return response.data.map((data: NewVariant) => ({
+    id: data.id,
+    product_id: data.product_id,
+    name: data.name,
+    stock: data.stock,
+    price: data.price,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    images: data.images,
+    my_style_image: data.my_style_image,
+    attributes: data.attributes
+  }));
+}
 // returns Review array from ReviewList
 export function formatReviews(response: ReviewList): Observable<ReviewItem> {
   let data = response.data;
