@@ -7,6 +7,7 @@ import { ModalClientComponent } from 'src/app/components/components/modal-client
 import { ToastComponent } from 'src/app/components/components/toast/toast.component';
 import { ToasterComponent } from 'src/app/components/components/toaster/toaster/toaster.component';
 import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { CartService } from 'src/app/services/cart/cart.service';
 import { DeliveryinfoService } from 'src/app/services/delivery/deliveryinfo.service';
 import { EchoService } from 'src/app/services/echo/echo.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
@@ -82,7 +83,7 @@ export class ProfileComponent {
   provinces: Province[];
   cities: City[];
 
-  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService, private eh: ErrorHandlerService, private echo: EchoService) {}
+  constructor(private accountService: AccountsService, private router: Router, private deliveryinfoService: DeliveryinfoService, private provinceCity: ProvinceCityService, private eh: ErrorHandlerService, private echo: EchoService, private cart: CartService) {}
   
 
   ngOnInit(): void {
@@ -348,6 +349,7 @@ export class ProfileComponent {
       next: (response: any) => {
        // console.log(response);
         this.echo.disconnect();
+        this.cart.clearCart();
         this.accountService.checkLoggedIn().subscribe();
         this.router.navigate(['/home']);
       },
