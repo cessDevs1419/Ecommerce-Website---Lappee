@@ -610,7 +610,7 @@
                 </ng-container>
 
                 <ng-container *ngIf="modalEditVariant">
-                    <form   (ngSubmit)="onVariantAddSubmit()">
+                    <form   (ngSubmit)="onVariantEditSubmit()">
                         <div  class="modal-body text-center pt-0 pb-0">
                             <form>
                                 <div class="products px-0 w-100 m-auto " >
@@ -759,7 +759,21 @@
                                                                 </div>
                                                             </div>
                                                             <div class="images-container d-flex justify-content-start w-100 position relative" >
-                                                                
+                                                                <div *ngFor="let file of imagesArray; let ind = index">
+                    
+                                                                    <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
+                                                                        <div class="tooltips text-center rounded-2 mb-0 px-2">
+                                                                            <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                    <div class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0">
+                                                                        <!-- <button type="button" class="z-2 img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImage(ind)">
+                                                                            <i class="bi bi-x text-white"></i>
+                                                                        </button> -->
+                                                                        <img [src]="file" alt="Lappee" class="w-100 h-100 border">
+                                                                    </div>
+                                                                </div>
                                                                 <div *ngFor="let file of getFileKeys(); let ind = index">
                     
                                                                     <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
@@ -780,17 +794,16 @@
                                                                         <img [src]="fileUrlMap.get(file)" alt="Lappee" class="w-100 h-100 border">
                                                                     </div>
                                                                 </div>
-                                                                
                                                                 <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
                                                                     
                                                                     <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                                                     <div class="container p-3">
-                                                                        <ng-container *ngIf="getFileKeys().length <= 2">
+                                                                        <ng-container *ngIf="getFileKeys().length+imagesArray.length <= 2">
                                                                             <h4 class="fw-bolder text-white lh-sm mb-0">Upload Image</h4>
                                                                             <p class="fs-5 lh-sm mb-0 {{formTextColor}}">images up to 2560x1440</p>
                                                                             <p class="fs-6 lh-sm mb-0 {{formTextColor}}">(.png, .jpeg, .jpg)</p>
                                                                         </ng-container>
-                                                                        <ng-container *ngIf="getFileKeys().length >= 3 ">
+                                                                        <ng-container *ngIf="getFileKeys().length+imagesArray.length >= 3 ">
                                                                             <h4 class="fw-bolder text-white lh-sm mb-0">3 / 3</h4>
                                                                             <p class="fs-5 lh-sm mb-0 {{formTextColor}}">MAX</p>
                                                                         </ng-container>                                                            
@@ -806,6 +819,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
+
                                                             <!-- <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
                                                                 <ng-container *ngIf="variantsLists[i]; let variant">
                                                                     <ng-container *ngFor="let images of variant.value.images; let ind = index">

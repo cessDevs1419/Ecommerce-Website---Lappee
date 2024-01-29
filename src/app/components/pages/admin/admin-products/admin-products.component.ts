@@ -85,7 +85,9 @@ export class AdminProductsComponent {
     imageResolutionStatesTooltip: { [fileName: string]: boolean } = {};
     fileUrlMap: Map<File, string> = new Map();
     mystyleImagesMap: Map<File, string> = new Map();
-
+    attributeArray: any[] = []
+    imagesArray: any[] = []
+    mystyleimageArray: any[] = []
     //theme
 
     showMinus: boolean
@@ -147,9 +149,11 @@ export class AdminProductsComponent {
         this.selectedRowData = rowData;
         
     }
+
     onRowDataForDelete(rowData: any){
         this.selectedRowDataForDelete = rowData;
     }
+    
     showMinusFunction(){
         this.childComponent.removeAllSelected();
     }
@@ -188,18 +192,37 @@ export class AdminProductsComponent {
         this.modalVariants = false
         this.modalEditVariant = true
         this.modalClass = 'modal-md'
-        console.log(data)
+
 
         Object.keys(data).forEach((keys: any) => {
             if (data.hasOwnProperty(keys)) {
                 this.variantForm.get('name')?.setValue(data['name'])
                 this.variantForm.get('stock')?.setValue(data['stock'])
                 this.variantForm.get('price')?.setValue(data['price'])
-                //attribute data and images 
-            }
-            
+            }   
         })
 
+        for (const attri of data['attributes']) {
+            const addAttributeForm = {
+                attribute_id: attri.attribute_id,
+                category_attribute_id: attri.category_attribute_id,
+                name: attri.attribute_name,
+                value: attri.value
+            };
+           this.attributeArray.push(addAttributeForm);
+        }
+
+        for (const image of data['images']) {
+            this.imagesArray.push(image);
+        }
+
+        for (const image of data['my_style_image']) {
+            this.mystyleimageArray.push(image);
+        }
+        
+        console.log(this.attributeArray);
+        console.log(this.imagesArray);
+        console.log(this.mystyleimageArray);
     }
 
     cancelAddVariants(){
@@ -324,7 +347,7 @@ export class AdminProductsComponent {
     selectFileForAdding() {
 
         const imageArray = this.getFileKeys().length
-        if(imageArray >= 3){
+        if(this.imagesArray.length+imageArray >= 3 ){
             const errorDataforProduct = {
                 head: 'Add Image',
                 sub: 'Image must be no more than 3',
@@ -564,6 +587,8 @@ export class AdminProductsComponent {
     
     onVariantEditSubmit(){
         console.log(this.variantForm)
+        console.log(this.attributeForm)
+        console.log(this.attributeArray)
     }
 
 	
