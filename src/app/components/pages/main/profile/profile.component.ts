@@ -351,6 +351,7 @@ export class ProfileComponent {
         this.echo.disconnect();
         this.cart.clearCart();
         this.accountService.checkLoggedIn().subscribe();
+        //window.location.reload();
         this.router.navigate(['/home']);
       },
       error: (err: HttpErrorResponse) => {

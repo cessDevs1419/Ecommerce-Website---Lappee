@@ -191,7 +191,10 @@ export class CartService {
   }
 
   clearCart(): CartItem[] {
-    this.items = [];
+    while(this.items.length != 0){
+      this.items.pop()
+    }
+    
     return this.items;
   }
   
