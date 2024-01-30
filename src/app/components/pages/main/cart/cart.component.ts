@@ -133,8 +133,9 @@ export class CartComponent {
               let addresses = this.deliveryInfoService.getAddressList().pipe(map((response: any) => formatAddressList(response)));
               addresses.subscribe({
                 next: (addresses: Address[]) => {
-                  if(addresses) {
+                  if(addresses[0].address) {
                     this.isInfoRegistered = true;
+                    console.log(this.isInfoRegistered)
                     this.userAddresses = addresses;
                     this.shippingFee = Number(this.shipping.checkProvinceFee(this.findAddress().province, this.shippingFeeList))
                   }
@@ -335,7 +336,7 @@ export class CartComponent {
     });
 
     return sender.product.variants.findIndex((variant: Variant) => sender.variant == variant.variant_id);
-    return matchIndex;
+    //return matchIndex;
   }
 
   addToOrder(index: number): void {
