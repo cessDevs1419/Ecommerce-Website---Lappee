@@ -1,5 +1,5 @@
 import { AdminCategory, AdminCategoryList, AdminNewCategory, AdminNewCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, NewVariant, NewVariantList, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminProduct, AdminProductDetails, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, NewVariant, NewVariantList, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -144,6 +144,17 @@ export function formatProductObj(response: any): Product {
     variants: data.variants,
     discount: data.discount,
     size_chart: data.size_chart
+  };
+}
+export function formatAdminProductObj(response: any): AdminProductDetails {
+  let data = response.data
+  return {
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    category_id: data.category,
+    show_my_styles: data.show_my_styles,
+    is_archived: data.is_archived
   };
 }
 

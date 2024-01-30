@@ -32,6 +32,16 @@ export interface AdminProduct {
     
 }
 
+export interface AdminProductDetails {
+    id: string,
+    name: string,
+    description: string, 
+    category_id: string,
+    show_my_styles: number,
+    is_archived: number
+    
+}
+
 export interface Variant {
     variant_id: string,
     variant_name: string,

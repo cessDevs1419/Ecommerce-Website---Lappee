@@ -30,12 +30,13 @@ export const GETProductsBestSeller: string = api + "api/client/products/best-sel
 export const GETMyStylesProducts: string = api + "api/client/products/my-styles"
 export const POSTMyStylesRecord: string = api + "api/client/my-style/record"
 export const GETMyStylesSuggest: string = api + "api/client/my-style/suggest/"
+export const GETAdminProductDetails: string = api + "api/admin/products/view/details/"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";
 export const GETProductsVariants: string = api + "api/admin/products/view/variants/";
 export const POSTProductsAdmin: string = api + "api/admin/products/store";
-export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
+export const PATCHProductsAdmin: string = api + "api/admin/products/edit/details ";
 export const PATCHVisibilityProductsAdmin: string = api + "api/admin/products/visibility";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 

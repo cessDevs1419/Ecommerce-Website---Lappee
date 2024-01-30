@@ -6,7 +6,7 @@ import { AdminCategory, NewAdminCategory } from 'src/assets/models/categories';
 import { AdminSubcategory } from 'src/assets/models/subcategories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { SubcategoriesService } from 'src/app/services/subcategories/subcategories.service';
-import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminSubcategories, formatAttributes, formatProductObj, formatProducts} from 'src/app/utilities/response-utils';
+import { formatAdminCategories, formatAdminCategoriesAttribute, formatAdminProductObj, formatAdminSubcategories, formatAttributes, formatProductObj, formatProducts} from 'src/app/utilities/response-utils';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlingService } from 'src/app/services/errors/error-handling-service.service';
@@ -152,6 +152,7 @@ export class ProductFormComponent {
 	isLoading: boolean = true;
     isProductInclude: boolean = false;
     ProductHide: boolean;
+    productArchived: number
 
     constructor(
 	    private http: HttpClient,
@@ -236,68 +237,17 @@ export class ProductFormComponent {
 
         if (this.selectedRowData) {
             this.productDetails = this.product_service.getProductDetails(this.selectedRowData).pipe(map((Response: any) => formatProductObj(Response)));
-            this.product_service.getProductDetails(this.selectedRowData).subscribe((response: any) => {
-                const formattedProduct = formatProductObj(response);
-                const variants = formattedProduct.variants
-                
+
+            this.product_service.getAdminProductDetails(this.selectedRowData).subscribe((response: any) => {
+                const formattedProduct = formatAdminProductObj(response);
+                this.productArchived = formattedProduct.is_archived
                 this.addProductForm.get('name')?.setValue(formattedProduct.name);
-                this.addProductForm.get('category')?.setValue(formattedProduct.category);
+                this.addProductForm.get('category')?.setValue(formattedProduct.category_id);
 
                 setTimeout(() => {
                     this.addProductForm.get('description')?.setValue(formattedProduct.description);
                     this.editor.editorSetValue(formattedProduct.description);
                 }, 1500);
-
-
-                // for (const variant of variants) {
-                //     const newVariantGroup = this.formBuilder.group({
-                //         variant_id: [variant.variant_id],
-                //         product_id: [variant.product_id],
-                //         name: [variant.variant_name],
-                //         price: [variant.price],
-                //         stock: [variant.stock],
-                //         attributes: this.formBuilder.array(variant.attributes),
-                //         images: this.formBuilder.array(variant.images),
-                //         // mystyle: this.formBuilder.array(variant.mystyle)
-                //     });
-                //     this.variantsListsData.push(newVariantGroup);
-                    
-                // }
-                
-                // for (let i = 0; i < variants.length; i++) {
-                //     if (this.editvariantForms.length <= i) {
-                //         const newIndex = this.editvariantForms.length; 
-                //         this.editvariantForms.push({ index: newIndex, isVisible: false }); 
-                //     }
-                // }
-                
-                // this.editAttributes = false
-                // this.addAttributeForm.reset()
-                // this.attributeFormsArray.splice(0)
-                // const formGroup = this.addAttributeForm; 
-                // const controlNames = Object.keys(formGroup.controls);
-                // controlNames.forEach((controlName) => {
-                //     formGroup.removeControl(controlName);
-                // });
-
-                // this.categoryAttributes = this.category_service.getCategoryAttribute(formattedProduct.category).pipe(map((Response: any) => formatAdminCategoriesAttribute(Response)));
-                // this.categoryAttributes.subscribe((data: NewAdminCategory) => {
-                //     if (data && data.attributes) {
-
-                //         for (const attribute of data.attributes) {
-                //             const addAttributeForm = {
-                //                 attribute_id: attribute.attribute_id,
-                //                 category_attribute_id: attribute.category_attribute_id,
-                //                 name: attribute.name,
-                //                 value: attribute.values
-                //             }; 
-                //             this.addAttributeForm.addControl(attribute.category_attribute_id, new FormControl('', Validators.required));
-                //             this.attributeFormsArray.push(addAttributeForm);
-                            
-                //         }
-                //     }
-                // });
-
             });
         }
 
@@ -2047,99 +1997,63 @@ export class ProductFormComponent {
         const productFormData: FormData = new FormData();
         let productName = this.addProductForm.get('name')?.value;
         const capitalizedName = productName.charAt(0).toUpperCase() + productName.slice(1);
-        
+        this.productArchived
         productFormData.append('id', this.selectedRowData )
         productFormData.append('name', capitalizedName)
         productFormData.append('description', this.rtfValue);
-        
+        productFormData.append('is_archived', this.productArchived.toString());
+
+
         productFormData.forEach((value, key) => {
             console.log(`${key}: ${value}`);
         });
         
-        if(this.addProductForm.valid){
-        
-            this.product_service.postProduct(productFormData).subscribe({
-                next: (response: any) => { 
-                    
-                    const productSuccess = {
-                        head: 'Edit Product',
-                        sub: response.message
+        this.product_service.patchProduct(productFormData).subscribe({
+            next: (response: any) => { 
+                
+                const productSuccess = {
+                    head: 'Edit Product',
+                    sub: response.message
+                };
+            
+                this.RefreshTable.emit();
+                this.ProductSuccess.emit(productSuccess);
+                this.cancelAction()
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
+                
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
+                
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
                     };
                 
-                    this.RefreshTable.emit();
-                    this.ProductSuccess.emit(productSuccess);
-                    this.addProductForm.reset();
-                    this.addVariantForm.reset();
-                    this.addAttributeForm.reset();
-                    this.variantsArray.reset();
-                    this.variantsList.clear();
-                    this.variantForms.splice(0);
-                    this.attributeFormsArray.splice(0);
-                    this.newvariantsArray.clear()
-                    this.imageList.clear();
-                    this.addBtn = true;
-                    this.editBtn = false;
-                    this.editAttributes = true
-                    this.variantsLists.splice(0)
-                    this.childComponent.editorReset();
-                    this.addProductForm.get('category')?.enable()
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.error?.data?.error) {
-                        const fieldErrors = error.error.data.error;
-                        const errorsArray = [];
-                    
-                        for (const field in fieldErrors) {
-                            if (fieldErrors.hasOwnProperty(field)) {
-                                const messages = fieldErrors[field];
-                                let errorMessage = messages;
-                                if (Array.isArray(messages)) {
-                                    errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                                }
-                                errorsArray.push(errorMessage);
-                            }
-                        }
-                    
-                        const errorDataforProduct = {
-                            head: 'Error Invalid Inputs',
-                            sub: errorsArray,
-                        };
-                    
-                        this.ProductWarning.emit(errorDataforProduct);
-                    } else {
-                    
-                        const errorDataforProduct = {
-                            head: 'Error Invalid Inputs',
-                            sub: 'Please Try Another One',
-                        };
-                        this.ProductError.emit(errorDataforProduct);
-                    }
-                    return throwError(() => error);
-                    
+                    this.ProductWarning.emit(errorDataforProduct);
+                } else {
+                
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
+                    };
+                    this.ProductError.emit(errorDataforProduct);
                 }
-            });
-
-        } else{
-
-            this.addProductForm.markAllAsTouched();
-            const emptyFields = [];
-            for (const controlName in this.addProductForm.controls) {
-                if ( this.addProductForm.controls.hasOwnProperty(controlName)) {
-                    const productcontrol = this.addProductForm.controls[controlName];
-                    if (productcontrol.errors?.['required'] && productcontrol.invalid ) {
-                        const label = document.querySelector(`label[for="${controlName}"]`)?.textContent || controlName;
-                        emptyFields.push(label);
-                    }
-                }
+                return throwError(() => error);
+                
             }
-            
-            const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
-            };
-
-            this.ProductError.emit(errorDataforProduct);
-        }
+        });
     
     }
     

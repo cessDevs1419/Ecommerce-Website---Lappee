@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdminProductList, Product, ProductList, Variant } from 'src/assets/models/products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest, GETProductsAdmin, PATCHVisibilityProductsAdmin } from '../endpoints';
+import { DELETEProductsAdmin, GETMyStylesProducts, GETProductDetails, GETProducts, GETProductsAll, GETProductsBestSeller, GETProductsByCategory, GETProductsSuggestions, GETProductsTrending, PATCHProductsAdmin, POSTMyStylesRecord, POSTProductsAdmin, GETMyStylesSuggest, GETProductsAdmin, PATCHVisibilityProductsAdmin, GETAdminProductDetails } from '../endpoints';
 import { BehaviorSubject, Observable, map, of, shareReplay } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -85,6 +85,11 @@ export class ProductsService {
     //return this.http.get<ProductList>('../../assets/sampleData/products.json');
   }
 
+  getAdminProductDetails(id: string): Observable<any> {
+    // console.log(this.http.get(GETProductDetails + id))
+    return this.http.get(GETAdminProductDetails + id);
+    //return this.http.get<ProductList>('../../assets/sampleData/products.json');
+  }
   public getProductByCategory(id: string): Observable<any> {
    // console.log(this.http.get(GETProductsByCategory + id))
     return this.http.get(GETProductsByCategory + id, this.httpOptions)
