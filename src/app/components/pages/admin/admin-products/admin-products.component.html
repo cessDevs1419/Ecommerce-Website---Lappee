@@ -125,8 +125,6 @@
 
 ></app-modal>  
 
-
-
 <app-modal
     modalId="hide"
     modalTitle="Hide Product"
@@ -713,8 +711,8 @@
                                                         </div>
                     
                                                         <form [formGroup]="attributeForm" >
-                                                            <div class="row mb-3 d-flex justify-content-between" *ngIf="(categoryAttributes | async) as item" >
-                                                              <div class="col-sm-6 mb-3" *ngFor="let item of item.attributes;  ">
+                                                            <div class="row mb-3 d-flex justify-content-between"  >
+                                                              <div class="col-sm-6 mb-3" *ngFor="let item of attributeArray;  ">
                                                                     <div class="position-relative d-flex align-items-center">
                                                                         <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
                                                                             <label class="form-label {{formTextColor}}">{{item.name}}</label>
@@ -727,6 +725,7 @@
                                                                                 
                                                                                 required
                                                                             >
+                                                                                <option *ngIf="item.value" selected >{{item.value}}</option>
                                                                                 <option selected >Select value for {{item.name}}</option>
                                                                                 <option *ngFor="let item of item.values" [value]="item">{{ item }}</option>
                                                                             </select>
@@ -739,6 +738,7 @@
                                                                                     [showLabel]="false"
                                                                                     [placeholder]="'Pick color...'"
                                                                                     [formControlName]="item.category_attribute_id"
+                                                                                    [colorname]="item.value"
                                                                                     required
                                                                                     
                                                                                     >

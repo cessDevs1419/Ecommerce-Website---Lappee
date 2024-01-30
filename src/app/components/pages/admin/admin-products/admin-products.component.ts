@@ -20,6 +20,7 @@ import { CategoriesService } from 'src/app/services/categories/categories.servic
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ColorPickerComponent } from 'src/app/components/components/color-picker/color-picker.component';
 
 @Component({
     selector: 'app-admin-products',
@@ -34,6 +35,7 @@ export class AdminProductsComponent {
     @ViewChild('tableFunction') tableFunction: TableComponent;
     @ViewChild(VariantsFormComponent) variantForms: VariantsFormComponent;
     @ViewChild(RichTextEditorComponent) editor: RichTextEditorComponent;
+    @ViewChild(ColorPickerComponent) colorPicker: ColorPickerComponent;
     
     
     products!: Observable<AdminProduct[]>;
@@ -100,7 +102,7 @@ export class AdminProductsComponent {
     counter_heading_text_color: string = 'dark-theme-heading-text-color'
     text_color: string = 'dark-theme-text-color'
     variantId: string = ''
-
+    colors: string = ''
 	constructor(
 		private service: ProductsService,
 		private subcategory_service: SubcategoriesService,
@@ -179,6 +181,7 @@ export class AdminProductsComponent {
                 this.tableFunction.loaded()
             }
         })
+        // this.showAttribute(row.category_id)
         this.showAttribute(row.category_id)
 	}
     
@@ -190,6 +193,7 @@ export class AdminProductsComponent {
         this.modalVariants = false
         this.modalAddVariant = true
         this.modalClass = 'modal-md'
+
     }
 
     showEditButton(data: any){
@@ -201,6 +205,8 @@ export class AdminProductsComponent {
         this.getFileKeys().splice(0)
         this.fileUrlMap.clear()
         this.imagesArray.splice(0)
+        this.attributeForm.reset()
+        this.attributeArray.splice(0)
 
         Object.keys(data).forEach((keys: any) => {
             if (data.hasOwnProperty(keys)) {
@@ -223,6 +229,7 @@ export class AdminProductsComponent {
                    this.attributeForm.get(attributeName)?.setValue(attri.value)
                    this.attributeArray.push(addAttributeForm);
                 }
+
             }
         }
 
@@ -234,7 +241,6 @@ export class AdminProductsComponent {
             this.mystyleimageArray.push(image);
         }
 
-        console.log(this.attributeForm)
     }
 
     cancelAddVariants(){
@@ -244,6 +250,8 @@ export class AdminProductsComponent {
         this.modalClass = 'modal-xl'
         this.variantForm.reset()
         this.attributeForm.reset()
+        this.attributeFormsArray.splice(0)
+
         const imagesArray = this.variantForm.get('images') as FormArray;
         imagesArray.clear()
         this.getFileKeys().splice(0)
@@ -295,7 +303,7 @@ export class AdminProductsComponent {
         this.categoryAttributes.subscribe((data: NewAdminCategory) => {
             for (const attribute of data.attributes) {
                 const addAttributeForm = {
-                    id: attribute.category_attribute_id,
+                    category_attribute_id: attribute.category_attribute_id,
                     name: attribute.name,
                     value: ''
                 }; 
@@ -306,6 +314,8 @@ export class AdminProductsComponent {
         });
         
     }
+    
+
 
     isInclude() {
         const currentValue = this.productForm.get('include')?.value;
@@ -654,29 +664,32 @@ export class AdminProductsComponent {
         productFormData.append(`name`, name);
         productFormData.append(`price`, price);
 
-
-        // for (let attribute of this.attributeArray){
-        //     console.log(attribute.category_attribute_id)
-        // }
         let imageIndex = 0;
         let attributeIndex = 0;
 
         for (let attributeName in this.attributeForm.controls) {
             for (let attribute of this.attributeArray) {
-                if (attributeName === attribute.category_attribute_id) {
-                    productFormData.append(`[attributes][${attributeIndex}][category_attribute_id]`, attribute.category_attribute_id);
-                    productFormData.append(`[attributes][${attributeIndex}][value]`, attribute.value);
-                    attributeIndex++;
-                }
-            }
-        }
+                const existingValue = attribute.value
+                const newValue = this.attributeForm.get(attributeName)?.value
 
-        // for (let attribute of variant.attributes) {
-        //     let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
-        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
-        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
-        //     attributeIndex++;
-        // }
+
+                if (attributeName === attribute.category_attribute_id) {
+                    if(newValue){
+                        productFormData.append(`[attributes][${attributeIndex}][category_attribute_id]`, attribute.category_attribute_id);
+                        productFormData.append(`[attributes][${attributeIndex}][value]`, newValue);
+                        attributeIndex++;
+                    }else{
+                        productFormData.append(`[attributes][${attributeIndex}][category_attribute_id]`, attribute.category_attribute_id);
+                        productFormData.append(`[attributes][${attributeIndex}][value]`, existingValue);
+                        attributeIndex++;
+                    }
+                }
+
+
+            }
+            
+
+        }
 
         for (const image of this.imagesArray) {
             productFormData.append(`images[]`, image);
@@ -691,51 +704,51 @@ export class AdminProductsComponent {
             console.log(`${key}: ${value}`);
         });
 
-        // this.variant_service.patchVariants(productFormData).subscribe({
-        //     next: (response: any) => { 
+        this.variant_service.patchVariants(productFormData).subscribe({
+            next: (response: any) => { 
                     
-        //         const productSuccess = {
-        //             head: 'Edit Product',
-        //             sub: response.message
-        //         };
+                const productSuccess = {
+                    head: 'Edit Product',
+                    sub: response.message
+                };
             
-        //         this.refreshTableData()
-        //         this.SuccessToast(productSuccess);
-        //     },
-        //     error: (error: HttpErrorResponse) => {
-        //         if (error.error?.data?.error) {
-        //             const fieldErrors = error.error.data.error;
-        //             const errorsArray = [];
+                this.refreshTableData()
+                this.SuccessToast(productSuccess);
+            },
+            error: (error: HttpErrorResponse) => {
+                if (error.error?.data?.error) {
+                    const fieldErrors = error.error.data.error;
+                    const errorsArray = [];
                 
-        //             for (const field in fieldErrors) {
-        //                 if (fieldErrors.hasOwnProperty(field)) {
-        //                     const messages = fieldErrors[field];
-        //                     let errorMessage = messages;
-        //                     if (Array.isArray(messages)) {
-        //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
-        //                     }
-        //                     errorsArray.push(errorMessage);
-        //                 }
-        //             }
+                    for (const field in fieldErrors) {
+                        if (fieldErrors.hasOwnProperty(field)) {
+                            const messages = fieldErrors[field];
+                            let errorMessage = messages;
+                            if (Array.isArray(messages)) {
+                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
+                            }
+                            errorsArray.push(errorMessage);
+                        }
+                    }
                 
-        //             const errorDataforProduct = {
-        //                 head: 'Error Invalid Inputs',
-        //                 sub: errorsArray,
-        //             };
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: errorsArray,
+                    };
                 
-        //             this.WarningToast(errorDataforProduct);
-        //         } else {
+                    this.WarningToast(errorDataforProduct);
+                } else {
                 
-        //             const errorDataforProduct = {
-        //                 head: 'Error Invalid Inputs',
-        //                 sub: 'Please Try Another One',
-        //             };
-        //             this.ErrorToast(errorDataforProduct);
-        //         }
-        //         return throwError(() => error);
+                    const errorDataforProduct = {
+                        head: 'Error Invalid Inputs',
+                        sub: 'Please Try Another One',
+                    };
+                    this.ErrorToast(errorDataforProduct);
+                }
+                return throwError(() => error);
                 
-        //     }
-        // })
+            }
+        })
         
     }
 

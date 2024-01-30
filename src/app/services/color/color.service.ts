@@ -33,6 +33,8 @@ export class ColorService {
   }
   }
 
+
+
   nearestColor(hex: string): string {
     let c1: number[] = this.hexToNumChunks(hex);
     let minimumDistance: number = 9999;
