@@ -103,6 +103,8 @@ export class AdminProductsComponent {
     text_color: string = 'dark-theme-text-color'
     variantId: string = ''
     colors: string = ''
+    productsLength: number
+    countlowstocks: number
 	constructor(
 		private service: ProductsService,
 		private subcategory_service: SubcategoriesService,
@@ -145,6 +147,9 @@ export class AdminProductsComponent {
                 this.table.loaded()
             })
         );
+        this.products.subscribe((data:any) => {
+            this.productsLength = data.length
+        })
 	}
 	
     refreshTableData(): void {
