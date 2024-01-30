@@ -13,17 +13,19 @@
         [Btntools]="true"
         [addBtn]="true"
         addbtnName="Add New"
+        [hideBtn]="true"
         [addBtnclass]="size"
         [editBtn]="true"
-
+        dropdowdnClass="dropdown-menu-md"
         [tableAction]="true"
         [actionBtn]="true"
         [showMinus]="showMinus"
+        [editButtonLine]="true"
         
-        [tableHeader]="['ID', 'Name']"
-        [tableRows]="['id','name']"
-        OverlayBtnText="Delete"
-        OverlayIcon="bi-trash"
+        [tableHeader]="['ID', 'Name', 'Visibility']"
+        [tableRows]="['id','name','is_hidden']"
+        OverlayBtnText="Hide"
+        OverlayIcon="bi-eye"
         [tableData]="categories"
         [showMultipleSelection]="true"
         (rowDataSelected)="onRowDataSelected($event)"
@@ -81,6 +83,21 @@
         (hideMinus)="showMinusFunction()"
     ></app-modal> 
 
+    <app-modal
+        modalId="hide"
+        modalTitle="Hide Category"
+        modalClass="modal-md"
+        [modalHideIcon]="true"
+        modalIcon="view"
+        (SuccessToast)="SuccessToast($event)"
+        (WarningToasts)="WarningToast($event)"
+        (ErrorToasts)="ErrorToast($event)"
+
+        [modalHideCategory]="true"
+        [selectedRowData]="selectedRowData"
+        (RefreshTable)="refreshTableData()"
+        (hideMinus)="showMinusFunction()"
+    ></app-modal> 
 
     <app-modal
         modalId="openOverlay"

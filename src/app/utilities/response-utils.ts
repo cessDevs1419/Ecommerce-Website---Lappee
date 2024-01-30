@@ -1,5 +1,5 @@
-import { AdminCategory, AdminCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
-import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, Order, Product, ProductList, Variant } from "src/assets/models/products";
+import { AdminCategory, AdminCategoryList, AdminNewCategory, AdminNewCategoryList, Category, CategoryList, NewAdminCategory, NewAdminCategoryList, Subcategory } from "src/assets/models/categories";
+import { AdminProduct, AdminProductList, CartItemList, CartItemResponse, CategoryProduct, Discount, MyStyleProduct, NewVariant, NewVariantList, Order, Product, ProductList, Variant } from "src/assets/models/products";
 import { Review, ReviewItem, ReviewList } from "src/assets/models/reviews";
 import { Observable, map, of } from 'rxjs';
 import { CsrfToken } from "src/assets/models/csrf";
@@ -52,6 +52,13 @@ export function formatAdminCategories(response: AdminCategoryList): AdminCategor
   }))
 }
 
+export function formatAdminNewCategories(response: AdminNewCategoryList): AdminNewCategory[] {
+  return response.data.map((data: AdminNewCategory) => ({
+    id: data.id,
+    name: data.name,
+    is_hidden: data.is_hidden
+  }))
+}
 // returns an AdminCategory Attribute array from an Admin-side Subcategory List
 export function formatAdminCategoriesAttribute(response: NewAdminCategoryList): NewAdminCategory {
   return {
@@ -89,12 +96,16 @@ export function formatProducts(response: ProductList): Product[] {
 
 export function formatAdminProducts(response: AdminProductList): AdminProduct[] {
   return response.data.map((data: AdminProduct) => ({
-    product_id: data.product_id,
+    id: data.id,
     name: data.name,
-    price: data.price,
-    preview_image: data.preview_image
+    price: data.price,  
+    category_id: data.category_id,
+    show_my_style: data.show_my_style,
+    is_archived: data.is_archived
   }));
 }
+
+
 
 export function formatChats(response: ChatsList): Chats[] {
   return response.data.messages.map((data: Chats) => ({
@@ -208,6 +219,7 @@ export function formatAttributes(response: AttributeList): Attributes[] {
   return response.data.map((data: Attributes) => ({
     id: data.id,
     name: data.name,
+    count: data.count
   }));
 }
 
@@ -271,6 +283,21 @@ export function formatProductVariants(response: ProductList): Variant[] {
   }));
 }
 
+
+export function formatNewProductVariant(response: NewVariantList): NewVariant[] {
+  return response.data.map((data: NewVariant) => ({
+    id: data.id,
+    product_id: data.product_id,
+    name: data.name,
+    stock: data.stock,
+    price: data.price,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    images: data.images,
+    my_style_image: data.my_style_image,
+    attributes: data.attributes
+  }));
+}
 // returns Review array from ReviewList
 export function formatReviews(response: ReviewList): Observable<ReviewItem> {
   let data = response.data;

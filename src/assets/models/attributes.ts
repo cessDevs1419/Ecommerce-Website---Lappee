@@ -6,7 +6,8 @@ export interface AttributeList{
 
 export interface Attributes{
     id: string,
-    name: string
+    name: string,
+    count: number
 }
 
 export interface AttributeDetailList{

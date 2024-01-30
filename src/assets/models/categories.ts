@@ -51,3 +51,15 @@ export interface Attributes{
 }
 
 
+
+export interface AdminNewCategoryList {
+    success: string,
+    message: string,
+    data: AdminNewCategory[];
+}
+
+export interface AdminNewCategory {
+    id: string,
+    name: string,
+    is_hidden: number
+}

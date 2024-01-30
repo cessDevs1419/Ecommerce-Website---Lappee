@@ -679,7 +679,7 @@
                                 >
                             </div>
                                         
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-sm-6 mb-3">    
 
                                     <div class="title-container d-flex ">
@@ -690,17 +690,13 @@
                                         id="addproductCategory"
                                         name="addproductCategory" 
                                         formControlName="category" 
-                                        (change)="onCategorySelect($event)"
-                                        required
                                     >
-                                        <!-- <ng-container *ngFor="let category of categories | async">
-                                            <option *ngIf="category.id === products.category" [value]=" category.id " selected>{{ category.name }}</option>
-                                        </ng-container> -->
+
                                         <option *ngFor="let category of categories | async" [value]=" category.id ">{{ category.name }}</option>
                                     </select>
                                 </div>
                                 
-                            </div>
+                            </div> -->
                             
                             <div class="mb-4 rtf">
                                 <label for="addproductDescription" class="form-label {{formTextColor}}">Product Description</label>
@@ -712,29 +708,25 @@
                                 </app-rich-text-editor>
                             </div>
 
-                            <div class="w-100 mb-4">
+                            <!-- <div class="w-100 mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input border-1 bg-none" type="checkbox" (change)="isInclude()" [disabled]="this.variantsLists.length > 0">
                                     <label class="form-check-label {{formTextColor}}" >
                                         Include this product in MyStyles
                                     </label>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
-                        <hr class="divider border-white mt-4 mb-3">
-                        
-                        <div class="body pt-0 pb-0 mt-3 ">
+
+                        <!-- <div class="body pt-0 pb-0 mt-3 ">
                             <div class="title-container my-4 d-flex align-items-center">
                                 <div class="d-flex flex-row p-0">
                                     <div class="blue-accent me-2"></div>
                                     <p class="{{formTextColor}} fw-bold fs-5 m-0">Product Variants</p>
                                 </div>
                             </div>
-<!-- show this when the button on the top is click *ngIf="showVariantFormContainer"  -->
-
-                            
-<!-- variant list from existing -->                     
+                 
 
 
                             <div class="accordion border-0">
@@ -1232,7 +1224,7 @@
                                     </div>
                                 </div>
                             </div>
-<!-- New variant list   -->
+
                             <div class="accordion border-0">
                                 <div class="accordion-item mb-3 border-0" *ngFor="let form of variantForms; let i = index">
                                     <div  class="border-0 p-0" *ngIf="!form.isVisible">
@@ -1381,9 +1373,8 @@
                                                     </div>
                                                 </div>
                                             </form>
+    
                                             
-<!-- Attribute List   -->
-                                            <!-- Assuming this is inside your component's template -->
                                             <div class="title-container mb-2 d-flex ">
                                                 <div class="d-flex flex-row p-0 mb-3">
                                                     <div class="blue-accent me-2"></div>
@@ -1444,13 +1435,7 @@
                                                         <div class="position-relative d-flex align-items-center">
                                                             <div class="w-100 mb-3" *ngIf="item.name !== 'Color' && item.name !== 'Colors'">
                                                                 <label class="form-label {{formTextColor}}">{{item.name}}</label>
-                                                                <!-- <input
-                                                                    [type]="item.name === 'color' ? 'color' : 'text'"
-                                                                    [class]="item.name === 'color' ? 'form-control form-control-color rounded-3 bg-transparent border w-100' : 'form-control rounded-3 bg-transparent border w-100 text-white {{formInputColor}} {{formBorderColor}}'"
-                                                                    [placeholder]="'Enter value for '+item.name"
-                                                                    [formControlName]="item.category_attribute_id"
-                                                                    required
-                                                                > -->
+                                                               
                                                                 <select 
                                                                     [ngClass]="{'image-resolution-shadow': validationStatus[item.category_attribute_id]}"
                                                                     class="form-select py-3 px-3 rounded-3 {{formInputColor}} bg-transparent border {{formBorderColor}}" 
@@ -1475,7 +1460,7 @@
                                                                         required
                                                                         
                                                                         >
-                                                                        <!-- [ngClass]="{'border-danger': validationStatus[item.category_attribute_id]}" -->
+                                                                        
                                                                     </app-color-picker>
                                                                 </div>
                                                             </div>
@@ -1485,7 +1470,6 @@
                                                 </div>
                                             </form>
 
-<!-- Image Form -->
                                             <hr class="divider border-white mt-4 mb-3">
                                                                     
                                             <div class="image-form body pt-0 pb-0 position-relative">  
@@ -1498,12 +1482,12 @@
                                                 <div class="images-container d-flex justify-content-start w-100 position relative" *ngIf="editImages === true">
                                                     
                                                     <div *ngFor="let file of getFileKeys(); let ind = index">
-                                                        <!-- Tooltip container for a specific item -->
+                                                       
                                                         <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
                                                             <div class="tooltips text-center rounded-2 mb-0 px-2">
                                                                 <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
                                                             </div>
-                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                            
                                                         </div>
                                                         <div
                                                             (mouseenter)="showToolTip(file, ind)"
@@ -1519,7 +1503,7 @@
                                                     </div>
                                                     
                                                     <button type="button" (click)="selectFileForAdding()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                        
                                                         <input class="d-none" type="file" id="addimages" name="images" (change)="handleFileInput($event)" multiple>
                                                         <div class="container p-3">
                                                             <ng-container *ngIf="getFileKeys().length <= 2">
@@ -1557,33 +1541,13 @@
                                                             </div>
                                                         </ng-container>
                                                     </ng-container>
-                                                    <!-- <ng-container *ngIf="variantsArray.controls[i]; let variant">
-                                                        <ng-container *ngFor="let images of variant.value.images; let ind = index">
-                                                            <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[images.name]" >
-                                                                <div class="tooltips text-center rounded-2 mb-0 px-2">
-                                                                    <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div 
-                                                                (mouseenter)="showToolTip(images, ind)"
-                                                                (mouseleave)="unshowToolTip(images)"
-                                                                [ngClass]="{ 'image-resolution-shadow': imageResolutionStates[images.name] }"
-                                                                class="img-container p-0 image-container bg-dark-grey btn me-3 d-flex justify-content-end align-items-start rounded-0"
-                                                            >
-                                                                <button type="button" class="img-remove-btn position-absolute mt-1 me-1 btn bg-dark rounded-circle d-flex justify-content-center align-items-center" (click)="removeImageFromEditForm(ind, i)">
-                                                                    <i class="bi bi-x text-white"></i>
-                                                                </button>
-                                                                <img [src]="getSafeImageUrl(images)" alt="Lappee" class="w-100 h-100 border">
-                                                                
-                                                            </div>
-                                                        </ng-container>
-                                                    </ng-container> -->
+                                                    
                                                     <div *ngFor="let file of getFileKeys(); let ind = index">
                                                         <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
                                                             <div class="tooltips text-center rounded-2 mb-0 px-2">
                                                                 <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
                                                             </div>
-                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                            
                                                         </div>
                                                         <div 
                                                             (mouseenter)="showToolTip(file, ind)"
@@ -1600,7 +1564,7 @@
                                                     </div>
 
                                                     <button type="button" (click)="selectFileForEditing(i)" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                        
                                                         <input class="d-none" type="file" id="addimagesedit" name="images" (change)="handleFileInputForEdit($event)" multiple>
                                                         <div class="container p-3">
                                                             <ng-container *ngIf="variantsArray.controls[i]; let variant">
@@ -1631,12 +1595,12 @@
                                                 <div class="images-container d-flex justify-content-start w-100 position relative" *ngIf="editImages === true">
                                                     
                                                     <div *ngFor="let file of getFileKeysMyStyles(); let ind = index">
-                                                        <!-- Tooltip container for a specific item -->
+                                                       
                                                         <div class="tooltip-container h-auto position-absolute z-3" *ngIf="imageResolutionStatesTooltip[file.name]" >
                                                             <div class="tooltips text-center rounded-2 mb-0 px-2">
                                                                 <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
                                                             </div>
-                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                            
                                                         </div>
                                                         <div
                                                             (mouseenter)="showToolTip(file, ind)"
@@ -1652,7 +1616,7 @@
                                                     </div>
                                                     
                                                     <button type="button" (click)="selectFileForAddingMyStyleImg()" class="w-100 border-dashed image-btn-container btn border-dark-subtle d-flex justify-content-center align-items-center rounded-0">
-                                                        <!-- <span span class=" text-dark-emphasis fs-1 fw-bolder">+</span> -->
+                                                        
                                                         <input class="d-none" type="file" id="addimagesmystyles" (change)="handleFileInputMyStyles($event)" multiple>
                                                         <div class="container p-3">
                                                             <ng-container *ngIf="getFileKeysMyStyles().length === 0">
@@ -1696,7 +1660,7 @@
                                                             <div class="tooltips text-center rounded-2 mb-0 px-2">
                                                                 <p class="tooltiptext lh-lg {{formTextColor}}">{{imageMessage}}</p>
                                                             </div>
-                                                            <!-- <div class="tooltip-tail position-absolute start-0 top-0 ms-4"></div> -->
+                                                            
                                                         </div>
                                                         <div 
                                                             (mouseenter)="showToolTip(file, ind)"
@@ -1768,7 +1732,7 @@
                                 <h4 class="text-dark-subtle-grey fw-bold lh-1 mt-1 ms-2">Add Variant</h4>
                             </button>
                         </div>
-                        
+                         -->
                             
                         <hr class="divider border-white ">
                         <div class="modal-footer">
@@ -1860,4 +1824,14 @@
     </div>
 </form>
 
-        
+<form *ngIf="formHideProduct"  (ngSubmit)="onProductHideSubmit()">
+    <div  class="modal-body text-center pt-0 pb-0">
+        <p class="fs-5 fw-bold mb-1 {{formTextColor}}">Are you sure to hide this?</p>
+        <h1 class="text-primary fs-4 fw-bolder text-truncate">{{selectedRowData?.name }}</h1>
+    </div>
+    <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-dark cancel-btn rounded-3"  data-bs-dismiss="modal">CANCEL</button>
+        <button type="submit" class="btn btn-primary bg-light-primary text-white">CONFIRM</button>
+    </div>
+</form>
+

@@ -22,6 +22,7 @@ export class TableComponent {
 	@ViewChild('checkboxInput', { static: false }) checkboxInput: ElementRef;
 	
 	@Output() rowDataSelected: EventEmitter<any> = new EventEmitter<any>();
+	@Output() ShowVariantForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() rowDataForDelete: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowAddForm: EventEmitter<any> = new EventEmitter<any>();
 	@Output() ShowEditForm: EventEmitter<any> = new EventEmitter<any>();
@@ -85,10 +86,13 @@ export class TableComponent {
 	@Input() elipsesActionBtn!: boolean;
 	@Input() restockBtn!: boolean;
 	@Input() editBtn!: boolean;
+	@Input() editButtonLine!: boolean;
 	@Input() editSubBtn!: boolean;
 	@Input() deleteBtn!: boolean;
+	@Input() variantFormBtn!: boolean;
 	@Input() deleteSubBtn!: boolean;
 	@Input() viewBtn!: boolean;
+	@Input() hideBtn!: boolean
 	@Input() viewBtn2!: boolean;
 	@Input() banBtn!: boolean;
 	@Input() cancelOrder!: boolean;
@@ -407,7 +411,13 @@ export class TableComponent {
 		// this.selectedIds.push(row.id);
 		// this.rowDataForDelete.emit(this.selectedIds);
 	}
-	
+
+	showVariantForm(row: any) {
+		this.ShowVariantForm.emit(row);
+		// this.selectedIds.push(row.id);
+		// this.rowDataForDelete.emit(this.selectedIds);
+	}
+
 	showPage(row: any): void{
 		this.showEvent.emit(row)
 	}

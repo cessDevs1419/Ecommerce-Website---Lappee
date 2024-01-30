@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { ModalComponent } from '../../modal/modal.component';
 import { Location } from '@angular/common';
 import { AttributesService } from 'src/app/services/attributes/attributes.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler/error-handler.service';
 
 @Component({
     selector: 'app-category-form',
@@ -38,7 +39,9 @@ export class CategoryFormComponent {
     @Input() formAddCategory!: boolean;
     @Input() formEditCategory!: boolean;
     @Input() formDeleteCategory!: boolean;
+    @Input() formHideCategroy!: boolean;
     @Input() formMultipleDeleteCategory!: boolean;
+    @Input() formHideCategory!: boolean;
     @Input() formTitle!: string;
     @Input() formsubTitle!: string;
     
@@ -86,7 +89,8 @@ export class CategoryFormComponent {
         private http: HttpClient,
         private router: Router,
         private location: Location,
-        private cdr : ChangeDetectorRef
+        private cdr : ChangeDetectorRef,
+        private errorMessage: ErrorHandlerService
         
     ) 
     {
@@ -363,15 +367,15 @@ export class CategoryFormComponent {
     onCategoryEditSubmit(): void {
             let formData: any = new FormData();
 
-            for (const value of formData.entries()) {
-                console.log(`${value[0]}, ${value[1]}`);
-            }
+
             
             if(this.editCategoryForm.valid){
-                formData.append(`categories[${0}][id]`, this.selectedRowData.id);
-                formData.append(`categories[${0}][name]`, this.editCategoryForm.get('category')?.value);
+                formData.append(`id`, this.selectedRowData.id);
+                formData.append(`name`, this.editCategoryForm.get('category')?.value);
     
-
+                for (const value of formData.entries()) {
+                    console.log(`${value[0]}, ${value[1]}`);
+                }
                 
             this.category_service.patchCategory(formData).subscribe({
                 next: async(response: any) => { 
@@ -384,6 +388,7 @@ export class CategoryFormComponent {
                     this.refreshTableData();
                     this.CategorySuccess.emit(successMessage);
                     this.editCategoryForm.reset();
+                    this.CloseModal.emit();
                     this.done = true
                     this.cancel = false
 
@@ -510,6 +515,56 @@ export class CategoryFormComponent {
                 const customErrorMessages = {
                     head: 'Invalid Request',
                     sub: 'There are subcategories under this category',
+                };
+                
+                const errorData = this.errorService.handleError(error, customErrorMessages);
+                if (errorData.errorMessage === 'Unexpected Error') {
+                    this.CategoryError.emit(errorData);
+                } else {
+                    this.CategoryWarn.emit(errorData);
+                }
+                return throwError(() => error); 
+            }
+        });
+            
+    }
+
+    onCategoryHideSubmit(): void {
+
+        let formData: any = new FormData();
+        const selectedCategory : any[] = []
+        selectedCategory.push(this.selectedRowData.id)
+        
+        for (let id of selectedCategory) {
+            let index = 0;
+            formData.append('id', id);
+            index++;
+        }
+
+        formData.forEach((value: any, key: number) => {
+            console.log(`${key}: ${value}`);
+        });
+
+        this.category_service.patchVisibilityCategory(formData).subscribe({
+            next: async(response: any) => { 
+            
+                const successMessage = {
+                    head: 'Hide Category',
+                    sub: response?.message
+                };
+                
+                this.RefreshTable.emit();
+                
+                this.refreshTableData();
+                this.CategorySuccess.emit(successMessage);
+
+            
+                this.CloseModal.emit();
+            },
+            error: (error: HttpErrorResponse) => {
+                const customErrorMessages = {
+                    head: 'Hide Category',
+                    sub: this.errorMessage.handle(error),
                 };
                 
                 const errorData = this.errorService.handleError(error, customErrorMessages);

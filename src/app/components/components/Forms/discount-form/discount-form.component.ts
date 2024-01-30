@@ -20,6 +20,7 @@ export class DiscountFormComponent {
 	@Output() ProductError: EventEmitter<any> = new EventEmitter();
 	@Output() ProductWarning: EventEmitter<any> = new EventEmitter();
     @Output() Select: EventEmitter<any> = new EventEmitter();
+    @Output() closemodal: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('date1') date1: ElementRef;
     @ViewChild('date2') date2: ElementRef;
@@ -153,7 +154,7 @@ export class DiscountFormComponent {
                     
 
                     this.refreshTableData();
-                   
+                    this.closemodal.emit()
                     this.ProductSuccess.emit(successMessage);
                 },
                 error: (error: HttpErrorResponse) => {

@@ -11,7 +11,42 @@
     border-radius: 9px;
     color: #1C92FF;
 }
+.content-form {
+    background-color: #1E2029;
+}
+select option {
+    padding: 0;
+    background: #1E2029;
+    color: #fff;
+}
+.img-remove-btn{
+    max-width: 1rem;
+    min-width: 1rem;
+    height: 1.5rem;
+}
+.image-container{
+    max-width: 10.7rem;
+    min-width: 10.7rem;
+    height: 10rem;
+}
 
+.image-resolution-shadow{
+    box-shadow: 0px 0px 20px 0px #F00;
+}
+
+
+::placeholder {
+    color: #959BA5;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #959BA5;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #959BA5;
+}
 
 .heading-title-fs-64{
     font-size: 4rem;

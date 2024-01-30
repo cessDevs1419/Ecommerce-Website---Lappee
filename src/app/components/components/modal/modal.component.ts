@@ -4,13 +4,14 @@ import * as bootstrap from 'bootstrap';
 import { Observable, Subject, map, of, startWith, switchMap, tap } from 'rxjs';
 import { AdminOrderContent, AdminOrderDetail, AdminOrderDetailList } from 'src/assets/models/order-details';
 import { OrderService } from 'src/app/services/order/order.service';
-import { formatAdminOrderDetail, formatProducts } from 'src/app/utilities/response-utils';
+import { formatAdminOrderDetail, formatNewProductVariant, formatProductVariants, formatProducts } from 'src/app/utilities/response-utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Product } from 'src/assets/models/products';
+import { NewVariant, Product } from 'src/assets/models/products';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { OrdersFormComponent } from '../Forms/orders-form/orders-form/orders-form.component';
 import { ShippingFee } from 'src/assets/models/shipping';
 import { AttributeFormComponent } from '../Forms/attribute-form/attribute-form.component';
+import { VariantsService } from 'src/app/services/variants/variants.service';
 
 
 @Component({
@@ -73,6 +74,7 @@ export class ModalComponent {
 	@Input() modalDeleteProduct!: boolean; 
 	@Input() modalMultipleDeleteProduct!: boolean; 
 	@Input() modalDeleteVariant!: boolean;
+    @Input() modalHideCategory!: boolean;
 	@Input() modalBanAccounts!: boolean;  
 	@Input() modalUnBanAccounts!: boolean; 
 	@Input() modalViewOrders!: boolean;
@@ -108,7 +110,10 @@ export class ModalComponent {
 	@Input() modalSubData!: Observable<any>;
     @Input() modalDataImg!: Observable<any>;
     @Input() modalViewOrder!: boolean;
-
+    @Input() modalHideProduct!: boolean;
+    @Input() modalVariants!: boolean;
+    @Input() modalAddVariant!: boolean;
+    
 	selectedAttributeData: any;
 	//modal theme
 	modalTheme: string = 'table-bg-dark';
@@ -119,6 +124,7 @@ export class ModalComponent {
     private bsModal: bootstrap.Modal;
     dataLoaded$ = new Subject<boolean>();
     ordersDetails!: Observable<AdminOrderDetail>;
+    variantsNew: Observable<NewVariant[]>
 
     backdrop: string = 'true';
 	toastContent: string = "";
@@ -132,16 +138,24 @@ export class ModalComponent {
     
     constructor(
 		private service: OrderService,
-		private product_service: ProductsService
+		private product_service: ProductsService,
+        private variant_service: VariantsService
 	) {
 	    
 	}
 
 	ngOnInit(): void{
+        this.variantsNew
+    }
 
-	}
+    ngAfterViewInit(){
+
+    }
+
 
     ngOnChanges(): void {}
+
+    
 
     loadAttributeData(items: any){
         this.loadData.addExistingAttributeValue(items)

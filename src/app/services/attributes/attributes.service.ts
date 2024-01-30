@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DeleteAttributeAdmin, DeleteMultiAttributeAdmin, GETAttributesAdmin, GETAttributesDetailsAdmin, PostAttributeAdmin } from '../endpoints';
+import { DeleteAttributeAdmin, DeleteMultiAttributeAdmin, GETAttributesAdmin, GETAttributesDetailsAdmin, PatchAttributeAdmin, PostAttributeAdmin, PostAttributeValueAdmin } from '../endpoints';
 import { AttributeList, Attributes, AttributesDetails } from 'src/assets/models/attributes';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -41,7 +41,12 @@ export class AttributesService {
   postAttribute(data: FormData): Observable<any> {
       return this.http.post<Attributes>(PostAttributeAdmin, data, this.httpOptions);
   } 
-  
+  patchAttribute(data: FormData): Observable<any> {
+    return this.http.patch<Attributes>(PatchAttributeAdmin, data, this.httpOptions);
+  } 
+  postValue(data: FormData): Observable<any> {
+    return this.http.post<Attributes>(PostAttributeValueAdmin, data, this.httpOptions);
+  } 
   deleteMultiAttribute(attributeIds: number[]): Observable<any> {
     return this.http.delete(DeleteMultiAttributeAdmin, {
       headers: new HttpHeaders({

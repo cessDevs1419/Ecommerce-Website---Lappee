@@ -17,6 +17,7 @@ export const GETAdminCategoriesAttribute: string = api + "api/admin/category/att
 export const POSTCategories: string = api + "api/admin/category/store";
 export const PATCHCategories: string = api + "api/admin/category/edit";
 export const DELETECategories: string = api + "api/admin/category/delete";
+export const PATCHVisibilityCategories: string = api + "api/admin/category/visibility";
 
 // Product Client Endpoints
 export const GETProducts: string = api + "api/client/products";
@@ -32,8 +33,10 @@ export const GETMyStylesSuggest: string = api + "api/client/my-style/suggest/"
 
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";
+export const GETProductsVariants: string = api + "api/admin/products/view/variants/";
 export const POSTProductsAdmin: string = api + "api/admin/products/store";
 export const PATCHProductsAdmin: string = api + "api/admin/products/edit";
+export const PATCHVisibilityProductsAdmin: string = api + "api/admin/products/visibility";
 export const DELETEProductsAdmin: string = api + "api/admin/products/delete";
 
 //Attributes Admin Endpoints
@@ -41,6 +44,8 @@ export const GETAttributesAdmin: string = api + "api/admin/attributes";
 export const GETAttributesDetailsAdmin: string = api + "api/admin/attributes/details/";
 export const GETSelectedAttributesAdmin: string = api + "api/admin/attributes/main/{id}";
 export const PostAttributeAdmin: string = api + "api/admin/attributes/store";
+export const PostAttributeValueAdmin: string = api + "api/admin/attributes/add-value";
+export const PatchAttributeAdmin: string = api + "api/admin/attributes/rename";
 export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/delete";
 export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/";
 
