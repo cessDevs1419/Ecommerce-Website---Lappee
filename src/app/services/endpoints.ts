@@ -31,7 +31,7 @@ export const GETMyStylesProducts: string = api + "api/client/products/my-styles"
 export const POSTMyStylesRecord: string = api + "api/client/my-style/record"
 export const GETMyStylesSuggest: string = api + "api/client/my-style/suggest/"
 export const GETAdminProductDetails: string = api + "api/admin/products/view/details/"
-
+export const PatchVariant: string = api + "api/admin/products/edit/specific-variant"
 //Product Admin Endpoints
 export const GETProductsAdmin: string = api + "api/admin/products";
 export const GETProductsVariants: string = api + "api/admin/products/view/variants/";
@@ -52,7 +52,7 @@ export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/"
 
 //Variant Admin Endpoints
 export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";
-export const PATCHVariantsAdmin: string = api + "api/admin/products/variants/edit";
+export const PATCHVariantsAdmin: string = api + "api/admin/products/edit/specific-variant";
 export const DELETEVariantsAdmin: string = api + "api/admin/products/variants/delete";
 
 //Account Endpoints

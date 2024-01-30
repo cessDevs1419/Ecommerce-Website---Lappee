@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 
-import { Observable, Subject, combineLatest, startWith, switchMap, tap } from 'rxjs';
+import { Observable, Subject, combineLatest, startWith, switchMap, tap, throwError } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { AdminProduct, NewVariant, Product, ProductList } from 'src/assets/models/products';
 import { formatAdminCategoriesAttribute, formatAdminProducts, formatAdminSubcategories, formatNewProductVariant, formatProducts } from 'src/app/utilities/response-utils';
@@ -19,6 +19,7 @@ import { AdminCategory, NewAdminCategory } from 'src/assets/models/categories';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { RichTextEditorComponent } from 'src/app/components/components/rich-text-editor/rich-text-editor.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-admin-products',
@@ -98,9 +99,12 @@ export class AdminProductsComponent {
     counter_bg: string = 'table-bg-dark'
     counter_heading_text_color: string = 'dark-theme-heading-text-color'
     text_color: string = 'dark-theme-text-color'
+    variantId: string = ''
+
 	constructor(
 		private service: ProductsService,
 		private subcategory_service: SubcategoriesService,
+        private variant_service: VariantsService,
 		private router: Router,
         private variants_service: VariantsService,
         private formBuilder: FormBuilder,
@@ -192,10 +196,15 @@ export class AdminProductsComponent {
         this.modalVariants = false
         this.modalEditVariant = true
         this.modalClass = 'modal-md'
-
+        const imagesArray = this.variantForm.get('images') as FormArray;
+        imagesArray.clear()
+        this.getFileKeys().splice(0)
+        this.fileUrlMap.clear()
+        this.imagesArray.splice(0)
 
         Object.keys(data).forEach((keys: any) => {
             if (data.hasOwnProperty(keys)) {
+                this.variantId = data['id']
                 this.variantForm.get('name')?.setValue(data['name'])
                 this.variantForm.get('stock')?.setValue(data['stock'])
                 this.variantForm.get('price')?.setValue(data['price'])
@@ -203,13 +212,18 @@ export class AdminProductsComponent {
         })
 
         for (const attri of data['attributes']) {
-            const addAttributeForm = {
-                attribute_id: attri.attribute_id,
-                category_attribute_id: attri.category_attribute_id,
-                name: attri.attribute_name,
-                value: attri.value
-            };
-           this.attributeArray.push(addAttributeForm);
+           for (let attributeName in this.attributeForm.controls) {
+                if (attributeName === attri.category_attribute_id) {
+                    const addAttributeForm = {
+                        attribute_id: attri.attribute_id,
+                        category_attribute_id: attri.category_attribute_id,
+                        name: attri.attribute_name,
+                        value: attri.value
+                    };
+                   this.attributeForm.get(attributeName)?.setValue(attri.value)
+                   this.attributeArray.push(addAttributeForm);
+                }
+            }
         }
 
         for (const image of data['images']) {
@@ -219,10 +233,8 @@ export class AdminProductsComponent {
         for (const image of data['my_style_image']) {
             this.mystyleimageArray.push(image);
         }
-        
-        console.log(this.attributeArray);
-        console.log(this.imagesArray);
-        console.log(this.mystyleimageArray);
+
+        console.log(this.attributeForm)
     }
 
     cancelAddVariants(){
@@ -232,6 +244,11 @@ export class AdminProductsComponent {
         this.modalClass = 'modal-xl'
         this.variantForm.reset()
         this.attributeForm.reset()
+        const imagesArray = this.variantForm.get('images') as FormArray;
+        imagesArray.clear()
+        this.getFileKeys().splice(0)
+        this.fileUrlMap.clear()
+        this.imagesArray.splice(0)
 
         this.variantsNew.subscribe((data: any) => {
             if(data){
@@ -583,12 +600,143 @@ export class AdminProductsComponent {
     onVariantAddSubmit(){
         console.log(this.variantForm)
         console.log(this.attributeForm)
+
+        const productFormData: FormData = new FormData();
+
+        
+        const name = this.variantForm.get('name')?.value
+        const price = this.variantForm.get('price')?.value
+        const images = this.variantForm.get('images')?.value
+
+        productFormData.append(`variant_id`, this.variantId);
+        productFormData.append(`name`, name);
+        productFormData.append(`price`, price);
+
+        let imageIndex = 0;
+        let attributeIndex = 0;
+
+        for (let image of images) {
+            productFormData.append(`images`, image);
+            imageIndex++;
+        }
+
+        // for (let image of variant.mystyle) {
+        //     productFormData.append(`variants[${i}][my_style_image]`, image);
+        //     imageIndex++;
+        // }
+
+
+        // for (let attribute of variant.attributes) {
+        //     let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
+        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
+        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
+        //     attributeIndex++;
+        // }
+
+        // Display the FormData entries
+        productFormData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
     }
     
     onVariantEditSubmit(){
-        console.log(this.variantForm)
+   
         console.log(this.attributeForm)
-        console.log(this.attributeArray)
+
+        const productFormData: FormData = new FormData();
+
+        
+        const name = this.variantForm.get('name')?.value
+        const price = this.variantForm.get('price')?.value
+        const images = this.variantForm.get('images')?.value
+
+        productFormData.append(`variant_id`, this.variantId);
+        productFormData.append(`name`, name);
+        productFormData.append(`price`, price);
+
+
+        // for (let attribute of this.attributeArray){
+        //     console.log(attribute.category_attribute_id)
+        // }
+        let imageIndex = 0;
+        let attributeIndex = 0;
+
+        for (let attributeName in this.attributeForm.controls) {
+            for (let attribute of this.attributeArray) {
+                if (attributeName === attribute.category_attribute_id) {
+                    productFormData.append(`[attributes][${attributeIndex}][category_attribute_id]`, attribute.category_attribute_id);
+                    productFormData.append(`[attributes][${attributeIndex}][value]`, attribute.value);
+                    attributeIndex++;
+                }
+            }
+        }
+
+        // for (let attribute of variant.attributes) {
+        //     let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
+        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
+        //     productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
+        //     attributeIndex++;
+        // }
+
+        for (const image of this.imagesArray) {
+            productFormData.append(`images[]`, image);
+        }
+
+        for (let image of images) {
+            productFormData.append(`images[]`, image);
+            imageIndex++;
+        }
+
+        productFormData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
+
+        // this.variant_service.patchVariants(productFormData).subscribe({
+        //     next: (response: any) => { 
+                    
+        //         const productSuccess = {
+        //             head: 'Edit Product',
+        //             sub: response.message
+        //         };
+            
+        //         this.refreshTableData()
+        //         this.SuccessToast(productSuccess);
+        //     },
+        //     error: (error: HttpErrorResponse) => {
+        //         if (error.error?.data?.error) {
+        //             const fieldErrors = error.error.data.error;
+        //             const errorsArray = [];
+                
+        //             for (const field in fieldErrors) {
+        //                 if (fieldErrors.hasOwnProperty(field)) {
+        //                     const messages = fieldErrors[field];
+        //                     let errorMessage = messages;
+        //                     if (Array.isArray(messages)) {
+        //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                     }
+        //                     errorsArray.push(errorMessage);
+        //                 }
+        //             }
+                
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: errorsArray,
+        //             };
+                
+        //             this.WarningToast(errorDataforProduct);
+        //         } else {
+                
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: 'Please Try Another One',
+        //             };
+        //             this.ErrorToast(errorDataforProduct);
+        //         }
+        //         return throwError(() => error);
+                
+        //     }
+        // })
+        
     }
 
 	

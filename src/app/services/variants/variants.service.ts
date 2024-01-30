@@ -214,7 +214,7 @@ export class VariantsService {
 	
 	
 	patchVariants(data: FormData): Observable<any> {
-		return this.http.patch<Product>(PATCHVariantsAdmin, data, this.httpOptions);
+		return this.http.post<Product>(PATCHVariantsAdmin, data, this.httpOptions);
 	} 
 	
 	
