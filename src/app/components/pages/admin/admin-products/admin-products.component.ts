@@ -90,6 +90,7 @@ export class AdminProductsComponent {
     mystyleImagesMap: Map<File, string> = new Map();
     attributeArray: any[] = []
     imagesArray: any[] = []
+    fordeleteimagesArray: any[] = []
     mystyleimageArray: any[] = []
     //theme
 
@@ -616,7 +617,10 @@ export class AdminProductsComponent {
             imagesArray.removeAt(index);
         }
     }
-
+    removeExistingImage(data:string, index: number){
+        this.imagesArray.splice(index)
+        this.fordeleteimagesArray.push(data)
+    }
     SuccessToast(value: any): void {
         this.toaster.showToast(value.head, value.sub, 'default', '', )
     }
@@ -770,17 +774,18 @@ export class AdminProductsComponent {
 
         }
 
-        // for (let imageUrl of this.imagesArray) {
-        //     productFormData.append('images[]', imageUrl);
-        // }
         
         for (let imageUrl of this.imagesArray) {
-            productFormData.append(`images[]`, imageUrl);
+            productFormData.append(`for_delete_images[]`, imageUrl);
+        }
+
+        for (let imageUrl of this.imagesArray) {
+            productFormData.append(`existing_images[]`, imageUrl);
         }
 
           
         for (let image of images) {
-            productFormData.append(`images[]`, image);
+            productFormData.append(`new_images[]`, image);
             imageIndex++;
         }
 
@@ -788,51 +793,51 @@ export class AdminProductsComponent {
             console.log(`${key}: ${value}`);
         });
 
-        this.variant_service.patchVariants(productFormData).subscribe({
-            next: (response: any) => { 
+        // this.variant_service.patchVariants(productFormData).subscribe({
+        //     next: (response: any) => { 
                     
-                const productSuccess = {
-                    head: 'Edit Variant',
-                    sub: response.message
-                };
+        //         const productSuccess = {
+        //             head: 'Edit Variant',
+        //             sub: response.message
+        //         };
             
-                this.refreshTableData()
-                this.SuccessToast(productSuccess);
-            },
-            error: (error: HttpErrorResponse) => {
-                if (error.error?.data?.error) {
-                    const fieldErrors = error.error.data.error;
-                    const errorsArray = [];
+        //         this.refreshTableData()
+        //         this.SuccessToast(productSuccess);
+        //     },
+        //     error: (error: HttpErrorResponse) => {
+        //         if (error.error?.data?.error) {
+        //             const fieldErrors = error.error.data.error;
+        //             const errorsArray = [];
                 
-                    for (const field in fieldErrors) {
-                        if (fieldErrors.hasOwnProperty(field)) {
-                            const messages = fieldErrors[field];
-                            let errorMessage = messages;
-                            if (Array.isArray(messages)) {
-                                errorMessage = messages.join(' '); // Concatenate error messages into a single string
-                            }
-                            errorsArray.push(errorMessage);
-                        }
-                    }
+        //             for (const field in fieldErrors) {
+        //                 if (fieldErrors.hasOwnProperty(field)) {
+        //                     const messages = fieldErrors[field];
+        //                     let errorMessage = messages;
+        //                     if (Array.isArray(messages)) {
+        //                         errorMessage = messages.join(' '); // Concatenate error messages into a single string
+        //                     }
+        //                     errorsArray.push(errorMessage);
+        //                 }
+        //             }
                 
-                    const errorDataforProduct = {
-                        head: 'Error Invalid Inputs',
-                        sub: errorsArray,
-                    };
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: errorsArray,
+        //             };
                 
-                    this.WarningToast(errorDataforProduct);
-                } else {
+        //             this.WarningToast(errorDataforProduct);
+        //         } else {
                 
-                    const errorDataforProduct = {
-                        head: 'Error Invalid Inputs',
-                        sub: 'Please Try Another One',
-                    };
-                    this.ErrorToast(errorDataforProduct);
-                }
-                return throwError(() => error);
+        //             const errorDataforProduct = {
+        //                 head: 'Error Invalid Inputs',
+        //                 sub: 'Please Try Another One',
+        //             };
+        //             this.ErrorToast(errorDataforProduct);
+        //         }
+        //         return throwError(() => error);
                 
-            }
-        })
+        //     }
+        // })
         
     }
 
