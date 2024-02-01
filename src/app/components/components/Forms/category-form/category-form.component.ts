@@ -286,9 +286,9 @@ export class CategoryFormComponent {
                 index++;
             }
 
-            formData.forEach((value: any, key: number) => {
-                console.log(`${key}: ${value}`);
-            });
+            // formData.forEach((value: any, key: number) => {
+            //     console.log(`${key}: ${value}`);
+            // });
             
             this.category_service.postCategory(formData).subscribe({
                 next: (response: any) => { 
@@ -373,9 +373,9 @@ export class CategoryFormComponent {
                 formData.append(`id`, this.selectedRowData.id);
                 formData.append(`name`, this.editCategoryForm.get('category')?.value);
     
-                for (const value of formData.entries()) {
-                    console.log(`${value[0]}, ${value[1]}`);
-                }
+                // for (const value of formData.entries()) {
+                //     console.log(`${value[0]}, ${value[1]}`);
+                // }
                 
             this.category_service.patchCategory(formData).subscribe({
                 next: async(response: any) => { 

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, of } from 'rxjs';
 import { NewVariantList, Product, Variant } from 'src/assets/models/products';
-import { DELETEVariantsAdmin, GETProductsVariants, PATCHVariantsAdmin, POSTVariantsAdmin } from '../endpoints';
+import { DELETEVariantsAdmin, GETProductsVariants, GETSpecificVariant, PATCHVariantsAdmin, POSTVariantsAdmin } from '../endpoints';
 import { ProductsService } from '../products/products.service';
 import { formatProducts } from 'src/app/utilities/response-utils';
 
@@ -40,11 +40,23 @@ export class VariantsService {
 	httpOptions = {
 	    headers: new HttpHeaders({
 	        'Accept': 'application/json',
+			'Content-Type': 'image/*',
 	        'Access-Control-Allow-Origin': '*',
 	        'Access-Control-Allow-Credentials': 'true'
 	      //galing kay dell
 	    })
 	};
+
+	getImage(imageUrl: string): Observable<File> {
+		return this.http.get(imageUrl, { ...this.httpOptions, responseType: 'arraybuffer' })
+		  .pipe(map(response => this.convertToBlob(response)));
+	}
+	
+	private convertToBlob(response: any): File {
+		const blob = new Blob([response], { type: 'image/*' });
+		const fileName = 'image.jpg'; // You can modify this based on the image type
+		return new File([blob], fileName);
+	}
 
 	getIndex(){
 	    return this.index
@@ -206,7 +218,27 @@ export class VariantsService {
 			}
 	}
 	
-
+	getImageFile(url: string): Observable<File> {
+		return this.http.get(url, { responseType: 'blob' }).pipe(map((blob: Blob) => {
+		  const fileName = this.getFileNameFromUrl(url);
+		  return new File([blob], fileName, { type: blob.type });
+		}));
+	  }
+	
+	private getFileNameFromUrl(url: string): string {
+		// Extract the file name from the URL
+		const matches = url.match(/\/([^\/?#]+)[^\/]*$/);
+		if (matches && matches.length > 1) {
+		  return matches[1];
+		}
+		// If unable to extract, generate a random name
+		return 'image_' + Date.now();
+	}
+	
+	
+	getSpecificVariants(id: string): Observable<any> {
+		return this.http.get<NewVariantList>(GETSpecificVariant+id);
+	}
 	//Database Request
 	postVariants(data: FormData): Observable<any> {
 		return this.http.post<Product>(POSTVariantsAdmin, data, this.httpOptions);

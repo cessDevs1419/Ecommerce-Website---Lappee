@@ -232,7 +232,7 @@ export class ProductFormComponent {
     
     ngOnInit(): void{
 		this.categories = this.category_service.getAdminCategories().pipe(map((Response: any) => formatAdminCategories(Response)));
-        
+
         this.products = this.product_service.getAdminProducts().pipe(map((Response: any) => formatProducts(Response)));
 
         if (this.selectedRowData) {
@@ -1899,9 +1899,9 @@ export class ProductFormComponent {
         }
 
         // Display the FormData entries
-        productFormData.forEach((value, key) => {
-            console.log(`${key}: ${value}`);
-        });
+        // productFormData.forEach((value, key) => {
+        //     console.log(`${key}: ${value}`);
+        // });
         
         if(this.addProductForm.valid){
         

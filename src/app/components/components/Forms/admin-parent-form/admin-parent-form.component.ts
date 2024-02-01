@@ -49,11 +49,7 @@ export class AdminParentFormComponent {
 	private routerEventsSubscription: Subscription;
 	
 	ngOnInit() {
-		this.products = this.refreshData$.pipe(
-            startWith(undefined), 
-            switchMap(() => this.service.getAdminProducts()),
-            map((Response: any) => formatAdminProducts(Response))  
-        );
+		this.products = this.service.getAdminProducts().pipe(map((Response: any) => formatAdminProducts(Response)))
 
 		this.route.paramMap.subscribe((params) => {
 			const page = params.get('page');
@@ -78,13 +74,18 @@ export class AdminParentFormComponent {
 			this.EditDatabaseVariant = page === 'variant' && action === 'edit/';
 			this.selectedRowData = id
 
-			this.products.subscribe((data: any) => {
-				const foundProduct = data.find((product: any) => product.id === id)
-				if(foundProduct.is_archived === 1){
-					this.ProductHide = true
-				}
-				
-			})
+			if(!this.AddProduct){
+				this.products.subscribe((data: any) => {
+					const foundProduct = data.find((product: any) => product.id === id)
+	
+					if(foundProduct.is_archived === 1){
+						this.ProductHide = true
+						this.EditProduct = false
+					}
+					
+				})
+			}
+
 			
 		});
 		

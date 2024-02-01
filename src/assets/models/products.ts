@@ -69,6 +69,7 @@ export interface Variant {
 } */
 
 export interface Attribute {
+    category_attribute_value_id: string,
     attribute_id: string,
     category_attribute_id: string,
     attribute_name: string,

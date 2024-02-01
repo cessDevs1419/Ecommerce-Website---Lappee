@@ -51,6 +51,7 @@ export const DeleteMultiAttributeAdmin: string = api + "api/admin/attributes/del
 export const DeleteAttributeAdmin: string = api + "api/admin/attributes/delete/";
 
 //Variant Admin Endpoints
+export const GETSpecificVariant: string = api + "api/admin/products/view/specific-variant/";
 export const POSTVariantsAdmin: string = api + "api/admin/products/variants/store";
 export const PATCHVariantsAdmin: string = api + "api/admin/products/edit/specific-variant";
 export const DELETEVariantsAdmin: string = api + "api/admin/products/variants/delete";
