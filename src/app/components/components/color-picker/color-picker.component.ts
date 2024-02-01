@@ -41,7 +41,7 @@ export class ColorPickerComponent implements ControlValueAccessor {
   @Input() presetColors: string[] = ["#ffffff", "#000000", "#f10d0d", "#6af572", "#224dab"];
   @Input() presetColorNames: string[] = []
   @Input() invalid: boolean = true;
-  @Input() color: string 
+  @Input() color: string
   @Input() colorname: string
   
   private onChange: any = (color: string[]) => {console.log(color)};
@@ -51,8 +51,8 @@ export class ColorPickerComponent implements ControlValueAccessor {
   
 
   ngOnInit(): void {
-    if(this.colorname){
-     
+    if(this.color){
+      this.matchColor(this.color)
     }
   }
 

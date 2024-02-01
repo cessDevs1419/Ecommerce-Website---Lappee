@@ -1893,7 +1893,7 @@ export class ProductFormComponent {
             for (let attribute of variant.attributes) {
                 let valueToAppend = Array.isArray(attribute.value) ? attribute.value[0] : attribute.value;
                 productFormData.append(`variants[${i}][attributes][${attributeIndex}][category_attribute_id]`, attribute.id);
-                productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, valueToAppend);
+                productFormData.append(`variants[${i}][attributes][${attributeIndex}][value]`, attribute.value);
                 attributeIndex++;
             }
         }

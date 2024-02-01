@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div> 
-        <div class="col-xl-3 col-lg-4 p-2 px-0 ps-lg-2 pt-0">
+        <!-- <div class="col-xl-3 col-lg-4 p-2 px-0 ps-lg-2 pt-0">
             <div class="panel-store-container store-container gray-gradient-border box-shadow">
                 <div class="{{counter_bg}}  py-3 store-container h-100 rounded-4 text-center d-flex flex-column justify-content-center ">
                     <div class="panel-body position-relative">
@@ -36,7 +36,7 @@
     
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     
     <app-table
@@ -387,14 +387,14 @@
                                                                 </button>
                                                             </div>
 
-                                                            <div class="w-100 my-4">
+                                                            <!-- <div class="w-100 my-4">
                                                                 <div class="form-check">
                                                                     <input class="form-check-input border-1 bg-none" type="checkbox" (change)="isInclude()" >
                                                                     <label class="form-check-label {{formTextColor}}" >
                                                                         Include this product in MyStyles
                                                                     </label>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <!-- <div class="images-container d-flex justify-content-start w-100 " *ngIf="editImages === false">
                                                                 <ng-container *ngIf="variantsLists[i]; let variant">
                                                                     <ng-container *ngFor="let images of variant.value.images; let ind = index">
@@ -573,31 +573,10 @@
                                                             </div> -->
                                                         </div>
                     
-                                                        <!-- <div class="modal-footer mt-4" *ngIf="addBtn">
-                                                            <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" (click)="removeVariant(i)">Cancel</button>
-                                                            <button 
-                                                                type="submit" 
-                                                                class="btn btn-primary" 
-                                                                (click)="saveNewVariant(i)"
-                                                                
-                                                            >Save</button>
-                                                        </div> -->
-                    
                                                     </div>
                         
                                                 </div>
                                                 
-                                                    
-                                                <!--<hr class="divider border-white ">
-                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-dark bg-none btn-muted cancel-btn rounded-3 me-2" >Cancel</button>
-                                                    <button 
-                                                        type="submit" 
-                                                        class="btn btn-primary glow-primary" 
-                                                        (click)="onVariantEditSubmit()"
-                                                        
-                                                    >Confirm</button>
-                                                </div> -->
                                             </div>
                                     </div>
                                 </div>
@@ -738,7 +717,8 @@
                                                                                     [showLabel]="false"
                                                                                     [placeholder]="'Pick color...'"
                                                                                     [formControlName]="item.category_attribute_id"
-                                                                                    [colorname]="item.value"
+                                                                                    [colorname]="separator(item.value, 0)"
+                                                                                    [color]="separator(item.value, 1)"
                                                                                     required
                                                                                     
                                                                                     >

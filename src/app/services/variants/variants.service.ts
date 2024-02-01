@@ -40,7 +40,6 @@ export class VariantsService {
 	httpOptions = {
 	    headers: new HttpHeaders({
 	        'Accept': 'application/json',
-			'Content-Type': 'image/*',
 	        'Access-Control-Allow-Origin': '*',
 	        'Access-Control-Allow-Credentials': 'true'
 	      //galing kay dell
@@ -241,12 +240,12 @@ export class VariantsService {
 	}
 	//Database Request
 	postVariants(data: FormData): Observable<any> {
-		return this.http.post<Product>(POSTVariantsAdmin, data, this.httpOptions);
+		return this.http.post<NewVariantList>(POSTVariantsAdmin, data, this.httpOptions);
 	} 
-	
+
 	
 	patchVariants(data: FormData): Observable<any> {
-		return this.http.post<Product>(PATCHVariantsAdmin, data, this.httpOptions);
+		return this.http.post<any>(PATCHVariantsAdmin, data, this.httpOptions);
 	} 
 	
 	
