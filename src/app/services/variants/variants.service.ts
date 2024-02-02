@@ -242,7 +242,6 @@ export class VariantsService {
 	postVariants(data: FormData): Observable<any> {
 		return this.http.post<NewVariantList>(POSTVariantsAdmin, data, this.httpOptions);
 	} 
-
 	
 	patchVariants(data: FormData): Observable<any> {
 		return this.http.post<any>(PATCHVariantsAdmin, data, this.httpOptions);

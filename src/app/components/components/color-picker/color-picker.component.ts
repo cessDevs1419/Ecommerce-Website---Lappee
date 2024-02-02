@@ -51,9 +51,7 @@ export class ColorPickerComponent implements ControlValueAccessor {
   
 
   ngOnInit(): void {
-    if(this.color){
-      this.matchColor(this.color)
-    }
+
   }
 
   matchColor(hex: string){
