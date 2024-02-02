@@ -643,9 +643,9 @@
                                                                                 <app-color-picker
                                                                                     [showLabel]="false"
                                                                                     [placeholder]="'Pick color...'"
-                                                                                    [formControlName]="item.category_attribute_id"
-                                                                                    [colorname]="separator(item.value, 0)"
+                                                                                    (getData)="setColorData($event, item)"
                                                                                     [color]="separator(item.value, 1)"
+                                                                                    [colorname]="separator(item.value, 0)"
                                                                                     required
                                                                                     
                                                                                     >

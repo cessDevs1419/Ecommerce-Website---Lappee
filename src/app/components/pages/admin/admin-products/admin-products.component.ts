@@ -251,7 +251,6 @@ export class AdminProductsComponent {
         })
 
         for (const image of data['images']) {
-            console.log(image)
             this.imagesArray.push(image);
         }
 
@@ -634,7 +633,11 @@ export class AdminProductsComponent {
     ErrorToast(value: any): void {
         this.toaster.showToast(value.head, value.sub, 'negative', '', )
     }
-    
+
+    setColorData(data: any, item: any){
+        this.attributeForm.get(item.category_attribute_id)?.setValue(data)
+    }
+
     onVariantAddSubmit(){
         const productFormData: FormData = new FormData();
 
@@ -781,7 +784,7 @@ export class AdminProductsComponent {
         // }
 
 
-        for (let imageUrl of this.imagesArray) {
+        for (let imageUrl of this.fordeleteimagesArray) {
             productFormData.append(`deleted_images[]`, imageUrl);
         }
           
@@ -790,9 +793,9 @@ export class AdminProductsComponent {
             imageIndex++;
         }
 
-        productFormData.forEach((value, key) => {
-            console.log(`${key}: ${value}`);
-        });
+        // productFormData.forEach((value, key) => {
+        //     console.log(`${key}: ${value}`);
+        // });
 
         this.variant_service.patchVariants(productFormData).subscribe({
             next: (response: any) => { 

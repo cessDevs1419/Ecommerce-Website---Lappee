@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ColorService } from 'src/app/services/color/color.service';
 
@@ -18,7 +18,8 @@ import { ColorService } from 'src/app/services/color/color.service';
 export class ColorPickerComponent implements ControlValueAccessor {
   
   constructor(private colorService: ColorService) {}
-
+  @Output() getData: EventEmitter<any> = new EventEmitter();
+    
   writeValue(obj: any): void {
     this.color = obj;
   }
@@ -56,7 +57,7 @@ export class ColorPickerComponent implements ControlValueAccessor {
 
   matchColor(hex: string){
     this.colorname = this.colorService.matchColorName(hex)
-    this.onChange([this.colorname, this.color]);
+    this.getData.emit([this.colorname, hex])
   }
 
 
