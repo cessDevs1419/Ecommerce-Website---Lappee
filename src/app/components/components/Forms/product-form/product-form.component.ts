@@ -153,6 +153,7 @@ export class ProductFormComponent {
     isProductInclude: boolean = false;
     ProductHide: boolean;
     productArchived: number
+    attributeArray: any[] = []
 
     constructor(
 	    private http: HttpClient,
@@ -1042,6 +1043,18 @@ export class ProductFormComponent {
             stock: this.variantsLists[index].value.stock,
             price: this.variantsLists[index].value.price,
         });
+        const variantsList = this.variantsLists[index].value;
+        this.attributeArray.splice(0)
+        for (let attribute of  variantsList.attributes) {
+            this.addAttributeForm.get(attribute.id)?.setValue(attribute.value)
+            const Attributes = {
+                category_attribute_id: attribute.id,
+                name: attribute.name,
+                value: attribute.value
+            }
+            this.attributeArray.push(Attributes)
+        }
+        
     }
 
     selectNewVariantItem( index: number){
@@ -1116,7 +1129,7 @@ export class ProductFormComponent {
     }
 
     separator(data:string, index:number): string{
-        const splitdata = data.split(',');
+        const splitdata = data
         return splitdata[index];
     }
 
