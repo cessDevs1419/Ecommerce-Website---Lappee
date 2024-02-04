@@ -1115,6 +1115,14 @@ export class ProductFormComponent {
         console.log('Updated selectedAttributeForms:', this.selectedAttributeForms);
     }
 
+    separator(data:string, index:number): string{
+        const splitdata = data.split(',');
+        return splitdata[index];
+    }
+
+    setColorData(data: any, item: any){
+        this.addAttributeForm.get(item.category_attribute_id)?.setValue(data)
+    }
 
     saveVariant(index: any){
         const variantsArray = this.addProductForm.get('variants') as FormArray;
@@ -1191,8 +1199,8 @@ export class ProductFormComponent {
             });
 
             const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
+                head: this.errorMessage,
+                sub: emptyFields.join(', ')
             };
         
             this.ProductError.emit(errorDataforProduct);
@@ -1300,9 +1308,10 @@ export class ProductFormComponent {
             }
 
             const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
+                head: this.errorMessage,
+                sub: emptyFields.join(', ')
             };
+
 
             this.ProductError.emit(errorDataforProduct);
         }
@@ -1982,8 +1991,8 @@ export class ProductFormComponent {
             }
             
             const errorDataforProduct = {
-                errorMessage: this.errorMessage,
-                suberrorMessage: emptyFields.join(', ')
+                head: this.errorMessage,
+                sub: emptyFields.join(', ')
             };
 
             this.ProductError.emit(errorDataforProduct);

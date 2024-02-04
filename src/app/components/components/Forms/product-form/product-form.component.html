@@ -289,7 +289,7 @@
                                                                                             <app-color-picker
                                                                                                 [showLabel]="false"
                                                                                                 [placeholder]="'Pick color...'"
-                                                                                                [formControlName]="item.category_attribute_id"
+                                                                                                (getData)="setColorData($event, item)"
                                                                                                 required>
                             
                                                                                             </app-color-picker>
@@ -334,7 +334,7 @@
                                                                         <app-color-picker
                                                                             [showLabel]="false"
                                                                             [placeholder]="'Pick color...'"
-                                                                            [formControlName]="item.category_attribute_id"
+                                                                            (getData)="setColorData($event, item)"
                                                                             required
                                                                             
                                                                             >
